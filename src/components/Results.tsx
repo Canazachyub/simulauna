@@ -216,58 +216,58 @@ export function Results() {
 
         {/* Tabs de navegación */}
         <div className="card p-2 animate-fade-in">
-          <div className="flex gap-1">
+          <div className="grid grid-cols-4 gap-1">
             <button
               onClick={() => setActiveTab('review')}
               className={clsx(
-                'flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-all',
+                'flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all',
                 activeTab === 'review'
                   ? 'bg-primary-600 text-white shadow-md'
                   : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
               )}
             >
-              <Grid3X3 className="w-4 h-4" />
+              <Grid3X3 className="w-4 h-4 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Revisión</span>
-              <span className="sm:hidden">Revisión</span>
+              <span className="sm:hidden text-[10px]">Revisar</span>
             </button>
             <button
               onClick={() => setActiveTab('chart')}
               className={clsx(
-                'flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-all',
+                'flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all',
                 activeTab === 'chart'
                   ? 'bg-primary-600 text-white shadow-md'
                   : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
               )}
             >
-              <BarChart3 className="w-4 h-4" />
+              <BarChart3 className="w-4 h-4 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Rendimiento</span>
-              <span className="sm:hidden">Gráfico</span>
+              <span className="sm:hidden text-[10px]">Gráfico</span>
             </button>
             <button
               onClick={() => setActiveTab('details')}
               className={clsx(
-                'flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-all',
+                'flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all',
                 activeTab === 'details'
                   ? 'bg-primary-600 text-white shadow-md'
                   : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
               )}
             >
-              <Table2 className="w-4 h-4" />
+              <Table2 className="w-4 h-4 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Detalle</span>
-              <span className="sm:hidden">Tabla</span>
+              <span className="sm:hidden text-[10px]">Tabla</span>
             </button>
             <button
               onClick={() => setActiveTab('history')}
               className={clsx(
-                'flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-all',
+                'flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 rounded-lg text-xs sm:text-sm font-medium transition-all',
                 activeTab === 'history'
                   ? 'bg-primary-600 text-white shadow-md'
                   : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
               )}
             >
-              <History className="w-4 h-4" />
+              <History className="w-4 h-4 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Historial</span>
-              <span className="sm:hidden">Historial</span>
+              <span className="sm:hidden text-[10px]">Historial</span>
             </button>
           </div>
         </div>

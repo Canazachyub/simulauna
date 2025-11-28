@@ -148,17 +148,17 @@ export function ExamConfirmation() {
           </div>
 
           {/* Actions */}
-          <div className="flex justify-between">
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-3">
             <button
               onClick={() => navigate('/registro')}
-              className="btn-secondary"
+              className="btn-secondary w-full sm:w-auto justify-center"
             >
               <ChevronLeft className="w-5 h-5" />
               Modificar datos
             </button>
             <button
               onClick={handleStartExam}
-              className="btn-primary text-lg"
+              className="btn-primary text-lg w-full sm:w-auto justify-center"
             >
               <PlayCircle className="w-6 h-6" />
               Iniciar Examen

@@ -392,7 +392,7 @@ export function StudentForm() {
                   <ClipboardList className="w-4 h-4 inline mr-2" />
                   Tipo de Proceso de Admisión
                 </label>
-                <div className="grid grid-cols-3 gap-3 mt-2">
+                <div className="flex flex-col sm:grid sm:grid-cols-3 gap-2 sm:gap-3 mt-2">
                   {(['CEPREUNA', 'GENERAL', 'EXTRAORDINARIO'] as ProcessType[]).map((type) => (
                     <button
                       key={type}
@@ -401,7 +401,7 @@ export function StudentForm() {
                         setProcessType(type);
                         if (errors.processType) setErrors({ ...errors, processType: undefined });
                       }}
-                      className={`p-4 rounded-xl border-2 text-center font-medium transition-all ${
+                      className={`p-3 sm:p-4 rounded-xl border-2 text-center text-sm sm:text-base font-medium transition-all ${
                         processType === type
                           ? 'border-primary-500 bg-primary-50 text-primary-700'
                           : 'border-slate-200 hover:border-primary-300 hover:bg-slate-50'
