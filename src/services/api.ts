@@ -5,8 +5,7 @@ import type { ApiResponse, Config, Question, AreaType } from '../types';
 // ============================================
 
 // URL del Google Apps Script desplegado como aplicación web
-// IMPORTANTE: Reemplazar con tu URL real después de desplegar
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://script.google.com/macros/s/TU_SCRIPT_ID/exec';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://script.google.com/macros/s/AKfycby3E2uICwC37GzjpmACflZ-NUtzNNd-OpBMKtp4BrDsx0Khbb7-DHoxPwGff9JAA5XvpA/exec';
 
 // Timeout para las peticiones (30 segundos)
 const REQUEST_TIMEOUT = 30000;
