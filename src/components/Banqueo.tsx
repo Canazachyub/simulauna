@@ -57,13 +57,15 @@ export function Banqueo() {
 
   // Timer effect
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval> | undefined;
     if (step === 'quiz' && startTime > 0) {
       interval = setInterval(() => {
         setElapsedTime(Math.floor((Date.now() - startTime) / 1000));
       }, 1000);
     }
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [step, startTime]);
 
   // Check if all questions are answered
