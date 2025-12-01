@@ -80,7 +80,17 @@ export function Landing() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white">
+      <section className="relative overflow-hidden text-white">
+        {/* Background image with blur overlay */}
+        <div className="absolute inset-0">
+          <img
+            src="https://medicina.unap.edu.pe/sites/medicinahumana.dev.unap.edu.pe/files/2025-11/Foto-infraestructura-universitaria.jpg"
+            alt="Universidad Nacional del Altiplano"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-900/90 via-primary-800/85 to-primary-700/80 backdrop-blur-sm" />
+        </div>
+
         {/* Background decoration */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-500 rounded-full opacity-20 blur-3xl" />
@@ -113,6 +123,13 @@ export function Landing() {
               >
                 Comenzar Simulacro
                 <ChevronRight className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => navigate('/banqueo')}
+                className="btn text-lg px-8 py-4 bg-primary-500/20 text-white border-2 border-white/30 hover:bg-white/20 backdrop-blur-sm"
+              >
+                <BookOpen className="w-5 h-5" />
+                Banqueo por Curso
               </button>
             </div>
 

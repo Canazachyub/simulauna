@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   Trophy, Clock, Target, TrendingUp, RotateCcw,
   CheckCircle, XCircle, User, CreditCard, BookOpen, Calendar,
-  Grid3X3, ChevronLeft, ChevronRight, Eye, Table2, BarChart3, History, Award
+  Grid3X3, ChevronLeft, ChevronRight, Eye, Table2, BarChart3, History, Award, Lightbulb
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -32,6 +32,7 @@ export function Results() {
   const [activeTab, setActiveTab] = useState<'review' | 'chart' | 'details' | 'history'>('review');
   const [userHistory, setUserHistory] = useState<UserHistory | null>(null);
   const [loadingHistory, setLoadingHistory] = useState(false);
+  const [showJustification, setShowJustification] = useState(false);
   const scoreSaved = useRef(false);
 
   useEffect(() => {
@@ -51,7 +52,13 @@ export function Results() {
         setLoadingHistory(true);
 
         // Guardar puntaje y esperar a que termine
-        await saveScore({
+        console.log('📊 Guardando puntaje en historial_puntajes...', {
+          dni: result.student.dni,
+          score: result.totalScore,
+          area: result.student.area
+        });
+
+        const saveResult = await saveScore({
           dni: result.student.dni,
           score: result.totalScore,
           maxScore: result.maxScore,
@@ -59,6 +66,8 @@ export function Results() {
           correct: totalCorrect,
           total: result.answers.length
         });
+
+        console.log('✅ Puntaje guardado:', saveResult);
 
         // Pequeña espera para asegurar que Google Sheets procese el registro
         await new Promise(resolve => setTimeout(resolve, 500));
@@ -504,6 +513,28 @@ export function Results() {
                 </>
               )}
             </div>
+
+            {/* Justification */}
+            {currentQuestion.justification && (
+              <div className="mt-4">
+                <button
+                  onClick={() => setShowJustification(!showJustification)}
+                  className="flex items-center gap-2 text-primary-600 hover:text-primary-700 text-sm font-medium transition-colors"
+                >
+                  <Lightbulb className="w-4 h-4" />
+                  {showJustification ? 'Ocultar justificación' : 'Ver justificación'}
+                </button>
+
+                {showJustification && (
+                  <div className="mt-3 p-4 bg-amber-50 rounded-xl border border-amber-200 animate-fade-in">
+                    <p className="text-amber-800 text-sm font-semibold mb-1">Justificación:</p>
+                    <p className="text-amber-700 text-sm leading-relaxed">
+                      {currentQuestion.justification}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Navigation */}
             <div className="flex gap-3 mt-4">

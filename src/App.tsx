@@ -4,6 +4,7 @@ import { StudentForm } from './components/StudentForm';
 import { ExamConfirmation } from './components/ExamConfirmation';
 import { Quiz } from './components/Quiz';
 import { Results } from './components/Results';
+import { Banqueo } from './components/Banqueo';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/confirmar" element={<ExamConfirmation />} />
         <Route path="/examen" element={<Quiz />} />
         <Route path="/resultados" element={<Results />} />
+        <Route path="/banqueo" element={<Banqueo />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

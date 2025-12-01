@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, CreditCard, ChevronRight, ChevronLeft, Loader2, AlertCircle, Mail, Phone, GraduationCap, ClipboardList } from 'lucide-react';
+import { User, CreditCard, ChevronRight, ChevronLeft, Loader2, AlertCircle, Mail, Phone, GraduationCap, ClipboardList, ShieldAlert, Lock } from 'lucide-react';
 import { useExamStore } from '../hooks/useExam';
 import { validateDNI, validateName } from '../utils/calculations';
-import { registerUser } from '../services/api';
+import { registerUser, checkAccess } from '../services/api';
 import { AreaSelector } from './AreaSelector';
 import type { AreaType } from '../types';
 
@@ -76,6 +76,12 @@ export function StudentForm() {
   const [career, setCareer] = useState<string>('');
   const [errors, setErrors] = useState<{ dni?: string; name?: string; email?: string; phone?: string; processType?: string; area?: string; career?: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [accessDenied, setAccessDenied] = useState<{ show: boolean; reason: string; attemptCount: number; isFraud: boolean }>({
+    show: false,
+    reason: '',
+    attemptCount: 0,
+    isFraud: false
+  });
 
   // Cargar configuración al montar
   useEffect(() => {
@@ -161,6 +167,25 @@ export function StudentForm() {
     }
 
     setIsSubmitting(true);
+
+    // Verificar acceso antes de continuar
+    try {
+      const accessResult = await checkAccess(dni.trim(), email.trim().toLowerCase());
+
+      if (!accessResult.canAccess) {
+        setAccessDenied({
+          show: true,
+          reason: accessResult.reason,
+          attemptCount: accessResult.attemptCount,
+          isFraud: accessResult.isFraudAttempt || false
+        });
+        setIsSubmitting(false);
+        return;
+      }
+    } catch (err) {
+      console.warn('Error al verificar acceso:', err);
+      // Si falla la verificación, continuamos para no bloquear
+    }
 
     // Registrar usuario en Google Sheets (en segundo plano, no bloquea)
     try {
@@ -496,6 +521,67 @@ export function StudentForm() {
           </div>
         )}
       </div>
+
+      {/* Modal de acceso denegado */}
+      {accessDenied.show && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl animate-fade-in">
+            <div className="text-center">
+              {accessDenied.isFraud ? (
+                <ShieldAlert className="w-16 h-16 text-red-500 mx-auto mb-4" />
+              ) : (
+                <Lock className="w-16 h-16 text-amber-500 mx-auto mb-4" />
+              )}
+
+              <h2 className="text-xl font-bold text-slate-800 mb-2">
+                {accessDenied.isFraud ? 'Acceso Bloqueado' : 'Simulacro No Disponible'}
+              </h2>
+
+              <p className="text-slate-600 mb-4">
+                {accessDenied.reason}
+              </p>
+
+              {!accessDenied.isFraud && accessDenied.attemptCount > 0 && (
+                <div className="bg-amber-50 rounded-xl p-4 mb-6 text-left">
+                  <p className="text-amber-800 text-sm">
+                    <strong>Intentos realizados:</strong> {accessDenied.attemptCount}
+                  </p>
+                  <p className="text-amber-700 text-sm mt-2">
+                    Ya completaste tu simulacro gratuito. Para acceder a más intentos,
+                    inscríbete en el programa completo.
+                  </p>
+                </div>
+              )}
+
+              {accessDenied.isFraud && (
+                <div className="bg-red-50 rounded-xl p-4 mb-6 text-left">
+                  <p className="text-red-700 text-sm">
+                    Los datos ingresados ya están registrados con información diferente.
+                    Si crees que esto es un error, contacta al soporte.
+                  </p>
+                </div>
+              )}
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setAccessDenied({ show: false, reason: '', attemptCount: 0, isFraud: false })}
+                  className="btn-secondary flex-1"
+                >
+                  Volver
+                </button>
+                <a
+                  href="https://wa.me/51900266810?text=Hola,%20quiero%20inscribirme%20en%20SimulaUNA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary flex-1 text-center"
+                >
+                  Inscribirme
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

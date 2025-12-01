@@ -92,11 +92,35 @@ function doGet(e) {
         }
         result = getUserHistory(historyDni);
         break;
+      case 'checkAccess':
+        const accessDni = e.parameter.dni || '';
+        const accessEmail = e.parameter.email || '';
+        if (!accessDni) {
+          return createErrorResponse('Parámetro "dni" requerido');
+        }
+        result = checkUserAccess(accessDni, accessEmail);
+        break;
+      case 'checkBanqueoAccess':
+        const banqueoDni = e.parameter.dni || '';
+        const banqueoEmail = e.parameter.email || '';
+        if (!banqueoDni) {
+          return createErrorResponse('Parámetro "dni" requerido');
+        }
+        result = checkBanqueoAccess(banqueoDni, banqueoEmail);
+        break;
+      case 'getBanqueoQuestions':
+        const courseName = e.parameter.course || '';
+        const questionCount = parseInt(e.parameter.count) || 10;
+        if (!courseName) {
+          return createErrorResponse('Parámetro "course" requerido');
+        }
+        result = getBanqueoQuestions(courseName, questionCount);
+        break;
       case 'test':
         result = { status: 'ok', message: 'API funcionando correctamente', timestamp: new Date().toISOString() };
         break;
       default:
-        return createErrorResponse('Acción no válida. Use: config, questions, register, saveScore, getHistory, o test');
+        return createErrorResponse('Acción no válida. Use: config, questions, register, saveScore, getHistory, checkAccess, checkBanqueoAccess, getBanqueoQuestions, o test');
     }
 
     return createSuccessResponse(result);
@@ -271,7 +295,8 @@ function getRandomQuestionsFromSubject(ss, subjectName, count, maxScore, startin
     curso: headers.indexOf('CURSO'),
     tema: headers.indexOf('TEMA'),
     subtema: headers.indexOf('SUBTEMA'),
-    sourceFile: headers.indexOf('NOMBRE DEL ARCHIVO')
+    sourceFile: headers.indexOf('NOMBRE DEL ARCHIVO'),
+    justification: headers.indexOf('JUSTIFICACION')
   };
 
   // Obtener todas las preguntas válidas (saltar encabezado)
@@ -323,6 +348,7 @@ function getRandomQuestionsFromSubject(ss, subjectName, count, maxScore, startin
       subject: subjectName,
       points: pointsPerQuestion,
       sourceFile: row[colIndices.sourceFile] || null, // Nombre del archivo fuente
+      justification: row[colIndices.justification] || null, // Justificación de la respuesta
       metadata: {
         numero: row[colIndices.numero],
         tema: row[colIndices.tema],
@@ -545,4 +571,344 @@ function testDoGet() {
   // Test questions
   const questionsResult = doGet({ parameter: { action: 'questions', area: 'Ingenierías' } });
   console.log('Questions:', questionsResult.getContent());
+}
+
+// ============================================
+// VERIFICACIÓN DE ACCESO - DETECCIÓN DE FRAUDE
+// ============================================
+
+/**
+ * Verifica si un usuario puede dar el simulacro con detección de fraude
+ * - Primer registro: LIBRE (usuario nuevo, no existe en "usuarios")
+ * - Si ya existe en "usuarios": Solo puede continuar si está en "confirmado"
+ * - FRAUDE: Si el DNI o Email ya fueron usados con datos diferentes
+ *
+ * FLUJO:
+ * 1. Usuario nuevo se registra → va a "usuarios" → primer simulacro gratis
+ * 2. Si el DNI ya existe en "usuarios" → requiere estar en "confirmado"
+ * 3. Admin mueve usuarios de "usuarios" a "confirmado" para dar acceso
+ *
+ * @param {string} dni - DNI del usuario
+ * @param {string} email - Email del usuario
+ * @returns {object} { canAccess: boolean, reason: string, attemptCount: number, isFraudAttempt: boolean }
+ */
+function checkUserAccess(dni, email) {
+  if (!dni) {
+    return { canAccess: false, reason: 'DNI requerido', attemptCount: 0 };
+  }
+
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const emailLower = (email || '').toLowerCase().trim();
+
+  // 1. Verificar en tabla "usuarios" si el DNI o Email ya existe
+  const usersSheet = ss.getSheetByName('usuarios');
+  let existsInUsuarios = false;
+  let fraudAttempt = false;
+  let fraudReason = '';
+  let attemptCount = 0; // Cuenta registros en tabla usuarios
+
+  if (usersSheet) {
+    const usersData = usersSheet.getDataRange().getValues();
+    // Columnas: Fecha | DNI | Nombre | Email | Celular | Proceso | Área | Carrera
+
+    for (let i = 1; i < usersData.length; i++) {
+      const rowDni = String(usersData[i][1]).trim();
+      const rowEmail = String(usersData[i][3] || '').toLowerCase().trim();
+
+      // Verificar si el DNI ya existe
+      if (rowDni === dni || rowDni === String(parseInt(dni))) {
+        existsInUsuarios = true;
+        attemptCount++;
+
+        // Verificar si es con DIFERENTE email (posible fraude)
+        if (rowEmail !== '' && emailLower !== '' && rowEmail !== emailLower) {
+          fraudAttempt = true;
+          fraudReason = 'Este DNI ya está registrado con otro email';
+        }
+      }
+
+      // Verificar si el Email ya existe con DIFERENTE DNI (posible fraude)
+      if (rowEmail !== '' && emailLower !== '' && rowEmail === emailLower) {
+        if (rowDni !== dni && rowDni !== String(parseInt(dni))) {
+          fraudAttempt = true;
+          fraudReason = 'Este email ya está registrado con otro DNI';
+        }
+      }
+    }
+  }
+
+  // 2. Si detectamos fraude, denegar acceso
+  if (fraudAttempt) {
+    return {
+      canAccess: false,
+      reason: fraudReason,
+      attemptCount: attemptCount,
+      isFirstAttempt: false,
+      isConfirmed: false,
+      isFraudAttempt: true
+    };
+  }
+
+  // 3. Si NO existe en usuarios, es primer intento → LIBRE
+  if (!existsInUsuarios) {
+    return {
+      canAccess: true,
+      reason: 'Primer simulacro gratuito',
+      attemptCount: 0,
+      isFirstAttempt: true,
+      isFraudAttempt: false
+    };
+  }
+
+  // 4. Si YA existe en usuarios, verificar si está en hoja "confirmado"
+  // AMBOS: DNI Y Email deben coincidir
+  let confirmadoSheet = ss.getSheetByName('confirmado');
+
+  // Crear hoja si no existe (con encabezados)
+  if (!confirmadoSheet) {
+    confirmadoSheet = ss.insertSheet('confirmado');
+    confirmadoSheet.appendRow(['DNI', 'Nombre', 'Email']);
+    confirmadoSheet.getRange(1, 1, 1, 3).setFontWeight('bold');
+    confirmadoSheet.setColumnWidth(1, 100);
+    confirmadoSheet.setColumnWidth(2, 250);
+    confirmadoSheet.setColumnWidth(3, 220);
+  }
+
+  const confirmadoData = confirmadoSheet.getDataRange().getValues();
+  let isConfirmed = false;
+
+  for (let i = 1; i < confirmadoData.length; i++) {
+    const confDni = String(confirmadoData[i][0]).trim();
+    const confEmail = String(confirmadoData[i][2] || '').toLowerCase().trim();
+
+    // AMBOS deben coincidir para estar confirmado
+    const dniMatch = (confDni === dni || confDni === String(parseInt(dni)));
+    const emailMatch = (confEmail === emailLower) || (confEmail === '' && emailLower === '');
+
+    if (dniMatch && emailMatch) {
+      isConfirmed = true;
+      break;
+    }
+  }
+
+  if (isConfirmed) {
+    return {
+      canAccess: true,
+      reason: 'Usuario confirmado',
+      attemptCount: attemptCount,
+      isFirstAttempt: false,
+      isConfirmed: true,
+      isFraudAttempt: false
+    };
+  }
+
+  // Usuario ya registrado pero NO confirmado → denegar acceso
+  return {
+    canAccess: false,
+    reason: 'Ya realizaste tu simulacro gratuito. Contáctanos para obtener más intentos.',
+    attemptCount: attemptCount,
+    isFirstAttempt: false,
+    isConfirmed: false,
+    isFraudAttempt: false
+  };
+}
+
+// ============================================
+// BANQUEO HISTÓRICO - SOLO USUARIOS CONFIRMADOS
+// ============================================
+
+/**
+ * Verifica si un usuario puede acceder al Banqueo Histórico
+ * SOLO usuarios confirmados pueden acceder (NO hay intento gratis)
+ *
+ * @param {string} dni - DNI del usuario
+ * @param {string} email - Email del usuario
+ * @returns {object} { canAccess: boolean, reason: string }
+ */
+function checkBanqueoAccess(dni, email) {
+  if (!dni) {
+    return { canAccess: false, reason: 'DNI requerido' };
+  }
+
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const emailLower = (email || '').toLowerCase().trim();
+
+  // Verificar si está en hoja "confirmado"
+  let confirmadoSheet = ss.getSheetByName('confirmado');
+
+  if (!confirmadoSheet) {
+    return {
+      canAccess: false,
+      reason: 'El Banqueo Histórico es exclusivo para usuarios inscritos',
+      isConfirmed: false
+    };
+  }
+
+  const confirmadoData = confirmadoSheet.getDataRange().getValues();
+  let isConfirmed = false;
+
+  for (let i = 1; i < confirmadoData.length; i++) {
+    const confDni = String(confirmadoData[i][0]).trim();
+    const confEmail = String(confirmadoData[i][2] || '').toLowerCase().trim();
+
+    // AMBOS deben coincidir
+    const dniMatch = (confDni === dni || confDni === String(parseInt(dni)));
+    const emailMatch = (confEmail === emailLower) || (confEmail === '' && emailLower === '');
+
+    if (dniMatch && emailMatch) {
+      isConfirmed = true;
+      break;
+    }
+  }
+
+  if (isConfirmed) {
+    return {
+      canAccess: true,
+      reason: 'Acceso autorizado al Banqueo Histórico',
+      isConfirmed: true
+    };
+  }
+
+  return {
+    canAccess: false,
+    reason: 'El Banqueo Histórico es exclusivo para usuarios inscritos',
+    isConfirmed: false
+  };
+}
+
+/**
+ * Obtiene preguntas aleatorias de un curso específico para el Banqueo
+ *
+ * @param {string} courseName - Nombre del curso (ej: 'Aritmética', 'Física')
+ * @param {number} count - Cantidad de preguntas (10, 15, o 20)
+ * @returns {object} { course, totalQuestions, questions }
+ */
+function getBanqueoQuestions(courseName, count) {
+  // Validar cantidad
+  const validCounts = [10, 15, 20];
+  if (!validCounts.includes(count)) {
+    count = 10; // Default
+  }
+
+  // Validar que el curso existe
+  if (!SUBJECT_SHEETS[courseName]) {
+    return { error: 'Curso no válido', questions: [], availableCourses: Object.keys(SUBJECT_SHEETS) };
+  }
+
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheetName = SUBJECT_SHEETS[courseName];
+  const sheet = ss.getSheetByName(sheetName);
+
+  if (!sheet) {
+    return { error: 'Banco de preguntas no encontrado', questions: [] };
+  }
+
+  const data = sheet.getDataRange().getValues();
+  if (data.length <= 1) {
+    return { error: 'No hay preguntas disponibles', questions: [] };
+  }
+
+  const headers = data[0];
+
+  // Encontrar índices de columnas
+  const colIndices = {
+    questionText: headers.indexOf('Question Text'),
+    questionType: headers.indexOf('Question Type'),
+    option1: headers.indexOf('Option 1'),
+    option2: headers.indexOf('Option 2'),
+    option3: headers.indexOf('Option 3'),
+    option4: headers.indexOf('Option 4'),
+    option5: headers.indexOf('Option 5'),
+    correctAnswer: headers.indexOf('Correct Answer'),
+    imageLink: headers.indexOf('Image Link'),
+    numero: headers.indexOf('NUMERO'),
+    tema: headers.indexOf('TEMA'),
+    subtema: headers.indexOf('SUBTEMA'),
+    sourceFile: headers.indexOf('NOMBRE DEL ARCHIVO'),
+    justification: headers.indexOf('JUSTIFICACION')
+  };
+
+  // Obtener todas las preguntas válidas
+  const allQuestions = [];
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    const questionText = row[colIndices.questionText];
+
+    if (!questionText || questionText === '') continue;
+
+    allQuestions.push({
+      rowIndex: i,
+      data: row
+    });
+  }
+
+  // Si no hay suficientes preguntas, ajustar count
+  if (count > allQuestions.length) {
+    count = allQuestions.length;
+  }
+
+  // Seleccionar preguntas aleatorias
+  const selectedQuestions = selectRandomItems(allQuestions, count);
+
+  // Formatear preguntas
+  const questions = selectedQuestions.map((q, index) => {
+    const row = q.data;
+
+    const options = [
+      row[colIndices.option1],
+      row[colIndices.option2],
+      row[colIndices.option3],
+      row[colIndices.option4],
+      row[colIndices.option5]
+    ].filter(opt => opt && opt !== '');
+
+    const correctAnswerIndex = (parseInt(row[colIndices.correctAnswer]) || 1) - 1;
+
+    return {
+      id: `banqueo-${courseName}-${q.rowIndex}`,
+      number: index + 1,
+      questionText: row[colIndices.questionText],
+      questionType: row[colIndices.questionType] || 'Multiple Choice',
+      options: options,
+      correctAnswer: correctAnswerIndex,
+      imageLink: row[colIndices.imageLink] || null,
+      subject: courseName,
+      sourceFile: row[colIndices.sourceFile] || null,
+      justification: row[colIndices.justification] || null,
+      metadata: {
+        numero: row[colIndices.numero],
+        tema: row[colIndices.tema],
+        subtema: row[colIndices.subtema]
+      }
+    };
+  });
+
+  return {
+    course: courseName,
+    totalQuestions: questions.length,
+    totalAvailable: allQuestions.length,
+    questions: questions
+  };
+}
+
+/**
+ * Obtiene la lista de cursos disponibles para el Banqueo
+ */
+function getAvailableCourses() {
+  return Object.keys(SUBJECT_SHEETS);
+}
+
+// ============================================
+// FUNCIONES DE PRUEBA ADICIONALES
+// ============================================
+
+function testCheckAccess() {
+  const result = checkUserAccess('12345678', 'test@email.com');
+  console.log(JSON.stringify(result, null, 2));
+}
+
+function testBanqueo() {
+  const result = getBanqueoQuestions('Aritmética', 10);
+  console.log(`Total preguntas: ${result.totalQuestions}`);
+  console.log(JSON.stringify(result.questions.slice(0, 2), null, 2));
 }

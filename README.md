@@ -497,6 +497,95 @@ interface HistoryEntry {
 
 ---
 
+## Sistema de Control de Acceso (NUEVO)
+
+### Lógica de Acceso
+
+| Intento | Condición | Resultado |
+|---------|-----------|-----------|
+| Primero | Ninguna | GRATIS para todos |
+| Segundo+ | En hoja `confirmado` | Permitido |
+| Segundo+ | NO en hoja `confirmado` | Bloqueado |
+| Cualquier | Fraude detectado | Bloqueado |
+
+### Detección de Fraude
+
+El sistema detecta intentos de fraude cuando:
+- Un **DNI** ya está registrado con un **email diferente**
+- Un **email** ya está registrado con un **DNI diferente**
+
+Mensaje genérico: "El usuario ya existe" (no revela qué dato está duplicado)
+
+### Hoja `confirmado` (crear manualmente)
+
+Agregar usuarios que tienen acceso ilimitado:
+
+| DNI | Nombre | Email |
+|-----|--------|-------|
+| 12345678 | Juan Pérez | juan@email.com |
+
+> **Importante:** AMBOS (DNI + Email) deben coincidir para que el usuario esté confirmado.
+
+### Endpoints de Acceso
+
+| Endpoint | Descripción |
+|----------|-------------|
+| `?action=checkAccess&dni=X&email=Y` | Verifica si puede dar el simulacro |
+| `?action=checkBanqueoAccess&dni=X&email=Y` | Verifica si puede acceder al banqueo |
+
+---
+
+## Banqueo Histórico (NUEVO)
+
+### Descripción
+
+Modo de práctica que permite a los usuarios practicar con preguntas de un curso específico:
+- **Selección de curso**: 18 cursos disponibles
+- **Cantidad de preguntas**: 10, 15 o 20
+- **Solo usuarios confirmados**: NO hay intento gratis en banqueo
+- **Justificación**: Muestra explicación de cada respuesta
+
+### Ruta
+
+| Ruta | Componente | Descripción |
+|------|------------|-------------|
+| `/banqueo` | Banqueo | Práctica por curso con login |
+
+### Flujo del Banqueo
+
+```
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│   Login      │───►│  Selección   │───►│   Quiz       │───►│  Resultados  │
+│  DNI + Email │    │  Curso +     │    │  10/15/20    │    │  + Justif.   │
+│              │    │  Cantidad    │    │  preguntas   │    │              │
+└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
+```
+
+### Endpoint
+
+| Endpoint | Parámetros | Descripción |
+|----------|------------|-------------|
+| `?action=getBanqueoQuestions&course=X&count=Y` | course, count (10/15/20) | Obtiene preguntas aleatorias del curso |
+
+---
+
+## Justificación de Respuestas (NUEVO)
+
+### Columna JUSTIFICACION
+
+Agregar a cada hoja de banco de preguntas:
+
+| ... | NOMBRE DEL ARCHIVO | JUSTIFICACION |
+|-----|-------------------|---------------|
+| ... | Examen_2024.pdf | La respuesta es C porque según el teorema de Pitágoras... |
+
+### Visualización
+
+- En **Resultados del simulacro**: Botón "Ver justificación" debajo de cada pregunta
+- En **Banqueo Histórico**: Se muestra automáticamente en la revisión
+
+---
+
 ## Despliegue
 
 ### GitHub Pages (Recomendado)

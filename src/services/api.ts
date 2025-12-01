@@ -5,7 +5,7 @@ import type { ApiResponse, Config, Question, AreaType } from '../types';
 // ============================================
 
 // URL del Google Apps Script desplegado como aplicación web
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://script.google.com/macros/s/AKfycby3E2uICwC37GzjpmACflZ-NUtzNNd-OpBMKtp4BrDsx0Khbb7-DHoxPwGff9JAA5XvpA/exec';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://script.google.com/macros/s/AKfycbxsEsavAu6Hb63p6rxIkfPcT5EDnoiG1JUXsW5LzDTfRNFEWWYi5XKVMbDLqDsRVR0e_A/exec';
 
 // Timeout para las peticiones (30 segundos)
 const REQUEST_TIMEOUT = 30000;
@@ -255,6 +255,189 @@ export async function getUserHistory(dni: string): Promise<UserHistory | null> {
     return null;
   }
 }
+
+// ============================================
+// CONTROL DE ACCESO Y DETECCIÓN DE FRAUDE
+// ============================================
+
+export interface AccessCheckResult {
+  canAccess: boolean;
+  reason: string;
+  attemptCount: number;
+  isFirstAttempt?: boolean;
+  isConfirmed?: boolean;
+  isFraudAttempt?: boolean;
+}
+
+/**
+ * Verifica si un usuario puede dar el simulacro
+ * - Primer intento: GRATIS
+ * - Segundo+: Solo si está en lista "confirmado"
+ * - Detecta fraude si DNI/Email ya existen con datos diferentes
+ */
+export async function checkAccess(dni: string, email: string): Promise<AccessCheckResult> {
+  try {
+    const params = new URLSearchParams({
+      action: 'checkAccess',
+      dni: dni,
+      email: email
+    });
+
+    const url = `${API_BASE_URL}?${params.toString()}`;
+    const response = await fetchWithTimeout(url, 15000);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Error al verificar acceso');
+    }
+
+    return result.data as AccessCheckResult;
+  } catch (error) {
+    console.error('Error al verificar acceso:', error);
+    // En caso de error, permitir acceso para no bloquear al usuario
+    return {
+      canAccess: true,
+      reason: 'Error de verificación - acceso permitido',
+      attemptCount: 0
+    };
+  }
+}
+
+// ============================================
+// BANQUEO HISTÓRICO
+// ============================================
+
+export interface BanqueoAccessResult {
+  canAccess: boolean;
+  reason: string;
+  isConfirmed?: boolean;
+}
+
+export interface BanqueoQuestion {
+  id: string;
+  number: number;
+  questionText: string;
+  questionType: string;
+  options: string[];
+  correctAnswer: number;
+  imageLink: string | null;
+  subject: string;
+  sourceFile: string | null;
+  justification: string | null;
+  metadata?: {
+    numero?: string | number;
+    tema?: string;
+    subtema?: string;
+  };
+}
+
+export interface BanqueoQuestionsResult {
+  course: string;
+  totalQuestions: number;
+  totalAvailable: number;
+  questions: BanqueoQuestion[];
+  error?: string;
+  availableCourses?: string[];
+}
+
+/**
+ * Verifica si un usuario puede acceder al Banqueo Histórico
+ * Solo usuarios confirmados (inscritos) pueden acceder
+ */
+export async function checkBanqueoAccess(dni: string, email: string): Promise<BanqueoAccessResult> {
+  try {
+    const params = new URLSearchParams({
+      action: 'checkBanqueoAccess',
+      dni: dni,
+      email: email
+    });
+
+    const url = `${API_BASE_URL}?${params.toString()}`;
+    const response = await fetchWithTimeout(url, 15000);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Error al verificar acceso al banqueo');
+    }
+
+    return result.data as BanqueoAccessResult;
+  } catch (error) {
+    console.error('Error al verificar acceso al banqueo:', error);
+    return {
+      canAccess: false,
+      reason: 'Error de conexión'
+    };
+  }
+}
+
+/**
+ * Obtiene preguntas aleatorias de un curso específico para el Banqueo
+ * @param course - Nombre del curso (ej: 'Aritmética', 'Física')
+ * @param count - Cantidad de preguntas (10, 15, o 20)
+ */
+export async function getBanqueoQuestions(course: string, count: 10 | 15 | 20 = 10): Promise<BanqueoQuestionsResult> {
+  try {
+    const params = new URLSearchParams({
+      action: 'getBanqueoQuestions',
+      course: course,
+      count: count.toString()
+    });
+
+    const url = `${API_BASE_URL}?${params.toString()}`;
+    const response = await fetchWithTimeout(url, 30000);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Error al obtener preguntas de banqueo');
+    }
+
+    return result.data as BanqueoQuestionsResult;
+  } catch (error) {
+    console.error('Error al obtener preguntas de banqueo:', error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : 'No se pudo cargar el banqueo. Por favor, intenta de nuevo.'
+    );
+  }
+}
+
+// Lista de cursos disponibles para el Banqueo
+export const AVAILABLE_COURSES = [
+  'Aritmética',
+  'Álgebra',
+  'Geometría',
+  'Trigonometría',
+  'Física',
+  'Química',
+  'Biología y Anatomía',
+  'Psicología y Filosofía',
+  'Geografía',
+  'Historia',
+  'Educación Cívica',
+  'Economía',
+  'Comunicación',
+  'Literatura',
+  'Razonamiento Matemático',
+  'Razonamiento Verbal',
+  'Inglés',
+  'Quechua y aimara'
+];
 
 // ============================================
 // DATOS DE PRUEBA (MOCK) PARA DESARROLLO

@@ -61,6 +61,7 @@ export interface Question {
   subject: string;
   points: number;
   sourceFile?: string | null; // Nombre del archivo de donde se extrajo la pregunta
+  justification?: string | null; // Justificación/explicación de la respuesta correcta
   metadata?: QuestionMetadata;
 }
 
