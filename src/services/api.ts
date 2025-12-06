@@ -1,5 +1,8 @@
 import type { ApiResponse, Config, Question, AreaType } from '../types';
 
+// Re-exportar tipos que son usados por otros componentes
+export type { AreaType } from '../types';
+
 // ============================================
 // CONFIGURACIÓN DE LA API
 // ============================================

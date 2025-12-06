@@ -72,7 +72,12 @@ export const useExamStore = create<ExamStore>((set, get) => ({
         // Si el proceso es CEPREUNA, usar las hojas CEPRE_
         if (student?.processType === 'CEPREUNA') {
           const result = await getCepreSimulacro(area);
-          questions = result.questions as Question[];
+          // Mapear CepreQuestion a Question agregando campos faltantes
+          questions = result.questions.map((q, idx) => ({
+            ...q,
+            timeSeconds: 180, // 3 minutos por pregunta por defecto
+            points: 50, // 50 puntos por pregunta (3000/60)
+          })) as Question[];
         } else {
           // Proceso GENERAL o EXTRAORDINARIO usa bancos históricos
           questions = await getQuestions(area);
