@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import {
   GraduationCap, BookOpen, Clock, Award, ChevronRight, CheckCircle,
-  Users, FileText, BarChart3, Zap, Target, Brain, Cpu, Heart, Scale
+  Users, FileText, BarChart3, Zap, Target, Brain, Cpu, Heart, Scale, Calendar
 } from 'lucide-react';
 
 export function Landing() {
@@ -116,7 +116,7 @@ export function Landing() {
               Obtén tu puntaje calculado según el <strong>prospecto vigente</strong>.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <button
                 onClick={() => navigate('/registro')}
                 className="btn-primary text-lg px-8 py-4 bg-white text-primary-700 hover:bg-primary-50 shadow-xl"
@@ -129,7 +129,25 @@ export function Landing() {
                 className="btn text-lg px-8 py-4 bg-primary-500/20 text-white border-2 border-white/30 hover:bg-white/20 backdrop-blur-sm"
               >
                 <BookOpen className="w-5 h-5" />
-                Banqueo por Curso
+                Banqueo Histórico
+              </button>
+            </div>
+
+            {/* CEPREUNA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
+              <button
+                onClick={() => navigate('/simulacro-cepreuna')}
+                className="btn text-base px-6 py-3 bg-emerald-500/30 text-white border-2 border-emerald-300/50 hover:bg-emerald-500/50 backdrop-blur-sm"
+              >
+                <Target className="w-5 h-5" />
+                Simulacro CEPREUNA (60 Preguntas)
+              </button>
+              <button
+                onClick={() => navigate('/banqueo-cepreuna')}
+                className="btn text-base px-6 py-3 bg-teal-500/30 text-white border-2 border-teal-300/50 hover:bg-teal-500/50 backdrop-blur-sm"
+              >
+                <Calendar className="w-5 h-5" />
+                Banqueo CEPREUNA (Por Semana)
               </button>
             </div>
 

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   User, CreditCard, BookOpen, Clock, AlertTriangle,
-  ChevronLeft, PlayCircle, Loader2, AlertCircle
+  ChevronLeft, PlayCircle, Loader2, AlertCircle, ClipboardList
 } from 'lucide-react';
 import { useExamStore } from '../hooks/useExam';
 
@@ -100,6 +100,16 @@ export function ExamConfirmation() {
                 <span className="text-slate-600">Área:</span>
                 <span className="font-semibold text-slate-800">{student.area}</span>
               </div>
+              {student.processType && (
+                <div className="flex items-center gap-3">
+                  <ClipboardList className="w-5 h-5 text-slate-400" />
+                  <span className="text-slate-600">Proceso:</span>
+                  <span className={`font-semibold ${student.processType === 'CEPREUNA' ? 'text-teal-600' : 'text-slate-800'}`}>
+                    {student.processType}
+                    {student.processType === 'CEPREUNA' && ' (Cuadernillos CEPRE)'}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 

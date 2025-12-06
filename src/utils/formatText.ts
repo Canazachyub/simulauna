@@ -4,8 +4,47 @@
  */
 
 /**
+ * Formatea automáticamente el texto detectando patrones de numeración
+ * para agregar saltos de línea y mejorar la legibilidad
+ *
+ * Patrones detectados:
+ * - Números romanos con punto: I., II., III., IV., V., VI., VII., VIII., IX., X.
+ * - Números romanos con paréntesis: I), II), III), IV)
+ * - Letras minúsculas en formato de lista: a., b., c., d., e.
+ *
+ * REGLAS PARA EVITAR FALSOS POSITIVOS:
+ * - "empírica. Su" → NO es opción (hay espacio entre "a" y el punto, es fin de palabra)
+ * - "verda d. La" → NO es opción (hay espacio ANTES de "d", es error de tipeo)
+ * - "cosas.a. Racionalismo" → SÍ es opción (letra PEGADA al punto anterior)
+ * - "corresponda: a. Opción" → SÍ es opción (después de dos puntos)
+ */
+function formatQuestionTextAuto(text: string): string {
+  if (!text) return '';
+
+  let formatted = text;
+
+  // 1. Numeración romana con PUNTO: ".I. " o ":I. "
+  formatted = formatted.replace(/([.:])(\s*)([IVX]{1,4})\.\s+/g, '$1<br><br><strong>$3.</strong> ');
+
+  // 2. Numeración romana con PARÉNTESIS: ".I) " o ":II) "
+  formatted = formatted.replace(/([.:])(\s*)([IVX]{1,4})\)\s+/g, '$1<br><br><strong>$3)</strong> ');
+
+  // 3. Letras después de DOS PUNTOS con espacio: ": a. Opción"
+  formatted = formatted.replace(/:(\s+)([a-e])\.\s+/g, ':<br><br><strong>$2.</strong> ');
+
+  // 4. Letras PEGADAS directamente al punto (sin espacio): ".a. Racionalismo"
+  // Este es el patrón clave que detecta listas como "cosas.a. Racionalismo.b. Empirismo"
+  // NO detecta "empírica. Su" porque tiene espacio después del punto
+  // NO detecta "verda d. La" porque la "d" no está pegada al punto
+  formatted = formatted.replace(/\.([a-e])\.(\s+)/g, '.<br><br><strong>$1.</strong>$2');
+
+  return formatted;
+}
+
+/**
  * Renderiza texto con formato HTML de Google Sheets de forma segura
  * Permite solo las etiquetas HTML soportadas por Google Sheets
+ * Incluye formateo automático de numeración (I., II., a., b., etc.)
  *
  * @param text - El texto a formatear (puede contener HTML)
  * @returns El texto con HTML sanitizado listo para renderizar
@@ -19,10 +58,11 @@ export function renderFormattedText(text: string | null | undefined): string {
   // Convertir el texto a string si no lo es
   let result = String(text);
 
-  // Reemplazar saltos de línea con <br> si no hay HTML
-  if (!result.includes('<')) {
-    result = result.replace(/\n/g, '<br>');
-  }
+  // Aplicar formateo automático de numeración ANTES del procesamiento
+  result = formatQuestionTextAuto(result);
+
+  // Reemplazar saltos de línea con <br> si no hay HTML existente
+  result = result.replace(/\n/g, '<br>');
 
   // Sanitizar: eliminar etiquetas no permitidas pero mantener el contenido
   // Expresión regular para encontrar todas las etiquetas HTML
@@ -96,4 +136,91 @@ export function stripHtml(html: string | null | undefined): string {
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
     .replace(/&#039;/g, "'");
+}
+
+/**
+ * Extrae URLs de imágenes de un texto
+ * Detecta URLs que terminan en extensiones de imagen o URLs de Google Drive
+ *
+ * @param text - El texto a analizar
+ * @returns Array de URLs de imágenes encontradas
+ */
+export function extractImageUrls(text: string | null | undefined): string[] {
+  if (!text) return [];
+
+  const imageUrls: string[] = [];
+  const textStr = String(text);
+
+  // Patrones para detectar URLs de imágenes
+  const patterns = [
+    // URLs que terminan en extensiones de imagen
+    /https?:\/\/[^\s<>"']+\.(?:png|jpg|jpeg|gif|webp|bmp|svg)(?:\?[^\s<>"']*)?/gi,
+    // URLs de Google Drive (formato de vista/descarga)
+    /https?:\/\/drive\.google\.com\/[^\s<>"']+/gi,
+    // URLs de Google Photos
+    /https?:\/\/lh[0-9]*\.googleusercontent\.com\/[^\s<>"']+/gi,
+    // URLs de Imgur
+    /https?:\/\/(?:i\.)?imgur\.com\/[^\s<>"']+/gi,
+    // URLs genéricas con parámetros de imagen
+    /https?:\/\/[^\s<>"']+(?:image|img|photo|picture)[^\s<>"']*/gi
+  ];
+
+  for (const pattern of patterns) {
+    const matches = textStr.match(pattern);
+    if (matches) {
+      for (const match of matches) {
+        // Evitar duplicados
+        if (!imageUrls.includes(match)) {
+          imageUrls.push(match);
+        }
+      }
+    }
+  }
+
+  return imageUrls;
+}
+
+/**
+ * Remueve URLs de imágenes del texto
+ * Útil para mostrar el texto sin las URLs crudas cuando se muestran las imágenes por separado
+ *
+ * @param text - El texto original
+ * @returns El texto sin las URLs de imágenes
+ */
+export function removeImageUrls(text: string | null | undefined): string {
+  if (!text) return '';
+
+  let result = String(text);
+  const imageUrls = extractImageUrls(text);
+
+  for (const url of imageUrls) {
+    // Escapar caracteres especiales de regex
+    const escapedUrl = url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    result = result.replace(new RegExp(escapedUrl, 'g'), '');
+  }
+
+  // Limpiar espacios múltiples y líneas vacías
+  result = result.replace(/\n\s*\n/g, '\n').trim();
+
+  return result;
+}
+
+/**
+ * Procesa una justificación para extraer texto e imágenes
+ *
+ * @param justification - El texto de la justificación
+ * @returns Objeto con texto limpio y array de URLs de imágenes
+ */
+export function parseJustification(justification: string | null | undefined): {
+  text: string;
+  images: string[];
+} {
+  if (!justification) {
+    return { text: '', images: [] };
+  }
+
+  const images = extractImageUrls(justification);
+  const text = removeImageUrls(justification);
+
+  return { text, images };
 }

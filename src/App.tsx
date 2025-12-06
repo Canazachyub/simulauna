@@ -5,6 +5,8 @@ import { ExamConfirmation } from './components/ExamConfirmation';
 import { Quiz } from './components/Quiz';
 import { Results } from './components/Results';
 import { Banqueo } from './components/Banqueo';
+import { BanqueoCepreuna } from './components/BanqueoCepreuna';
+import { SimulacroCepreuna } from './components/SimulacroCepreuna';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route path="/examen" element={<Quiz />} />
         <Route path="/resultados" element={<Results />} />
         <Route path="/banqueo" element={<Banqueo />} />
+        <Route path="/banqueo-cepreuna" element={<BanqueoCepreuna />} />
+        <Route path="/simulacro-cepreuna" element={<SimulacroCepreuna />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

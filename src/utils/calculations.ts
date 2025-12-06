@@ -190,3 +190,51 @@ export function validateDNI(dni: string): boolean {
 export function validateName(name: string): boolean {
   return /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{3,100}$/.test(name.trim());
 }
+
+/**
+ * Formatea el texto de una pregunta para mejorar la legibilidad
+ * Detecta patrones de numeración y agrega saltos de línea
+ *
+ * Patrones detectados:
+ * - Números romanos: I., II., III., IV., V., VI., VII., VIII., IX., X., XI., XII.
+ * - Letras minúsculas: a., b., c., d., e., f.
+ * - Números arábigos en contexto de listas: 1., 2., 3. (cuando están en medio del texto)
+ * - Patrones con paréntesis: a), b), 1), 2)
+ */
+export function formatQuestionText(text: string): string {
+  if (!text) return '';
+
+  let formatted = text;
+
+  // Patrón para números romanos (I. hasta XII.)
+  // Solo cuando están precedidos por texto (no al inicio absoluto) y seguidos de espacio y letra mayúscula
+  const romanNumerals = /(?<=[.?!\s])([IVX]{1,4})\.\s+(?=[A-ZÁÉÍÓÚÑ])/g;
+  formatted = formatted.replace(romanNumerals, '\n\n$1. ');
+
+  // Patrón alternativo para romanos más específicos al inicio de oraciones
+  // Detecta: .I. , .II. , .III. , .IV. , etc. después de un punto
+  formatted = formatted.replace(/\.([IVX]{1,4})\.\s+/g, '.\n\n$1. ');
+
+  // Patrón para letras minúsculas como opciones (a. b. c. d.)
+  // Solo cuando están precedidas de un punto o texto y seguidas de espacio y letra mayúscula
+  formatted = formatted.replace(/\.([a-e])\.\s+(?=[A-ZÁÉÍÓÚÑ])/g, '.\n\n$1. ');
+
+  // Patrón para detectar listas al final de preguntas tipo "tiempo.a. Atención"
+  // Cuando hay letras de opción pegadas al texto
+  formatted = formatted.replace(/([a-záéíóúñ])\.([a-e])\.\s+/g, '$1.\n\n$2. ');
+
+  // Patrón para números arábigos como lista (1. 2. 3.)
+  // Solo en medio del texto, no al inicio
+  formatted = formatted.replace(/(?<=[.?!\s])(\d{1,2})\.\s+(?=[A-ZÁÉÍÓÚÑ])/g, '\n\n$1. ');
+
+  // Patrón para opciones con paréntesis: a) b) c) 1) 2)
+  formatted = formatted.replace(/(?<=[.?!\s])([a-e1-5])\)\s+/g, '\n\n$1) ');
+
+  // Limpiar múltiples saltos de línea consecutivos
+  formatted = formatted.replace(/\n{3,}/g, '\n\n');
+
+  // Eliminar salto de línea al inicio si existe
+  formatted = formatted.replace(/^\n+/, '');
+
+  return formatted;
+}

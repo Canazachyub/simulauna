@@ -4,33 +4,43 @@ import {
   BookOpen, CreditCard, Mail, ChevronLeft, ChevronRight,
   Loader2, AlertCircle, Lock, CheckCircle, XCircle,
   RotateCcw, Home, Lightbulb, Clock, FileText, Tag, Send,
-  Sparkles, Trophy, Target
+  Sparkles, Trophy, Target, Calendar, Layers, BookMarked
 } from 'lucide-react';
 import {
   checkBanqueoAccess,
-  getBanqueoQuestions,
-  AVAILABLE_COURSES,
-  type BanqueoQuestion
+  getCepreQuestions,
+  CEPRE_COURSES_BY_AREA,
+  CEPRE_SEMANAS,
+  type CepreQuestion,
+  type CepreAreaCode
 } from '../services/api';
 import { validateDNI } from '../utils/calculations';
 import { renderFormattedText, parseJustification } from '../utils/formatText';
 import clsx from 'clsx';
 
-type BanqueoStep = 'login' | 'select' | 'quiz' | 'results';
+type BanqueoStep = 'login' | 'mode' | 'select' | 'quiz' | 'results';
+type BanqueoMode = 'cuadernillo' | 'general';
 type QuestionCount = 10 | 15 | 20;
 
 interface BanqueoAnswer {
   questionId: string;
   selectedOption: number | null;
   isCorrect: boolean;
-  answeredAt: number; // timestamp
+  answeredAt: number;
 }
 
-export function Banqueo() {
+const AREA_LABELS: Record<'ING' | 'BIO' | 'SOC', string> = {
+  'ING': 'Ingenierías',
+  'BIO': 'Biomédicas',
+  'SOC': 'Sociales'
+};
+
+export function BanqueoCepreuna() {
   const navigate = useNavigate();
 
   // Step state
   const [step, setStep] = useState<BanqueoStep>('login');
+  const [mode, setMode] = useState<BanqueoMode>('cuadernillo');
 
   // Login form
   const [dni, setDni] = useState('');
@@ -39,11 +49,13 @@ export function Banqueo() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Course selection
+  const [selectedArea, setSelectedArea] = useState<'ING' | 'BIO' | 'SOC'>('ING');
+  const [selectedSemana, setSelectedSemana] = useState<string>('S1');
   const [selectedCourse, setSelectedCourse] = useState('');
   const [questionCount, setQuestionCount] = useState<QuestionCount>(10);
 
   // Quiz state
-  const [questions, setQuestions] = useState<BanqueoQuestion[]>([]);
+  const [questions, setQuestions] = useState<CepreQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Map<string, BanqueoAnswer>>(new Map());
   const [results, setResults] = useState<BanqueoAnswer[]>([]);
@@ -78,6 +90,11 @@ export function Banqueo() {
     }
   }, [allAnswered, step, showAllAnsweredModal]);
 
+  // Update available courses when area changes
+  useEffect(() => {
+    setSelectedCourse('');
+  }, [selectedArea]);
+
   // Validations
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -90,6 +107,11 @@ export function Banqueo() {
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   }, []);
+
+  // Get available courses for selected area
+  const getAvailableCourses = () => {
+    return CEPRE_COURSES_BY_AREA[selectedArea] || [];
+  };
 
   // Login handler
   const handleLogin = async () => {
@@ -116,7 +138,7 @@ export function Banqueo() {
         return;
       }
 
-      setStep('select');
+      setStep('mode');
     } catch (error) {
       setLoginError('Error de conexión. Intenta de nuevo.');
     }
@@ -129,12 +151,26 @@ export function Banqueo() {
     if (!selectedCourse) return;
 
     setIsLoading(true);
+    setLoginError('');
 
     try {
-      const result = await getBanqueoQuestions(selectedCourse, questionCount);
+      let result;
+      if (mode === 'cuadernillo') {
+        // Modo cuadernillo: area + semana + course (sin count - trae TODAS)
+        result = await getCepreQuestions(selectedCourse, selectedArea, selectedSemana);
+      } else {
+        // Modo general: course + ALL areas + count
+        result = await getCepreQuestions(selectedCourse, 'ALL', undefined, questionCount);
+      }
 
       if (result.error) {
         setLoginError(result.error);
+        setIsLoading(false);
+        return;
+      }
+
+      if (result.questions.length === 0) {
+        setLoginError('No hay preguntas disponibles con los filtros seleccionados.');
         setIsLoading(false);
         return;
       }
@@ -154,7 +190,7 @@ export function Banqueo() {
     setIsLoading(false);
   };
 
-  // Answer handler - with immediate feedback
+  // Answer handler
   const handleAnswer = (optionIndex: number) => {
     const question = questions[currentIndex];
     const isCorrect = optionIndex === question.correctAnswer;
@@ -196,7 +232,7 @@ export function Banqueo() {
     setStartTime(0);
     setElapsedTime(0);
     setShowAllAnsweredModal(false);
-    setStep('select');
+    setStep('mode');
   };
 
   // Current question data
@@ -205,7 +241,7 @@ export function Banqueo() {
   const answeredCount = answers.size;
   const correctCount = results.filter(r => r.isCorrect).length;
 
-  // Get option class based on state
+  // Get option class
   const getOptionClass = (optionIndex: number, isAnswered: boolean, selectedOption: number | null, correctAnswer: number) => {
     if (!isAnswered) {
       return 'border-slate-200 hover:border-primary-400 hover:bg-primary-50 cursor-pointer';
@@ -230,22 +266,22 @@ export function Banqueo() {
         <div className="max-w-md mx-auto">
           <div className="card p-8 animate-fade-in shadow-xl">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl mb-4 shadow-lg">
-                <BookOpen className="w-10 h-10 text-white" />
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-teal-500 to-teal-700 rounded-2xl mb-4 shadow-lg">
+                <BookMarked className="w-10 h-10 text-white" />
               </div>
               <h1 className="text-2xl font-bold text-slate-800 mb-2">
-                Banqueo Histórico
+                Banqueo CEPREUNA
               </h1>
               <p className="text-slate-600">
-                Practica con preguntas de exámenes anteriores por curso
+                Practica con preguntas de los cuadernillos CEPREUNA por semana
               </p>
             </div>
 
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 mb-6 border border-amber-200">
+            <div className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-4 mb-6 border border-teal-200">
               <div className="flex items-start gap-3">
-                <Lock className="w-5 h-5 text-amber-600 mt-0.5" />
-                <p className="text-amber-800 text-sm">
-                  El Banqueo Histórico es exclusivo para usuarios inscritos.
+                <Lock className="w-5 h-5 text-teal-600 mt-0.5" />
+                <p className="text-teal-800 text-sm">
+                  El Banqueo CEPREUNA es exclusivo para usuarios inscritos.
                   Ingresa tus datos para verificar tu acceso.
                 </p>
               </div>
@@ -315,60 +351,227 @@ export function Banqueo() {
     );
   }
 
-  // Render course selection step
+  // Render mode selection step
+  if (step === 'mode') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 py-12 px-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="card p-8 animate-fade-in shadow-xl">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-700 rounded-2xl mb-4 shadow-lg">
+                <Layers className="w-8 h-8 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-slate-800 mb-2">
+                Elige el modo de práctica
+              </h1>
+              <p className="text-slate-600">
+                ¿Cómo deseas practicar con las preguntas CEPREUNA?
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4 mb-8">
+              {/* Modo Cuadernillo */}
+              <button
+                onClick={() => { setMode('cuadernillo'); setStep('select'); }}
+                className={clsx(
+                  'p-6 rounded-xl border-2 text-left transition-all hover:shadow-lg group',
+                  'border-teal-200 hover:border-teal-500 hover:bg-teal-50'
+                )}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center group-hover:bg-teal-500 group-hover:text-white transition-colors">
+                    <Calendar className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-800">Cuadernillo</h3>
+                </div>
+                <p className="text-sm text-slate-600 mb-3">
+                  Practica con TODAS las preguntas de un cuadernillo específico (semana + área + curso).
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded">Área</span>
+                  <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded">Semana</span>
+                  <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded">Curso</span>
+                </div>
+                <p className="text-xs text-slate-500 mt-2">~20-25 preguntas por cuadernillo</p>
+              </button>
+
+              {/* Modo General */}
+              <button
+                onClick={() => { setMode('general'); setStep('select'); }}
+                className={clsx(
+                  'p-6 rounded-xl border-2 text-left transition-all hover:shadow-lg group',
+                  'border-purple-200 hover:border-purple-500 hover:bg-purple-50'
+                )}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center group-hover:bg-purple-500 group-hover:text-white transition-colors">
+                    <Sparkles className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-800">Curso General</h3>
+                </div>
+                <p className="text-sm text-slate-600 mb-3">
+                  Mezcla preguntas de las 3 áreas (ING + BIO + SOC) de un curso específico.
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">Curso</span>
+                  <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">Cantidad</span>
+                </div>
+                <p className="text-xs text-slate-500 mt-2">Selecciona 10, 15 o 20 preguntas</p>
+              </button>
+            </div>
+
+            <button onClick={() => navigate('/')} className="btn-secondary w-full">
+              <Home className="w-5 h-5" />
+              Volver al inicio
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Render selection step
   if (step === 'select') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 py-12 px-4">
         <div className="max-w-2xl mx-auto">
           <div className="card p-8 animate-fade-in shadow-xl">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl mb-4 shadow-lg">
-                <Target className="w-8 h-8 text-white" />
+              <div className={clsx(
+                'inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 shadow-lg',
+                mode === 'cuadernillo'
+                  ? 'bg-gradient-to-br from-teal-500 to-teal-700'
+                  : 'bg-gradient-to-br from-purple-500 to-purple-700'
+              )}>
+                {mode === 'cuadernillo' ? (
+                  <Calendar className="w-8 h-8 text-white" />
+                ) : (
+                  <Sparkles className="w-8 h-8 text-white" />
+                )}
               </div>
               <h1 className="text-2xl font-bold text-slate-800 mb-2">
-                Selecciona tu práctica
+                {mode === 'cuadernillo' ? 'Modo Cuadernillo' : 'Modo Curso General'}
               </h1>
               <p className="text-slate-600">
-                Elige un curso y la cantidad de preguntas
+                {mode === 'cuadernillo'
+                  ? 'Selecciona área, semana y curso para cargar el cuadernillo completo'
+                  : 'Selecciona un curso y la cantidad de preguntas a mezclar'
+                }
               </p>
             </div>
 
-            {/* Course Selection */}
-            <div className="mb-6">
-              <label className="label mb-2">Curso</label>
-              <select
-                value={selectedCourse}
-                onChange={(e) => setSelectedCourse(e.target.value)}
-                className="input text-lg"
-              >
-                <option value="">-- Selecciona un curso --</option>
-                {AVAILABLE_COURSES.map(course => (
-                  <option key={course} value={course}>{course}</option>
-                ))}
-              </select>
-            </div>
+            {mode === 'cuadernillo' ? (
+              <>
+                {/* Area Selection */}
+                <div className="mb-6">
+                  <label className="label mb-2">Área</label>
+                  <div className="grid grid-cols-3 gap-3">
+                    {(['ING', 'BIO', 'SOC'] as const).map(area => (
+                      <button
+                        key={area}
+                        onClick={() => setSelectedArea(area)}
+                        className={clsx(
+                          'p-3 rounded-xl border-2 text-center font-medium transition-all',
+                          selectedArea === area
+                            ? 'border-teal-500 bg-teal-50 text-teal-700 shadow-md'
+                            : 'border-slate-200 hover:border-teal-300 hover:bg-slate-50'
+                        )}
+                      >
+                        <span className="text-sm font-bold block">{area}</span>
+                        <span className="text-xs text-slate-500">{AREA_LABELS[area]}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-            {/* Question Count Selection */}
-            <div className="mb-8">
-              <label className="label mb-2">Cantidad de preguntas</label>
-              <div className="grid grid-cols-3 gap-3">
-                {([10, 15, 20] as QuestionCount[]).map(count => (
-                  <button
-                    key={count}
-                    onClick={() => setQuestionCount(count)}
-                    className={clsx(
-                      'p-4 rounded-xl border-2 text-center font-medium transition-all',
-                      questionCount === count
-                        ? 'border-primary-500 bg-primary-50 text-primary-700 shadow-md'
-                        : 'border-slate-200 hover:border-primary-300 hover:bg-slate-50'
-                    )}
+                {/* Semana Selection */}
+                <div className="mb-6">
+                  <label className="label mb-2">Semana</label>
+                  <select
+                    value={selectedSemana}
+                    onChange={(e) => setSelectedSemana(e.target.value)}
+                    className="input text-lg"
                   >
-                    <span className="text-2xl font-bold block">{count}</span>
-                    <span className="text-sm text-slate-500">preguntas</span>
-                  </button>
-                ))}
-              </div>
-            </div>
+                    {CEPRE_SEMANAS.map(semana => (
+                      <option key={semana} value={semana}>
+                        Semana {semana.replace('S', '')} ({semana})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Course Selection */}
+                <div className="mb-6">
+                  <label className="label mb-2">Curso</label>
+                  <select
+                    value={selectedCourse}
+                    onChange={(e) => setSelectedCourse(e.target.value)}
+                    className="input text-lg"
+                  >
+                    <option value="">-- Selecciona un curso --</option>
+                    {getAvailableCourses().map(course => (
+                      <option key={course} value={course}>{course}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Info box */}
+                <div className="bg-teal-50 rounded-xl p-4 mb-6 border border-teal-200">
+                  <p className="text-teal-800 text-sm flex items-center gap-2">
+                    <FileText className="w-4 h-4" />
+                    Se cargarán TODAS las preguntas del cuadernillo {selectedSemana} {selectedArea}
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Course Selection for General Mode */}
+                <div className="mb-6">
+                  <label className="label mb-2">Curso</label>
+                  <select
+                    value={selectedCourse}
+                    onChange={(e) => setSelectedCourse(e.target.value)}
+                    className="input text-lg"
+                  >
+                    <option value="">-- Selecciona un curso --</option>
+                    {/* Combine all courses from all areas */}
+                    {[...new Set(Object.values(CEPRE_COURSES_BY_AREA).flat())].sort().map(course => (
+                      <option key={course} value={course}>{course}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Question Count Selection */}
+                <div className="mb-6">
+                  <label className="label mb-2">Cantidad de preguntas</label>
+                  <div className="grid grid-cols-3 gap-3">
+                    {([10, 15, 20] as QuestionCount[]).map(count => (
+                      <button
+                        key={count}
+                        onClick={() => setQuestionCount(count)}
+                        className={clsx(
+                          'p-4 rounded-xl border-2 text-center font-medium transition-all',
+                          questionCount === count
+                            ? 'border-purple-500 bg-purple-50 text-purple-700 shadow-md'
+                            : 'border-slate-200 hover:border-purple-300 hover:bg-slate-50'
+                        )}
+                      >
+                        <span className="text-2xl font-bold block">{count}</span>
+                        <span className="text-sm text-slate-500">preguntas</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Info box */}
+                <div className="bg-purple-50 rounded-xl p-4 mb-6 border border-purple-200">
+                  <p className="text-purple-800 text-sm flex items-center gap-2">
+                    <Sparkles className="w-4 h-4" />
+                    Se mezclarán preguntas de ING + BIO + SOC aleatoriamente
+                  </p>
+                </div>
+              </>
+            )}
 
             {loginError && (
               <div className="bg-red-50 rounded-xl p-4 mb-6 flex items-start gap-3 border border-red-200">
@@ -378,20 +581,25 @@ export function Banqueo() {
             )}
 
             <div className="flex gap-3">
-              <button onClick={() => navigate('/')} className="btn-secondary flex-1">
-                <Home className="w-5 h-5" />
-                Inicio
+              <button onClick={() => setStep('mode')} className="btn-secondary flex-1">
+                <ChevronLeft className="w-5 h-5" />
+                Cambiar modo
               </button>
               <button
                 onClick={handleStartQuiz}
-                className="btn-primary flex-1"
+                className={clsx(
+                  'btn-primary flex-1',
+                  mode === 'cuadernillo'
+                    ? 'bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700'
+                    : 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700'
+                )}
                 disabled={!selectedCourse || isLoading}
               >
                 {isLoading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
                   <>
-                    <Sparkles className="w-5 h-5" />
+                    <Target className="w-5 h-5" />
                     Comenzar
                   </>
                 )}
@@ -410,14 +618,26 @@ export function Banqueo() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 py-4 px-4">
         <div className="max-w-3xl mx-auto">
-          {/* Header with Timer */}
+          {/* Header */}
           <div className="bg-white rounded-2xl p-4 shadow-lg mb-4">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-xs font-medium text-primary-600 bg-primary-100 px-2 py-1 rounded-full">
-                  {selectedCourse}
-                </span>
-                <h2 className="font-bold text-slate-800 mt-1">
+                <div className="flex flex-wrap gap-1 mb-1">
+                  <span className="text-xs font-medium text-teal-600 bg-teal-100 px-2 py-0.5 rounded-full">
+                    {selectedCourse}
+                  </span>
+                  {mode === 'cuadernillo' && (
+                    <>
+                      <span className="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-0.5 rounded-full">
+                        {AREA_LABELS[selectedArea]}
+                      </span>
+                      <span className="text-xs font-medium text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full">
+                        {selectedSemana}
+                      </span>
+                    </>
+                  )}
+                </div>
+                <h2 className="font-bold text-slate-800">
                   Pregunta {currentIndex + 1} de {questions.length}
                 </h2>
               </div>
@@ -442,7 +662,12 @@ export function Banqueo() {
             {/* Progress bar */}
             <div className="mt-3 h-2 bg-slate-100 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-primary-500 to-primary-600 transition-all duration-300"
+                className={clsx(
+                  'h-full transition-all duration-300',
+                  mode === 'cuadernillo'
+                    ? 'bg-gradient-to-r from-teal-500 to-teal-600'
+                    : 'bg-gradient-to-r from-purple-500 to-purple-600'
+                )}
                 style={{ width: `${(answeredCount / questions.length) * 100}%` }}
               />
             </div>
@@ -450,7 +675,7 @@ export function Banqueo() {
 
           {/* Question Card */}
           <div className="card p-6 mb-4 shadow-lg">
-            {/* Metadata: Source file, Theme, Subtheme */}
+            {/* Metadata */}
             <div className="flex flex-wrap gap-2 mb-4">
               {currentQuestion.sourceFile && (
                 <span className="inline-flex items-center gap-1 text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
@@ -458,15 +683,21 @@ export function Banqueo() {
                   {currentQuestion.sourceFile}
                 </span>
               )}
+              {currentQuestion.area && (
+                <span className="inline-flex items-center gap-1 text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded-full">
+                  {currentQuestion.area}
+                </span>
+              )}
+              {currentQuestion.semana && (
+                <span className="inline-flex items-center gap-1 text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full">
+                  <Calendar className="w-3 h-3" />
+                  {currentQuestion.semana}
+                </span>
+              )}
               {currentQuestion.metadata?.tema && (
                 <span className="inline-flex items-center gap-1 text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
                   <Tag className="w-3 h-3" />
                   {currentQuestion.metadata.tema}
-                </span>
-              )}
-              {currentQuestion.metadata?.subtema && (
-                <span className="inline-flex items-center gap-1 text-xs bg-pink-100 text-pink-700 px-2 py-1 rounded-full">
-                  {currentQuestion.metadata.subtema}
                 </span>
               )}
             </div>
@@ -488,7 +719,7 @@ export function Banqueo() {
               </div>
             )}
 
-            {/* Options with colors */}
+            {/* Options */}
             <div className="space-y-3">
               {currentQuestion.options.map((option, idx) => {
                 const isSelected = currentAnswer?.selectedOption === idx;
@@ -531,7 +762,7 @@ export function Banqueo() {
               })}
             </div>
 
-            {/* Immediate feedback after answering */}
+            {/* Immediate feedback */}
             {isAnswered && (
               <div className={clsx(
                 'mt-6 p-4 rounded-xl animate-fade-in',
@@ -555,7 +786,6 @@ export function Banqueo() {
                   )}
                 </div>
 
-                {/* Justification */}
                 {currentQuestion.justification && (() => {
                   const { text, images } = parseJustification(currentQuestion.justification);
                   return (
@@ -572,12 +802,12 @@ export function Banqueo() {
                           )}
                           {images.length > 0 && (
                             <div className="mt-3 space-y-2">
-                              {images.map((imgUrl, idx) => (
+                              {images.map((imgUrl, imgIdx) => (
                                 <img
-                                  key={idx}
+                                  key={imgIdx}
                                   src={imgUrl}
-                                  alt={`Imagen justificación ${idx + 1}`}
-                                  className="max-w-full h-auto rounded-lg shadow-md border border-slate-200"
+                                  alt={`Imagen justificación ${imgIdx + 1}`}
+                                  className="max-w-full h-auto rounded-lg shadow-md"
                                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                                 />
                               ))}
@@ -724,16 +954,33 @@ export function Banqueo() {
         <div className="max-w-3xl mx-auto">
           {/* Score Card */}
           <div className="card p-8 mb-6 text-center animate-fade-in shadow-xl bg-gradient-to-br from-white to-slate-50">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-700 rounded-full mb-4 shadow-lg">
+            <div className={clsx(
+              'inline-flex items-center justify-center w-20 h-20 rounded-full mb-4 shadow-lg',
+              mode === 'cuadernillo'
+                ? 'bg-gradient-to-br from-teal-500 to-teal-700'
+                : 'bg-gradient-to-br from-purple-500 to-purple-700'
+            )}>
               <Trophy className="w-10 h-10 text-white" />
             </div>
 
             <h1 className="text-2xl font-bold text-slate-800 mb-2">
-              Resultados del Banqueo
+              Resultados del Banqueo CEPREUNA
             </h1>
-            <span className="inline-block text-sm font-medium text-primary-600 bg-primary-100 px-3 py-1 rounded-full mb-6">
-              {selectedCourse}
-            </span>
+            <div className="flex flex-wrap justify-center gap-2 mb-6">
+              <span className="inline-block text-sm font-medium text-teal-600 bg-teal-100 px-3 py-1 rounded-full">
+                {selectedCourse}
+              </span>
+              {mode === 'cuadernillo' && (
+                <>
+                  <span className="inline-block text-sm font-medium text-purple-600 bg-purple-100 px-3 py-1 rounded-full">
+                    {AREA_LABELS[selectedArea]}
+                  </span>
+                  <span className="inline-block text-sm font-medium text-amber-600 bg-amber-100 px-3 py-1 rounded-full">
+                    {selectedSemana}
+                  </span>
+                </>
+              )}
+            </div>
 
             <div className="grid grid-cols-3 gap-4 mb-6">
               <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
@@ -764,7 +1011,7 @@ export function Banqueo() {
             <div className="flex gap-3 justify-center">
               <button onClick={handleReset} className="btn-secondary">
                 <RotateCcw className="w-5 h-5" />
-                Otro curso
+                Otra práctica
               </button>
               <button onClick={() => navigate('/')} className="btn-primary">
                 <Home className="w-5 h-5" />
@@ -775,7 +1022,7 @@ export function Banqueo() {
 
           {/* Review Questions */}
           <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-primary-600" />
+            <BookOpen className="w-5 h-5 text-teal-600" />
             Revisión de respuestas
           </h2>
 
@@ -787,7 +1034,6 @@ export function Banqueo() {
 
               return (
                 <div key={q.id} className="card p-6 shadow-md">
-                  {/* Question header */}
                   <div className="flex items-start gap-3 mb-4">
                     <div className={clsx(
                       'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center',
@@ -806,20 +1052,14 @@ export function Banqueo() {
                         <span className="text-xs font-medium bg-slate-100 text-slate-600 px-2 py-0.5 rounded">
                           Pregunta {idx + 1}
                         </span>
-                        {q.sourceFile && (
-                          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded flex items-center gap-1">
-                            <FileText className="w-3 h-3" />
-                            {q.sourceFile}
+                        {q.area && (
+                          <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded">
+                            {q.area}
                           </span>
                         )}
-                        {q.metadata?.tema && (
-                          <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">
-                            {q.metadata.tema}
-                          </span>
-                        )}
-                        {q.metadata?.subtema && (
-                          <span className="text-xs bg-pink-100 text-pink-700 px-2 py-0.5 rounded">
-                            {q.metadata.subtema}
+                        {q.semana && (
+                          <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded">
+                            {q.semana}
                           </span>
                         )}
                       </div>
@@ -830,7 +1070,6 @@ export function Banqueo() {
                     </div>
                   </div>
 
-                  {/* Options with highlighting */}
                   <div className="space-y-2 ml-13">
                     {q.options.map((opt, optIdx) => {
                       const isSelected = selectedIdx === optIdx;
@@ -879,7 +1118,6 @@ export function Banqueo() {
                     })}
                   </div>
 
-                  {/* Justification */}
                   {q.justification && (() => {
                     const { text, images } = parseJustification(q.justification);
                     return (
@@ -901,7 +1139,7 @@ export function Banqueo() {
                                     key={imgIdx}
                                     src={imgUrl}
                                     alt={`Imagen justificación ${imgIdx + 1}`}
-                                    className="max-w-full h-auto rounded-lg shadow-md border border-amber-200"
+                                    className="max-w-full h-auto rounded-lg shadow-md"
                                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                                   />
                                 ))}

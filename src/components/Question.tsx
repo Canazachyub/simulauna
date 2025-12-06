@@ -33,6 +33,44 @@ import clsx from 'clsx';
  *    - Ejemplo: "I. <mark>b∈A</mark> II. <b>{b, c} ⊂ A</b>"
  */
 
+/**
+ * Formatea automáticamente el texto detectando patrones de numeración
+ * para agregar saltos de línea y mejorar la legibilidad
+ *
+ * Patrones detectados:
+ * - Números romanos con punto: I., II., III., IV., V., VI., VII., VIII., IX., X.
+ * - Números romanos con paréntesis: I), II), III), IV)
+ * - Letras minúsculas en formato de lista: a., b., c., d., e.
+ *
+ * REGLAS PARA EVITAR FALSOS POSITIVOS:
+ * - "empírica. Su" → NO es opción (hay espacio entre "a" y el punto, es fin de palabra)
+ * - "verda d. La" → NO es opción (hay espacio ANTES de "d", es error de tipeo)
+ * - "cosas.a. Racionalismo" → SÍ es opción (letra PEGADA al punto anterior)
+ * - "corresponda: a. Opción" → SÍ es opción (después de dos puntos)
+ */
+function formatQuestionTextAuto(text: string): string {
+  if (!text) return '';
+
+  let formatted = text;
+
+  // 1. Numeración romana con PUNTO: ".I. " o ":I. "
+  formatted = formatted.replace(/([.:])(\s*)([IVX]{1,4})\.\s+/g, '$1<br><br><strong>$3.</strong> ');
+
+  // 2. Numeración romana con PARÉNTESIS: ".I) " o ":II) "
+  formatted = formatted.replace(/([.:])(\s*)([IVX]{1,4})\)\s+/g, '$1<br><br><strong>$3)</strong> ');
+
+  // 3. Letras después de DOS PUNTOS con espacio: ": a. Opción"
+  formatted = formatted.replace(/:(\s+)([a-e])\.\s+/g, ':<br><br><strong>$2.</strong> ');
+
+  // 4. Letras PEGADAS directamente al punto (sin espacio): ".a. Racionalismo"
+  // Este es el patrón clave que detecta listas como "cosas.a. Racionalismo.b. Empirismo"
+  // NO detecta "empírica. Su" porque tiene espacio después del punto
+  // NO detecta "verda d. La" porque la "d" no está pegada al punto
+  formatted = formatted.replace(/\.([a-e])\.(\s+)/g, '.<br><br><strong>$1.</strong>$2');
+
+  return formatted;
+}
+
 // Función para parsear el texto con formato HTML básico
 function parseFormattedText(text: unknown): string {
   // Manejar valores null, undefined, o no-string
@@ -43,11 +81,14 @@ function parseFormattedText(text: unknown): string {
 
   if (!textStr) return '';
 
+  // Aplicar formateo automático de numeración ANTES del procesamiento HTML
+  const autoFormatted = formatQuestionTextAuto(textStr);
+
   // Permitir solo tags seguros
   const allowedTags = ['b', 'strong', 'i', 'em', 'u', 'mark', 'br', 'sub', 'sup'];
 
   // Escapar todo excepto los tags permitidos
-  let result = textStr
+  let result = autoFormatted
     // Convertir saltos de línea a <br>
     .replace(/\n/g, '<br>')
     // Agregar clase al mark para el resaltado amarillo

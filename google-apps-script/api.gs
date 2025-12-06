@@ -25,7 +25,7 @@ const CONFIG_SHEETS = {
   'Biomédicas': 'Configuración_Biomédicas'
 };
 
-// Mapeo de asignaturas a hojas de banco de preguntas
+// Mapeo de asignaturas a hojas de banco de preguntas (Bancos Históricos)
 const SUBJECT_SHEETS = {
   'Aritmética': 'Banco_Aritmética',
   'Álgebra': 'Banco_Álgebra',
@@ -46,6 +46,70 @@ const SUBJECT_SHEETS = {
   'Inglés': 'Banco_Inglés',
   'Quechua y aimara': 'Banco_Quechua y aimara'
 };
+
+// ============================================
+// CEPREUNA - Mapeo de hojas por curso
+// ============================================
+const CEPRE_SUBJECT_SHEETS = {
+  // Cursos comunes
+  'Aritmética': 'CEPRE_Aritmética',
+  'Álgebra': 'CEPRE_Álgebra',
+  'Geometría': 'CEPRE_Geometría',
+  'Trigonometría': 'CEPRE_Trigonometría',
+  'Física': 'CEPRE_Física',
+  'Química': 'CEPRE_Química',
+  'Psicología y Filosofía': 'CEPRE_PsicologíaFilosofía',
+  'Historia': 'CEPRE_Historia',
+  'Educación Cívica': 'CEPRE_EducaciónCívica',
+  'Economía': 'CEPRE_Economía',
+  'Razonamiento Matemático': 'CEPRE_RazonamientoMatemático',
+  'RM': 'CEPRE_RazonamientoMatemático',
+  'Razonamiento Verbal': 'CEPRE_RazonamientoVerbal',
+
+  // Idiomas - usar hojas del banco histórico (no hay CEPRE específico)
+  'Inglés': 'Banco_Inglés',
+  'Quechua y aimara': 'Banco_Quechua y aimara',
+  'Quechua y Aimara': 'Banco_Quechua y aimara',
+
+  // Cursos específicos por área
+  'Biología': 'CEPRE_Biología',
+  'Anatomía': 'CEPRE_Anatomía',
+  'Biología y Anatomía': 'CEPRE_BiologíaAnatomía',
+  'Matemática': 'CEPRE_Matemática',
+  'Comunicación': 'CEPRE_Comunicación',
+  'Comunicación y Literatura': 'CEPRE_ComunicaciónLiteratura',
+  'Literatura': 'CEPRE_Literatura',
+  'Geografía': 'CEPRE_Geografía'
+};
+
+// Cursos disponibles por área CEPREUNA (incluye Idiomas)
+const CEPRE_COURSES_BY_AREA = {
+  'ING': [
+    'Aritmética', 'Álgebra', 'Geometría', 'Trigonometría',
+    'Física', 'Química', 'Biología y Anatomía',
+    'Psicología y Filosofía', 'Historia', 'Educación Cívica',
+    'Economía', 'Comunicación y Literatura',
+    'Razonamiento Matemático', 'Razonamiento Verbal',
+    'Inglés', 'Quechua y aimara'
+  ],
+  'BIO': [
+    'Aritmética', 'Matemática', 'Física', 'Química',
+    'Biología', 'Anatomía', 'Psicología y Filosofía',
+    'Historia', 'Educación Cívica', 'Economía',
+    'Comunicación y Literatura', 'Razonamiento Matemático',
+    'Razonamiento Verbal', 'Inglés', 'Quechua y aimara'
+  ],
+  'SOC': [
+    'Matemática', 'Física', 'Química', 'Biología y Anatomía',
+    'Psicología y Filosofía', 'Historia', 'Geografía',
+    'Educación Cívica', 'Economía', 'Comunicación', 'Literatura',
+    'Razonamiento Matemático', 'Razonamiento Verbal',
+    'Inglés', 'Quechua y aimara'
+  ]
+};
+
+// Semanas válidas CEPREUNA
+const CEPRE_SEMANAS = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16'];
 
 // ============================================
 // FUNCIÓN PRINCIPAL - ENDPOINT REST
@@ -115,6 +179,36 @@ function doGet(e) {
           return createErrorResponse('Parámetro "course" requerido');
         }
         result = getBanqueoQuestions(courseName, questionCount);
+        break;
+      // ============================================
+      // CEPREUNA ENDPOINTS
+      // ============================================
+      case 'getCepreQuestions':
+        const cepreCourse = e.parameter.course || '';
+        const cepreArea = e.parameter.area || '';
+        const cepreSemana = e.parameter.semana || '';
+        const cepreCount = e.parameter.count ? parseInt(e.parameter.count) : null;
+        if (!cepreCourse) {
+          return createErrorResponse('Parámetro "course" requerido');
+        }
+        result = getCepreQuestions(cepreCourse, cepreArea, cepreSemana, cepreCount);
+        break;
+      case 'getCepreSimulacro':
+        const simArea = e.parameter.area || '';
+        const simSemana = e.parameter.semana || '';
+        if (!simArea) {
+          return createErrorResponse('Parámetro "area" requerido');
+        }
+        result = getCepreSimulacro(simArea, simSemana);
+        break;
+      case 'getCepreCourses':
+        const coursesArea = e.parameter.area || '';
+        result = getCepreCourses(coursesArea);
+        break;
+      case 'getCepreSemanas':
+        const semanaCourse = e.parameter.course || '';
+        const semanaArea = e.parameter.area || '';
+        result = getCepreSemanas(semanaCourse, semanaArea);
         break;
       case 'test':
         result = { status: 'ok', message: 'API funcionando correctamente', timestamp: new Date().toISOString() };
@@ -896,6 +990,391 @@ function getBanqueoQuestions(courseName, count) {
  */
 function getAvailableCourses() {
   return Object.keys(SUBJECT_SHEETS);
+}
+
+// ============================================
+// CEPREUNA - FUNCIONES DE BANQUEO Y SIMULACRO
+// ============================================
+
+/**
+ * Obtiene preguntas CEPREUNA para el Banqueo
+ *
+ * MODO 1 - Cuadernillo: area + semana + course (sin count → trae TODAS)
+ * MODO 2 - Curso General: course + area=ALL + count (mezcla 3 áreas)
+ *
+ * @param {string} course - Nombre del curso
+ * @param {string} area - Área (ING, BIO, SOC) o 'ALL' para mezclar
+ * @param {string} semana - Semana (S1-S16) o vacío para todas
+ * @param {number|null} count - Cantidad de preguntas (null = todas)
+ */
+function getCepreQuestions(course, area, semana, count) {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+
+  // Validar curso
+  const sheetName = CEPRE_SUBJECT_SHEETS[course];
+  if (!sheetName) {
+    return {
+      error: 'Curso no válido para CEPREUNA',
+      questions: [],
+      availableCourses: Object.keys(CEPRE_SUBJECT_SHEETS)
+    };
+  }
+
+  const sheet = ss.getSheetByName(sheetName);
+  if (!sheet) {
+    return { error: `Hoja "${sheetName}" no encontrada`, questions: [] };
+  }
+
+  const data = sheet.getDataRange().getValues();
+  if (data.length <= 1) {
+    return { error: 'No hay preguntas disponibles', questions: [] };
+  }
+
+  const headers = data[0];
+  const colIndices = getCepreColumnIndices(headers);
+
+  // Filtrar preguntas según área y semana
+  const filteredQuestions = [];
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    const questionText = row[colIndices.questionText];
+    if (!questionText || questionText === '') continue;
+
+    const rowArea = String(row[colIndices.area] || '').trim().toUpperCase();
+    const rowSemana = String(row[colIndices.semana] || '').trim().toUpperCase();
+
+    // Filtrar por área (si no es ALL)
+    if (area && area !== 'ALL' && rowArea !== area.toUpperCase()) continue;
+
+    // Filtrar por semana (si se especifica)
+    if (semana && rowSemana !== semana.toUpperCase()) continue;
+
+    filteredQuestions.push({ rowIndex: i, data: row });
+  }
+
+  // Si count es null, traer TODAS (modo cuadernillo)
+  // Si count tiene valor, seleccionar aleatoriamente
+  let selectedQuestions;
+  if (count === null || count === undefined) {
+    selectedQuestions = filteredQuestions; // Todas las preguntas
+  } else {
+    const validCount = Math.min(count, filteredQuestions.length);
+    selectedQuestions = selectRandomItems(filteredQuestions, validCount);
+  }
+
+  // Formatear preguntas
+  const questions = selectedQuestions.map((q, index) => {
+    return formatCepreQuestion(q.data, colIndices, course, index + 1, q.rowIndex);
+  });
+
+  return {
+    course: course,
+    area: area || 'ALL',
+    semana: semana || 'TODAS',
+    totalQuestions: questions.length,
+    totalAvailable: filteredQuestions.length,
+    questions: questions
+  };
+}
+
+/**
+ * Obtiene un simulacro completo CEPREUNA de 60 preguntas
+ * Usa la misma configuración que el simulacro de admisión
+ * pero toma preguntas de las hojas CEPRE_
+ *
+ * @param {string} area - Área del simulacro (Ingenierías, Biomédicas, Sociales)
+ * @param {string} semana - Semana específica o vacío para todas
+ */
+function getCepreSimulacro(area, semana) {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+
+  // Validar área
+  if (!CONFIG_SHEETS[area]) {
+    return { error: `Área "${area}" no válida. Use: Ingenierías, Sociales, o Biomédicas` };
+  }
+
+  // Mapear área a código CEPRE
+  const areaCodes = {
+    'Ingenierías': 'ING',
+    'Biomédicas': 'BIO',
+    'Sociales': 'SOC'
+  };
+  const areaCode = areaCodes[area];
+
+  // Obtener configuración del área (distribución de preguntas)
+  const configSheet = ss.getSheetByName(CONFIG_SHEETS[area]);
+  if (!configSheet) {
+    return { error: `Hoja de configuración para "${area}" no encontrada` };
+  }
+
+  const configData = configSheet.getDataRange().getValues();
+  const headers = configData[0];
+  const colIndices = {
+    asignatura: headers.indexOf('ASIGNATURA'),
+    cantidad: headers.indexOf('CANTIDAD DE PREGUNTAS'),
+    puntaje: headers.indexOf('PUNTAJE')
+  };
+
+  const questions = [];
+  let questionNumber = 1;
+
+  // Por cada asignatura en la configuración
+  for (let i = 1; i < configData.length; i++) {
+    const row = configData[i];
+    const subjectName = row[colIndices.asignatura];
+    const questionCount = parseInt(row[colIndices.cantidad]) || 0;
+    const maxScore = parseFloat(row[colIndices.puntaje]) || 0;
+
+    if (!subjectName || subjectName === 'TOTAL' || questionCount === 0) continue;
+
+    // Obtener preguntas del banco CEPRE
+    const subjectQuestions = getCepreQuestionsForSimulacro(
+      ss, subjectName, areaCode, semana, questionCount, maxScore, questionNumber
+    );
+
+    questions.push(...subjectQuestions);
+    questionNumber += subjectQuestions.length;
+  }
+
+  return {
+    area: area,
+    semana: semana || 'TODAS',
+    totalQuestions: questions.length,
+    questions: questions
+  };
+}
+
+/**
+ * Obtiene preguntas CEPRE para el simulacro
+ */
+function getCepreQuestionsForSimulacro(ss, subjectName, areaCode, semana, count, maxScore, startingNumber) {
+  // Mapear nombre de asignatura a hoja CEPRE correspondiente según área
+  let cepreSheetName = mapSubjectToCepreSheet(subjectName, areaCode);
+
+  if (!cepreSheetName) {
+    console.log(`No hay hoja CEPRE para "${subjectName}" en área ${areaCode}`);
+    return [];
+  }
+
+  const sheet = ss.getSheetByName(cepreSheetName);
+  if (!sheet) {
+    console.log(`Hoja "${cepreSheetName}" no encontrada`);
+    return [];
+  }
+
+  const data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return [];
+
+  const headers = data[0];
+  const colIndices = getCepreColumnIndices(headers);
+
+  // Detectar si es una hoja del banco histórico (no tiene columnas AREA/SEMANA)
+  // Las hojas Banco_ no tienen estas columnas, así que no debemos filtrar por ellas
+  const isBancoSheet = cepreSheetName.startsWith('Banco_');
+
+  // Filtrar por área y semana (solo para hojas CEPRE_, no para Banco_)
+  const filteredQuestions = [];
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    const questionText = row[colIndices.questionText];
+    if (!questionText || questionText === '') continue;
+
+    // Solo aplicar filtros de AREA/SEMANA si NO es hoja de banco histórico
+    if (!isBancoSheet) {
+      const rowArea = String(row[colIndices.area] || '').trim().toUpperCase();
+      const rowSemana = String(row[colIndices.semana] || '').trim().toUpperCase();
+
+      // Filtrar por área
+      if (rowArea !== areaCode) continue;
+
+      // Filtrar por semana (si se especifica)
+      if (semana && rowSemana !== semana.toUpperCase()) continue;
+    }
+
+    filteredQuestions.push({ rowIndex: i, data: row });
+  }
+
+  // Seleccionar aleatoriamente
+  const selectedQuestions = selectRandomItems(filteredQuestions, count);
+  const pointsPerQuestion = count > 0 ? maxScore / count : 0;
+
+  return selectedQuestions.map((q, index) => {
+    const formatted = formatCepreQuestion(q.data, colIndices, subjectName, startingNumber + index, q.rowIndex);
+    formatted.points = pointsPerQuestion;
+    return formatted;
+  });
+}
+
+/**
+ * Mapea un nombre de asignatura del config a la hoja CEPRE correspondiente
+ */
+function mapSubjectToCepreSheet(subjectName, areaCode) {
+  // Casos especiales según área
+  if (subjectName === 'Biología y Anatomía') {
+    if (areaCode === 'BIO') {
+      // BIO tiene Biología y Anatomía separados - usar BiologíaAnatomía combinado
+      // o alternar entre ambas hojas
+      return 'CEPRE_Biología'; // O podríamos hacer una lógica especial
+    }
+    return CEPRE_SUBJECT_SHEETS['Biología y Anatomía'];
+  }
+
+  if (subjectName === 'Comunicación' || subjectName === 'Literatura') {
+    if (areaCode === 'ING' || areaCode === 'BIO') {
+      return CEPRE_SUBJECT_SHEETS['Comunicación y Literatura'];
+    }
+    return CEPRE_SUBJECT_SHEETS[subjectName];
+  }
+
+  // Para aritmética/álgebra/geometría/trigonometría en BIO y SOC → Matemática
+  const mathSubjects = ['Aritmética', 'Álgebra', 'Geometría', 'Trigonometría'];
+  if (mathSubjects.includes(subjectName) && (areaCode === 'SOC')) {
+    return CEPRE_SUBJECT_SHEETS['Matemática'];
+  }
+
+  // Caso general
+  return CEPRE_SUBJECT_SHEETS[subjectName];
+}
+
+/**
+ * Obtiene índices de columnas para hojas CEPRE
+ */
+function getCepreColumnIndices(headers) {
+  return {
+    questionText: headers.indexOf('Question Text'),
+    questionType: headers.indexOf('Question Type'),
+    option1: headers.indexOf('Option 1'),
+    option2: headers.indexOf('Option 2'),
+    option3: headers.indexOf('Option 3'),
+    option4: headers.indexOf('Option 4'),
+    option5: headers.indexOf('Option 5'),
+    correctAnswer: headers.indexOf('Correct Answer'),
+    timeSeconds: headers.indexOf('Time in seconds'),
+    imageLink: headers.indexOf('Image Link'),
+    numero: headers.indexOf('NUMERO'),
+    curso: headers.indexOf('CURSO'),
+    tema: headers.indexOf('TEMA'),
+    subtema: headers.indexOf('SUBTEMA'),
+    sourceFile: headers.indexOf('NOMBRE DEL ARCHIVO'),
+    justification: headers.indexOf('JUSTIFICACION'),
+    area: headers.indexOf('AREA'),
+    semana: headers.indexOf('SEMANA')
+  };
+}
+
+/**
+ * Formatea una pregunta CEPRE
+ */
+function formatCepreQuestion(row, colIndices, course, number, rowIndex) {
+  const options = [
+    row[colIndices.option1],
+    row[colIndices.option2],
+    row[colIndices.option3],
+    row[colIndices.option4],
+    row[colIndices.option5]
+  ].filter(opt => opt && opt !== '');
+
+  const correctAnswerIndex = (parseInt(row[colIndices.correctAnswer]) || 1) - 1;
+
+  return {
+    id: `cepre-${course}-${rowIndex}`,
+    number: number,
+    questionText: row[colIndices.questionText],
+    questionType: row[colIndices.questionType] || 'Multiple Choice',
+    options: options,
+    correctAnswer: correctAnswerIndex,
+    timeSeconds: 180,
+    imageLink: row[colIndices.imageLink] || null,
+    subject: course,
+    sourceFile: row[colIndices.sourceFile] || null,
+    justification: row[colIndices.justification] || null,
+    area: row[colIndices.area] || null,
+    semana: row[colIndices.semana] || null,
+    metadata: {
+      numero: row[colIndices.numero],
+      tema: row[colIndices.tema],
+      subtema: row[colIndices.subtema]
+    }
+  };
+}
+
+/**
+ * Obtiene la lista de cursos CEPREUNA disponibles por área
+ */
+function getCepreCourses(area) {
+  if (area && CEPRE_COURSES_BY_AREA[area.toUpperCase()]) {
+    return {
+      area: area.toUpperCase(),
+      courses: CEPRE_COURSES_BY_AREA[area.toUpperCase()]
+    };
+  }
+
+  // Si no se especifica área, retornar todos
+  return {
+    areas: Object.keys(CEPRE_COURSES_BY_AREA),
+    coursesByArea: CEPRE_COURSES_BY_AREA,
+    allCourses: [...new Set(Object.values(CEPRE_COURSES_BY_AREA).flat())]
+  };
+}
+
+/**
+ * Obtiene las semanas disponibles para un curso CEPREUNA
+ */
+function getCepreSemanas(course, area) {
+  if (!course) {
+    return { semanas: CEPRE_SEMANAS };
+  }
+
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheetName = CEPRE_SUBJECT_SHEETS[course];
+
+  if (!sheetName) {
+    return { error: 'Curso no válido', semanas: [] };
+  }
+
+  const sheet = ss.getSheetByName(sheetName);
+  if (!sheet) {
+    return { semanas: CEPRE_SEMANAS }; // Retornar todas por defecto
+  }
+
+  const data = sheet.getDataRange().getValues();
+  if (data.length <= 1) {
+    return { semanas: [] };
+  }
+
+  const headers = data[0];
+  const areaIndex = headers.indexOf('AREA');
+  const semanaIndex = headers.indexOf('SEMANA');
+
+  if (semanaIndex === -1) {
+    return { semanas: CEPRE_SEMANAS };
+  }
+
+  const semanasSet = new Set();
+  for (let i = 1; i < data.length; i++) {
+    const rowArea = String(data[i][areaIndex] || '').trim().toUpperCase();
+    const rowSemana = String(data[i][semanaIndex] || '').trim().toUpperCase();
+
+    // Filtrar por área si se especifica
+    if (area && rowArea !== area.toUpperCase()) continue;
+
+    if (rowSemana) {
+      semanasSet.add(rowSemana);
+    }
+  }
+
+  // Ordenar semanas
+  const semanas = Array.from(semanasSet).sort((a, b) => {
+    const numA = parseInt(a.replace('S', ''));
+    const numB = parseInt(b.replace('S', ''));
+    return numA - numB;
+  });
+
+  return {
+    course: course,
+    area: area || 'TODAS',
+    semanas: semanas
+  };
 }
 
 // ============================================

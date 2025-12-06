@@ -417,7 +417,7 @@ export async function getBanqueoQuestions(course: string, count: 10 | 15 | 20 = 
   }
 }
 
-// Lista de cursos disponibles para el Banqueo
+// Lista de cursos disponibles para el Banqueo Histórico
 export const AVAILABLE_COURSES = [
   'Aritmética',
   'Álgebra',
@@ -438,6 +438,246 @@ export const AVAILABLE_COURSES = [
   'Inglés',
   'Quechua y aimara'
 ];
+
+// ============================================
+// CEPREUNA - BANQUEO Y SIMULACRO
+// ============================================
+
+export type CepreAreaCode = 'ING' | 'BIO' | 'SOC' | 'ALL';
+export type CepreSemana = 'S1' | 'S2' | 'S3' | 'S4' | 'S5' | 'S6' | 'S7' | 'S8' |
+  'S9' | 'S10' | 'S11' | 'S12' | 'S13' | 'S14' | 'S15' | 'S16';
+
+// Cursos disponibles por área CEPREUNA (incluye Idiomas)
+export const CEPRE_COURSES_BY_AREA: Record<'ING' | 'BIO' | 'SOC', string[]> = {
+  'ING': [
+    'Aritmética', 'Álgebra', 'Geometría', 'Trigonometría',
+    'Física', 'Química', 'Biología y Anatomía',
+    'Psicología y Filosofía', 'Historia', 'Educación Cívica',
+    'Economía', 'Comunicación y Literatura',
+    'Razonamiento Matemático', 'Razonamiento Verbal',
+    'Inglés', 'Quechua y aimara'
+  ],
+  'BIO': [
+    'Aritmética', 'Matemática', 'Física', 'Química',
+    'Biología', 'Anatomía', 'Psicología y Filosofía',
+    'Historia', 'Educación Cívica', 'Economía',
+    'Comunicación y Literatura', 'Razonamiento Matemático',
+    'Razonamiento Verbal', 'Inglés', 'Quechua y aimara'
+  ],
+  'SOC': [
+    'Matemática', 'Física', 'Química', 'Biología y Anatomía',
+    'Psicología y Filosofía', 'Historia', 'Geografía',
+    'Educación Cívica', 'Economía', 'Comunicación', 'Literatura',
+    'Razonamiento Matemático', 'Razonamiento Verbal',
+    'Inglés', 'Quechua y aimara'
+  ]
+};
+
+// Semanas CEPREUNA
+export const CEPRE_SEMANAS: CepreSemana[] = [
+  'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8',
+  'S9', 'S10', 'S11', 'S12', 'S13', 'S14', 'S15', 'S16'
+];
+
+export interface CepreQuestion extends BanqueoQuestion {
+  area: string | null;
+  semana: string | null;
+}
+
+export interface CepreQuestionsResult {
+  course: string;
+  area: string;
+  semana: string;
+  totalQuestions: number;
+  totalAvailable: number;
+  questions: CepreQuestion[];
+  error?: string;
+}
+
+export interface CepreSimulacroResult {
+  area: string;
+  semana: string;
+  totalQuestions: number;
+  questions: CepreQuestion[];
+  error?: string;
+}
+
+export interface CepreCoursesResult {
+  area?: string;
+  courses?: string[];
+  areas?: string[];
+  coursesByArea?: Record<string, string[]>;
+  allCourses?: string[];
+}
+
+export interface CepreSemanasResult {
+  course?: string;
+  area?: string;
+  semanas: string[];
+  error?: string;
+}
+
+/**
+ * Obtiene preguntas CEPREUNA para el Banqueo
+ * MODO 1 - Cuadernillo: area + semana + course (sin count → trae TODAS)
+ * MODO 2 - Curso General: course + area=ALL + count (mezcla 3 áreas)
+ */
+export async function getCepreQuestions(
+  course: string,
+  area?: CepreAreaCode,
+  semana?: CepreSemana | string,
+  count?: number
+): Promise<CepreQuestionsResult> {
+  try {
+    const params = new URLSearchParams({
+      action: 'getCepreQuestions',
+      course: course
+    });
+
+    if (area) params.append('area', area);
+    if (semana) params.append('semana', semana);
+    if (count !== undefined) params.append('count', count.toString());
+
+    const url = `${API_BASE_URL}?${params.toString()}`;
+    const response = await fetchWithTimeout(url, 30000);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Error al obtener preguntas CEPREUNA');
+    }
+
+    return result.data as CepreQuestionsResult;
+  } catch (error) {
+    console.error('Error al obtener preguntas CEPREUNA:', error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : 'No se pudo cargar el banqueo CEPREUNA. Por favor, intenta de nuevo.'
+    );
+  }
+}
+
+/**
+ * Obtiene un simulacro completo CEPREUNA de 60 preguntas
+ */
+export async function getCepreSimulacro(
+  area: AreaType,
+  semana?: CepreSemana | string
+): Promise<CepreSimulacroResult> {
+  try {
+    const params = new URLSearchParams({
+      action: 'getCepreSimulacro',
+      area: area
+    });
+
+    if (semana) params.append('semana', semana);
+
+    const url = `${API_BASE_URL}?${params.toString()}`;
+    const response = await fetchWithTimeout(url, 45000);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Error al obtener simulacro CEPREUNA');
+    }
+
+    return result.data as CepreSimulacroResult;
+  } catch (error) {
+    console.error('Error al obtener simulacro CEPREUNA:', error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : 'No se pudo cargar el simulacro CEPREUNA. Por favor, intenta de nuevo.'
+    );
+  }
+}
+
+/**
+ * Obtiene la lista de cursos CEPREUNA por área
+ */
+export async function getCepreCourses(area?: CepreAreaCode): Promise<CepreCoursesResult> {
+  try {
+    const params = new URLSearchParams({
+      action: 'getCepreCourses'
+    });
+
+    if (area) params.append('area', area);
+
+    const url = `${API_BASE_URL}?${params.toString()}`;
+    const response = await fetchWithTimeout(url, 15000);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Error al obtener cursos CEPREUNA');
+    }
+
+    return result.data as CepreCoursesResult;
+  } catch (error) {
+    console.error('Error al obtener cursos CEPREUNA:', error);
+    // Retornar datos locales como fallback
+    if (area && CEPRE_COURSES_BY_AREA[area as keyof typeof CEPRE_COURSES_BY_AREA]) {
+      return {
+        area: area,
+        courses: CEPRE_COURSES_BY_AREA[area as keyof typeof CEPRE_COURSES_BY_AREA]
+      };
+    }
+    return {
+      areas: ['ING', 'BIO', 'SOC'],
+      coursesByArea: CEPRE_COURSES_BY_AREA,
+      allCourses: [...new Set(Object.values(CEPRE_COURSES_BY_AREA).flat())]
+    };
+  }
+}
+
+/**
+ * Obtiene las semanas disponibles para un curso CEPREUNA
+ */
+export async function getCepreSemanas(
+  course?: string,
+  area?: CepreAreaCode
+): Promise<CepreSemanasResult> {
+  try {
+    const params = new URLSearchParams({
+      action: 'getCepreSemanas'
+    });
+
+    if (course) params.append('course', course);
+    if (area) params.append('area', area);
+
+    const url = `${API_BASE_URL}?${params.toString()}`;
+    const response = await fetchWithTimeout(url, 15000);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Error al obtener semanas CEPREUNA');
+    }
+
+    return result.data as CepreSemanasResult;
+  } catch (error) {
+    console.error('Error al obtener semanas CEPREUNA:', error);
+    // Retornar todas las semanas como fallback
+    return { semanas: CEPRE_SEMANAS };
+  }
+}
 
 // ============================================
 // DATOS DE PRUEBA (MOCK) PARA DESARROLLO

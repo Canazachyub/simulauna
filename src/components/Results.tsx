@@ -12,6 +12,7 @@ import {
 import { useExamStore } from '../hooks/useExam';
 import { PERFORMANCE_MESSAGES } from '../types';
 import { formatTimeReadable, formatNumber, formatDate, getColorForPercentage, indexToLetter } from '../utils/calculations';
+import { renderFormattedText } from '../utils/formatText';
 import { PDFGenerator } from './PDFGenerator';
 import { saveScore, getUserHistory, type UserHistory } from '../services/api';
 import clsx from 'clsx';
@@ -407,7 +408,8 @@ export function Results() {
             {/* Question Text */}
             <div className="mb-4">
               <p className="text-slate-800 leading-relaxed">
-                <span className="font-semibold text-primary-600">P{reviewIndex + 1}.</span> {currentQuestion.questionText}
+                <span className="font-semibold text-primary-600">P{reviewIndex + 1}.</span>{' '}
+                <span dangerouslySetInnerHTML={{ __html: renderFormattedText(currentQuestion.questionText) }} />
               </p>
             </div>
 

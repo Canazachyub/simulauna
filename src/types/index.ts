@@ -5,6 +5,9 @@
 // Áreas de estudio disponibles
 export type AreaType = 'Ingenierías' | 'Sociales' | 'Biomédicas';
 
+// Tipos de proceso de admisión
+export type ProcessType = 'CEPREUNA' | 'GENERAL' | 'EXTRAORDINARIO';
+
 // Estados del examen
 export type ExamStatus = 'idle' | 'loading' | 'ready' | 'in_progress' | 'completed' | 'error';
 
@@ -15,6 +18,7 @@ export interface Student {
   dni: string;
   fullName: string;
   area: AreaType;
+  processType?: ProcessType; // Tipo de proceso (CEPREUNA usa hojas CEPRE_)
 }
 
 // ============================================

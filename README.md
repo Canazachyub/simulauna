@@ -14,8 +14,17 @@ Plataforma web para realizar simulacros del examen de admisión de la **Universi
 - [Flujo de la Aplicación](#flujo-de-la-aplicación)
 - [Sistema de Puntuación](#sistema-de-puntuación)
 - [Sistema de Usuarios y Historial](#sistema-de-usuarios-y-historial)
+- [Sistema de Control de Acceso](#sistema-de-control-de-acceso-nuevo)
+- [Banqueo Histórico](#banqueo-histórico-nuevo)
+- [Justificación de Respuestas](#justificación-de-respuestas-nuevo)
 - [Despliegue](#despliegue)
 - [Desarrollo Local](#desarrollo-local)
+- [Solución de Problemas Comunes](#solución-de-problemas-comunes)
+- [Flujo Detallado de Control de Acceso](#flujo-detallado-de-control-de-acceso)
+- [Configuración de Despliegue](#configuración-de-despliegue)
+- [CEPREUNA - Simulacros por Semana](#cepreuna---simulacros-por-semana-nuevo)
+- [Auto-Formateo de Preguntas](#auto-formateo-de-preguntas-nuevo)
+- [Versiones](#versiones)
 
 ---
 
@@ -108,6 +117,7 @@ Plataforma web para realizar simulacros del examen de admisión de la **Universi
                             │  - Banco preguntas   │
                             │  - usuarios          │
                             │  - historial_puntajes│
+                            │  - confirmado        │
                             └──────────────────────┘
 ```
 
@@ -120,6 +130,9 @@ Plataforma web para realizar simulacros del examen de admisión de la **Universi
 | `?action=register` | dni, fullName, email, phone, processType, area, career | Registra usuario (sin duplicar por DNI) |
 | `?action=saveScore` | dni, score, maxScore, area, correct, total | Guarda puntaje en historial |
 | `?action=getHistory&dni=X` | dni | Obtiene historial de puntajes del usuario |
+| `?action=checkAccess&dni=X&email=Y` | dni, email | Verifica si puede dar el simulacro |
+| `?action=checkBanqueoAccess&dni=X&email=Y` | dni, email | Verifica si puede acceder al banqueo |
+| `?action=getBanqueoQuestions&course=X&count=Y` | course, count | Obtiene preguntas del banqueo por curso |
 | `?action=test` | - | Verifica conexión con la API |
 
 ---
@@ -137,6 +150,7 @@ simulauna/
 │   │   ├── Quiz.tsx          # Examen con navegador y cronómetro
 │   │   ├── Question.tsx      # Pregunta individual con formato HTML
 │   │   ├── Results.tsx       # Resultados con 4 tabs (Revisión, Gráfico, Detalle, Historial)
+│   │   ├── Banqueo.tsx       # Práctica por curso con login y justificaciones
 │   │   ├── PDFGenerator.tsx  # Generador de reporte PDF
 │   │   └── index.ts          # Exports
 │   │
@@ -408,6 +422,7 @@ npm run build
 | `/confirmar` | ExamConfirmation | Confirmación con instrucciones del examen |
 | `/examen` | Quiz | Interfaz del examen con cronómetro y navegador |
 | `/resultados` | Results | Resultados con 4 tabs: Revisión, Gráfico, Detalle, Historial |
+| `/banqueo` | Banqueo | Práctica por curso (solo usuarios confirmados) |
 
 ---
 
@@ -757,7 +772,7 @@ El sistema soporta HTML básico en el texto de preguntas y opciones:
 
 7. **Historial**: Se guarda automáticamente al finalizar cada examen. Se obtiene con un delay de 500ms después de guardar para asegurar que Google Sheets procesó el registro.
 
-8. **WhatsApp**: Link de contacto para reportar errores: `https://wa.link/40zqta`
+8. **WhatsApp**: Link de contacto para reportar errores y confirmación: `https://wa.me/51900266810`
 
 ---
 
@@ -778,7 +793,290 @@ saveScore(data: ScoreData): Promise<void>
 
 // Obtener historial
 getUserHistory(dni: string): Promise<UserHistory | null>
+
+// Verificar acceso al simulacro (NUEVO)
+checkUserAccess(dni: string, email: string): Promise<AccessResponse>
+// Retorna: { canAccess, reason, attemptCount, isFirstAttempt }
+
+// Verificar acceso al banqueo (NUEVO)
+checkBanqueoAccess(dni: string, email: string): Promise<AccessResponse>
+// Solo usuarios confirmados pueden acceder
+
+// Obtener preguntas de banqueo (NUEVO)
+fetchBanqueoQuestions(course: string, count: number): Promise<Question[]>
+// count: 10, 15 o 20
 ```
+
+---
+
+## Solución de Problemas Comunes
+
+### Error "Acción no válida" en la API
+
+Si recibes este error, significa que el código de Google Apps Script no está actualizado.
+
+**Solución:**
+1. Ir a [script.google.com](https://script.google.com)
+2. Abrir tu proyecto de Apps Script
+3. Copiar el contenido actualizado de `google-apps-script/api.gs`
+4. Guardar y desplegar nueva versión:
+   - Implementar > Administrar implementaciones > Crear nueva versión
+   - O: Implementar > Nueva implementación
+
+### Fechas aparecen como fracciones en Google Sheets
+
+Cuando ingresas valores como `7/4` en Google Sheets, se interpretan como fechas.
+
+**Solución:**
+1. Seleccionar las columnas afectadas
+2. Formato > Número > Texto sin formato
+3. O prefija el valor con apóstrofe: `'7/4`
+
+### Error "Cannot find namespace 'NodeJS'" en build
+
+Este error ocurre porque `NodeJS.Timeout` no existe en el entorno del navegador.
+
+**Solución:**
+```typescript
+// ❌ Incorrecto (solo Node.js)
+let interval: NodeJS.Timeout;
+
+// ✅ Correcto (compatible con navegador)
+let interval: ReturnType<typeof setInterval> | undefined;
+```
+
+### GitHub Actions deployment falla
+
+Si el deployment falla en GitHub Actions:
+
+1. Verificar que los **GitHub Secrets** estén configurados:
+   - Settings > Secrets and variables > Actions
+   - Agregar: `VITE_API_URL` con la URL de tu Apps Script
+
+2. Verificar que GitHub Pages esté habilitado:
+   - Settings > Pages
+   - Source: **GitHub Actions**
+
+### API no responde o da CORS error
+
+1. Verificar que la URL en `.env` termine en `/exec` (no `/dev`)
+2. Verificar que el Apps Script esté desplegado como:
+   - Ejecutar como: **Yo**
+   - Quién tiene acceso: **Cualquier persona**
+
+---
+
+## Flujo Detallado de Control de Acceso
+
+### Tablas Involucradas
+
+```
+┌─────────────┐      ┌──────────────────┐      ┌─────────────┐
+│  usuarios   │      │ historial_puntajes │      │ confirmado  │
+├─────────────┤      ├──────────────────┤      ├─────────────┤
+│ DNI         │      │ DNI              │      │ DNI         │
+│ Nombre      │      │ Fecha            │      │ Nombre      │
+│ Email       │      │ Área             │      │ Email       │
+│ Celular     │      │ Puntaje          │      └─────────────┘
+│ Proceso     │      │ Correctas        │
+│ Área        │      │ ...              │
+│ Carrera     │      └──────────────────┘
+└─────────────┘
+```
+
+### Algoritmo de Verificación
+
+```javascript
+function checkUserAccess(dni, email) {
+  // 1. ¿Existe en tabla 'usuarios'?
+  if (!existsInUsuarios) {
+    return { canAccess: true, isFirstAttempt: true };
+    // → Primer simulacro GRATIS
+  }
+
+  // 2. ¿Intento de fraude? (DNI con diferente email)
+  if (dniExistsWithDifferentEmail || emailExistsWithDifferentDni) {
+    return { canAccess: false, reason: 'fraud' };
+  }
+
+  // 3. ¿Está en tabla 'confirmado'?
+  if (existsInConfirmado) {
+    return { canAccess: true, reason: 'confirmed' };
+    // → Acceso ilimitado
+  }
+
+  // 4. Usuario existe pero NO confirmado
+  return { canAccess: false, reason: 'not_confirmed' };
+  // → Debe contactar por WhatsApp
+}
+```
+
+### Mensaje al Usuario Bloqueado
+
+```
+⚠️ Ya realizaste tu simulacro gratuito
+
+Para continuar practicando, comunícate con nosotros:
+📱 WhatsApp: +51 900 266 810
+```
+
+---
+
+## Configuración de Despliegue
+
+### GitHub Secrets Requeridos
+
+| Secret | Descripción | Ejemplo |
+|--------|-------------|---------|
+| `VITE_API_URL` | URL del Apps Script | `https://script.google.com/macros/s/ABC.../exec` |
+
+### Pasos para Configurar
+
+1. Ir a tu repositorio en GitHub
+2. Settings > Secrets and variables > Actions
+3. Clic en "New repository secret"
+4. Nombre: `VITE_API_URL`
+5. Valor: Tu URL de Apps Script (termina en `/exec`)
+
+### Archivo de Workflow
+
+El archivo `.github/workflows/deploy.yml` usa el secret así:
+
+```yaml
+- name: Build
+  env:
+    VITE_API_URL: ${{ secrets.VITE_API_URL }}
+  run: npm run build
+```
+
+---
+
+## Contacto WhatsApp
+
+El número de contacto para soporte y confirmación de usuarios es:
+
+**+51 900 266 810**
+
+Link directo: `https://wa.me/51900266810?text=Hola,%20quiero%20inscribirme%20en%20SimulaUNA`
+
+---
+
+## CEPREUNA - Simulacros por Semana (NUEVO)
+
+### Descripción
+
+Sistema integrado para practicar con los cuadernillos del CEPREUNA (Centro Pre-Universitario de la UNA):
+
+- **Simulacro CEPREUNA**: 60 preguntas usando hojas `CEPRE_` por área y semana
+- **Banqueo CEPREUNA**: Práctica por curso específico filtrando por semana
+
+### Hojas de Datos CEPREUNA
+
+Para cada asignatura, crear hojas con el prefijo `CEPRE_`:
+
+```
+CEPRE_Aritmética
+CEPRE_Álgebra
+CEPRE_Geometría
+...
+```
+
+**Columnas adicionales requeridas:**
+
+| Question Text | ... | AREA | SEMANA |
+|--------------|-----|------|--------|
+| ¿Cuál es...? | ... | ING | S1 |
+| ¿Cuál es...? | ... | BIO | S2 |
+| ¿Cuál es...? | ... | SOC | S1 |
+
+**Códigos de área:**
+- `ING` = Ingenierías
+- `BIO` = Biomédicas
+- `SOC` = Sociales
+
+**Formato de semana:** `S1`, `S2`, `S3`, ... `S16`
+
+### Flujo Simulacro CEPREUNA
+
+```
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│  Selección   │───►│   Quiz       │───►│  Resultados  │───►│  Revisión    │
+│  Área +      │    │  60 preguntas│    │  Puntaje +   │    │  Detallada   │
+│  Semana      │    │  CEPRE_      │    │  Gráficos    │    │              │
+└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
+```
+
+### Rutas CEPREUNA
+
+| Ruta | Componente | Descripción |
+|------|------------|-------------|
+| `/simulacro-cepreuna` | SimulacroCepreuna | Simulacro completo de 60 preguntas por área y semana |
+| `/banqueo-cepreuna` | BanqueoCepreuna | Práctica por curso y semana |
+
+### Idiomas (Inglés y Quechua)
+
+Para Inglés y Quechua y aimara, el sistema usa automáticamente las hojas `Banco_` históricas ya que no hay cuadernillos CEPRE específicos para estos cursos.
+
+---
+
+## Auto-Formateo de Preguntas (NUEVO)
+
+### Descripción
+
+El sistema detecta automáticamente patrones de numeración en el texto de las preguntas y agrega saltos de línea para mejorar la legibilidad.
+
+### Patrones Detectados
+
+| Patrón | Ejemplo Original | Resultado |
+|--------|-----------------|-----------|
+| Números romanos con punto | `pregunta. I. Primera II. Segunda` | Salto antes de `I.` y `II.` |
+| Números romanos con paréntesis | `siguiente: I) Primera II) Segunda` | Salto antes de `I)` y `II)` |
+| Letras pegadas al punto | `cosas.a. Opción.b. Otra` | Salto antes de `a.` y `b.` |
+| Letras después de dos puntos | `corresponda: a. Primera` | Salto antes de `a.` |
+
+### Reglas Anti-Falsos Positivos
+
+El algoritmo evita formatear incorrectamente casos como:
+
+| Caso | Texto | ¿Se formatea? | Razón |
+|------|-------|---------------|-------|
+| Fin de palabra | `empírica. Su definición...` | ❌ NO | Hay espacio entre "a" y el punto |
+| Error tipográfico | `verda d. La respuesta...` | ❌ NO | Hay espacio antes de "d" |
+| Lista real | `cosas.a. Racionalismo.b. Empirismo` | ✅ SÍ | Letra pegada al punto anterior |
+| Después de dos puntos | `corresponda: a. Primera opción` | ✅ SÍ | Patrón estándar de lista |
+
+### Implementación
+
+La función `formatQuestionTextAuto()` se aplica en:
+- `src/components/Question.tsx` - Quiz principal
+- `src/utils/formatText.ts` - Banqueo y Results
+
+```typescript
+// Ejemplo de patrones regex utilizados
+formatted.replace(/\.([a-e])\.(\s+)/g, '.<br><br><strong>$1.</strong>$2');
+formatted.replace(/([.:])(\s*)([IVX]{1,4})\.\s+/g, '$1<br><br><strong>$3.</strong> ');
+```
+
+### Aplicación en el Sistema
+
+El formateo se aplica automáticamente en:
+- ✅ Quiz (examen principal)
+- ✅ Results (revisión de respuestas)
+- ✅ Banqueo Histórico
+- ✅ Banqueo CEPREUNA
+- ✅ Simulacro CEPREUNA
+
+---
+
+## Versiones
+
+| Versión | Fecha | Cambios |
+|---------|-------|---------|
+| v1.0.0 | - | Versión inicial con simulacro completo |
+| v1.1.0 | - | Historial de puntajes, gráficos de evolución |
+| v1.2.0 | - | Banqueo Histórico por curso |
+| v1.3.0 | Dic 2024 | Control de acceso con confirmación, detección de fraude, justificaciones |
+| v1.4.0 | Dic 2024 | CEPREUNA: Simulacro y Banqueo por semana, Auto-formateo de preguntas |
 
 ---
 
@@ -786,6 +1084,6 @@ getUserHistory(dni: string): Promise<UserHistory | null>
 
 Desarrollado para la **Universidad Nacional del Altiplano - Puno, Perú**
 
-Plataforma: SimulaUNA v1.1.0
+Plataforma: SimulaUNA v1.4.0
 
 Preguntas reales de exámenes de admisión desde 1993 hasta el último proceso.

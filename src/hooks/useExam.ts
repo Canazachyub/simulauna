@@ -8,7 +8,7 @@ import type {
   ExamResult,
   AreaType
 } from '../types';
-import { getConfig, getQuestions, MOCK_CONFIG, generateMockQuestions } from '../services/api';
+import { getConfig, getQuestions, getCepreSimulacro, MOCK_CONFIG, generateMockQuestions } from '../services/api';
 import { calculateExamResult } from '../utils/calculations';
 
 // Determinar si usar mock o API real
@@ -58,6 +58,7 @@ export const useExamStore = create<ExamStore>((set, get) => ({
 
   // Cargar preguntas para un área específica
   loadQuestions: async (area: AreaType) => {
+    const { student } = get();
     set({ status: 'loading', error: null });
 
     try {
@@ -68,7 +69,14 @@ export const useExamStore = create<ExamStore>((set, get) => ({
         await new Promise(resolve => setTimeout(resolve, 1000));
         questions = generateMockQuestions(area);
       } else {
-        questions = await getQuestions(area);
+        // Si el proceso es CEPREUNA, usar las hojas CEPRE_
+        if (student?.processType === 'CEPREUNA') {
+          const result = await getCepreSimulacro(area);
+          questions = result.questions as Question[];
+        } else {
+          // Proceso GENERAL o EXTRAORDINARIO usa bancos históricos
+          questions = await getQuestions(area);
+        }
       }
 
       set({ questions, status: 'ready' });

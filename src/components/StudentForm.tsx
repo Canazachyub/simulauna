@@ -5,10 +5,7 @@ import { useExamStore } from '../hooks/useExam';
 import { validateDNI, validateName } from '../utils/calculations';
 import { registerUser, checkAccess } from '../services/api';
 import { AreaSelector } from './AreaSelector';
-import type { AreaType } from '../types';
-
-// Tipos de proceso de admisión
-type ProcessType = 'CEPREUNA' | 'GENERAL' | 'EXTRAORDINARIO';
+import type { AreaType, ProcessType } from '../types';
 
 // Carreras organizadas por área
 const CAREERS_BY_AREA: Record<AreaType, string[]> = {
@@ -206,7 +203,8 @@ export function StudentForm() {
     setStudent({
       dni: dni.trim(),
       fullName: fullName.trim().toUpperCase(),
-      area: area!
+      area: area!,
+      processType: processType!
     });
 
     setIsSubmitting(false);
