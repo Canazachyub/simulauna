@@ -79,7 +79,8 @@ const CEPRE_SUBJECT_SHEETS = {
   'Comunicación': 'CEPRE_Comunicación',
   'Comunicación y Literatura': 'CEPRE_ComunicaciónLiteratura',
   'Literatura': 'CEPRE_Literatura',
-  'Geografía': 'CEPRE_Geografía'
+  'Geografía': 'CEPRE_Geografía',
+  'Historia y Geografía': 'CEPRE_HistoriaGeografia'
 };
 
 // Cursos disponibles por área CEPREUNA (incluye Idiomas)
@@ -87,7 +88,7 @@ const CEPRE_COURSES_BY_AREA = {
   'ING': [
     'Aritmética', 'Álgebra', 'Geometría', 'Trigonometría',
     'Física', 'Química', 'Biología y Anatomía',
-    'Psicología y Filosofía', 'Historia', 'Educación Cívica',
+    'Psicología y Filosofía', 'Historia y Geografía', 'Educación Cívica',
     'Economía', 'Comunicación y Literatura',
     'Razonamiento Matemático', 'Razonamiento Verbal',
     'Inglés', 'Quechua y aimara'
@@ -95,7 +96,7 @@ const CEPRE_COURSES_BY_AREA = {
   'BIO': [
     'Aritmética', 'Matemática', 'Física', 'Química',
     'Biología', 'Anatomía', 'Psicología y Filosofía',
-    'Historia', 'Educación Cívica', 'Economía',
+    'Historia y Geografía', 'Educación Cívica', 'Economía',
     'Comunicación y Literatura', 'Razonamiento Matemático',
     'Razonamiento Verbal', 'Inglés', 'Quechua y aimara'
   ],
@@ -1010,8 +1011,14 @@ function getAvailableCourses() {
 function getCepreQuestions(course, area, semana, count) {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
 
-  // Validar curso
-  const sheetName = CEPRE_SUBJECT_SHEETS[course];
+  // Validar curso - usar mapeo según área si se proporciona
+  let sheetName;
+  if (area && area !== 'ALL') {
+    sheetName = mapSubjectToCepreSheet(course, area);
+  } else {
+    sheetName = CEPRE_SUBJECT_SHEETS[course];
+  }
+
   if (!sheetName) {
     return {
       error: 'Curso no válido para CEPREUNA',
@@ -1210,6 +1217,16 @@ function getCepreQuestionsForSimulacro(ss, subjectName, areaCode, semana, count,
  */
 function mapSubjectToCepreSheet(subjectName, areaCode) {
   // Casos especiales según área
+
+  // Historia y Geografía combinado para ING y BIO
+  if (subjectName === 'Historia' || subjectName === 'Geografía' || subjectName === 'Historia y Geografía') {
+    if (areaCode === 'ING' || areaCode === 'BIO') {
+      return 'CEPRE_HistoriaGeografia';
+    }
+    // SOC tiene Historia y Geografía separados
+    return CEPRE_SUBJECT_SHEETS[subjectName];
+  }
+
   if (subjectName === 'Biología y Anatomía') {
     if (areaCode === 'BIO') {
       // BIO tiene Biología y Anatomía separados - usar BiologíaAnatomía combinado

@@ -455,7 +455,7 @@ export const CEPRE_COURSES_BY_AREA: Record<'ING' | 'BIO' | 'SOC', string[]> = {
   'ING': [
     'Aritmética', 'Álgebra', 'Geometría', 'Trigonometría',
     'Física', 'Química', 'Biología y Anatomía',
-    'Psicología y Filosofía', 'Historia', 'Educación Cívica',
+    'Psicología y Filosofía', 'Historia y Geografía', 'Educación Cívica',
     'Economía', 'Comunicación y Literatura',
     'Razonamiento Matemático', 'Razonamiento Verbal',
     'Inglés', 'Quechua y aimara'
@@ -463,7 +463,7 @@ export const CEPRE_COURSES_BY_AREA: Record<'ING' | 'BIO' | 'SOC', string[]> = {
   'BIO': [
     'Aritmética', 'Matemática', 'Física', 'Química',
     'Biología', 'Anatomía', 'Psicología y Filosofía',
-    'Historia', 'Educación Cívica', 'Economía',
+    'Historia y Geografía', 'Educación Cívica', 'Economía',
     'Comunicación y Literatura', 'Razonamiento Matemático',
     'Razonamiento Verbal', 'Inglés', 'Quechua y aimara'
   ],

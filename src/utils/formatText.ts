@@ -1,7 +1,92 @@
 /**
  * Utilidades para formatear texto con HTML de Google Sheets
  * Soporta: <b>, <i>, <u>, <mark>, <br>, <sub>, <sup>, <img>
+ * Soporta: LaTeX con $...$ usando KaTeX
  */
+
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
+
+/**
+ * Preprocesa el LaTeX para restaurar comandos que perdieron la barra invertida
+ * Google Sheets y JSON pueden eliminar las barras invertidas
+ */
+function preprocessLatex(latex: string): string {
+  // Lista de comandos LaTeX - ordenados de mayor a menor longitud
+  // IMPORTANTE: Los comandos cortos como 'in' pueden estar dentro de otros como 'begin'
+  const latexCommands = [
+    'boldsymbol', 'displaystyle', 'leftrightarrow', 'Leftrightarrow',
+    'rightarrow', 'leftarrow', 'Rightarrow', 'Leftarrow',
+    'underbrace', 'overbrace', 'underline', 'overline', 'stackrel',
+    'scriptstyle', 'textstyle', 'emptyset', 'clubsuit', 'spadesuit',
+    'triangle', 'diamond', 'partial', 'epsilon', 'textrm', 'textbf',
+    'bmatrix', 'pmatrix', 'matrix', 'mathcal', 'mathbf', 'mathit',
+    'mathrm', 'mathsf', 'mathtt', 'forall', 'exists', 'subset',
+    'supset', 'approx', 'notin', 'equiv', 'wedge', 'nabla', 'infty',
+    'theta', 'lambda', 'sigma', 'omega', 'alpha', 'gamma', 'delta',
+    'times', 'cdot', 'sqrt', 'frac', 'text', 'hbar', 'quad', 'qquad',
+    'begin', 'cases', 'angle', 'space', 'hspace', 'vspace', 'binom',
+    'tilde', 'ddot', 'star', 'circ', 'prod', 'beta', 'zeta',
+    'iota', 'kappa', 'right', 'left', 'leq', 'geq', 'neq', 'cup',
+    'cap', 'vee', 'neg', 'sum', 'int', 'lim', 'log', 'sin', 'cos',
+    'tan', 'end', 'div', 'phi', 'psi', 'rho', 'tau', 'chi', 'eta',
+    'hat', 'bar', 'vec', 'dot', 'ell', 'aleph', 'wp', 'Re', 'Im',
+    'pi', 'mu', 'nu', 'xi', 'pm', 'mp', 'ln'
+    // NOTA: 'in' removido porque causa problemas con 'begin' → 'beg\in'
+  ];
+
+  let result = latex;
+
+  // Restaurar barras invertidas para comandos que las perdieron
+  for (const cmd of latexCommands) {
+    // Buscar comando que NO esté precedido por \ ni sea parte de otra palabra
+    // Debe estar seguido por { [ ( o espacio
+    const pattern = new RegExp(`(^|[^\\\\a-zA-Z])(${cmd})([{\\[\\s(]|$)`, 'g');
+    result = result.replace(pattern, `$1\\${cmd}$3`);
+  }
+
+  // Caso especial: \in - solo si está solo (precedido por espacio/inicio y seguido por espacio/fin)
+  result = result.replace(/(^|[^\\a-zA-Z])(in)(\s|$)/g, '$1\\in$3');
+
+  return result;
+}
+
+/**
+ * Renderiza expresiones LaTeX en el texto
+ * Detecta patrones $...$ y los convierte a HTML usando KaTeX
+ *
+ * @param text - El texto que puede contener expresiones LaTeX
+ * @returns El texto con LaTeX renderizado como HTML
+ */
+function renderLatex(text: string): string {
+  if (!text || !text.includes('$')) return text;
+
+  // Patrón para detectar $...$ (LaTeX inline)
+  // No debe capturar $$ (display mode) ni $ solo
+  const latexPattern = /\$([^$]+)\$/g;
+
+  return text.replace(latexPattern, (match, latex) => {
+    try {
+      // Preprocesar para restaurar barras invertidas perdidas
+      const processedLatex = preprocessLatex(latex.trim());
+
+      // Renderizar con KaTeX
+      return katex.renderToString(processedLatex, {
+        throwOnError: false,
+        displayMode: false,
+        strict: false,
+        trust: true,
+        macros: {
+          "\\text": "\\textrm"
+        }
+      });
+    } catch (error) {
+      // Si hay error, mostrar el texto original
+      console.warn('Error renderizando LaTeX:', latex, error);
+      return match;
+    }
+  });
+}
 
 /**
  * Formatea automáticamente el texto detectando patrones de numeración
@@ -45,27 +130,36 @@ function formatQuestionTextAuto(text: string): string {
  * Renderiza texto con formato HTML de Google Sheets de forma segura
  * Permite solo las etiquetas HTML soportadas por Google Sheets
  * Incluye formateo automático de numeración (I., II., a., b., etc.)
+ * Incluye soporte para LaTeX con $...$
  *
- * @param text - El texto a formatear (puede contener HTML)
- * @returns El texto con HTML sanitizado listo para renderizar
+ * @param text - El texto a formatear (puede contener HTML y LaTeX)
+ * @returns El texto con HTML sanitizado y LaTeX renderizado
  */
 export function renderFormattedText(text: string | null | undefined): string {
   if (!text) return '';
 
-  // Lista de etiquetas permitidas (las que soporta Google Sheets)
-  const allowedTags = ['b', 'i', 'u', 'mark', 'br', 'sub', 'sup', 'img', 'strong', 'em'];
+  // Lista de etiquetas permitidas (las que soporta Google Sheets + KaTeX)
+  const allowedTags = ['b', 'i', 'u', 'mark', 'br', 'sub', 'sup', 'img', 'strong', 'em',
+    // Etiquetas de KaTeX
+    'span', 'math', 'semantics', 'mrow', 'mi', 'mo', 'mn', 'msup', 'msub', 'mfrac',
+    'msqrt', 'mroot', 'mtable', 'mtr', 'mtd', 'mtext', 'annotation', 'svg', 'path',
+    'line', 'g', 'rect', 'use'];
 
   // Convertir el texto a string si no lo es
   let result = String(text);
 
-  // Aplicar formateo automático de numeración ANTES del procesamiento
+  // 1. Aplicar formateo automático de numeración ANTES de LaTeX
+  // (para no romper los SVGs de KaTeX)
   result = formatQuestionTextAuto(result);
 
-  // Reemplazar saltos de línea con <br> si no hay HTML existente
+  // 2. Reemplazar saltos de línea con <br> ANTES de LaTeX
   result = result.replace(/\n/g, '<br>');
 
-  // Sanitizar: eliminar etiquetas no permitidas pero mantener el contenido
-  // Expresión regular para encontrar todas las etiquetas HTML
+  // 3. Renderizar LaTeX ($...$) - esto genera HTML/SVG que no debe modificarse
+  result = renderLatex(result);
+
+  // 4. Sanitizar: eliminar etiquetas no permitidas pero mantener el contenido
+  // Pero permitir clases de KaTeX
   result = result.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>/gi, (match, tagName) => {
     const tag = tagName.toLowerCase();
 
@@ -93,7 +187,8 @@ export function renderFormattedText(text: string | null | undefined): string {
     return '';
   });
 
-  // Sanitizar atributos peligrosos (onclick, onerror, etc.)
+  // 5. Sanitizar atributos peligrosos (onclick, onerror, etc.)
+  // Pero NO eliminar atributos de KaTeX (class, style, etc.)
   result = result.replace(/\s*on\w+\s*=\s*["'][^"']*["']/gi, '');
   result = result.replace(/\s*javascript:/gi, '');
 

@@ -2,6 +2,8 @@ import { CheckCircle, XCircle } from 'lucide-react';
 import type { Question as QuestionType } from '../types';
 import { indexToLetter } from '../utils/calculations';
 import clsx from 'clsx';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 /**
  * REGLAS DE FORMATO PARA EL TEXTO DE LAS PREGUNTAS:
@@ -32,6 +34,75 @@ import clsx from 'clsx';
  *    - Puedes combinar: <b><u>texto negrita y subrayado</u></b>
  *    - Ejemplo: "I. <mark>b∈A</mark> II. <b>{b, c} ⊂ A</b>"
  */
+
+/**
+ * Preprocesa el LaTeX para restaurar comandos que perdieron la barra invertida
+ * Google Sheets y JSON pueden eliminar las barras invertidas
+ */
+function preprocessLatex(latex: string): string {
+  // Lista ordenada de mayor a menor longitud
+  // IMPORTANTE: 'in' removido porque causa problemas con 'begin' → 'beg\in'
+  const latexCommands = [
+    'boldsymbol', 'displaystyle', 'leftrightarrow', 'Leftrightarrow',
+    'rightarrow', 'leftarrow', 'Rightarrow', 'Leftarrow',
+    'underbrace', 'overbrace', 'underline', 'overline', 'stackrel',
+    'scriptstyle', 'textstyle', 'emptyset', 'clubsuit', 'spadesuit',
+    'triangle', 'diamond', 'partial', 'epsilon', 'textrm', 'textbf',
+    'bmatrix', 'pmatrix', 'matrix', 'mathcal', 'mathbf', 'mathit',
+    'mathrm', 'mathsf', 'mathtt', 'forall', 'exists', 'subset',
+    'supset', 'approx', 'notin', 'equiv', 'wedge', 'nabla', 'infty',
+    'theta', 'lambda', 'sigma', 'omega', 'alpha', 'gamma', 'delta',
+    'times', 'cdot', 'sqrt', 'frac', 'text', 'hbar', 'quad', 'qquad',
+    'begin', 'cases', 'angle', 'space', 'hspace', 'vspace', 'binom',
+    'tilde', 'ddot', 'star', 'circ', 'prod', 'beta', 'zeta',
+    'iota', 'kappa', 'right', 'left', 'leq', 'geq', 'neq', 'cup',
+    'cap', 'vee', 'neg', 'sum', 'int', 'lim', 'log', 'sin', 'cos',
+    'tan', 'end', 'div', 'phi', 'psi', 'rho', 'tau', 'chi', 'eta',
+    'hat', 'bar', 'vec', 'dot', 'ell', 'aleph', 'wp', 'Re', 'Im',
+    'pi', 'mu', 'nu', 'xi', 'pm', 'mp', 'ln'
+  ];
+
+  let result = latex;
+  for (const cmd of latexCommands) {
+    // Sin lookbehind para compatibilidad con todos los navegadores
+    // Debe NO estar precedido por \ ni ser parte de otra palabra
+    const pattern = new RegExp(`(^|[^\\\\a-zA-Z])(${cmd})([{\\[\\s(]|$)`, 'g');
+    result = result.replace(pattern, `$1\\${cmd}$3`);
+  }
+
+  // Caso especial: \in - solo si está solo (precedido por espacio/inicio y seguido por espacio/fin)
+  result = result.replace(/(^|[^\\a-zA-Z])(in)(\s|$)/g, '$1\\in$3');
+
+  return result;
+}
+
+/**
+ * Renderiza expresiones LaTeX en el texto
+ * Detecta patrones $...$ y los convierte a HTML usando KaTeX
+ */
+function renderLatex(text: string): string {
+  if (!text || !text.includes('$')) return text;
+
+  const latexPattern = /\$([^$]+)\$/g;
+
+  return text.replace(latexPattern, (match, latex) => {
+    try {
+      const processedLatex = preprocessLatex(latex.trim());
+      return katex.renderToString(processedLatex, {
+        throwOnError: false,
+        displayMode: false,
+        strict: false,
+        trust: true,
+        macros: {
+          "\\text": "\\textrm"
+        }
+      });
+    } catch (error) {
+      console.warn('Error renderizando LaTeX:', latex, error);
+      return match;
+    }
+  });
+}
 
 /**
  * Formatea automáticamente el texto detectando patrones de numeración
@@ -71,7 +142,7 @@ function formatQuestionTextAuto(text: string): string {
   return formatted;
 }
 
-// Función para parsear el texto con formato HTML básico
+// Función para parsear el texto con formato HTML básico y LaTeX
 function parseFormattedText(text: unknown): string {
   // Manejar valores null, undefined, o no-string
   if (text === null || text === undefined) return '';
@@ -81,19 +152,28 @@ function parseFormattedText(text: unknown): string {
 
   if (!textStr) return '';
 
-  // Aplicar formateo automático de numeración ANTES del procesamiento HTML
-  const autoFormatted = formatQuestionTextAuto(textStr);
+  // 1. Aplicar formateo automático de numeración ANTES de LaTeX
+  // (para no romper los SVGs de KaTeX)
+  let result = formatQuestionTextAuto(textStr);
 
-  // Permitir solo tags seguros
-  const allowedTags = ['b', 'strong', 'i', 'em', 'u', 'mark', 'br', 'sub', 'sup'];
+  // 2. Reemplazar saltos de línea ANTES de LaTeX
+  result = result.replace(/\n/g, '<br>');
 
-  // Escapar todo excepto los tags permitidos
-  let result = autoFormatted
-    // Convertir saltos de línea a <br>
-    .replace(/\n/g, '<br>')
+  // 3. Renderizar LaTeX ($...$) - genera HTML/SVG que no debe modificarse
+  result = renderLatex(result);
+
+  // 4. Permitir tags seguros (incluyendo los de KaTeX)
+  const allowedTags = ['b', 'strong', 'i', 'em', 'u', 'mark', 'br', 'sub', 'sup',
+    // Tags de KaTeX
+    'span', 'math', 'semantics', 'mrow', 'mi', 'mo', 'mn', 'msup', 'msub', 'mfrac',
+    'msqrt', 'mroot', 'mtable', 'mtr', 'mtd', 'mtext', 'annotation', 'svg', 'path',
+    'line', 'g', 'rect', 'use'];
+
+  // 5. Procesar HTML (sin tocar el contenido de KaTeX)
+  result = result
     // Agregar clase al mark para el resaltado amarillo
     .replace(/<mark>/gi, '<mark class="bg-yellow-200 px-0.5 rounded">')
-    // Limpiar tags no permitidos
+    // Limpiar tags no permitidos (pero mantener los de KaTeX)
     .replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, (match, tag) => {
       return allowedTags.includes(tag.toLowerCase()) ? match : '';
     });
