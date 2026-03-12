@@ -23,6 +23,7 @@ Plataforma web para realizar simulacros del examen de admisión de la **Universi
 - [Flujo Detallado de Control de Acceso](#flujo-detallado-de-control-de-acceso)
 - [Configuración de Despliegue](#configuración-de-despliegue)
 - [CEPREUNA - Simulacros por Semana](#cepreuna---simulacros-por-semana-nuevo)
+- [Banqueo por Tema](#banqueo-por-tema-nuevo)
 - [Auto-Formateo de Preguntas](#auto-formateo-de-preguntas-nuevo)
 - [Versiones](#versiones)
 
@@ -64,6 +65,13 @@ Plataforma web para realizar simulacros del examen de admisión de la **Universi
 - **Gráfico de línea**: Evolución de puntajes a lo largo del tiempo
 - **Tabla de historial**: Fecha, Área, Correctas, Puntaje de cada intento
 - **Indicador de mejor puntaje**: Trofeo en el puntaje más alto
+
+### Banqueo por Tema (NUEVO)
+- **Estudio enfocado** por curso y tema específico
+- **Selección flexible** de cantidad de preguntas: 10, 25, 50 o 100
+- **Normalización automática** de nombres de cursos (evita duplicados)
+- **Cache optimizado** para carga rápida (CacheService 30 min)
+- **Filtrado inteligente** de valores inválidos en la base de datos
 
 ### Técnicas
 - **Modo mock** para desarrollo sin backend
@@ -123,17 +131,7 @@ Plataforma web para realizar simulacros del examen de admisión de la **Universi
 
 ### Endpoints de la API
 
-| Endpoint | Parámetros | Descripción |
-|----------|------------|-------------|
-| `?action=config` | - | Obtiene configuración de todas las áreas |
-| `?action=questions&area=X` | area | Obtiene 60 preguntas aleatorias del área X |
-| `?action=register` | dni, fullName, email, phone, processType, area, career | Registra usuario (sin duplicar por DNI) |
-| `?action=saveScore` | dni, score, maxScore, area, correct, total | Guarda puntaje en historial |
-| `?action=getHistory&dni=X` | dni | Obtiene historial de puntajes del usuario |
-| `?action=checkAccess&dni=X&email=Y` | dni, email | Verifica si puede dar el simulacro |
-| `?action=checkBanqueoAccess&dni=X&email=Y` | dni, email | Verifica si puede acceder al banqueo |
-| `?action=getBanqueoQuestions&course=X&count=Y` | course, count | Obtiene preguntas del banqueo por curso |
-| `?action=test` | - | Verifica conexión con la API |
+> **Nota:** La documentación detallada de endpoints se mantiene de forma privada. Consultar el código fuente en `google-apps-script/api.gs` y `src/services/api.ts` para referencia.
 
 ---
 
@@ -151,6 +149,9 @@ simulauna/
 │   │   ├── Question.tsx      # Pregunta individual con formato HTML
 │   │   ├── Results.tsx       # Resultados con 4 tabs (Revisión, Gráfico, Detalle, Historial)
 │   │   ├── Banqueo.tsx       # Práctica por curso con login y justificaciones
+│   │   ├── BanqueoCepreuna.tsx # Banqueo específico CEPREUNA
+│   │   ├── BanqueoPorTema.tsx  # Banqueo por tema con normalización
+│   │   ├── SimulacroCepreuna.tsx # Simulacro CEPREUNA por semana
 │   │   ├── PDFGenerator.tsx  # Generador de reporte PDF
 │   │   └── index.ts          # Exports
 │   │
@@ -247,7 +248,7 @@ Crear un spreadsheet con las siguientes hojas:
 
 ### 2. Configurar Google Apps Script
 
-1. Ir a [script.google.com](https://script.google.com)
+1. Ir a Google Apps Script
 2. Crear nuevo proyecto
 3. Copiar el contenido de `google-apps-script/api.gs`
 4. Actualizar `SPREADSHEET_ID` con el ID de tu Google Sheets:
@@ -278,7 +279,7 @@ cp .env.example .env
 Editar `.env`:
 ```env
 # URL de tu Google Apps Script desplegado
-VITE_API_URL=https://script.google.com/macros/s/TU_SCRIPT_ID/exec
+VITE_API_URL=[API_URL_AQUÍ]
 
 # Usar datos mock (true para desarrollo, false para producción)
 VITE_USE_MOCK=true
@@ -423,6 +424,9 @@ npm run build
 | `/examen` | Quiz | Interfaz del examen con cronómetro y navegador |
 | `/resultados` | Results | Resultados con 4 tabs: Revisión, Gráfico, Detalle, Historial |
 | `/banqueo` | Banqueo | Práctica por curso (solo usuarios confirmados) |
+| `/banqueo-cepreuna` | BanqueoCepreuna | Banqueo específico del CEPREUNA |
+| `/banqueo-tema` | BanqueoPorTema | Práctica por curso y tema específico |
+| `/simulacro-cepreuna` | SimulacroCepreuna | Simulacro completo del CEPREUNA |
 
 ---
 
@@ -541,13 +545,6 @@ Agregar usuarios que tienen acceso ilimitado:
 
 > **Importante:** AMBOS (DNI + Email) deben coincidir para que el usuario esté confirmado.
 
-### Endpoints de Acceso
-
-| Endpoint | Descripción |
-|----------|-------------|
-| `?action=checkAccess&dni=X&email=Y` | Verifica si puede dar el simulacro |
-| `?action=checkBanqueoAccess&dni=X&email=Y` | Verifica si puede acceder al banqueo |
-
 ---
 
 ## Banqueo Histórico (NUEVO)
@@ -575,12 +572,6 @@ Modo de práctica que permite a los usuarios practicar con preguntas de un curso
 │              │    │  Cantidad    │    │  preguntas   │    │              │
 └──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
 ```
-
-### Endpoint
-
-| Endpoint | Parámetros | Descripción |
-|----------|------------|-------------|
-| `?action=getBanqueoQuestions&course=X&count=Y` | course, count (10/15/20) | Obtiene preguntas aleatorias del curso |
 
 ---
 
@@ -614,7 +605,7 @@ El proyecto incluye un workflow de GitHub Actions (`.github/workflows/deploy.yml
 ### Variables de Entorno en Producción
 
 En GitHub, configurar secrets:
-- `VITE_API_URL`: URL del Google Apps Script
+- `VITE_API_URL`: URL del Google Apps Script desplegado
 - `VITE_USE_MOCK`: `false`
 
 ---
@@ -772,7 +763,7 @@ El sistema soporta HTML básico en el texto de preguntas y opciones:
 
 7. **Historial**: Se guarda automáticamente al finalizar cada examen. Se obtiene con un delay de 500ms después de guardar para asegurar que Google Sheets procesó el registro.
 
-8. **WhatsApp**: Link de contacto para reportar errores y confirmación: `https://wa.me/51900266810`
+8. **WhatsApp**: Link de contacto para reportar errores y confirmación: [NÚMERO PRIVADO]
 
 ---
 
@@ -794,17 +785,14 @@ saveScore(data: ScoreData): Promise<void>
 // Obtener historial
 getUserHistory(dni: string): Promise<UserHistory | null>
 
-// Verificar acceso al simulacro (NUEVO)
+// Verificar acceso al simulacro
 checkUserAccess(dni: string, email: string): Promise<AccessResponse>
-// Retorna: { canAccess, reason, attemptCount, isFirstAttempt }
 
-// Verificar acceso al banqueo (NUEVO)
+// Verificar acceso al banqueo
 checkBanqueoAccess(dni: string, email: string): Promise<AccessResponse>
-// Solo usuarios confirmados pueden acceder
 
-// Obtener preguntas de banqueo (NUEVO)
+// Obtener preguntas de banqueo
 fetchBanqueoQuestions(course: string, count: number): Promise<Question[]>
-// count: 10, 15 o 20
 ```
 
 ---
@@ -816,7 +804,7 @@ fetchBanqueoQuestions(course: string, count: number): Promise<Question[]>
 Si recibes este error, significa que el código de Google Apps Script no está actualizado.
 
 **Solución:**
-1. Ir a [script.google.com](https://script.google.com)
+1. Ir a Google Apps Script
 2. Abrir tu proyecto de Apps Script
 3. Copiar el contenido actualizado de `google-apps-script/api.gs`
 4. Guardar y desplegar nueva versión:
@@ -838,10 +826,10 @@ Este error ocurre porque `NodeJS.Timeout` no existe en el entorno del navegador.
 
 **Solución:**
 ```typescript
-// ❌ Incorrecto (solo Node.js)
+// Incorrecto (solo Node.js)
 let interval: NodeJS.Timeout;
 
-// ✅ Correcto (compatible con navegador)
+// Correcto (compatible con navegador)
 let interval: ReturnType<typeof setInterval> | undefined;
 ```
 
@@ -888,36 +876,20 @@ Si el deployment falla en GitHub Actions:
 
 ```javascript
 function checkUserAccess(dni, email) {
-  // 1. ¿Existe en tabla 'usuarios'?
-  if (!existsInUsuarios) {
-    return { canAccess: true, isFirstAttempt: true };
-    // → Primer simulacro GRATIS
-  }
-
-  // 2. ¿Intento de fraude? (DNI con diferente email)
-  if (dniExistsWithDifferentEmail || emailExistsWithDifferentDni) {
-    return { canAccess: false, reason: 'fraud' };
-  }
-
-  // 3. ¿Está en tabla 'confirmado'?
-  if (existsInConfirmado) {
-    return { canAccess: true, reason: 'confirmed' };
-    // → Acceso ilimitado
-  }
-
-  // 4. Usuario existe pero NO confirmado
-  return { canAccess: false, reason: 'not_confirmed' };
-  // → Debe contactar por WhatsApp
+  // 1. Primer simulacro es GRATIS
+  // 2. Detecta fraude (DNI con diferente email)
+  // 3. Verifica si está en tabla 'confirmado'
+  // 4. Usuario no confirmado queda bloqueado
+  // Ver google-apps-script/api.gs para implementación completa
 }
 ```
 
 ### Mensaje al Usuario Bloqueado
 
 ```
-⚠️ Ya realizaste tu simulacro gratuito
+Ya realizaste tu simulacro gratuito.
 
-Para continuar practicando, comunícate con nosotros:
-📱 WhatsApp: +51 900 266 810
+Para continuar practicando, comunícate con nosotros por WhatsApp: [NÚMERO PRIVADO]
 ```
 
 ---
@@ -928,7 +900,7 @@ Para continuar practicando, comunícate con nosotros:
 
 | Secret | Descripción | Ejemplo |
 |--------|-------------|---------|
-| `VITE_API_URL` | URL del Apps Script | `https://script.google.com/macros/s/ABC.../exec` |
+| `VITE_API_URL` | URL del Apps Script | `[API_URL_AQUÍ]` |
 
 ### Pasos para Configurar
 
@@ -955,9 +927,7 @@ El archivo `.github/workflows/deploy.yml` usa el secret así:
 
 El número de contacto para soporte y confirmación de usuarios es:
 
-**+51 900 266 810**
-
-Link directo: `https://wa.me/51900266810?text=Hola,%20quiero%20inscribirme%20en%20SimulaUNA`
+**[NÚMERO PRIVADO]**
 
 ---
 
@@ -1019,6 +989,106 @@ Para Inglés y Quechua y aimara, el sistema usa automáticamente las hojas `Banc
 
 ---
 
+## Banqueo por Tema (NUEVO)
+
+### Descripción
+
+Sistema de estudio enfocado que permite practicar preguntas filtradas por curso y tema específico. Incluye normalización automática de nombres de cursos y cache para optimizar el rendimiento.
+
+### Flujo de Banqueo por Tema
+
+```
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│   Login      │───►│  Selección   │───►│   Quiz       │───►│  Resultados  │
+│  DNI + Email │    │  Curso +     │    │  10/25/50/100│    │  + Justif.   │
+│              │    │  Tema +      │    │  preguntas   │    │              │
+│              │    │  Cantidad    │    │              │    │              │
+└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
+```
+
+### Normalización de Cursos
+
+El sistema normaliza automáticamente los nombres de cursos para evitar duplicados causados por variaciones en la base de datos:
+
+```javascript
+// Mapeo de cursos canónicos
+const CURSOS_CANONICOS = {
+  'algebra': 'Álgebra',
+  'matematica': 'Matemática',
+  'matematicas': 'Matemática',           // Unificación
+  'geometria y trigonometria': 'Geometría', // Unificación
+  'filosofia': 'Psicología y Filosofía', // Unificación
+  'psicologia': 'Psicología y Filosofía',
+  'historia universal': 'Historia',       // Unificación
+  'biologia y anatomia': 'Biología y Anatomía',
+  // ...más mappings
+};
+
+// Valores inválidos filtrados
+const CURSOS_INVALIDOS = ['72', 'curso', ''];
+```
+
+**Ejemplos de normalización:**
+
+| Valor Original | Valor Normalizado |
+|----------------|-------------------|
+| `ALGEBRA` | `Álgebra` |
+| `Álgebra` | `Álgebra` |
+| `ÁLGEBRA` | `Álgebra` |
+| `matematicas` | `Matemática` |
+| `historia universal` | `Historia` |
+| `filosofia` | `Psicología y Filosofía` |
+
+### Sistema de Cache
+
+Se implementó CacheService de Google Apps Script para mejorar tiempos de respuesta:
+
+```javascript
+// Cache para getCursosConTemas()
+const cache = CacheService.getScriptCache();
+const cacheKey = 'cursos_con_temas_v2';
+cache.put(cacheKey, JSON.stringify(result), 1800); // 30 minutos
+
+// Cache para getTemasPorCurso()
+const cacheKey = 'temas_' + cursoCanonical.replace(/\s/g, '_');
+cache.put(cacheKey, JSON.stringify(result), 1800); // 30 minutos
+```
+
+**Rendimiento:**
+- Primera carga: ~2-5 segundos (consulta a Google Sheets)
+- Cargas siguientes: < 100ms (desde cache)
+- Expiración: 30 minutos
+
+### Tipos TypeScript
+
+```typescript
+interface CursoConTemas {
+  curso: string;
+  cantidadTemas: number;
+  totalPreguntas: number;
+}
+
+interface TemaInfo {
+  tema: string;
+  cantidadSubtemas: number;
+  totalPreguntas: number;
+}
+
+// Respuesta del API
+interface BanqueoTemaResponse {
+  questions: BanqueoQuestion[];
+  total: number;
+}
+```
+
+### Acceso
+
+El acceso al Banqueo por Tema está controlado por la función `checkBanqueoAccess`:
+- Solo usuarios en la hoja `acceso_banqueo` pueden acceder
+- Se verifica por DNI
+
+---
+
 ## Auto-Formateo de Preguntas (NUEVO)
 
 ### Descripción
@@ -1040,10 +1110,10 @@ El algoritmo evita formatear incorrectamente casos como:
 
 | Caso | Texto | ¿Se formatea? | Razón |
 |------|-------|---------------|-------|
-| Fin de palabra | `empírica. Su definición...` | ❌ NO | Hay espacio entre "a" y el punto |
-| Error tipográfico | `verda d. La respuesta...` | ❌ NO | Hay espacio antes de "d" |
-| Lista real | `cosas.a. Racionalismo.b. Empirismo` | ✅ SÍ | Letra pegada al punto anterior |
-| Después de dos puntos | `corresponda: a. Primera opción` | ✅ SÍ | Patrón estándar de lista |
+| Fin de palabra | `empírica. Su definición...` | NO | Hay espacio entre "a" y el punto |
+| Error tipográfico | `verda d. La respuesta...` | NO | Hay espacio antes de "d" |
+| Lista real | `cosas.a. Racionalismo.b. Empirismo` | SI | Letra pegada al punto anterior |
+| Después de dos puntos | `corresponda: a. Primera opción` | SI | Patrón estándar de lista |
 
 ### Implementación
 
@@ -1060,11 +1130,11 @@ formatted.replace(/([.:])(\s*)([IVX]{1,4})\.\s+/g, '$1<br><br><strong>$3.</stron
 ### Aplicación en el Sistema
 
 El formateo se aplica automáticamente en:
-- ✅ Quiz (examen principal)
-- ✅ Results (revisión de respuestas)
-- ✅ Banqueo Histórico
-- ✅ Banqueo CEPREUNA
-- ✅ Simulacro CEPREUNA
+- Quiz (examen principal)
+- Results (revisión de respuestas)
+- Banqueo Histórico
+- Banqueo CEPREUNA
+- Simulacro CEPREUNA
 
 ---
 
@@ -1077,6 +1147,7 @@ El formateo se aplica automáticamente en:
 | v1.2.0 | - | Banqueo Histórico por curso |
 | v1.3.0 | Dic 2024 | Control de acceso con confirmación, detección de fraude, justificaciones |
 | v1.4.0 | Dic 2024 | CEPREUNA: Simulacro y Banqueo por semana, Auto-formateo de preguntas |
+| v1.5.0 | Dic 2024 | Banqueo por Tema: normalización de cursos, CacheService, interfaz simplificada |
 
 ---
 
@@ -1084,6 +1155,6 @@ El formateo se aplica automáticamente en:
 
 Desarrollado para la **Universidad Nacional del Altiplano - Puno, Perú**
 
-Plataforma: SimulaUNA v1.4.0
+Plataforma: SimulaUNA v1.5.0
 
 Preguntas reales de exámenes de admisión desde 1993 hasta el último proceso.

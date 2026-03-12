@@ -8,7 +8,30 @@ export type { AreaType } from '../types';
 // ============================================
 
 // URL del Google Apps Script desplegado como aplicación web
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://script.google.com/macros/s/AKfycbxsEsavAu6Hb63p6rxIkfPcT5EDnoiG1JUXsW5LzDTfRNFEWWYi5XKVMbDLqDsRVR0e_A/exec';
+// IMPORTANT: The API URL must be set via the VITE_API_URL environment variable.
+// Never hardcode the URL here — it would be visible in the deployed JavaScript bundle.
+const API_BASE_URL = import.meta.env.VITE_API_URL as string;
+const API_TOKEN = import.meta.env.VITE_API_TOKEN as string;
+
+if (!API_BASE_URL) {
+  throw new Error('VITE_API_URL environment variable is not set. The application cannot connect to the API.');
+}
+
+/**
+ * Construye la URL de la API con el token de autenticación incluido
+ */
+function buildApiUrl(action: string, extraParams?: Record<string, string>): string {
+  const params = new URLSearchParams({ action });
+  if (API_TOKEN) {
+    params.set('token', API_TOKEN);
+  }
+  if (extraParams) {
+    for (const [key, value] of Object.entries(extraParams)) {
+      params.set(key, value);
+    }
+  }
+  return `${API_BASE_URL}?${params.toString()}`;
+}
 
 // Timeout para las peticiones (30 segundos)
 const REQUEST_TIMEOUT = 30000;
@@ -49,7 +72,7 @@ async function fetchWithTimeout(url: string, timeout: number = REQUEST_TIMEOUT):
  */
 export async function getConfig(): Promise<Config> {
   try {
-    const url = `${API_BASE_URL}?action=config`;
+    const url = buildApiUrl('config');
     const response = await fetchWithTimeout(url);
 
     if (!response.ok) {
@@ -78,7 +101,7 @@ export async function getConfig(): Promise<Config> {
  */
 export async function getQuestions(area: AreaType): Promise<Question[]> {
   try {
-    const url = `${API_BASE_URL}?action=questions&area=${encodeURIComponent(area)}`;
+    const url = buildApiUrl('questions', { area });
     const response = await fetchWithTimeout(url);
 
     if (!response.ok) {
@@ -107,7 +130,7 @@ export async function getQuestions(area: AreaType): Promise<Question[]> {
  */
 export async function testConnection(): Promise<boolean> {
   try {
-    const url = `${API_BASE_URL}?action=test`;
+    const url = buildApiUrl('test');
     const response = await fetchWithTimeout(url, 10000);
 
     if (!response.ok) {
@@ -147,6 +170,7 @@ export async function registerUser(user: UserRegistration): Promise<void> {
       career: user.career
     });
 
+    if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
     const response = await fetchWithTimeout(url, 15000);
 
@@ -211,6 +235,7 @@ export async function saveScore(data: ScoreData): Promise<void> {
       total: data.total.toString()
     });
 
+    if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
     const response = await fetchWithTimeout(url, 15000);
 
@@ -239,6 +264,7 @@ export async function getUserHistory(dni: string): Promise<UserHistory | null> {
       dni: dni
     });
 
+    if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
     const response = await fetchWithTimeout(url, 15000);
 
@@ -286,6 +312,7 @@ export async function checkAccess(dni: string, email: string): Promise<AccessChe
       email: email
     });
 
+    if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
     const response = await fetchWithTimeout(url, 15000);
 
@@ -360,6 +387,7 @@ export async function checkBanqueoAccess(dni: string, email: string): Promise<Ba
       email: email
     });
 
+    if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
     const response = await fetchWithTimeout(url, 15000);
 
@@ -396,6 +424,7 @@ export async function getBanqueoQuestions(course: string, count: 10 | 15 | 20 = 
       count: count.toString()
     });
 
+    if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
     const response = await fetchWithTimeout(url, 30000);
 
@@ -450,30 +479,38 @@ export type CepreAreaCode = 'ING' | 'BIO' | 'SOC' | 'ALL';
 export type CepreSemana = 'S1' | 'S2' | 'S3' | 'S4' | 'S5' | 'S6' | 'S7' | 'S8' |
   'S9' | 'S10' | 'S11' | 'S12' | 'S13' | 'S14' | 'S15' | 'S16';
 
-// Cursos disponibles por área CEPREUNA (incluye Idiomas)
+// Cursos disponibles por área CEPREUNA
+// Total por área: ING=15, BIO=13, SOC=13 (sin Inglés ni Quechua)
 export const CEPRE_COURSES_BY_AREA: Record<'ING' | 'BIO' | 'SOC', string[]> = {
   'ING': [
     'Aritmética', 'Álgebra', 'Geometría', 'Trigonometría',
     'Física', 'Química', 'Biología y Anatomía',
-    'Psicología y Filosofía', 'Historia y Geografía', 'Educación Cívica',
-    'Economía', 'Comunicación y Literatura',
-    'Razonamiento Matemático', 'Razonamiento Verbal',
-    'Inglés', 'Quechua y aimara'
-  ],
+    'Psicología y Filosofía',
+    'Historia', 'Geografía', // SEPARADOS (Historia: S1-S11, Geografía: S12-S16)
+    'Educación Cívica', 'Economía',
+    'Comunicación y Literatura',
+    'Razonamiento Matemático', 'Razonamiento Verbal'
+  ], // 15 cursos
   'BIO': [
-    'Aritmética', 'Matemática', 'Física', 'Química',
-    'Biología', 'Anatomía', 'Psicología y Filosofía',
-    'Historia y Geografía', 'Educación Cívica', 'Economía',
-    'Comunicación y Literatura', 'Razonamiento Matemático',
-    'Razonamiento Verbal', 'Inglés', 'Quechua y aimara'
-  ],
+    'Matemática', // BIO usa 1 curso de Matemática (no las 4 separadas)
+    'Física', 'Química',
+    'Biología', 'Anatomía', // SEPARADOS en BIO
+    'Psicología y Filosofía',
+    'Historia', 'Geografía', // SEPARADOS (Historia: S1-S11, Geografía: S12-S16)
+    'Educación Cívica', 'Economía',
+    'Comunicación y Literatura',
+    'Razonamiento Matemático', 'Razonamiento Verbal'
+  ], // 13 cursos
   'SOC': [
-    'Matemática', 'Física', 'Química', 'Biología y Anatomía',
-    'Psicología y Filosofía', 'Historia', 'Geografía',
-    'Educación Cívica', 'Economía', 'Comunicación', 'Literatura',
-    'Razonamiento Matemático', 'Razonamiento Verbal',
-    'Inglés', 'Quechua y aimara'
-  ]
+    'Matemática', // SOC usa 1 curso de Matemática
+    'Física', 'Química',
+    'Biología y Anatomía', // COMBINADO en SOC
+    'Psicología y Filosofía',
+    'Historia', 'Geografía', // SEPARADOS (ambos: S1-S16)
+    'Educación Cívica', 'Economía',
+    'Comunicación', 'Literatura', // SEPARADOS en SOC
+    'Razonamiento Matemático', 'Razonamiento Verbal'
+  ] // 13 cursos
 };
 
 // Semanas CEPREUNA
@@ -541,6 +578,7 @@ export async function getCepreQuestions(
     if (semana) params.append('semana', semana);
     if (count !== undefined) params.append('count', count.toString());
 
+    if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
     const response = await fetchWithTimeout(url, 30000);
 
@@ -580,6 +618,7 @@ export async function getCepreSimulacro(
 
     if (semana) params.append('semana', semana);
 
+    if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
     const response = await fetchWithTimeout(url, 45000);
 
@@ -615,6 +654,7 @@ export async function getCepreCourses(area?: CepreAreaCode): Promise<CepreCourse
 
     if (area) params.append('area', area);
 
+    if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
     const response = await fetchWithTimeout(url, 15000);
 
@@ -661,6 +701,7 @@ export async function getCepreSemanas(
     if (course) params.append('course', course);
     if (area) params.append('area', area);
 
+    if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
     const response = await fetchWithTimeout(url, 15000);
 
@@ -807,4 +848,203 @@ export function generateMockQuestions(area: AreaType): Question[] {
 
   // NO mezclar - mantener orden por asignatura
   return questions;
+}
+
+// ============================================
+// BANQUEO POR TEMA
+// ============================================
+
+export interface CursoConTemas {
+  curso: string;
+  totalPreguntas: number;
+}
+
+export interface TemaInfo {
+  tema: string;
+  totalPreguntas: number;
+}
+
+export interface SubtemaInfo {
+  subtema: string;
+  totalPreguntas: number;
+}
+
+/**
+ * Obtiene la lista de todos los cursos disponibles con la cantidad de preguntas
+ * Combina preguntas de hojas Banco_ y CEPRE_
+ */
+export async function getCursosConTemas(): Promise<CursoConTemas[]> {
+  try {
+    const params = new URLSearchParams({
+      action: 'getCursosConTemas'
+    });
+
+    if (API_TOKEN) params.set('token', API_TOKEN);
+    const url = `${API_BASE_URL}?${params.toString()}`;
+    const response = await fetchWithTimeout(url, 30000);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Error al obtener cursos con temas');
+    }
+
+    // El backend retorna { totalCursos, cursos: [{nombre, count}] }
+    // Mapeamos a { curso, totalPreguntas }
+    const data = result.data as { totalCursos: number; cursos: Array<{ nombre: string; count: number }> };
+    return data.cursos.map(c => ({
+      curso: c.nombre,
+      totalPreguntas: c.count
+    }));
+  } catch (error) {
+    console.error('Error al obtener cursos con temas:', error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : 'No se pudo cargar la lista de cursos. Por favor, intenta de nuevo.'
+    );
+  }
+}
+
+/**
+ * Obtiene los temas disponibles para un curso específico
+ */
+export async function getTemasPorCurso(curso: string): Promise<TemaInfo[]> {
+  try {
+    const params = new URLSearchParams({
+      action: 'getTemasPorCurso',
+      curso: curso
+    });
+
+    if (API_TOKEN) params.set('token', API_TOKEN);
+    const url = `${API_BASE_URL}?${params.toString()}`;
+    const response = await fetchWithTimeout(url, 30000);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Error al obtener temas del curso');
+    }
+
+    // El backend retorna { curso, totalPreguntas, totalTemas, temas: [{nombre, count}] }
+    const data = result.data as { temas: Array<{ nombre: string; count: number }> };
+    return data.temas.map(t => ({
+      tema: t.nombre,
+      totalPreguntas: t.count
+    }));
+  } catch (error) {
+    console.error('Error al obtener temas del curso:', error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : 'No se pudo cargar los temas. Por favor, intenta de nuevo.'
+    );
+  }
+}
+
+/**
+ * Obtiene los subtemas disponibles para un tema específico de un curso
+ */
+export async function getSubtemasPorTema(curso: string, tema: string): Promise<SubtemaInfo[]> {
+  try {
+    const params = new URLSearchParams({
+      action: 'getSubtemasPorTema',
+      curso: curso,
+      tema: tema
+    });
+
+    if (API_TOKEN) params.set('token', API_TOKEN);
+    const url = `${API_BASE_URL}?${params.toString()}`;
+    const response = await fetchWithTimeout(url, 30000);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Error al obtener subtemas');
+    }
+
+    // El backend retorna { curso, tema, totalPreguntas, totalSubtemas, subtemas: [{nombre, count}] }
+    const data = result.data as { subtemas: Array<{ nombre: string; count: number }> };
+    return data.subtemas.map(s => ({
+      subtema: s.nombre,
+      totalPreguntas: s.count
+    }));
+  } catch (error) {
+    console.error('Error al obtener subtemas:', error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : 'No se pudo cargar los subtemas. Por favor, intenta de nuevo.'
+    );
+  }
+}
+
+export interface BanqueoByTemaResult {
+  curso: string;
+  tema?: string;
+  subtema?: string;
+  totalQuestions: number;
+  totalAvailable: number;
+  questions: BanqueoQuestion[];
+  error?: string;
+}
+
+/**
+ * Obtiene preguntas filtradas por curso, tema y opcionalmente subtema
+ * @param curso - Nombre del curso
+ * @param tema - Nombre del tema (opcional, si no se especifica trae todos los temas)
+ * @param subtema - Nombre del subtema (opcional)
+ * @param count - Cantidad de preguntas (10, 15, o 20)
+ */
+export async function getBanqueoByTema(
+  curso: string,
+  tema?: string,
+  subtema?: string,
+  count: 10 | 15 | 20 = 10
+): Promise<BanqueoByTemaResult> {
+  try {
+    const params = new URLSearchParams({
+      action: 'getBanqueoByTema',
+      curso: curso,
+      count: count.toString()
+    });
+
+    if (tema) params.append('tema', tema);
+    if (subtema) params.append('subtema', subtema);
+
+    if (API_TOKEN) params.set('token', API_TOKEN);
+    const url = `${API_BASE_URL}?${params.toString()}`;
+    const response = await fetchWithTimeout(url, 30000);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || 'Error al obtener preguntas por tema');
+    }
+
+    return result.data as BanqueoByTemaResult;
+  } catch (error) {
+    console.error('Error al obtener preguntas por tema:', error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : 'No se pudo cargar las preguntas. Por favor, intenta de nuevo.'
+    );
+  }
 }

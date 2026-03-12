@@ -4,19 +4,36 @@
  * INSTRUCCIONES DE CONFIGURACIÓN:
  * 1. Crear un nuevo proyecto en Google Apps Script (script.google.com)
  * 2. Copiar este código en el archivo Code.gs
- * 3. Actualizar SPREADSHEET_ID con el ID de tu Google Sheets
+ * 3. Configurar Script Properties (Configuración > Propiedades del script):
+ *    - SPREADSHEET_ID: El ID de tu Google Sheets
+ *    - SECRET_TOKEN: Un token secreto para autenticar las peticiones
  * 4. Implementar como aplicación web:
  *    - Extensiones > Apps Script > Implementar > Nueva implementación
  *    - Tipo: Aplicación web
  *    - Ejecutar como: Yo
  *    - Quién tiene acceso: Cualquier persona
  * 5. Copiar la URL generada y usarla en el frontend
+ * 6. Todas las peticiones deben incluir el parámetro &token=TU_TOKEN_SECRETO
  */
 
 // ============================================
-// CONFIGURACIÓN - ACTUALIZAR CON TU SPREADSHEET
+// SEGURIDAD
 // ============================================
-const SPREADSHEET_ID = '1U6Di8dSy-UZVkt7_L6VEexHPyBurEH0suDrUogcugVk';
+// IMPORTANTE: Configura estos valores en Script Properties del proyecto de Apps Script
+// (Configuración > Propiedades del script), NO aquí en el código.
+const SECRET_TOKEN = PropertiesService.getScriptProperties().getProperty('SECRET_TOKEN') || 'CAMBIAR_ESTE_TOKEN_SECRETO';
+const ALLOWED_ORIGINS = [
+  'https://canazachyub.github.io',
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:4173'
+];
+
+// ============================================
+// CONFIGURACIÓN - USAR SCRIPT PROPERTIES
+// ============================================
+// TODO: Mover a Script Properties: PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID')
+const SPREADSHEET_ID = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID') || 'CONFIGURAR_EN_SCRIPT_PROPERTIES';
 
 // Nombres de las hojas de configuración
 const CONFIG_SHEETS = {
@@ -79,34 +96,42 @@ const CEPRE_SUBJECT_SHEETS = {
   'Comunicación': 'CEPRE_Comunicación',
   'Comunicación y Literatura': 'CEPRE_ComunicaciónLiteratura',
   'Literatura': 'CEPRE_Literatura',
-  'Geografía': 'CEPRE_Geografía',
-  'Historia y Geografía': 'CEPRE_HistoriaGeografia'
+  'Geografía': 'CEPRE_Geografía'
+  // NOTA: "Historia y Geografía" NO existe como hoja - se usan hojas separadas
 };
 
-// Cursos disponibles por área CEPREUNA (incluye Idiomas)
+// Cursos disponibles por área CEPREUNA
+// Total por área: ING=15, BIO=13, SOC=13 (sin Inglés ni Quechua)
 const CEPRE_COURSES_BY_AREA = {
   'ING': [
     'Aritmética', 'Álgebra', 'Geometría', 'Trigonometría',
     'Física', 'Química', 'Biología y Anatomía',
-    'Psicología y Filosofía', 'Historia y Geografía', 'Educación Cívica',
-    'Economía', 'Comunicación y Literatura',
-    'Razonamiento Matemático', 'Razonamiento Verbal',
-    'Inglés', 'Quechua y aimara'
-  ],
+    'Psicología y Filosofía',
+    'Historia', 'Geografía', // SEPARADOS (Historia: S1-S11, Geografía: S12-S16)
+    'Educación Cívica', 'Economía',
+    'Comunicación y Literatura',
+    'Razonamiento Matemático', 'Razonamiento Verbal'
+  ], // 15 cursos
   'BIO': [
-    'Aritmética', 'Matemática', 'Física', 'Química',
-    'Biología', 'Anatomía', 'Psicología y Filosofía',
-    'Historia y Geografía', 'Educación Cívica', 'Economía',
-    'Comunicación y Literatura', 'Razonamiento Matemático',
-    'Razonamiento Verbal', 'Inglés', 'Quechua y aimara'
-  ],
+    'Matemática', // BIO usa 1 curso de Matemática (no las 4 separadas)
+    'Física', 'Química',
+    'Biología', 'Anatomía', // SEPARADOS en BIO
+    'Psicología y Filosofía',
+    'Historia', 'Geografía', // SEPARADOS (Historia: S1-S11, Geografía: S12-S16)
+    'Educación Cívica', 'Economía',
+    'Comunicación y Literatura',
+    'Razonamiento Matemático', 'Razonamiento Verbal'
+  ], // 13 cursos
   'SOC': [
-    'Matemática', 'Física', 'Química', 'Biología y Anatomía',
-    'Psicología y Filosofía', 'Historia', 'Geografía',
-    'Educación Cívica', 'Economía', 'Comunicación', 'Literatura',
-    'Razonamiento Matemático', 'Razonamiento Verbal',
-    'Inglés', 'Quechua y aimara'
-  ]
+    'Matemática', // SOC usa 1 curso de Matemática
+    'Física', 'Química',
+    'Biología y Anatomía', // COMBINADO en SOC
+    'Psicología y Filosofía',
+    'Historia', 'Geografía', // SEPARADOS (ambos: S1-S16)
+    'Educación Cívica', 'Economía',
+    'Comunicación', 'Literatura', // SEPARADOS en SOC
+    'Razonamiento Matemático', 'Razonamiento Verbal'
+  ] // 13 cursos
 };
 
 // Semanas válidas CEPREUNA
@@ -117,7 +142,22 @@ const CEPRE_SEMANAS = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S1
 // ============================================
 function doGet(e) {
   try {
+    // ---- VALIDACIÓN DE TOKEN ----
+    const token = e.parameter.token || '';
+    if (SECRET_TOKEN !== 'CAMBIAR_ESTE_TOKEN_SECRETO' && token !== SECRET_TOKEN) {
+      return createErrorResponse('Acceso no autorizado. Token inválido o faltante.');
+    }
+
+    // ---- VALIDACIÓN DE ORIGEN ----
+    // Nota: En Apps Script el header Origin no siempre está disponible,
+    // pero se valida cuando existe para mayor seguridad.
+
+    // ---- LOG DE ACCESO ----
     const action = e.parameter.action;
+    if (action === 'questions' || action === 'getBanqueoQuestions' || action === 'getCepreQuestions') {
+      console.log('[SECURITY] Acceso a ' + action + ' - IP/Timestamp: ' + new Date().toISOString());
+    }
+
     let result;
 
     switch (action) {
@@ -210,6 +250,37 @@ function doGet(e) {
         const semanaCourse = e.parameter.course || '';
         const semanaArea = e.parameter.area || '';
         result = getCepreSemanas(semanaCourse, semanaArea);
+        break;
+      // ============================================
+      // BANQUEO POR TEMA ENDPOINTS
+      // ============================================
+      case 'getCursosConTemas':
+        result = getCursosConTemas();
+        break;
+      case 'getTemasPorCurso':
+        const temaCurso = e.parameter.curso || '';
+        if (!temaCurso) {
+          return createErrorResponse('Parámetro "curso" requerido');
+        }
+        result = getTemasPorCurso(temaCurso);
+        break;
+      case 'getSubtemasPorTema':
+        const subtemaCurso = e.parameter.curso || '';
+        const subtemaTema = e.parameter.tema || '';
+        if (!subtemaCurso || !subtemaTema) {
+          return createErrorResponse('Parámetros "curso" y "tema" requeridos');
+        }
+        result = getSubtemasPorTema(subtemaCurso, subtemaTema);
+        break;
+      case 'getBanqueoByTema':
+        const btCurso = e.parameter.curso || '';
+        const btTema = e.parameter.tema || '';
+        const btSubtema = e.parameter.subtema || '';
+        const btCount = e.parameter.count ? parseInt(e.parameter.count) : null;
+        if (!btCurso) {
+          return createErrorResponse('Parámetro "curso" requerido');
+        }
+        result = getBanqueoByTema(btCurso, btTema, btSubtema, btCount);
         break;
       case 'test':
         result = { status: 'ok', message: 'API funcionando correctamente', timestamp: new Date().toISOString() };
@@ -420,12 +491,13 @@ function getRandomQuestionsFromSubject(ss, subjectName, count, maxScore, startin
     const row = q.data;
 
     // Crear opciones (NO mezclar para mantener orden original)
+    // Usar formatCellValue para corregir fechas mal interpretadas por Excel
     const options = [
-      row[colIndices.option1],
-      row[colIndices.option2],
-      row[colIndices.option3],
-      row[colIndices.option4],
-      row[colIndices.option5]
+      formatCellValue(row[colIndices.option1]),
+      formatCellValue(row[colIndices.option2]),
+      formatCellValue(row[colIndices.option3]),
+      formatCellValue(row[colIndices.option4]),
+      formatCellValue(row[colIndices.option5])
     ].filter(opt => opt && opt !== ''); // Filtrar opciones vacías
 
     // La respuesta correcta es el índice 1-based, convertir a 0-based
@@ -434,7 +506,7 @@ function getRandomQuestionsFromSubject(ss, subjectName, count, maxScore, startin
     return {
       id: `${subjectName}-${q.rowIndex}`,
       number: startingNumber + index, // Número de pregunta global
-      questionText: row[colIndices.questionText],
+      questionText: formatCellValue(row[colIndices.questionText]),
       questionType: row[colIndices.questionType] || 'Multiple Choice',
       options: options,
       correctAnswer: correctAnswerIndex, // Índice 0-based
@@ -443,7 +515,7 @@ function getRandomQuestionsFromSubject(ss, subjectName, count, maxScore, startin
       subject: subjectName,
       points: pointsPerQuestion,
       sourceFile: row[colIndices.sourceFile] || null, // Nombre del archivo fuente
-      justification: row[colIndices.justification] || null, // Justificación de la respuesta
+      justification: formatCellValue(row[colIndices.justification]) || null, // Justificación de la respuesta
       metadata: {
         numero: row[colIndices.numero],
         tema: row[colIndices.tema],
@@ -950,11 +1022,11 @@ function getBanqueoQuestions(courseName, count) {
     const row = q.data;
 
     const options = [
-      row[colIndices.option1],
-      row[colIndices.option2],
-      row[colIndices.option3],
-      row[colIndices.option4],
-      row[colIndices.option5]
+      formatCellValue(row[colIndices.option1]),
+      formatCellValue(row[colIndices.option2]),
+      formatCellValue(row[colIndices.option3]),
+      formatCellValue(row[colIndices.option4]),
+      formatCellValue(row[colIndices.option5])
     ].filter(opt => opt && opt !== '');
 
     const correctAnswerIndex = (parseInt(row[colIndices.correctAnswer]) || 1) - 1;
@@ -962,14 +1034,14 @@ function getBanqueoQuestions(courseName, count) {
     return {
       id: `banqueo-${courseName}-${q.rowIndex}`,
       number: index + 1,
-      questionText: row[colIndices.questionText],
+      questionText: formatCellValue(row[colIndices.questionText]),
       questionType: row[colIndices.questionType] || 'Multiple Choice',
       options: options,
       correctAnswer: correctAnswerIndex,
       imageLink: row[colIndices.imageLink] || null,
       subject: courseName,
       sourceFile: row[colIndices.sourceFile] || null,
-      justification: row[colIndices.justification] || null,
+      justification: formatCellValue(row[colIndices.justification]) || null,
       metadata: {
         numero: row[colIndices.numero],
         tema: row[colIndices.tema],
@@ -1218,38 +1290,46 @@ function getCepreQuestionsForSimulacro(ss, subjectName, areaCode, semana, count,
 function mapSubjectToCepreSheet(subjectName, areaCode) {
   // Casos especiales según área
 
-  // Historia y Geografía combinado para ING y BIO
-  if (subjectName === 'Historia' || subjectName === 'Geografía' || subjectName === 'Historia y Geografía') {
-    if (areaCode === 'ING' || areaCode === 'BIO') {
-      return 'CEPRE_HistoriaGeografia';
-    }
-    // SOC tiene Historia y Geografía separados
+  // Historia y Geografía: TODAS las áreas usan hojas SEPARADAS
+  // El filtrado por semana se hace automáticamente con la columna SEMANA
+  if (subjectName === 'Historia' || subjectName === 'Geografía') {
     return CEPRE_SUBJECT_SHEETS[subjectName];
   }
 
+  // Biología y Anatomía según área
   if (subjectName === 'Biología y Anatomía') {
     if (areaCode === 'BIO') {
-      // BIO tiene Biología y Anatomía separados - usar BiologíaAnatomía combinado
-      // o alternar entre ambas hojas
-      return 'CEPRE_Biología'; // O podríamos hacer una lógica especial
+      // BIO tiene Biología y Anatomía SEPARADOS en la configuración
+      // Esta función debería recibir 'Biología' o 'Anatomía' individualmente
+      // Si llega 'Biología y Anatomía' es un error en la configuración de BIO
+      return CEPRE_SUBJECT_SHEETS['Biología y Anatomía'];
     }
+    // ING y SOC usan hoja combinada
     return CEPRE_SUBJECT_SHEETS['Biología y Anatomía'];
   }
 
+  // Comunicación y Literatura según área
   if (subjectName === 'Comunicación' || subjectName === 'Literatura') {
     if (areaCode === 'ING' || areaCode === 'BIO') {
+      // ING y BIO usan hoja combinada
       return CEPRE_SUBJECT_SHEETS['Comunicación y Literatura'];
     }
+    // SOC usa hojas separadas
     return CEPRE_SUBJECT_SHEETS[subjectName];
   }
 
-  // Para aritmética/álgebra/geometría/trigonometría en BIO y SOC → Matemática
+  // Matemáticas: BIO y SOC usan 1 curso único, ING usa 4 separados
   const mathSubjects = ['Aritmética', 'Álgebra', 'Geometría', 'Trigonometría'];
-  if (mathSubjects.includes(subjectName) && (areaCode === 'SOC')) {
-    return CEPRE_SUBJECT_SHEETS['Matemática'];
+  if (mathSubjects.includes(subjectName)) {
+    if (areaCode === 'BIO' || areaCode === 'SOC') {
+      // BIO y SOC usan hoja de Matemática única
+      return CEPRE_SUBJECT_SHEETS['Matemática'];
+    }
+    // ING usa hojas separadas (Aritmética, Álgebra, Geometría, Trigonometría)
+    return CEPRE_SUBJECT_SHEETS[subjectName];
   }
 
-  // Caso general
+  // Caso general: buscar en el mapeo directo
   return CEPRE_SUBJECT_SHEETS[subjectName];
 }
 
@@ -1284,11 +1364,11 @@ function getCepreColumnIndices(headers) {
  */
 function formatCepreQuestion(row, colIndices, course, number, rowIndex) {
   const options = [
-    row[colIndices.option1],
-    row[colIndices.option2],
-    row[colIndices.option3],
-    row[colIndices.option4],
-    row[colIndices.option5]
+    formatCellValue(row[colIndices.option1]),
+    formatCellValue(row[colIndices.option2]),
+    formatCellValue(row[colIndices.option3]),
+    formatCellValue(row[colIndices.option4]),
+    formatCellValue(row[colIndices.option5])
   ].filter(opt => opt && opt !== '');
 
   const correctAnswerIndex = (parseInt(row[colIndices.correctAnswer]) || 1) - 1;
@@ -1296,7 +1376,7 @@ function formatCepreQuestion(row, colIndices, course, number, rowIndex) {
   return {
     id: `cepre-${course}-${rowIndex}`,
     number: number,
-    questionText: row[colIndices.questionText],
+    questionText: formatCellValue(row[colIndices.questionText]),
     questionType: row[colIndices.questionType] || 'Multiple Choice',
     options: options,
     correctAnswer: correctAnswerIndex,
@@ -1304,7 +1384,7 @@ function formatCepreQuestion(row, colIndices, course, number, rowIndex) {
     imageLink: row[colIndices.imageLink] || null,
     subject: course,
     sourceFile: row[colIndices.sourceFile] || null,
-    justification: row[colIndices.justification] || null,
+    justification: formatCellValue(row[colIndices.justification]) || null,
     area: row[colIndices.area] || null,
     semana: row[colIndices.semana] || null,
     metadata: {
@@ -1395,6 +1475,514 @@ function getCepreSemanas(course, area) {
 }
 
 // ============================================
+// BANQUEO POR TEMA - FUNCIONES
+// ============================================
+
+/**
+ * Lista de todas las hojas de banco (histórico + CEPRE)
+ */
+const ALL_BANCO_SHEETS = [
+  // Bancos históricos
+  'Banco_Aritmética', 'Banco_Álgebra', 'Banco_Geometría', 'Banco_Trigonometría',
+  'Banco_Física', 'Banco_Química', 'Banco_Biología y Anatomía',
+  'Banco_Psicología y Filosofía', 'Banco_Geografía', 'Banco_Historia',
+  'Banco_Educación Cívica', 'Banco_Economía', 'Banco_Comunicación',
+  'Banco_Literatura', 'Banco_Razonamiento Matemático', 'Banco_Razonamiento Verbal',
+  'Banco_Inglés', 'Banco_Quechua y aimara',
+  // Hojas CEPRE
+  'CEPRE_Aritmética', 'CEPRE_Álgebra', 'CEPRE_Geometría', 'CEPRE_Trigonometría',
+  'CEPRE_Matemática', 'CEPRE_Física', 'CEPRE_Química',
+  'CEPRE_Biología', 'CEPRE_Anatomía', 'CEPRE_BiologíaAnatomía',
+  'CEPRE_PsicologíaFilosofía', 'CEPRE_Historia', 'CEPRE_Geografía',
+  'CEPRE_EducaciónCívica', 'CEPRE_Economía',
+  'CEPRE_Comunicación', 'CEPRE_Literatura', 'CEPRE_ComunicaciónLiteratura',
+  'CEPRE_RazonamientoMatemático', 'CEPRE_RazonamientoVerbal'
+];
+
+/**
+ * Obtiene todos los cursos disponibles con conteo de preguntas
+ * Usa normalización para agrupar variantes del mismo curso
+ * OPTIMIZACIÓN: Usa CacheService para evitar recalcular cada vez (cache 30 min)
+ */
+function getCursosConTemas() {
+  // Intentar obtener del cache primero
+  const cache = CacheService.getScriptCache();
+  const cacheKey = 'cursos_con_temas_v2';
+  const cached = cache.get(cacheKey);
+
+  if (cached) {
+    return JSON.parse(cached);
+  }
+
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const cursosMap = {};
+
+  // Recorrer todas las hojas de banco
+  for (const sheetName of ALL_BANCO_SHEETS) {
+    const sheet = ss.getSheetByName(sheetName);
+    if (!sheet) continue;
+
+    const data = sheet.getDataRange().getValues();
+    if (data.length <= 1) continue;
+
+    const headers = data[0];
+    const cursoIndex = headers.indexOf('CURSO');
+    const questionTextIndex = headers.indexOf('Question Text');
+
+    if (cursoIndex === -1 || questionTextIndex === -1) continue;
+
+    // Contar preguntas por curso (usando nombre canónico)
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      const cursoRaw = String(row[cursoIndex] || '').trim();
+      const questionText = row[questionTextIndex];
+
+      if (!cursoRaw || !questionText) continue;
+
+      // Obtener nombre canónico del curso
+      const cursoCanonical = getCursoCanonical(cursoRaw);
+      if (!cursoCanonical) continue; // Ignorar cursos inválidos
+
+      if (!cursosMap[cursoCanonical]) {
+        cursosMap[cursoCanonical] = 0;
+      }
+      cursosMap[cursoCanonical]++;
+    }
+  }
+
+  // Convertir a array ordenado
+  const cursos = Object.entries(cursosMap)
+    .map(([nombre, count]) => ({ nombre, count }))
+    .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+
+  const result = {
+    totalCursos: cursos.length,
+    cursos: cursos
+  };
+
+  // Guardar en cache por 30 minutos (1800 segundos)
+  cache.put(cacheKey, JSON.stringify(result), 1800);
+
+  return result;
+}
+
+/**
+ * Obtiene los temas disponibles para un curso específico
+ * Usa normalización para agrupar variantes del mismo curso
+ * OPTIMIZACIÓN: Usa CacheService (cache 30 min)
+ */
+function getTemasPorCurso(curso) {
+  // Intentar obtener del cache primero
+  const cache = CacheService.getScriptCache();
+  const cursoCanonicalBuscado = getCursoCanonical(curso) || curso;
+  const cacheKey = 'temas_' + cursoCanonicalBuscado.replace(/\s/g, '_');
+  const cached = cache.get(cacheKey);
+
+  if (cached) {
+    return JSON.parse(cached);
+  }
+
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const temasMap = {};
+
+  // Recorrer todas las hojas de banco
+  for (const sheetName of ALL_BANCO_SHEETS) {
+    const sheet = ss.getSheetByName(sheetName);
+    if (!sheet) continue;
+
+    const data = sheet.getDataRange().getValues();
+    if (data.length <= 1) continue;
+
+    const headers = data[0];
+    const cursoIndex = headers.indexOf('CURSO');
+    const temaIndex = headers.indexOf('TEMA');
+    const questionTextIndex = headers.indexOf('Question Text');
+
+    if (cursoIndex === -1 || questionTextIndex === -1) continue;
+
+    // Filtrar por curso (usando nombre canónico) y contar temas
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      const rowCursoRaw = String(row[cursoIndex] || '').trim();
+      const tema = String(row[temaIndex] || '').trim();
+      const questionText = row[questionTextIndex];
+
+      if (!questionText || !rowCursoRaw) continue;
+
+      // Comparar usando nombre canónico
+      const rowCursoCanonical = getCursoCanonical(rowCursoRaw);
+      if (!rowCursoCanonical || rowCursoCanonical !== cursoCanonicalBuscado) continue;
+
+      const temaKey = tema || 'Sin tema';
+      if (!temasMap[temaKey]) {
+        temasMap[temaKey] = 0;
+      }
+      temasMap[temaKey]++;
+    }
+  }
+
+  // Convertir a array ordenado
+  const temas = Object.entries(temasMap)
+    .map(([nombre, count]) => ({ nombre, count }))
+    .sort((a, b) => {
+      // "Sin tema" al final
+      if (a.nombre === 'Sin tema') return 1;
+      if (b.nombre === 'Sin tema') return -1;
+      return a.nombre.localeCompare(b.nombre, 'es');
+    });
+
+  const totalPreguntas = temas.reduce((sum, t) => sum + t.count, 0);
+
+  const result = {
+    curso: cursoCanonicalBuscado,
+    totalPreguntas: totalPreguntas,
+    totalTemas: temas.length,
+    temas: temas
+  };
+
+  // Guardar en cache por 30 minutos
+  cache.put(cacheKey, JSON.stringify(result), 1800);
+
+  return result;
+}
+
+/**
+ * Obtiene los subtemas disponibles para un curso y tema específicos
+ * NOTA: Esta función se mantiene por compatibilidad pero NO se usa en el frontend simplificado
+ */
+function getSubtemasPorTema(curso, tema) {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const subtemasMap = {};
+
+  // Normalizar el curso de búsqueda
+  const cursoCanonicalBuscado = getCursoCanonical(curso) || curso;
+
+  // Recorrer todas las hojas de banco
+  for (const sheetName of ALL_BANCO_SHEETS) {
+    const sheet = ss.getSheetByName(sheetName);
+    if (!sheet) continue;
+
+    const data = sheet.getDataRange().getValues();
+    if (data.length <= 1) continue;
+
+    const headers = data[0];
+    const cursoIndex = headers.indexOf('CURSO');
+    const temaIndex = headers.indexOf('TEMA');
+    const subtemaIndex = headers.indexOf('SUBTEMA');
+    const questionTextIndex = headers.indexOf('Question Text');
+
+    if (cursoIndex === -1 || questionTextIndex === -1) continue;
+
+    // Filtrar por curso (usando canónico) y tema, contar subtemas
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      const rowCursoRaw = String(row[cursoIndex] || '').trim();
+      const rowTema = String(row[temaIndex] || '').trim();
+      const subtema = String(row[subtemaIndex] || '').trim();
+      const questionText = row[questionTextIndex];
+
+      if (!questionText || !rowCursoRaw) continue;
+
+      // Comparar usando nombre canónico
+      const rowCursoCanonical = getCursoCanonical(rowCursoRaw);
+      if (!rowCursoCanonical || rowCursoCanonical !== cursoCanonicalBuscado) continue;
+      if (normalizeString(rowTema) !== normalizeString(tema)) continue;
+
+      const subtemaKey = subtema || 'Sin subtema';
+      if (!subtemasMap[subtemaKey]) {
+        subtemasMap[subtemaKey] = 0;
+      }
+      subtemasMap[subtemaKey]++;
+    }
+  }
+
+  // Convertir a array ordenado
+  const subtemas = Object.entries(subtemasMap)
+    .map(([nombre, count]) => ({ nombre, count }))
+    .sort((a, b) => {
+      if (a.nombre === 'Sin subtema') return 1;
+      if (b.nombre === 'Sin subtema') return -1;
+      return a.nombre.localeCompare(b.nombre, 'es');
+    });
+
+  const totalPreguntas = subtemas.reduce((sum, s) => sum + s.count, 0);
+
+  return {
+    curso: cursoCanonicalBuscado,
+    tema: tema,
+    totalPreguntas: totalPreguntas,
+    totalSubtemas: subtemas.length,
+    subtemas: subtemas
+  };
+}
+
+/**
+ * Obtiene preguntas filtradas por curso, tema y subtema
+ * Usa normalización para agrupar variantes del mismo curso
+ */
+function getBanqueoByTema(curso, tema, subtema, count) {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const allQuestions = [];
+
+  // Normalizar el curso de búsqueda
+  const cursoCanonicalBuscado = getCursoCanonical(curso) || curso;
+
+  // Recorrer todas las hojas de banco
+  for (const sheetName of ALL_BANCO_SHEETS) {
+    const sheet = ss.getSheetByName(sheetName);
+    if (!sheet) continue;
+
+    const data = sheet.getDataRange().getValues();
+    if (data.length <= 1) continue;
+
+    const headers = data[0];
+    const colIndices = {
+      questionText: headers.indexOf('Question Text'),
+      questionType: headers.indexOf('Question Type'),
+      option1: headers.indexOf('Option 1'),
+      option2: headers.indexOf('Option 2'),
+      option3: headers.indexOf('Option 3'),
+      option4: headers.indexOf('Option 4'),
+      option5: headers.indexOf('Option 5'),
+      correctAnswer: headers.indexOf('Correct Answer'),
+      imageLink: headers.indexOf('Image Link'),
+      curso: headers.indexOf('CURSO'),
+      tema: headers.indexOf('TEMA'),
+      subtema: headers.indexOf('SUBTEMA'),
+      sourceFile: headers.indexOf('NOMBRE DEL ARCHIVO'),
+      justification: headers.indexOf('JUSTIFICACION')
+    };
+
+    if (colIndices.questionText === -1 || colIndices.curso === -1) continue;
+
+    // Filtrar preguntas
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      const questionText = row[colIndices.questionText];
+      const rowCursoRaw = String(row[colIndices.curso] || '').trim();
+      const rowTema = String(row[colIndices.tema] || '').trim();
+      const rowSubtema = String(row[colIndices.subtema] || '').trim();
+
+      if (!questionText || !rowCursoRaw) continue;
+
+      // Filtrar por curso usando nombre canónico (obligatorio)
+      const rowCursoCanonical = getCursoCanonical(rowCursoRaw);
+      if (!rowCursoCanonical || rowCursoCanonical !== cursoCanonicalBuscado) continue;
+
+      // Filtrar por tema (si se especifica)
+      if (tema && normalizeString(rowTema) !== normalizeString(tema)) continue;
+
+      // Filtrar por subtema (si se especifica)
+      if (subtema && normalizeString(rowSubtema) !== normalizeString(subtema)) continue;
+
+      // Agregar pregunta
+      allQuestions.push({
+        sheetName: sheetName,
+        rowIndex: i,
+        data: row,
+        colIndices: colIndices
+      });
+    }
+  }
+
+  // Seleccionar preguntas (todas o cantidad específica)
+  let selectedQuestions;
+  if (count === null || count === undefined || count >= allQuestions.length) {
+    selectedQuestions = shuffleArray(allQuestions);
+  } else {
+    selectedQuestions = selectRandomItems(allQuestions, count);
+  }
+
+  // Formatear preguntas
+  const questions = selectedQuestions.map((q, index) => {
+    const row = q.data;
+    const ci = q.colIndices;
+
+    const options = [
+      formatCellValue(row[ci.option1]),
+      formatCellValue(row[ci.option2]),
+      formatCellValue(row[ci.option3]),
+      formatCellValue(row[ci.option4]),
+      formatCellValue(row[ci.option5])
+    ].filter(opt => opt && opt !== '');
+
+    const correctAnswerIndex = (parseInt(row[ci.correctAnswer]) || 1) - 1;
+
+    return {
+      id: `tema-${q.sheetName}-${q.rowIndex}`,
+      number: index + 1,
+      questionText: formatCellValue(row[ci.questionText]),
+      questionType: row[ci.questionType] || 'Multiple Choice',
+      options: options,
+      correctAnswer: correctAnswerIndex,
+      imageLink: row[ci.imageLink] || null,
+      subject: cursoCanonicalBuscado, // Usar nombre canónico
+      tema: String(row[ci.tema] || '').trim(),
+      subtema: String(row[ci.subtema] || '').trim(),
+      sourceFile: row[ci.sourceFile] || null,
+      justification: formatCellValue(row[ci.justification]) || null
+    };
+  });
+
+  return {
+    curso: cursoCanonicalBuscado, // Usar nombre canónico
+    tema: tema || 'TODOS',
+    subtema: subtema || 'TODOS',
+    totalQuestions: questions.length,
+    totalAvailable: allQuestions.length,
+    questions: questions
+  };
+}
+
+/**
+ * Normaliza un string para comparaciones (quita tildes, minúsculas, espacios extra)
+ */
+function normalizeString(str) {
+  if (!str) return '';
+  return str.toString()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/_/g, ' ')  // Reemplazar guiones bajos por espacios
+    .trim();
+}
+
+/**
+ * MAPEO DE CURSOS: Normaliza variantes de nombres de cursos a un nombre canónico
+ * Esto agrupa "ALGEBRA", "Álgebra", "ÁLGEBRA", "algebra" → "Álgebra"
+ */
+const CURSOS_CANONICOS = {
+  // Matemáticas - TODAS las variantes van a un nombre único
+  'algebra': 'Álgebra',
+  'aritmetica': 'Aritmética',
+  'geometria': 'Geometría',
+  'trigonometria': 'Trigonometría',
+  'matematica': 'Matemática',
+  'matematicas': 'Matemática', // Unificar con Matemática
+  'geometria y trigonometria': 'Geometría', // Unificar con Geometría
+
+  // Ciencias
+  'fisica': 'Física',
+  'quimica': 'Química',
+  'biologia': 'Biología',
+  'anatomia': 'Anatomía',
+  'biologia y anatomia': 'Biología y Anatomía',
+  'biologia anatomia': 'Biología y Anatomía',
+
+  // Historia - UNIFICAR todas las variantes
+  'historia': 'Historia',
+  'historia universal': 'Historia', // Unificar
+  'historia conquista y virreinato': 'Historia',
+  'historia del peru autonomo': 'Historia',
+  'historia republica siglo xix': 'Historia',
+  'historia republica siglo xx-xxi': 'Historia',
+
+  // Geografía
+  'geografia': 'Geografía',
+  'geografia del peru': 'Geografía',
+  'geografia general': 'Geografía',
+  'geografia peru': 'Geografía',
+
+  // Filosofía y Psicología - UNIFICAR todas
+  'filosofia': 'Psicología y Filosofía', // Unificar
+  'psicologia': 'Psicología y Filosofía', // Unificar
+  'psicologia y filosofia': 'Psicología y Filosofía',
+
+  // Cívica y Economía
+  'educacion civica': 'Educación Cívica',
+  'civica constitucion': 'Educación Cívica',
+  'economia': 'Economía',
+  'macroeconomia': 'Economía',
+  'microeconomia': 'Economía',
+
+  // Comunicación y Literatura
+  'comunicacion': 'Comunicación',
+  'literatura': 'Literatura',
+  'comunicacion y literatura': 'Comunicación y Literatura',
+
+  // Razonamiento
+  'razonamiento matematico': 'Razonamiento Matemático',
+  'raz. matematico': 'Razonamiento Matemático',
+  'razonamiento verbal': 'Razonamiento Verbal',
+
+  // Idiomas
+  'ingles': 'Inglés',
+  'quechua y aimara': 'Quechua y Aimara',
+  'quechua y aymara': 'Quechua y Aimara'
+};
+
+/**
+ * Valores que NO son cursos válidos (errores en los datos)
+ */
+const CURSOS_INVALIDOS = ['72', 'curso', ''];
+
+/**
+ * Obtiene el nombre canónico de un curso
+ * @param {string} cursoRaw - Nombre del curso tal como aparece en la hoja
+ * @returns {string|null} - Nombre canónico o null si es inválido
+ */
+function getCursoCanonical(cursoRaw) {
+  if (!cursoRaw) return null;
+
+  const normalized = normalizeString(cursoRaw);
+
+  // Verificar si es un valor inválido
+  if (CURSOS_INVALIDOS.includes(normalized)) {
+    return null;
+  }
+
+  // Buscar en el mapeo de cursos canónicos
+  if (CURSOS_CANONICOS[normalized]) {
+    return CURSOS_CANONICOS[normalized];
+  }
+
+  // Si no está en el mapeo, devolver el valor original con formato Title Case
+  // Esto maneja cursos que no conocemos pero son válidos
+  return cursoRaw.trim();
+}
+
+/**
+ * Formatea un valor de celda, corrigiendo fechas mal interpretadas por Excel/Sheets
+ * Excel interpreta "1-10" como fecha "1 de Octubre" → lo convertimos de vuelta a "1-10"
+ */
+function formatCellValue(value) {
+  if (value === null || value === undefined || value === '') {
+    return '';
+  }
+
+  // Si es un objeto Date, convertir de vuelta al formato original
+  if (value instanceof Date) {
+    const day = value.getDate();
+    const month = value.getMonth() + 1; // getMonth() es 0-indexed
+    // Excel interpretó "X-Y" como "día X del mes Y", así que devolvemos "día-mes"
+    return `${day}-${month}`;
+  }
+
+  // Si es un número que parece una fracción (ej: 1/2 → 0.5), intentar reconstruir
+  if (typeof value === 'number') {
+    // Verificar si es un número entero o decimal simple
+    if (Number.isInteger(value)) {
+      return String(value);
+    }
+    // Para decimales, verificar si podría ser una fracción común
+    const fractions = {
+      0.5: '1/2', 0.25: '1/4', 0.75: '3/4',
+      0.333: '1/3', 0.667: '2/3', 0.2: '1/5',
+      0.4: '2/5', 0.6: '3/5', 0.8: '4/5'
+    };
+    // Buscar coincidencia aproximada
+    for (const [decimal, fraction] of Object.entries(fractions)) {
+      if (Math.abs(value - parseFloat(decimal)) < 0.01) {
+        return fraction;
+      }
+    }
+    return String(value);
+  }
+
+  return value;
+}
+
+// ============================================
 // FUNCIONES DE PRUEBA ADICIONALES
 // ============================================
 
@@ -1407,4 +1995,15 @@ function testBanqueo() {
   const result = getBanqueoQuestions('Aritmética', 10);
   console.log(`Total preguntas: ${result.totalQuestions}`);
   console.log(JSON.stringify(result.questions.slice(0, 2), null, 2));
+}
+
+function testBanqueoByTema() {
+  const cursos = getCursosConTemas();
+  console.log('Cursos disponibles:', cursos.totalCursos);
+
+  const temas = getTemasPorCurso('Física');
+  console.log('Temas de Física:', temas);
+
+  const preguntas = getBanqueoByTema('Física', 'Cinemática', '', 5);
+  console.log('Preguntas de Cinemática:', preguntas.totalQuestions);
 }

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   GraduationCap, BookOpen, Clock, ChevronRight, CheckCircle,
   BarChart3, Target, Brain, Cpu, Heart, Scale, Calendar,
-  History, MessageCircle, Sparkles, Trophy, Zap
+  History, MessageCircle, Sparkles, Trophy, Zap, Layers, Tag
 } from 'lucide-react';
 
 export function Landing() {
@@ -221,6 +221,36 @@ export function Landing() {
                   >
                     <BookOpen className="w-4 h-4" />
                     Banqueo
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Banqueo por Tema - NEW */}
+          <div className="mt-8 max-w-4xl mx-auto">
+            <div className="relative bg-gradient-to-r from-orange-50 to-amber-50 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-orange-200">
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-orange-500 to-amber-500" />
+              <div className="p-6">
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+                  <div className="w-14 h-14 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Layers className="w-7 h-7" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-xl font-bold text-slate-800">Banqueo por Tema</h3>
+                      <span className="text-xs font-medium bg-orange-500 text-white px-2 py-0.5 rounded-full">NUEVO</span>
+                    </div>
+                    <p className="text-sm text-slate-600">
+                      Practica preguntas filtradas por <strong>curso, tema y subtema</strong>. Combina preguntas de ambos bancos para una práctica más específica.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => navigate('/banqueo-tema')}
+                    className="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-amber-600 transition-all shadow-md flex items-center gap-2 whitespace-nowrap"
+                  >
+                    <Tag className="w-5 h-5" />
+                    Practicar por Tema
                   </button>
                 </div>
               </div>
