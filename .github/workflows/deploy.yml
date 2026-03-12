@@ -41,6 +41,7 @@ jobs:
         run: npm run build
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_API_TOKEN: ${{ secrets.VITE_API_TOKEN }}
           VITE_USE_MOCK: 'false'
 
       - name: Setup Pages
