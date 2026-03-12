@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Protección anti-copia */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Permitir selección en inputs y textareas */
+input, textarea, [contenteditable="true"] {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
 /* Estilos base */
 @layer base {
   html {
