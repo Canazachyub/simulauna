@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   ArrowRight, Sparkles, Target, Trophy, GraduationCap, ChevronDown,
   Cog, HeartPulse, Landmark, UserPlus, Clock, TrendingUp,
-  Star, Quote, Zap, FileText, Award, UserCircle2,
+  Star, Quote, Zap, FileText, Award, UserCircle2, BookMarked,
 } from 'lucide-react';
 
 /* -------------------------------------------------------------------------- */
@@ -231,7 +231,7 @@ export function Landing() {
             </p>
 
             {/* CTAs */}
-            <div className="mt-9 flex flex-col sm:flex-row gap-3">
+            <div className="mt-9 flex flex-col gap-3">
               <button
                 onClick={() => navigate('/registro')}
                 className="btn-accent-gold shine-hover inline-flex items-center justify-center gap-2 text-lg px-8 py-4 rounded-xl font-bold bg-brand-accent-500 text-brand-primary-900 shadow-xl shadow-brand-accent-500/30 hover:bg-brand-accent-400 hover:-translate-y-0.5 transition-all"
@@ -239,12 +239,21 @@ export function Landing() {
                 Comenzar simulacro gratis
                 <ArrowRight className="w-5 h-5" />
               </button>
-              <button
-                onClick={() => navigate('/banqueo-tema')}
-                className="inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-6 py-4 transition-all"
-              >
-                Ver banqueo por tema
-              </button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={() => navigate('/banqueo-cepreuna')}
+                  className="flex-1 inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-6 py-4 transition-all"
+                >
+                  <BookMarked className="w-5 h-5" />
+                  Banqueo CEPREUNA
+                </button>
+                <button
+                  onClick={() => navigate('/banqueo-tema')}
+                  className="flex-1 inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-6 py-4 transition-all"
+                >
+                  Banqueo por tema
+                </button>
+              </div>
             </div>
 
             {/* Trust badges */}
@@ -1010,6 +1019,11 @@ export function Landing() {
               <p className="font-display font-bold text-white uppercase tracking-wider text-xs mb-4">Explorar</p>
               <ul className="space-y-2.5 text-sm">
                 <li>
+                  <button onClick={() => navigate('/banqueo-cepreuna')} className="hover:text-white transition-colors">
+                    Banqueo CEPREUNA
+                  </button>
+                </li>
+                <li>
                   <button onClick={() => navigate('/banqueo-tema')} className="hover:text-white transition-colors">
                     Banqueo por tema
                   </button>
@@ -1021,7 +1035,7 @@ export function Landing() {
                 </li>
                 <li>
                   <a href="https://ceprem.unap.edu.pe" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
-                    CEPREUNA
+                    Web oficial CEPREUNA
                   </a>
                 </li>
                 <li>
