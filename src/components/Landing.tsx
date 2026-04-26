@@ -239,19 +239,34 @@ export function Landing() {
                 Comenzar simulacro gratis
                 <ArrowRight className="w-5 h-5" />
               </button>
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button
+                  onClick={() => navigate('/simulacro-cepreuna')}
+                  className="inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-5 py-3.5 text-sm md:text-base transition-all"
+                >
+                  <Trophy className="w-5 h-5" />
+                  Simulacro CEPREUNA
+                </button>
                 <button
                   onClick={() => navigate('/banqueo-cepreuna')}
-                  className="flex-1 inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-6 py-4 transition-all"
+                  className="inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-5 py-3.5 text-sm md:text-base transition-all"
                 >
                   <BookMarked className="w-5 h-5" />
                   Banqueo CEPREUNA
                 </button>
                 <button
                   onClick={() => navigate('/banqueo-tema')}
-                  className="flex-1 inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-6 py-4 transition-all"
+                  className="inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-5 py-3.5 text-sm md:text-base transition-all"
                 >
+                  <FileText className="w-5 h-5" />
                   Banqueo por tema
+                </button>
+                <button
+                  onClick={() => navigate('/banqueo')}
+                  className="inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-5 py-3.5 text-sm md:text-base transition-all"
+                >
+                  <Clock className="w-5 h-5" />
+                  Banqueo histórico
                 </button>
               </div>
             </div>
@@ -1019,6 +1034,11 @@ export function Landing() {
               <p className="font-display font-bold text-white uppercase tracking-wider text-xs mb-4">Explorar</p>
               <ul className="space-y-2.5 text-sm">
                 <li>
+                  <button onClick={() => navigate('/simulacro-cepreuna')} className="hover:text-white transition-colors">
+                    Simulacro CEPREUNA
+                  </button>
+                </li>
+                <li>
                   <button onClick={() => navigate('/banqueo-cepreuna')} className="hover:text-white transition-colors">
                     Banqueo CEPREUNA
                   </button>
@@ -1026,6 +1046,11 @@ export function Landing() {
                 <li>
                   <button onClick={() => navigate('/banqueo-tema')} className="hover:text-white transition-colors">
                     Banqueo por tema
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => navigate('/banqueo')} className="hover:text-white transition-colors">
+                    Banqueo histórico
                   </button>
                 </li>
                 <li>
