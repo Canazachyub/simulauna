@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <defs>
+    <pattern id="andean-bold" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+      <g stroke="currentColor" fill="none" stroke-width="1.5" stroke-linejoin="miter" stroke-linecap="square">
+        <!-- Rombos concentricos -->
+        <polygon points="40,6 74,40 40,74 6,40"/>
+        <polygon points="40,14 66,40 40,66 14,40"/>
+        <polygon points="40,22 58,40 40,58 22,40"/>
+        <polygon points="40,30 50,40 40,50 30,40"/>
+        <!-- Chakana central -->
+        <path d="M37,37 L37,34 L43,34 L43,37 L46,37 L46,43 L43,43 L43,46 L37,46 L37,43 L34,43 L34,37 Z"/>
+        <!-- Zigzag bordes superior e inferior -->
+        <polyline points="0,4 10,0 20,4 30,0 40,4 50,0 60,4 70,0 80,4"/>
+        <polyline points="0,76 10,80 20,76 30,80 40,76 50,80 60,76 70,80 80,76"/>
+        <!-- Zigzag bordes izquierdo y derecho -->
+        <polyline points="4,0 0,10 4,20 0,30 4,40 0,50 4,60 0,70 4,80"/>
+        <polyline points="76,0 80,10 76,20 80,30 76,40 80,50 76,60 80,70 76,80"/>
+        <!-- Puntos en esquinas -->
+        <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
+        <circle cx="72" cy="8" r="1.5" fill="currentColor"/>
+        <circle cx="8" cy="72" r="1.5" fill="currentColor"/>
+        <circle cx="72" cy="72" r="1.5" fill="currentColor"/>
+      </g>
+    </pattern>
+  </defs>
+  <rect fill="url(#andean-bold)" width="80" height="80"/>
+</svg>

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Shadow -->
+  <rect x="28" y="30" width="148" height="210" rx="4" fill="#00000020" stroke="none"/>
+
+  <!-- Paper -->
+  <rect x="22" y="22" width="148" height="210" rx="4" fill="#ffffff"/>
+
+  <!-- Pin corner -->
+  <circle cx="170" cy="22" r="6" fill="#E67E22" stroke="currentColor"/>
+
+  <!-- Header line -->
+  <line x1="38" y1="44" x2="130" y2="44" stroke="#003D7A" stroke-width="2.5"/>
+  <line x1="38" y1="54" x2="100" y2="54" stroke="currentColor" stroke-width="1"/>
+
+  <!-- Question 1 -->
+  <g>
+    <line x1="38" y1="72" x2="150" y2="72" stroke="currentColor"/>
+    <line x1="38" y1="80" x2="130" y2="80" stroke="currentColor" stroke-width="1"/>
+    <circle cx="48" cy="92" r="3.5" fill="#10B981" stroke="#10B981"/>
+    <path d="M44 92 L47 95 L52 89" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+    <circle cx="72" cy="92" r="3.5"/>
+    <circle cx="96" cy="92" r="3.5"/>
+    <circle cx="120" cy="92" r="3.5"/>
+  </g>
+
+  <!-- Question 2 -->
+  <g>
+    <line x1="38" y1="114" x2="150" y2="114" stroke="currentColor"/>
+    <line x1="38" y1="122" x2="140" y2="122" stroke="currentColor" stroke-width="1"/>
+    <circle cx="48" cy="134" r="3.5"/>
+    <circle cx="72" cy="134" r="3.5"/>
+    <circle cx="96" cy="134" r="3.5" fill="#10B981" stroke="#10B981"/>
+    <path d="M92 134 L95 137 L100 131" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+    <circle cx="120" cy="134" r="3.5"/>
+  </g>
+
+  <!-- Question 3 -->
+  <g>
+    <line x1="38" y1="156" x2="150" y2="156" stroke="currentColor"/>
+    <line x1="38" y1="164" x2="125" y2="164" stroke="currentColor" stroke-width="1"/>
+    <circle cx="48" cy="176" r="3.5"/>
+    <circle cx="72" cy="176" r="3.5" fill="#10B981" stroke="#10B981"/>
+    <path d="M68 176 L71 179 L76 173" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+    <circle cx="96" cy="176" r="3.5"/>
+    <circle cx="120" cy="176" r="3.5"/>
+  </g>
+
+  <!-- Question 4 -->
+  <g>
+    <line x1="38" y1="198" x2="150" y2="198" stroke="currentColor"/>
+    <line x1="38" y1="206" x2="135" y2="206" stroke="currentColor" stroke-width="1"/>
+    <circle cx="48" cy="218" r="3.5"/>
+    <circle cx="72" cy="218" r="3.5"/>
+    <circle cx="96" cy="218" r="3.5"/>
+    <circle cx="120" cy="218" r="3.5"/>
+  </g>
+</svg>

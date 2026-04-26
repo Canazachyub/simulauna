@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" fill="none" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Book 1 (bottom) - UNA blue -->
+  <g transform="rotate(-3 100 200)">
+    <rect x="25" y="185" width="150" height="32" rx="3" fill="#003D7A"/>
+    <line x1="32" y1="193" x2="168" y2="193" stroke="#D4AF37" stroke-width="1"/>
+    <line x1="32" y1="210" x2="168" y2="210" stroke="#D4AF37" stroke-width="1"/>
+    <circle cx="145" cy="201" r="2.5" fill="#D4AF37" stroke="none"/>
+  </g>
+
+  <!-- Book 2 - Gold -->
+  <g transform="rotate(2 100 160)">
+    <rect x="30" y="150" width="140" height="30" rx="3" fill="#D4AF37"/>
+    <line x1="36" y1="158" x2="164" y2="158" stroke="#003D7A" stroke-width="1"/>
+    <line x1="36" y1="173" x2="164" y2="173" stroke="#003D7A" stroke-width="1"/>
+    <circle cx="140" cy="165" r="2.5" fill="#003D7A" stroke="none"/>
+  </g>
+
+  <!-- Book 3 - Orange -->
+  <g transform="rotate(-2 100 120)">
+    <rect x="28" y="112" width="145" height="30" rx="3" fill="#E67E22"/>
+    <line x1="34" y1="120" x2="167" y2="120" stroke="#ffffff" stroke-width="1"/>
+    <line x1="34" y1="135" x2="167" y2="135" stroke="#ffffff" stroke-width="1"/>
+    <circle cx="142" cy="127" r="2.5" fill="#ffffff" stroke="none"/>
+  </g>
+
+  <!-- Book 4 (top) - Light blue -->
+  <g transform="rotate(3 100 80)">
+    <rect x="32" y="72" width="136" height="30" rx="3" fill="#5B9BD5"/>
+    <line x1="38" y1="80" x2="162" y2="80" stroke="#003D7A" stroke-width="1"/>
+    <line x1="38" y1="95" x2="162" y2="95" stroke="#003D7A" stroke-width="1"/>
+    <circle cx="138" cy="87" r="2.5" fill="#003D7A" stroke="none"/>
+  </g>
+
+  <!-- Bookmark -->
+  <path d="M60 72 L60 55 L70 62 L70 55 L70 72" fill="#E67E22" stroke="#1a1a1a"/>
+</svg>

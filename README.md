@@ -1148,13 +1148,259 @@ El formateo se aplica automáticamente en:
 | v1.3.0 | Dic 2024 | Control de acceso con confirmación, detección de fraude, justificaciones |
 | v1.4.0 | Dic 2024 | CEPREUNA: Simulacro y Banqueo por semana, Auto-formateo de preguntas |
 | v1.5.0 | Dic 2024 | Banqueo por Tema: normalización de cursos, CacheService, interfaz simplificada |
+| v1.6.0 | Abr 2026 | **Rediseño "Editorial Andino"**: design system, identidad UNA Puno, carrusel de universidades, fotografías reales, AuthContext compartido, CourseSelector con vista lista + atajos teclado, posicionamiento inclusivo (todas las universidades del Perú) |
+
+---
+
+## Rediseño Visual v1.6.0 — "Editorial Andino" (2026-04-20)
+
+### Dirección estética adoptada
+
+**"Editorial Andino"** — tipografía display audaz (Fraunces) con body limpio (Plus Jakarta Sans), paleta UNA Puno (azul profundo `#003D7A` + dorado `#D4AF37` + naranja andino `#E67E22`), patrón textil andino como acento sutil, microanimaciones craft.
+
+Posicionamiento ampliado: plataforma gratuita para **todos los postulantes preuniversitarios del Perú** (no solo UNA Puno). Copy inclusivo: *"Hecho con amor para estudiantes preuniversitarios del Perú"*.
+
+### Design System (`tailwind.config.js` + `src/index.css`)
+
+#### Paleta brand
+```js
+brand: {
+  primary: '#003D7A',   // Azul UNA oficial (escala 50-900)
+  secondary: '#E67E22', // Naranja andino cálido
+  accent:    '#D4AF37', // Dorado Puno
+  earth:     '#8B6F47', // Tierra altiplánica
+}
+```
+
+#### Tipografía
+- `font-sans` → **Plus Jakarta Sans** (400-800)
+- `font-display` → **Fraunces** (400/600/700/900 + italic) — solo en hero/H1
+- `font-mono` → **JetBrains Mono**
+
+Carga desde Google Fonts con `preconnect` en `index.html`.
+
+#### Tokens de elevación
+- `.shadow-elevation-1` hasta `.shadow-elevation-4` con sombras escaladas
+- Border-radius: `xs` (4px) → `xl` (16px)
+
+#### Utilidades personalizadas (`src/index.css`)
+- `.gradient-text-brand` / `.gradient-text-gold` — degradados de texto
+- `.glass` / `.glass-dark` — glassmorphism
+- `.aurora-bg` / `.bg-mesh-deep` / `.bg-mesh-brand` / `.bg-mesh-warm` / `.bg-mesh-gold` / `.bg-gradient-hero`
+- `.andean-bold` — patrón textil andino overlay
+- **`.bg-andean-white`** / `.bg-andean-cream` / `.bg-andean-soft` — patrón sobre fondo claro (usado en Quiz, Banqueos, Simulacros)
+- `.bg-hero-solid` / `.bg-deep-solid` / `.bg-brand-solid` — fondos sólidos con `!important` como failsafe
+- `.hero-dim-overlay` / `.photo-overlay-brand` — overlays oscurecedores
+- `.dots-bg` / `.dots-bg-brand` / `.paper-bg` / `.noise` — texturas
+- `.corner-accent` — esquina dorada decorativa
+- `.shine-hover` — barrido de luz en hover
+- `.text-shadow-sm/md/lg` — sombras de texto para legibilidad sobre imágenes
+
+#### Animaciones (`src/index.css`)
+- `.animate-fade-up` / `.animate-fade-in` / `.animate-slide-in-right` / `.animate-slide-in-left`
+- `.animate-float-y` / `.animate-float-slow` / `.animate-float-x` / `.animate-drift-slow`
+- `.animate-blob-morph` — morph orgánico de bordes
+- `.animate-gradient` — gradient shift 8s
+- `.animate-shimmer` — loading shimmer
+- `.animate-marquee` — scroll infinito (30s)
+- `.animate-bounce-in` / `.animate-number-roll` / `.animate-ring-grow`
+- `.animate-star-twinkle` / `.animate-spin-slow` / `.animate-pulse-ring`
+- `.animate-score-pulse` / `.animate-confetti-burst`
+- Delays: `delay-75`, `delay-150`, `delay-300`, `delay-500`, `delay-700`
+- `prefers-reduced-motion` respetado globalmente
+
+### Biblioteca de assets visuales
+
+#### SVGs educativos (`public/illustrations/`)
+- `study-hero.svg` — escritorio con libros, laptop, lápiz
+- `books-stack.svg` — 4 libros apilados
+- `graduation-cap.svg` — birrete académico
+- `formulas.svg` — ecuaciones matemáticas flotantes
+- `atom.svg` — átomo con órbitas
+- `exam-paper.svg` — hoja de examen
+- `calculator.svg` — calculadora científica
+- `student-silhouette.svg` — estudiante leyendo
+- `compass-geometry.svg` — compás + transportador
+- `lightbulb-idea.svg` — bombilla con engranajes
+- `mountains.svg` — silueta Andes 3 capas
+- `andean-bold.svg` — patrón textil 80×80 repetible
+- `dot-grid.svg` — patrón de puntos
+- `constellation.svg` — 18 estrellas animadas
+- `blob-brand.svg` — blob orgánico con gradient
+- `paper-texture.svg` — textura de papel (feTurbulence)
+
+#### Logos de universidades (`public/logos/`)
+Carpeta creada para recibir logos descargados. Actualmente el carrusel del Landing referencia **12 logos directo desde Wikipedia Commons**:
+
+| Sigla | Universidad | Archivo destino |
+|-------|-------------|-----------------|
+| UNA | Nacional del Altiplano — Puno | `una.png` |
+| UNAJ | Nacional de Juliaca | `unaj.png` |
+| UNMSM | Mayor de San Marcos | `sanmarcos.png` |
+| UNI | Nacional de Ingeniería | `uni.png` |
+| UNSA | San Agustín — Arequipa | `unsa.png` |
+| UNSAAC | San Antonio Abad — Cusco | `unsaac.png` |
+| UNCP | Centro del Perú | `uncp.png` |
+| UNFV | Federico Villarreal | `unfv.png` |
+| UNALM | Agraria La Molina | `unalm.png` |
+| UNT | Nacional de Trujillo | `unt.png` |
+| UNP | Nacional de Piura | `unp.png` |
+| UNSCH | San Cristóbal de Huamanga | `unsch.png` |
+
+> **Para migrar a archivos locales**: descargar cada PNG a `public/logos/{sigla}.png` y reemplazar en `Landing.tsx` las URLs de `upload.wikimedia.org` por `/simulauna/logos/{archivo}.png`.
+
+#### Fotografías (Unsplash — URLs CDN)
+Verificadas con WebFetch. Usadas como `backgroundImage` con opacidades 0.08-0.22 + overlays:
+- `photo-1532012197267-da84d127e765` — señorita en biblioteca (hero)
+- `photo-1523240795612-9a054b0db644` — estudiantes colaborando
+- `photo-1434030216411-0b793f4b4173` — cuaderno/estudio cenital
+- `photo-1513258496099-48168024aec0` — ceremonia de graduación
+- `photo-1509062522246-3755977927d7` — biblioteca interior
+- `photo-1488521787991-ed7bbaae773c` — Perú altiplano
+- `photo-1456513080510-7bf3a84b82f8` — escritorio de estudio
+- `photo-1427504494785-3a9ca7044f45` — estudiante con laptop
+- Avatares testimonios: `i.pravatar.cc/150?img=13/32/47`
+
+### Cambios por componente
+
+#### `src/components/Landing.tsx` — Rediseño completo
+**Secciones (en orden):**
+1. **Hero cinematográfico** `min-h-screen` con `bg-hero-solid` + foto biblioteca + mountains silhouette + 8 estrellas SVG + 2 blobs decorativos. H1 "Prepárate para la **universidad** de verdad". CTAs dorado + glass. Mockups flotantes: score card (2450/3000 con anillo SVG + 5 barras de materias) y preview pregunta. Badge "Nuevo récord".
+2. **Carrusel de universidades** `animate-marquee` 30s infinito, 12 logos duplicados para loop sin cortes, grayscale → color en hover, pausa con mouse, fades laterales.
+3. **4 pasos y listo** sobre `bg-mesh-deep` oscuro. 4 cards glass con badge circular dorado (medalla 3D con gradient `#F4CF5F → #D4AF37 → #A88422`), ícono Lucide, texto. Conectores con chevron dorado entre cards.
+4. **Tres áreas, una meta** con 3 cards color-blocked (azul/rosa/ámbar) + SVGs decorativos por área (calculator+compass / atom+lightbulb / books+exam-paper).
+5. **Stats "Hecho con amor"** sobre `bg-brand-primary-900` con IntersectionObserver para animar los 4 números al entrar en viewport.
+6. **6 features** con iconos coloreados en cards `card-interactive`.
+7. **Testimonios** con avatares pravatar (María Quispe, Juan Carlos Apaza, Rosa Condori Huanca).
+8. **CTA final** "Tu universidad te espera a 60 preguntas" + lista de universidades.
+9. **Footer** compacto con descripción inclusiva.
+
+#### `src/context/AuthContext.tsx` — **NUEVO**
+Context compartido con persistencia en `localStorage` (TTL 30min). Exporta `AuthProvider` y `useAuth()`. Usado en todos los módulos de Banqueo para evitar re-login.
+
+```tsx
+const { user, login, logout, isAuthenticated } = useAuth();
+```
+
+`App.tsx` envuelve el árbol con `<AuthProvider>`.
+
+#### `src/components/CourseSelector.tsx` — **NUEVO**
+Selector visual de cursos con:
+- **Vista LIST** (default) / **GRID** con toggle persistido en localStorage
+- Input de búsqueda con **autofocus**
+- Navegación por teclado: `↑↓` Enter Esc
+- Categorías agrupadas (Matemática/Ciencias/Lenguaje/Sociales/Idiomas) con colores
+- Empty state con SVG
+- Prop `compact` para forzar lista densa
+
+#### `src/components/Quiz.tsx` — Chrome minimalista
+- Header sticky glass con barra de progreso dorada (termina en accent cuando completo)
+- Cronómetro `font-mono` discreto
+- Footer sticky con minimapa de 60 dots agrupados cada 5
+- Drawer lateral `max-w-sm` para navegador completo agrupado por asignatura
+- **Atajos de teclado**: `←` / `→` navegar, `1-5` seleccionar opción
+- Transiciones entre preguntas: `slide-in-right` al avanzar, `slide-in-left` al retroceder
+- `navigator.vibrate(10)` al seleccionar (móvil)
+- Fondo `bg-andean-white` (patrón sobre blanco)
+- Modal de calificar con chips de preguntas pendientes clickables
+
+#### `src/components/Question.tsx` — Flashcard premium
+- Número de pregunta en `font-display text-5xl` con halo dorado + ring pulsante
+- Opciones A-E como botones `rounded-2xl` con círculo de letra por color (A=azul, B=rosa, C=ámbar, D=verde, E=púrpura)
+- Selected: `ring-4 + scale-1.02 + shadow-elevation-2` + check dorado con `animate-bounce-in`
+- Imagen con `border-4 border-brand-accent/20` + caption "Clic para ampliar"
+- Botón reportar error como ghost pequeño
+- `corner-accent` dorado en esquina superior
+
+#### `src/components/Results.tsx` — Hero cinematográfico
+- Anillo circular SVG 280×280 animado con `strokeDasharray` desde 0 al porcentaje
+- Número de score en `font-display 8xl` con `animate-number-roll`
+- Si score ≥ 2400: halo + 8 confetti + animación ring-grow
+- Barra de progreso al siguiente nivel ("Te faltan X pts para...")
+- Si mejor puntaje: badge "Nuevo récord" con `animate-bounce-in`
+- Tabs rediseñados como pills con bg-white shadow cuando activo
+- Tab Gráfico: 3 insight cards (Mejor/Reforzar/Balance) + sección accionable "Asignaturas a reforzar" → link a `/banqueo-tema`
+- Tab Historial: LineChart con dots dorados para mejor puntaje
+- CTA final sobre `bg-mesh-brand animate-gradient` con foto biblioteca
+
+#### `src/components/StudentForm.tsx` — Form pulido
+- Stepper visual con círculos + barras gradient brand
+- Componente `FloatingInput` interno con labels que suben al focus/valor
+- Validación con `animate-shake` en error
+- Fondo `bg-mesh-warm` + foto `studyWoman` lateral al 8% en desktop
+- Modal de acceso denegado con **3 variantes** (fraude/cupo/bloqueo) color-coded
+- Chip `accessDenied` preservado
+
+#### `src/components/AreaSelector.tsx` — Color blocking
+- 3 cards large (480px min) con gradientes: azul (Ing), rosa (Bio), ámbar (Soc)
+- Patrón `andean-bold` overlay en cada card
+- SVGs decorativos por área + estrellas twinkling
+- CTA "Explorar área →" revealed on hover
+- Fondo `bg-mesh-gold` + chakanas eliminadas (preferencia usuario)
+
+#### `src/components/ExamConfirmation.tsx` — Pre-game hype
+- Fondo `bg-gradient-hero` oscuro + mountains-bottom + 5 estrellas + 4 ilustraciones (books/graduation/formulas/atom)
+- H1 "Es hora, {firstName}." con gradient-text-gold
+- Card glass con grid 2×2 del perfil
+- Instructions card con `border-l-4 border-brand-accent` y checks verdes
+- CTA gigante `btn-accent-gold shine-hover` con ícono Play
+
+#### `src/components/Banqueo.tsx` / `BanqueoCepreuna.tsx` / `SimulacroCepreuna.tsx`
+- Fondo `bg-andean-white` en todos los steps claros
+- `SimulacroCepreuna` preserva hero dramático oscuro `bg-mesh-deep`
+- Headers con SVGs educativos contextuales
+- useAuth integrado (no re-login)
+- Botón "Cerrar sesión" en header del step select
+- Chip "CEPREUNA" prominente dorado
+- Grid de semanas S1-S16 rediseñado
+
+#### `src/components/BanqueoPorTema.tsx` — Logo animado + selector práctico
+- **Emblema animado en login**: badge circular con gradient brand + 5 iconos rotando cada 1.8s (Layers/BookOpen/Target/Lightbulb/Zap) + anillo punteado spinning + 5 puntos dorados orbitando
+- CourseSelector con vista lista por defecto
+- Atajo global `/` enfoca el input de búsqueda activo (curso o tema)
+- Stepper visual: Curso → Tema → Cantidad
+- Shimmer skeletons al cargar temas
+
+### Skills de Claude instaladas (`~/.claude/skills/`)
+Para continuar el trabajo de diseño en futuras sesiones:
+- `frontend-design` (Anthropic oficial) — evita "AI slop"
+- `landing-page` (jezweb) — patrones de hero/secciones
+- `design-system` (jezweb) — coherencia de tokens
+- `design-review` (jezweb) — crítica iterativa
+- `tailwind-theme-builder` (jezweb) — migración v3→v4
+- `color-palette` (jezweb) — generar escalas desde hex
+- `responsiveness-check` (jezweb) — validación mobile
+
+Invocación: `/frontend-design`, `/landing-page`, etc. Recargar con `/reload-plugins` tras actualizar.
+
+### Accesibilidad (WCAG AA)
+- Contraste texto verificado en todas las secciones (texto blanco sobre fondo oscuro sólido, texto oscuro sobre claro)
+- `<img>` decorativas con `aria-hidden="true"` + `pointer-events-none`
+- Focus rings preservados en inputs y botones
+- `aria-label`, `aria-pressed`, `aria-current` en Quiz
+- Atajos de teclado con respeto a `input`/`textarea`/`contentEditable`
+- `prefers-reduced-motion` respetado
+- Touch targets mínimo 44×44px (WCAG)
+
+### Pendientes para continuar
+
+1. **Reemplazar URLs de Wikipedia por logos locales**: descargar los 12 PNGs a `public/logos/` y actualizar el array en `Landing.tsx:~430`. Mejora performance + independencia de CDN externa.
+2. **Reducir animaciones del hero**: hay 8 `StarTwinkle` simultáneas; auditoría sugirió bajarlas a 4 para no sobrecargar GPU móvil.
+3. **Replicar logo animado** de `BanqueoPorTema` en `Banqueo.tsx`, `BanqueoCepreuna.tsx`, `SimulacroCepreuna.tsx` para consistencia (si el usuario lo pide).
+4. **Fotos de avatares reales**: los testimonios usan `pravatar.cc` (placeholders). Si hay estudiantes UNA reales con consentimiento, sustituir.
+5. **Carrusel de logos**: el marquee es infinito. Considerar añadir click handlers que lleven a una página/modal con info de cada universidad y tipos de exámenes.
+6. **Dark mode**: no implementado aún. El design system está preparado con `brand.*` — requiere duplicar scales para `dark:*`.
+7. **Fotografías Unsplash**: dependencia externa CDN. Para producción robusta, considerar descargar y servir localmente desde `public/photos/`.
+8. **Tests visuales**: no hay snapshots ni e2e (Playwright) — considerar para prevenir regresiones en rediseños futuros.
 
 ---
 
 ## Créditos
 
-Desarrollado para la **Universidad Nacional del Altiplano - Puno, Perú**
+Desarrollado para los **estudiantes preuniversitarios del Perú** — con foco inicial en la **Universidad Nacional del Altiplano - Puno**, escalable a San Marcos, UNI, UNSA, UNSAAC, UNCP, UNFV, UNALM, UNT, UNP, UNSCH, UNAJ y más.
 
-Plataforma: SimulaUNA v1.5.0
+Plataforma: **SimulaUNA v1.6.0** (Editorial Andino)
 
 Preguntas reales de exámenes de admisión desde 1993 hasta el último proceso.
+
+Hecho con amor en Puno, Perú — para todos los estudiantes del país.

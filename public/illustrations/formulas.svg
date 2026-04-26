@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="currentColor" stroke="none" font-family="Georgia, 'Times New Roman', serif" font-style="italic">
+  <g fill="currentColor">
+    <text x="30" y="60" font-size="36" opacity="0.95" transform="rotate(-6 30 60)">E=mc²</text>
+    <text x="240" y="50" font-size="28" opacity="0.8" transform="rotate(5 240 50)">a²+b²=c²</text>
+    <text x="60" y="130" font-size="44" opacity="0.9" transform="rotate(-3 60 130)">π</text>
+    <text x="130" y="145" font-size="42" opacity="0.75" transform="rotate(8 130 145)">∫</text>
+    <text x="200" y="160" font-size="40" opacity="0.85" transform="rotate(-4 200 160)">∑</text>
+    <text x="280" y="135" font-size="38" opacity="0.7" transform="rotate(6 280 135)">√x</text>
+    <text x="40" y="230" font-size="26" opacity="0.85" transform="rotate(-5 40 230)">y=mx+b</text>
+    <text x="170" y="240" font-size="30" opacity="0.9" transform="rotate(4 170 240)">x²+y²=r²</text>
+    <text x="310" y="230" font-size="32" opacity="0.8" transform="rotate(-7 310 230)">Δx</text>
+    <text x="340" y="90" font-size="24" opacity="0.7" transform="rotate(10 340 90)">∞</text>
+    <text x="20" y="280" font-size="22" opacity="0.6" transform="rotate(-3 20 280)">f(x)</text>
+    <text x="250" y="285" font-size="20" opacity="0.65" transform="rotate(5 250 285)">θ</text>
+  </g>
+</svg>

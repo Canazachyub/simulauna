@@ -4,7 +4,7 @@ import {
   BookOpen, CreditCard, Mail, ChevronLeft, ChevronRight,
   Loader2, AlertCircle, Lock, CheckCircle, XCircle,
   RotateCcw, Home, Lightbulb, Clock, FileText, Tag, Send,
-  Sparkles, Trophy, Target, Calendar, Layers, BookMarked
+  Sparkles, Trophy, Target, Calendar, Layers, BookMarked, LogOut, Zap
 } from 'lucide-react';
 import {
   checkBanqueoAccess,
@@ -16,6 +16,8 @@ import {
 } from '../services/api';
 import { validateDNI } from '../utils/calculations';
 import { renderFormattedText, parseJustification } from '../utils/formatText';
+import { useAuth } from '../context/AuthContext';
+import { CourseSelector, type CourseOption } from './CourseSelector';
 import clsx from 'clsx';
 
 type BanqueoStep = 'login' | 'mode' | 'select' | 'quiz' | 'results';
@@ -37,14 +39,15 @@ const AREA_LABELS: Record<'ING' | 'BIO' | 'SOC', string> = {
 
 export function BanqueoCepreuna() {
   const navigate = useNavigate();
+  const { user, isAuthenticated, login: authLogin, logout: authLogout } = useAuth();
 
   // Step state
-  const [step, setStep] = useState<BanqueoStep>('login');
+  const [step, setStep] = useState<BanqueoStep>(isAuthenticated ? 'mode' : 'login');
   const [mode, setMode] = useState<BanqueoMode>('cuadernillo');
 
-  // Login form
-  const [dni, setDni] = useState('');
-  const [email, setEmail] = useState('');
+  // Login form (prefill from auth context if available)
+  const [dni, setDni] = useState(user?.dni ?? '');
+  const [email, setEmail] = useState(user?.email ?? '');
   const [loginError, setLoginError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -138,12 +141,29 @@ export function BanqueoCepreuna() {
         return;
       }
 
+      authLogin(dni.trim(), email.trim().toLowerCase());
       setStep('mode');
     } catch (error) {
       setLoginError('Error de conexión. Intenta de nuevo.');
     }
 
     setIsLoading(false);
+  };
+
+  // Logout handler
+  const handleLogout = () => {
+    authLogout();
+    setDni('');
+    setEmail('');
+    setSelectedCourse('');
+    setQuestions([]);
+    setAnswers(new Map());
+    setResults([]);
+    setStartTime(0);
+    setElapsedTime(0);
+    setShowAllAnsweredModal(false);
+    setLoginError('');
+    setStep('login');
   };
 
   // Start quiz handler
@@ -262,35 +282,76 @@ export function BanqueoCepreuna() {
   // Render login step
   if (step === 'login') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 py-12 px-4">
-        <div className="max-w-md mx-auto">
-          <div className="card p-8 animate-fade-in shadow-xl">
+      <div className="min-h-screen bg-andean-white relative overflow-hidden py-12 px-4 flex items-center">
+        <div className="absolute -top-20 -left-20 w-72 h-72 bg-mesh-gold opacity-40 rounded-full blur-3xl animate-blob-morph pointer-events-none hidden md:block" aria-hidden />
+
+        {/* Ilustraciones educativas decorativas */}
+        <img
+          src="/illustrations/books-stack.svg"
+          alt=""
+          aria-hidden="true"
+          className="hidden md:block absolute top-12 left-6 w-36 opacity-25 animate-float-slow pointer-events-none"
+        />
+        <img
+          src="/illustrations/atom.svg"
+          alt=""
+          aria-hidden="true"
+          className="hidden md:block absolute bottom-16 right-8 w-28 opacity-20 animate-spin-slow pointer-events-none"
+        />
+
+        <div className="max-w-md mx-auto w-full relative z-10">
+          <div className="glass rounded-3xl p-8 animate-fade-up shadow-elevation-3 border border-white/40 corner-accent relative">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-teal-500 to-teal-700 rounded-2xl mb-4 shadow-lg">
-                <BookMarked className="w-10 h-10 text-white" />
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-mesh-gold rounded-3xl mb-5 shadow-elevation-2 animate-bounce-in animate-pulse-ring">
+                <BookMarked className="w-10 h-10 text-slate-900" />
               </div>
-              <h1 className="text-2xl font-bold text-slate-800 mb-2">
+              <span className="chip bg-brand-accent text-slate-900 text-[11px] font-bold uppercase tracking-[0.22em] font-mono border-2 border-brand-accent-400 shadow-elevation-1 mb-3 px-3 py-1">
+                <img
+                  src="/illustrations/graduation-cap.svg"
+                  alt=""
+                  aria-hidden="true"
+                  className="w-6 h-6 inline-block pointer-events-none"
+                />
+                <Sparkles className="w-3 h-3" />
+                CEPREUNA
+              </span>
+              <h1 className="inline-block font-display text-4xl font-black text-brand-accent-600 gradient-text-gold leading-tight mb-2">
                 Banqueo CEPREUNA
               </h1>
-              <p className="text-slate-600">
+              <p className="font-sans text-slate-600">
                 Practica con preguntas de los cuadernillos CEPREUNA por semana
               </p>
             </div>
 
-            <div className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-4 mb-6 border border-teal-200">
+            {isAuthenticated && user?.dni && (
+              <div className="bg-emerald-50 rounded-2xl p-4 mb-6 border border-emerald-200 flex items-center gap-3 animate-fade-up">
+                <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+                <p className="text-emerald-800 text-sm font-sans flex-1">
+                  Continúas como DNI <strong className="font-mono">{user.dni}</strong>
+                </p>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="text-xs font-semibold text-emerald-700 hover:text-red-600 underline"
+                >
+                  Cambiar
+                </button>
+              </div>
+            )}
+
+            <div className="bg-brand-accent-50/80 rounded-2xl p-4 mb-6 border border-brand-accent-200">
               <div className="flex items-start gap-3">
-                <Lock className="w-5 h-5 text-teal-600 mt-0.5" />
-                <p className="text-teal-800 text-sm">
-                  El Banqueo CEPREUNA es exclusivo para usuarios inscritos.
-                  Ingresa tus datos para verificar tu acceso.
+                <Lock className="w-5 h-5 text-brand-accent-700 mt-0.5 flex-shrink-0" />
+                <p className="text-brand-accent-900 text-sm font-sans">
+                  Acceso exclusivo para usuarios inscritos. Ingresa tus datos para verificar tu acceso.
                 </p>
               </div>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="label">
-                  <CreditCard className="w-4 h-4 inline mr-2" />
+                <label className="block text-xs font-bold uppercase tracking-[0.12em] text-slate-600 mb-2 font-display">
+                  <CreditCard className="w-3.5 h-3.5 inline mr-1.5" />
                   DNI
                 </label>
                 <input
@@ -298,29 +359,29 @@ export function BanqueoCepreuna() {
                   value={dni}
                   onChange={(e) => setDni(e.target.value.replace(/\D/g, '').slice(0, 8))}
                   placeholder="Ingresa tu DNI"
-                  className="input"
+                  className="w-full rounded-2xl py-3 px-4 bg-white/80 border border-slate-200 font-sans text-slate-800 placeholder:text-slate-400 shadow-elevation-1 focus:outline-none focus:border-brand-primary-500 focus:ring-4 focus:ring-brand-primary-100 transition-all"
                   maxLength={8}
                 />
               </div>
 
               <div>
-                <label className="label">
-                  <Mail className="w-4 h-4 inline mr-2" />
-                  Correo Electrónico
+                <label className="block text-xs font-bold uppercase tracking-[0.12em] text-slate-600 mb-2 font-display">
+                  <Mail className="w-3.5 h-3.5 inline mr-1.5" />
+                  Correo electrónico
                 </label>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ejemplo@correo.com"
-                  className="input"
+                  className="w-full rounded-2xl py-3 px-4 bg-white/80 border border-slate-200 font-sans text-slate-800 placeholder:text-slate-400 shadow-elevation-1 focus:outline-none focus:border-brand-primary-500 focus:ring-4 focus:ring-brand-primary-100 transition-all"
                 />
               </div>
 
               {loginError && (
-                <div className="bg-red-50 rounded-xl p-4 flex items-start gap-3 border border-red-200">
-                  <AlertCircle className="w-5 h-5 text-red-500 mt-0.5" />
-                  <p className="text-red-700 text-sm">{loginError}</p>
+                <div className="bg-red-50 rounded-2xl p-4 flex items-start gap-3 border border-red-200 animate-fade-up">
+                  <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                  <p className="text-red-700 text-sm font-sans">{loginError}</p>
                 </div>
               )}
             </div>
@@ -332,7 +393,7 @@ export function BanqueoCepreuna() {
               </button>
               <button
                 onClick={handleLogin}
-                className="btn-primary flex-1"
+                className="btn-primary-brand flex-1 shine-hover"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -354,9 +415,22 @@ export function BanqueoCepreuna() {
   // Render mode selection step
   if (step === 'mode') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 py-12 px-4">
-        <div className="max-w-2xl mx-auto">
+      <div className="min-h-screen bg-andean-white relative py-12 px-4">
+        <div className="max-w-2xl mx-auto relative z-10">
           <div className="card p-8 animate-fade-in shadow-xl">
+            <div className="flex justify-end mb-2">
+              {isAuthenticated && (
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-red-600 transition-colors px-2 py-1 rounded-md hover:bg-red-50"
+                  title="Cerrar sesión"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Cerrar sesión
+                </button>
+              )}
+            </div>
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-700 rounded-2xl mb-4 shadow-lg">
                 <Layers className="w-8 h-8 text-white" />
@@ -432,167 +506,251 @@ export function BanqueoCepreuna() {
 
   // Render selection step
   if (step === 'select') {
+    const cuadernilloCourses: CourseOption[] = getAvailableCourses().map(c => ({ name: c }));
+    const generalCourses: CourseOption[] = [...new Set(Object.values(CEPRE_COURSES_BY_AREA).flat())]
+      .sort()
+      .map(c => ({ name: c }));
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 py-12 px-4">
-        <div className="max-w-2xl mx-auto">
-          <div className="card p-8 animate-fade-in shadow-xl">
-            <div className="text-center mb-8">
-              <div className={clsx(
-                'inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 shadow-lg',
-                mode === 'cuadernillo'
-                  ? 'bg-gradient-to-br from-teal-500 to-teal-700'
-                  : 'bg-gradient-to-br from-purple-500 to-purple-700'
-              )}>
-                {mode === 'cuadernillo' ? (
-                  <Calendar className="w-8 h-8 text-white" />
-                ) : (
-                  <Sparkles className="w-8 h-8 text-white" />
-                )}
-              </div>
-              <h1 className="text-2xl font-bold text-slate-800 mb-2">
-                {mode === 'cuadernillo' ? 'Modo Cuadernillo' : 'Modo Curso General'}
-              </h1>
-              <p className="text-slate-600">
-                {mode === 'cuadernillo'
-                  ? 'Selecciona área, semana y curso para cargar el cuadernillo completo'
-                  : 'Selecciona un curso y la cantidad de preguntas a mezclar'
-                }
-              </p>
-            </div>
+      <div className="min-h-screen bg-andean-white relative overflow-hidden py-8 px-4 pb-32">
+        <div className="absolute -top-24 -right-24 w-80 h-80 bg-mesh-gold opacity-30 rounded-full blur-3xl animate-blob-morph pointer-events-none hidden md:block" aria-hidden />
 
-            {mode === 'cuadernillo' ? (
-              <>
-                {/* Area Selection */}
-                <div className="mb-6">
-                  <label className="label mb-2">Área</label>
-                  <div className="grid grid-cols-3 gap-3">
-                    {(['ING', 'BIO', 'SOC'] as const).map(area => (
+        {/* Ilustraciones educativas decorativas */}
+        <img
+          src="/illustrations/calculator.svg"
+          alt=""
+          aria-hidden="true"
+          className="hidden md:block absolute top-24 right-10 w-40 opacity-35 animate-float-y pointer-events-none"
+        />
+        <img
+          src="/illustrations/atom.svg"
+          alt=""
+          aria-hidden="true"
+          className="hidden lg:block absolute bottom-32 left-8 w-32 opacity-20 animate-spin-slow pointer-events-none"
+        />
+
+        <div className="max-w-4xl mx-auto relative z-10">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6 animate-fade-up">
+            <nav className="flex items-center gap-1 text-sm text-slate-500 font-sans">
+              <button onClick={() => navigate('/')} className="hover:text-brand-primary-600 transition-colors">
+                Inicio
+              </button>
+              <ChevronRight className="w-4 h-4" />
+              <button onClick={() => setStep('mode')} className="hover:text-brand-primary-600 transition-colors">
+                Banqueo CEPREUNA
+              </button>
+              <ChevronRight className="w-4 h-4" />
+              <span className="text-slate-700 font-semibold">
+                {mode === 'cuadernillo' ? 'Cuadernillo' : 'Curso General'}
+              </span>
+            </nav>
+            {isAuthenticated && (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="chip bg-white/70 hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 transition-colors font-sans"
+                title="Cerrar sesión"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Cerrar sesión</span>
+              </button>
+            )}
+          </div>
+
+          {/* Hero */}
+          <div className="mb-8 animate-fade-up" style={{ animationDelay: '60ms' }}>
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
+              <span className="chip bg-brand-accent text-slate-900 text-[11px] font-bold uppercase tracking-[0.22em] font-mono border-2 border-brand-accent-400 shadow-elevation-1 px-3 py-1">
+                <img
+                  src="/illustrations/graduation-cap.svg"
+                  alt=""
+                  aria-hidden="true"
+                  className="w-6 h-6 inline-block pointer-events-none"
+                />
+                <Sparkles className="w-3 h-3" />
+                CEPREUNA
+              </span>
+              <span className="chip bg-white/70 text-brand-primary-700 text-[10px] font-mono">
+                {mode === 'cuadernillo' ? <Calendar className="w-3 h-3" /> : <Sparkles className="w-3 h-3" />}
+                {mode === 'cuadernillo' ? 'Modo Cuadernillo' : 'Modo Curso General'}
+              </span>
+            </div>
+            <h1 className="inline-block font-display text-4xl md:text-5xl font-black text-brand-accent-600 gradient-text-gold leading-tight mb-3">
+              Banqueo CEPREUNA
+            </h1>
+            <p className="font-sans text-lg text-slate-600 max-w-2xl">
+              {mode === 'cuadernillo'
+                ? 'Elige área, semana y curso. Carga el cuadernillo completo con todas sus preguntas.'
+                : 'Elige tu curso. Mezcla preguntas de las 3 áreas (ING + BIO + SOC).'}
+            </p>
+          </div>
+
+          {mode === 'cuadernillo' ? (
+            <>
+              {/* Area Selection */}
+              <div className="card-elevated p-6 mb-6 animate-fade-up" style={{ animationDelay: '120ms' }}>
+                <div className="flex items-center gap-2 mb-4">
+                  <Target className="w-5 h-5 text-brand-primary-600" />
+                  <h3 className="font-display text-lg font-bold text-slate-800">Área</h3>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {(['ING', 'BIO', 'SOC'] as const).map(area => {
+                    const active = selectedArea === area;
+                    return (
                       <button
                         key={area}
                         onClick={() => setSelectedArea(area)}
                         className={clsx(
-                          'p-3 rounded-xl border-2 text-center font-medium transition-all',
-                          selectedArea === area
-                            ? 'border-teal-500 bg-teal-50 text-teal-700 shadow-md'
-                            : 'border-slate-200 hover:border-teal-300 hover:bg-slate-50'
+                          'p-4 rounded-2xl border-2 text-center transition-all',
+                          active
+                            ? 'border-brand-primary-500 bg-brand-primary-50 ring-4 ring-brand-primary-100 scale-[1.02] shadow-elevation-2'
+                            : 'border-slate-200 bg-white hover:border-brand-primary-300 hover:bg-slate-50'
                         )}
                       >
-                        <span className="text-sm font-bold block">{area}</span>
-                        <span className="text-xs text-slate-500">{AREA_LABELS[area]}</span>
+                        <span className={clsx(
+                          'font-display text-lg font-black block',
+                          active ? 'text-brand-primary-700' : 'text-slate-800'
+                        )}>
+                          {area}
+                        </span>
+                        <span className="text-xs text-slate-500 font-sans">{AREA_LABELS[area]}</span>
                       </button>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
+              </div>
 
-                {/* Semana Selection */}
-                <div className="mb-6">
-                  <label className="label mb-2">Semana</label>
-                  <select
-                    value={selectedSemana}
-                    onChange={(e) => setSelectedSemana(e.target.value)}
-                    className="input text-lg"
-                  >
-                    {CEPRE_SEMANAS.map(semana => (
-                      <option key={semana} value={semana}>
-                        Semana {semana.replace('S', '')} ({semana})
-                      </option>
-                    ))}
-                  </select>
+              {/* Semana Grid S1-S16 */}
+              <div className="card-elevated p-6 mb-6 animate-fade-up" style={{ animationDelay: '180ms' }}>
+                <div className="flex items-center gap-2 mb-4">
+                  <Calendar className="w-5 h-5 text-brand-accent-600" />
+                  <h3 className="font-display text-lg font-bold text-slate-800">Semana</h3>
+                  <span className="chip bg-brand-accent-100 text-brand-accent-900 text-[10px] font-mono ml-auto border border-brand-accent-300">
+                    {selectedSemana}
+                  </span>
                 </div>
+                <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
+                  {CEPRE_SEMANAS.map(semana => {
+                    const active = selectedSemana === semana;
+                    return (
+                      <button
+                        key={semana}
+                        onClick={() => setSelectedSemana(semana)}
+                        className={clsx(
+                          'aspect-square rounded-xl font-mono font-bold text-sm active:scale-95 transition',
+                          active
+                            ? 'bg-brand-accent text-slate-900 shadow-elevation-2 ring-2 ring-brand-accent-400/60 scale-[1.05]'
+                            : 'bg-white border-2 border-slate-200 text-slate-700 hover:border-brand-accent hover:bg-brand-accent-50/40'
+                        )}
+                      >
+                        {semana}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
 
-                {/* Course Selection */}
-                <div className="mb-6">
-                  <label className="label mb-2">Curso</label>
-                  <select
-                    value={selectedCourse}
-                    onChange={(e) => setSelectedCourse(e.target.value)}
-                    className="input text-lg"
-                  >
-                    <option value="">-- Selecciona un curso --</option>
-                    {getAvailableCourses().map(course => (
-                      <option key={course} value={course}>{course}</option>
-                    ))}
-                  </select>
-                </div>
+              {/* Course */}
+              <div className="mb-6 animate-fade-up" style={{ animationDelay: '240ms' }}>
+                <CourseSelector
+                  courses={cuadernilloCourses}
+                  selected={selectedCourse || null}
+                  onSelect={setSelectedCourse}
+                />
+              </div>
 
-                {/* Info box */}
-                <div className="bg-teal-50 rounded-xl p-4 mb-6 border border-teal-200">
-                  <p className="text-teal-800 text-sm flex items-center gap-2">
-                    <FileText className="w-4 h-4" />
-                    Se cargarán TODAS las preguntas del cuadernillo {selectedSemana} {selectedArea}
-                  </p>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* Course Selection for General Mode */}
-                <div className="mb-6">
-                  <label className="label mb-2">Curso</label>
-                  <select
-                    value={selectedCourse}
-                    onChange={(e) => setSelectedCourse(e.target.value)}
-                    className="input text-lg"
-                  >
-                    <option value="">-- Selecciona un curso --</option>
-                    {/* Combine all courses from all areas */}
-                    {[...new Set(Object.values(CEPRE_COURSES_BY_AREA).flat())].sort().map(course => (
-                      <option key={course} value={course}>{course}</option>
-                    ))}
-                  </select>
-                </div>
+              <div className="bg-brand-accent-50 rounded-2xl p-4 mb-6 border border-brand-accent-200 animate-fade-up">
+                <p className="text-brand-accent-900 text-sm flex items-center gap-2 font-sans">
+                  <FileText className="w-4 h-4 flex-shrink-0" />
+                  Se cargarán TODAS las preguntas del cuadernillo <strong className="font-mono">{selectedSemana}</strong> <strong className="font-mono">{selectedArea}</strong>
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="mb-6 animate-fade-up" style={{ animationDelay: '120ms' }}>
+                <CourseSelector
+                  courses={generalCourses}
+                  selected={selectedCourse || null}
+                  onSelect={setSelectedCourse}
+                />
+              </div>
 
-                {/* Question Count Selection */}
-                <div className="mb-6">
-                  <label className="label mb-2">Cantidad de preguntas</label>
-                  <div className="grid grid-cols-3 gap-3">
-                    {([10, 15, 20] as QuestionCount[]).map(count => (
+              <div className="card-elevated p-6 mb-6 animate-fade-up" style={{ animationDelay: '180ms' }}>
+                <div className="flex items-center gap-2 mb-4">
+                  <Zap className="w-5 h-5 text-brand-accent-600" />
+                  <h3 className="font-display text-lg font-bold text-slate-800">Cantidad de preguntas</h3>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {([10, 15, 20] as QuestionCount[]).map(count => {
+                    const active = questionCount === count;
+                    return (
                       <button
                         key={count}
                         onClick={() => setQuestionCount(count)}
                         className={clsx(
-                          'p-4 rounded-xl border-2 text-center font-medium transition-all',
-                          questionCount === count
-                            ? 'border-purple-500 bg-purple-50 text-purple-700 shadow-md'
-                            : 'border-slate-200 hover:border-purple-300 hover:bg-slate-50'
+                          'p-5 rounded-2xl border-2 text-center transition-all',
+                          active
+                            ? 'border-brand-primary-500 bg-brand-primary-50 ring-4 ring-brand-primary-100 scale-[1.02] shadow-elevation-2'
+                            : 'border-slate-200 bg-white hover:border-brand-primary-300 hover:bg-slate-50'
                         )}
                       >
-                        <span className="text-2xl font-bold block">{count}</span>
-                        <span className="text-sm text-slate-500">preguntas</span>
+                        <span className={clsx(
+                          'font-display text-3xl font-black block leading-none mb-1',
+                          active ? 'text-brand-primary-700' : 'text-slate-800'
+                        )}>
+                          {count}
+                        </span>
+                        <span className="text-xs text-slate-500 font-sans">preguntas</span>
                       </button>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
-
-                {/* Info box */}
-                <div className="bg-purple-50 rounded-xl p-4 mb-6 border border-purple-200">
-                  <p className="text-purple-800 text-sm flex items-center gap-2">
-                    <Sparkles className="w-4 h-4" />
-                    Se mezclarán preguntas de ING + BIO + SOC aleatoriamente
-                  </p>
-                </div>
-              </>
-            )}
-
-            {loginError && (
-              <div className="bg-red-50 rounded-xl p-4 mb-6 flex items-start gap-3 border border-red-200">
-                <AlertCircle className="w-5 h-5 text-red-500 mt-0.5" />
-                <p className="text-red-700 text-sm">{loginError}</p>
               </div>
-            )}
 
-            <div className="flex gap-3">
-              <button onClick={() => setStep('mode')} className="btn-secondary flex-1">
-                <ChevronLeft className="w-5 h-5" />
+              <div className="bg-brand-primary-50 rounded-2xl p-4 mb-6 border border-brand-primary-200 animate-fade-up">
+                <p className="text-brand-primary-900 text-sm flex items-center gap-2 font-sans">
+                  <Sparkles className="w-4 h-4 flex-shrink-0" />
+                  Se mezclarán preguntas de ING + BIO + SOC aleatoriamente
+                </p>
+              </div>
+            </>
+          )}
+
+          {loginError && (
+            <div className="bg-red-50 rounded-2xl p-4 mb-6 flex items-start gap-3 border border-red-200 animate-fade-up">
+              <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+              <p className="text-red-700 text-sm font-sans">{loginError}</p>
+            </div>
+          )}
+
+          {/* CTA sticky */}
+          <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-200 px-4 py-3 z-40 shadow-elevation-3">
+            <div className="max-w-4xl mx-auto flex items-center gap-3">
+              <button
+                onClick={() => setStep('mode')}
+                className="btn-secondary hidden sm:inline-flex"
+              >
+                <ChevronLeft className="w-4 h-4" />
                 Cambiar modo
               </button>
+              <div className="flex-1 min-w-0 hidden sm:block">
+                {selectedCourse ? (
+                  <div className="text-sm truncate">
+                    <span className="font-display font-bold text-slate-800">{selectedCourse}</span>
+                    {mode === 'cuadernillo' && (
+                      <span className="ml-2 chip bg-brand-accent-100 text-brand-accent-900 text-[10px] font-mono border border-brand-accent-300">
+                        {selectedArea} · {selectedSemana}
+                      </span>
+                    )}
+                  </div>
+                ) : (
+                  <span className="text-sm text-slate-400 font-sans italic">Selecciona un curso</span>
+                )}
+              </div>
               <button
                 onClick={handleStartQuiz}
-                className={clsx(
-                  'btn-primary flex-1',
-                  mode === 'cuadernillo'
-                    ? 'bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700'
-                    : 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700'
-                )}
+                className="btn-accent-gold flex-1 sm:flex-none shine-hover"
                 disabled={!selectedCourse || isLoading}
               >
                 {isLoading ? (
@@ -601,6 +759,7 @@ export function BanqueoCepreuna() {
                   <>
                     <Target className="w-5 h-5" />
                     Comenzar
+                    <ChevronRight className="w-5 h-5" />
                   </>
                 )}
               </button>
@@ -616,58 +775,56 @@ export function BanqueoCepreuna() {
     const isAnswered = currentAnswer !== null && currentAnswer !== undefined;
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 py-4 px-4">
-        <div className="max-w-3xl mx-auto">
-          {/* Header */}
-          <div className="bg-white rounded-2xl p-4 shadow-lg mb-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="flex flex-wrap gap-1 mb-1">
-                  <span className="text-xs font-medium text-teal-600 bg-teal-100 px-2 py-0.5 rounded-full">
+      <div className="min-h-screen bg-andean-white relative py-4 px-4">
+        <div className="max-w-3xl mx-auto relative z-10">
+          {/* Header Editorial Andino */}
+          <div className="card-elevated p-4 mb-4 relative overflow-hidden">
+            <div className="absolute top-2 right-2 chip bg-brand-accent text-slate-900 text-[10px] font-mono font-bold border-2 border-brand-accent-700">
+              CEPREUNA
+            </div>
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-wrap gap-1 mb-1.5">
+                  <span className="chip bg-brand-primary-50 text-brand-primary-700 text-[10px] font-mono">
+                    <BookMarked className="w-3 h-3" />
                     {selectedCourse}
                   </span>
                   {mode === 'cuadernillo' && (
                     <>
-                      <span className="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-0.5 rounded-full">
+                      <span className="chip bg-slate-100 text-slate-700 text-[10px] font-mono">
                         {AREA_LABELS[selectedArea]}
                       </span>
-                      <span className="text-xs font-medium text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full">
+                      <span className="chip bg-brand-accent-50 text-brand-accent-800 text-[10px] font-mono">
+                        <Calendar className="w-3 h-3" />
                         {selectedSemana}
                       </span>
                     </>
                   )}
                 </div>
-                <h2 className="font-bold text-slate-800">
+                <h2 className="font-display font-bold text-slate-800 text-sm">
                   Pregunta {currentIndex + 1} de {questions.length}
                 </h2>
               </div>
 
-              {/* Timer */}
-              <div className="flex items-center gap-2 bg-slate-100 rounded-xl px-4 py-2">
-                <Clock className="w-5 h-5 text-primary-600" />
-                <span className="font-mono text-xl font-bold text-slate-800">
+              <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5">
+                <Clock className="w-4 h-4 text-brand-primary-600" />
+                <span className="font-mono text-base font-bold text-slate-800">
                   {formatTime(elapsedTime)}
                 </span>
               </div>
 
               <div className="text-right">
-                <span className="text-xs text-slate-500">Respondidas</span>
-                <p className="font-bold text-lg">
-                  <span className="text-primary-600">{answeredCount}</span>
+                <span className="text-[10px] text-slate-500 font-mono uppercase tracking-wider">Respondidas</span>
+                <p className="font-display font-bold text-base">
+                  <span className="text-brand-primary-600">{answeredCount}</span>
                   <span className="text-slate-400">/{questions.length}</span>
                 </p>
               </div>
             </div>
 
-            {/* Progress bar */}
-            <div className="mt-3 h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div className="mt-3 h-1.5 bg-slate-100 rounded-full overflow-hidden">
               <div
-                className={clsx(
-                  'h-full transition-all duration-300',
-                  mode === 'cuadernillo'
-                    ? 'bg-gradient-to-r from-teal-500 to-teal-600'
-                    : 'bg-gradient-to-r from-purple-500 to-purple-600'
-                )}
+                className="h-full bg-mesh-brand transition-all duration-300"
                 style={{ width: `${(answeredCount / questions.length) * 100}%` }}
               />
             </div>
@@ -950,70 +1107,101 @@ export function BanqueoCepreuna() {
     const avgTimePerQuestion = elapsedTime / questions.length;
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 py-6 px-4">
-        <div className="max-w-3xl mx-auto">
-          {/* Score Card */}
-          <div className="card p-8 mb-6 text-center animate-fade-in shadow-xl bg-gradient-to-br from-white to-slate-50">
-            <div className={clsx(
-              'inline-flex items-center justify-center w-20 h-20 rounded-full mb-4 shadow-lg',
-              mode === 'cuadernillo'
-                ? 'bg-gradient-to-br from-teal-500 to-teal-700'
-                : 'bg-gradient-to-br from-purple-500 to-purple-700'
-            )}>
-              <Trophy className="w-10 h-10 text-white" />
+      <div className="min-h-screen bg-andean-white relative py-6 px-4">
+        <div className="max-w-3xl mx-auto relative z-10">
+          {/* Score Hero — Editorial */}
+          <div className="card-elevated p-8 mb-6 text-center animate-fade-up bg-aurora andean-overlay relative overflow-hidden">
+            <div className="absolute top-4 right-4 flex gap-2">
+              <span className="chip bg-brand-accent-100 text-brand-accent-900 text-[10px] font-mono font-bold border border-brand-accent-300">
+                CEPREUNA
+              </span>
+              {isAuthenticated && (
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="chip bg-white/70 hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 transition-colors"
+                  title="Cerrar sesión"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
 
-            <h1 className="text-2xl font-bold text-slate-800 mb-2">
-              Resultados del Banqueo CEPREUNA
+            <div className="relative inline-flex items-center justify-center w-32 h-32 mb-5 animate-bounce-in">
+              <svg className="absolute inset-0 -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" stroke="#e2e8f0" strokeWidth="10" fill="none" />
+                <circle
+                  cx="60" cy="60" r="52"
+                  stroke="url(#cepre-grad)"
+                  strokeWidth="10"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeDasharray={`${(percentage / 100) * 326.72} 326.72`}
+                />
+                <defs>
+                  <linearGradient id="cepre-grad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#c2410c" />
+                    <stop offset="100%" stopColor="#eab308" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="text-center">
+                <p className="inline-block font-display text-4xl font-black text-brand-primary-800 gradient-text-brand leading-none">{percentage}%</p>
+                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mt-0.5">Acierto</p>
+              </div>
+            </div>
+
+            <h1 className="font-display text-3xl md:text-4xl font-black text-slate-900 mb-2">
+              Cuadernillo completado
             </h1>
             <div className="flex flex-wrap justify-center gap-2 mb-6">
-              <span className="inline-block text-sm font-medium text-teal-600 bg-teal-100 px-3 py-1 rounded-full">
+              <span className="chip bg-white/70 text-brand-primary-700 text-xs font-mono">
                 {selectedCourse}
               </span>
               {mode === 'cuadernillo' && (
                 <>
-                  <span className="inline-block text-sm font-medium text-purple-600 bg-purple-100 px-3 py-1 rounded-full">
+                  <span className="chip bg-white/70 text-slate-700 text-xs font-mono">
                     {AREA_LABELS[selectedArea]}
                   </span>
-                  <span className="inline-block text-sm font-medium text-amber-600 bg-amber-100 px-3 py-1 rounded-full">
+                  <span className="chip bg-brand-accent-100 text-brand-accent-900 text-xs font-mono border border-brand-accent-300">
                     {selectedSemana}
                   </span>
                 </>
               )}
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
-                <p className="text-4xl font-bold text-emerald-600">{correctCount}</p>
-                <p className="text-sm text-emerald-700">Correctas</p>
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              <div className="bg-white/70 backdrop-blur rounded-2xl p-4 border border-emerald-200 shadow-elevation-1">
+                <p className="font-display text-3xl font-black text-emerald-600 leading-none">{correctCount}</p>
+                <p className="text-[11px] font-mono uppercase tracking-wider text-emerald-700 mt-1">Correctas</p>
               </div>
-              <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-xl p-4 border border-red-200">
-                <p className="text-4xl font-bold text-red-500">{questions.length - correctCount}</p>
-                <p className="text-sm text-red-700">Incorrectas</p>
+              <div className="bg-white/70 backdrop-blur rounded-2xl p-4 border border-red-200 shadow-elevation-1">
+                <p className="font-display text-3xl font-black text-red-500 leading-none">{questions.length - correctCount}</p>
+                <p className="text-[11px] font-mono uppercase tracking-wider text-red-700 mt-1">Incorrectas</p>
               </div>
-              <div className="bg-gradient-to-br from-primary-50 to-blue-50 rounded-xl p-4 border border-primary-200">
-                <p className="text-4xl font-bold text-primary-600">{percentage}%</p>
-                <p className="text-sm text-primary-700">Porcentaje</p>
+              <div className="bg-white/70 backdrop-blur rounded-2xl p-4 border border-brand-primary-200 shadow-elevation-1">
+                <p className="font-display text-3xl font-black text-brand-primary-600 leading-none">{questions.length}</p>
+                <p className="text-[11px] font-mono uppercase tracking-wider text-brand-primary-700 mt-1">Total</p>
               </div>
             </div>
 
-            <div className="flex justify-center gap-4 mb-6 text-sm">
+            <div className="flex flex-wrap justify-center gap-3 mb-6 text-sm font-sans">
               <div className="flex items-center gap-2 text-slate-600">
                 <Clock className="w-4 h-4" />
-                <span>Tiempo total: <strong>{formatTime(elapsedTime)}</strong></span>
+                <span>Tiempo: <strong className="font-mono">{formatTime(elapsedTime)}</strong></span>
               </div>
               <div className="flex items-center gap-2 text-slate-600">
                 <Target className="w-4 h-4" />
-                <span>Promedio: <strong>{Math.round(avgTimePerQuestion)}s/preg</strong></span>
+                <span>Promedio: <strong className="font-mono">{Math.round(avgTimePerQuestion)}s</strong></span>
               </div>
             </div>
 
-            <div className="flex gap-3 justify-center">
-              <button onClick={handleReset} className="btn-secondary">
+            <div className="flex flex-wrap gap-3 justify-center">
+              <button onClick={handleReset} className="btn-primary-brand shine-hover">
                 <RotateCcw className="w-5 h-5" />
                 Otra práctica
               </button>
-              <button onClick={() => navigate('/')} className="btn-primary">
+              <button onClick={() => navigate('/')} className="btn-secondary">
                 <Home className="w-5 h-5" />
                 Inicio
               </button>

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 280" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Light rays -->
+  <g stroke="#D4AF37" stroke-width="2.5">
+    <line x1="120" y1="15" x2="120" y2="35"/>
+    <line x1="50" y1="45" x2="65" y2="58"/>
+    <line x1="190" y1="45" x2="175" y2="58"/>
+    <line x1="25" y1="100" x2="45" y2="105"/>
+    <line x1="215" y1="100" x2="195" y2="105"/>
+    <line x1="40" y1="160" x2="58" y2="155"/>
+    <line x1="200" y1="160" x2="182" y2="155"/>
+  </g>
+
+  <!-- Bulb glass -->
+  <path d="M75 120 Q75 65 120 65 Q165 65 165 120 Q165 150 150 170 Q145 180 145 195 L95 195 Q95 180 90 170 Q75 150 75 120 Z" fill="#FFF8E1" stroke="currentColor"/>
+
+  <!-- Filament -->
+  <g stroke="#E67E22" stroke-width="1.5" fill="none">
+    <path d="M105 130 Q110 140 105 150 Q100 160 108 170"/>
+    <path d="M135 130 Q130 140 135 150 Q140 160 132 170"/>
+    <line x1="105" y1="130" x2="135" y2="130"/>
+    <line x1="108" y1="170" x2="132" y2="170"/>
+  </g>
+
+  <!-- Gears inside bulb -->
+  <g fill="currentColor" stroke="currentColor" stroke-width="1">
+    <!-- Gear 1 -->
+    <g transform="translate(100 110)">
+      <circle r="12" fill="#D4AF37" stroke="currentColor"/>
+      <circle r="5" fill="#ffffff" stroke="currentColor"/>
+      <g stroke="currentColor" stroke-width="1.2">
+        <line x1="0" y1="-12" x2="0" y2="-16"/>
+        <line x1="0" y1="12" x2="0" y2="16"/>
+        <line x1="-12" y1="0" x2="-16" y2="0"/>
+        <line x1="12" y1="0" x2="16" y2="0"/>
+        <line x1="-8.5" y1="-8.5" x2="-11" y2="-11"/>
+        <line x1="8.5" y1="-8.5" x2="11" y2="-11"/>
+        <line x1="-8.5" y1="8.5" x2="-11" y2="11"/>
+        <line x1="8.5" y1="8.5" x2="11" y2="11"/>
+      </g>
+    </g>
+    <!-- Gear 2 -->
+    <g transform="translate(138 138)">
+      <circle r="9" fill="#E67E22" stroke="currentColor"/>
+      <circle r="3.5" fill="#ffffff" stroke="currentColor"/>
+      <g stroke="currentColor" stroke-width="1">
+        <line x1="0" y1="-9" x2="0" y2="-13"/>
+        <line x1="0" y1="9" x2="0" y2="13"/>
+        <line x1="-9" y1="0" x2="-13" y2="0"/>
+        <line x1="9" y1="0" x2="13" y2="0"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Bulb base (screw) -->
+  <g stroke="currentColor" fill="#9ca3af">
+    <rect x="95" y="195" width="50" height="10" rx="1"/>
+    <rect x="98" y="207" width="44" height="8" rx="1"/>
+    <rect x="101" y="217" width="38" height="8" rx="1"/>
+    <path d="M106 227 L134 227 L130 245 Q120 252 110 245 Z" fill="#6b7280"/>
+  </g>
+</svg>

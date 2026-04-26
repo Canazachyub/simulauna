@@ -9,6 +9,7 @@ import { Banqueo } from './components/Banqueo';
 import { BanqueoCepreuna } from './components/BanqueoCepreuna';
 import { BanqueoPorTema } from './components/BanqueoPorTema';
 import { SimulacroCepreuna } from './components/SimulacroCepreuna';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   useEffect(() => {
@@ -49,20 +50,22 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter basename="/simulauna">
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/registro" element={<StudentForm />} />
-        <Route path="/confirmar" element={<ExamConfirmation />} />
-        <Route path="/examen" element={<Quiz />} />
-        <Route path="/resultados" element={<Results />} />
-        <Route path="/banqueo" element={<Banqueo />} />
-        <Route path="/banqueo-cepreuna" element={<BanqueoCepreuna />} />
-        <Route path="/banqueo-tema" element={<BanqueoPorTema />} />
-        <Route path="/simulacro-cepreuna" element={<SimulacroCepreuna />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter basename="/simulauna">
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/registro" element={<StudentForm />} />
+          <Route path="/confirmar" element={<ExamConfirmation />} />
+          <Route path="/examen" element={<Quiz />} />
+          <Route path="/resultados" element={<Results />} />
+          <Route path="/banqueo" element={<Banqueo />} />
+          <Route path="/banqueo-cepreuna" element={<BanqueoCepreuna />} />
+          <Route path="/banqueo-tema" element={<BanqueoPorTema />} />
+          <Route path="/simulacro-cepreuna" element={<SimulacroCepreuna />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

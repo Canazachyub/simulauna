@@ -1,4 +1,4 @@
-import { CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle, XCircle, Check, Flag, ZoomIn } from 'lucide-react';
 import type { Question as QuestionType } from '../types';
 import { indexToLetter } from '../utils/calculations';
 import clsx from 'clsx';
@@ -203,30 +203,14 @@ interface QuestionProps {
   onSelectAnswer: (index: number) => void;
 }
 
-// Función para obtener las clases de color según el índice y estado
-function getOptionColorClasses(index: number, optionState: string): string {
-  // Si tiene un estado especial, usar esos colores
-  if (optionState === 'selected') {
-    return 'bg-primary-600 text-white scale-110 shadow-lg';
-  }
-  if (optionState === 'correct') {
-    return 'bg-emerald-500 text-white';
-  }
-  if (optionState === 'incorrect') {
-    return 'bg-red-500 text-white';
-  }
-
-  // Colores Google para estado default - CLASES ESTÁTICAS
-  const colors = [
-    'bg-blue-500 text-white',      // A - Azul Google
-    'bg-rose-500 text-white',      // B - Rojo/Rosa Google (cambiado de red a rose para diferenciarlo)
-    'bg-amber-500 text-white',     // C - Amarillo/Ámbar Google
-    'bg-green-500 text-white',     // D - Verde Google
-    'bg-purple-500 text-white',    // E - Púrpura
-  ];
-
-  return colors[index] || 'bg-slate-500 text-white';
-}
+// Paleta suavizada Editorial Andino para círculos A-E
+const LETTER_BG_IDLE = [
+  'bg-blue-500/50 text-white',    // A
+  'bg-rose-400/50 text-white',    // B
+  'bg-amber-500/50 text-white',   // C
+  'bg-emerald-500/50 text-white', // D
+  'bg-purple-500/50 text-white',  // E
+];
 
 export function Question({
   question,
@@ -236,158 +220,239 @@ export function Question({
   isCorrect,
   onSelectAnswer
 }: QuestionProps) {
+  // Formatea número con cero a la izquierda: 01, 02, ...
+  const numberPadded = String(questionNumber).padStart(2, '0');
+
   return (
     <div className="max-w-3xl mx-auto">
-      {/* Question Card */}
-      <div className="card p-6 md:p-8 animate-slide-up">
-        {/* Subject tag - mobile */}
-        <div className="md:hidden mb-4">
-          <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">
-            {question.subject}
-          </span>
-        </div>
+      {/* Card contenedora con riqueza visual */}
+      <div className="card-elevated p-6 md:p-10 relative overflow-hidden rounded-2xl bg-white">
+        {/* Patrón sutil de puntos brand detrás de todo */}
+        <div
+          className="dots-bg-brand absolute inset-0 opacity-30 pointer-events-none"
+          aria-hidden="true"
+        />
 
-        {/* Question text con soporte para formato */}
-        <div className="mb-6">
-          <h2 className="text-lg md:text-xl font-semibold text-slate-800 leading-relaxed">
-            <span className="text-primary-600 mr-2">P{questionNumber}.</span>
-            <FormattedText text={question.questionText} />
-          </h2>
-        </div>
+        {/* Accent dorado en esquina superior derecha */}
+        <div className="corner-accent absolute top-0 right-0 pointer-events-none" aria-hidden="true" />
 
-        {/* Question image */}
-        {question.imageLink && (
-          <div className="mb-6">
-            <img
-              src={question.imageLink}
-              alt="Imagen de la pregunta"
-              className="max-w-full h-auto rounded-lg border border-slate-200 mx-auto"
-              style={{ maxHeight: '300px' }}
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = 'none';
-              }}
-            />
-          </div>
-        )}
-
-        {/* Source file label */}
-        {question.sourceFile && (
-          <div className="mb-4 flex justify-end">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs font-medium border border-purple-200">
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Tomado en: {question.sourceFile}
-            </span>
-          </div>
-        )}
-
-        {/* Options */}
-        <div className="space-y-3">
-          {question.options.map((option, index) => {
-            const letter = indexToLetter(index);
-            const isSelected = selectedAnswer === index;
-            const isCorrectAnswer = question.correctAnswer === index;
-
-            // Determinar el estado visual de la opción
-            let optionState: 'default' | 'selected' | 'correct' | 'incorrect' = 'default';
-            if (showFeedback) {
-              if (isCorrectAnswer) {
-                optionState = 'correct';
-              } else if (isSelected && !isCorrectAnswer) {
-                optionState = 'incorrect';
-              }
-            } else if (isSelected) {
-              optionState = 'selected';
-            }
-
-            return (
-              <button
-                key={index}
-                onClick={() => onSelectAnswer(index)}
-                disabled={showFeedback}
-                className={clsx(
-                  'w-full p-4 rounded-xl border-2 text-left transition-all duration-200 flex items-start gap-4',
-                  {
-                    // Default state
-                    'border-slate-200 hover:border-primary-300 hover:bg-primary-50':
-                      optionState === 'default',
-                    // Selected (before feedback)
-                    'border-primary-500 bg-primary-50 shadow-md':
-                      optionState === 'selected',
-                    // Correct answer (after feedback)
-                    'border-emerald-500 bg-emerald-50':
-                      optionState === 'correct',
-                    // Incorrect answer (after feedback)
-                    'border-red-500 bg-red-50':
-                      optionState === 'incorrect',
-                    // Disabled state
-                    'cursor-not-allowed opacity-75':
-                      showFeedback && optionState === 'default'
-                  }
-                )}
-              >
-                {/* Letter indicator con colores Google */}
+        {/* Contenido (z-10 para quedar sobre las decoraciones) */}
+        <div className="relative z-10">
+          {/* Cabecera editorial */}
+          <div className="mb-6 md:mb-8 animate-fade-up">
+            <div className="flex items-end gap-4">
+              {/* Número con halo dorado + círculo animado */}
+              <div className="relative flex-shrink-0">
+                {/* Halo dorado difuso */}
                 <div
-                  className={clsx(
-                    'flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center font-bold text-lg shadow-sm transition-transform',
-                    getOptionColorClasses(index, optionState)
-                  )}
-                >
-                  {optionState === 'correct' ? (
-                    <CheckCircle className="w-6 h-6" />
-                  ) : optionState === 'incorrect' ? (
-                    <XCircle className="w-6 h-6" />
-                  ) : (
-                    letter
-                  )}
-                </div>
-
-                {/* Option text con soporte para formato */}
+                  className="absolute inset-0 -m-3 rounded-full bg-brand-accent/20 blur-2xl pointer-events-none"
+                  aria-hidden="true"
+                />
+                {/* Círculo acento decorativo */}
+                <div
+                  className="absolute -inset-2 rounded-full border-2 border-brand-accent/30 animate-pulse-ring pointer-events-none"
+                  aria-hidden="true"
+                />
                 <span
-                  className={clsx('flex-1 pt-2.5', {
-                    'text-slate-700': optionState === 'default',
-                    'text-primary-700 font-medium': optionState === 'selected',
-                    'text-emerald-700 font-medium': optionState === 'correct',
-                    'text-red-700': optionState === 'incorrect'
-                  })}
+                  className="relative inline-block font-display text-5xl md:text-6xl font-black text-brand-accent-600 gradient-text-gold leading-none tabular-nums select-none"
+                  aria-label={`Pregunta ${questionNumber}`}
                 >
-                  <FormattedText text={option} />
+                  {numberPadded}
                 </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Feedback message */}
-        {showFeedback && (
-          <div
-            className={clsx(
-              'mt-6 p-4 rounded-xl flex items-center gap-3 animate-fade-in',
-              {
-                'bg-emerald-100 text-emerald-800': isCorrect,
-                'bg-red-100 text-red-800': !isCorrect
-              }
-            )}
-          >
-            {isCorrect ? (
-              <>
-                <CheckCircle className="w-6 h-6 text-emerald-600" />
-                <span className="font-medium">¡Correcto! +{question.points.toFixed(2)} puntos</span>
-              </>
-            ) : (
-              <>
-                <XCircle className="w-6 h-6 text-red-600" />
-                <span className="font-medium">
-                  {selectedAnswer === null
-                    ? 'Tiempo agotado. '
-                    : 'Incorrecto. '}
-                  La respuesta correcta es la opción {indexToLetter(question.correctAnswer)}.
+              </div>
+              <div className="flex flex-wrap items-center gap-2 pb-1">
+                <span className="chip bg-brand-primary-50 text-brand-primary-700 border border-brand-primary-200">
+                  {question.subject}
                 </span>
-              </>
-            )}
+                {question.sourceFile && (
+                  <span className="chip bg-slate-100 text-slate-600 border border-slate-200">
+                    {question.sourceFile}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
-        )}
+
+          {/* Texto de la pregunta */}
+          <div className="mb-6 md:mb-8 animate-fade-up delay-75">
+            <h2 className="font-sans text-xl md:text-2xl leading-relaxed text-slate-900 font-medium">
+              <FormattedText text={question.questionText} />
+            </h2>
+          </div>
+
+          {/* Imagen con marco decorativo */}
+          {question.imageLink && (
+            <div className="mb-6 md:mb-8 animate-fade-up delay-100">
+              <div className="rounded-2xl border-4 border-brand-accent/20 p-2 bg-gradient-to-br from-white to-slate-50 shadow-elevation-1">
+                <div className="rounded-xl bg-white p-2 md:p-3">
+                  <img
+                    src={question.imageLink}
+                    alt="Imagen de la pregunta"
+                    className="max-h-96 object-contain mx-auto rounded-lg cursor-zoom-in"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
+                  />
+                  <p className="mt-2 flex items-center justify-center gap-1.5 text-xs text-slate-400 font-sans">
+                    <ZoomIn className="w-3 h-3" aria-hidden="true" />
+                    <span>Clic para ampliar</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Opciones tipo flashcard */}
+          <div className="space-y-3 animate-fade-up delay-150">
+            {question.options.map((option, index) => {
+              const letter = indexToLetter(index);
+              const isSelected = selectedAnswer === index;
+              const isCorrectAnswer = question.correctAnswer === index;
+
+              // Determinar el estado visual de la opción
+              let optionState: 'default' | 'selected' | 'correct' | 'incorrect' = 'default';
+              if (showFeedback) {
+                if (isCorrectAnswer) {
+                  optionState = 'correct';
+                } else if (isSelected && !isCorrectAnswer) {
+                  optionState = 'incorrect';
+                }
+              } else if (isSelected) {
+                optionState = 'selected';
+              }
+
+              // Clases para el círculo de letra
+              const letterCircleClass = clsx(
+                'relative flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-semibold text-base transition-all duration-150',
+                {
+                  // Idle: color suavizado por índice
+                  [LETTER_BG_IDLE[index] || 'bg-slate-400/50 text-white']:
+                    optionState === 'default',
+                  // Selected: brand primary + ring glow + pulse ring breve
+                  'bg-brand-primary text-white ring-4 ring-brand-primary/20 animate-pulse-ring':
+                    optionState === 'selected',
+                  // Correct
+                  'bg-emerald-500 text-white': optionState === 'correct',
+                  // Incorrect
+                  'bg-red-500 text-white': optionState === 'incorrect',
+                }
+              );
+
+              return (
+                <button
+                  key={index}
+                  onClick={() => onSelectAnswer(index)}
+                  disabled={showFeedback}
+                  aria-pressed={isSelected}
+                  aria-label={`Opción ${letter}`}
+                  className={clsx(
+                    'relative w-full rounded-2xl p-4 md:p-5 text-left transition-all duration-150 flex items-center gap-4 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/40 focus-visible:ring-offset-2 shine-hover overflow-hidden',
+                    {
+                      'border-2 border-slate-200 bg-white hover:border-slate-400 hover:shadow-elevation-2':
+                        optionState === 'default',
+                      'border-2 border-brand-primary bg-brand-primary-50 shadow-elevation-2 scale-[1.02]':
+                        optionState === 'selected',
+                      'border-2 border-emerald-500 bg-emerald-50':
+                        optionState === 'correct',
+                      'border-2 border-red-500 bg-red-50':
+                        optionState === 'incorrect',
+                      'cursor-not-allowed opacity-75':
+                        showFeedback && optionState === 'default',
+                    }
+                  )}
+                >
+                  {/* Círculo letra */}
+                  <div className={letterCircleClass}>
+                    {optionState === 'correct' ? (
+                      <CheckCircle className="w-5 h-5" />
+                    ) : optionState === 'incorrect' ? (
+                      <XCircle className="w-5 h-5" />
+                    ) : (
+                      letter
+                    )}
+                  </div>
+
+                  {/* Texto de la opción */}
+                  <span
+                    className={clsx('flex-1 font-sans text-base md:text-[17px] leading-relaxed', {
+                      'text-slate-800': optionState === 'default',
+                      'text-brand-primary-800 font-medium': optionState === 'selected',
+                      'text-emerald-800 font-medium': optionState === 'correct',
+                      'text-red-800': optionState === 'incorrect',
+                    })}
+                  >
+                    <FormattedText text={option} />
+                  </span>
+
+                  {/* Check animado al seleccionar (check lateral original) */}
+                  {optionState === 'selected' && (
+                    <>
+                      <Check
+                        className="flex-shrink-0 w-5 h-5 text-brand-primary animate-bounce-in"
+                        aria-hidden="true"
+                      />
+                      {/* Check dorado en esquina sup. derecha */}
+                      <span
+                        className="absolute top-2 right-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-accent text-white shadow-elevation-1 animate-bounce-in"
+                        aria-hidden="true"
+                      >
+                        <Check className="w-3.5 h-3.5" strokeWidth={3} />
+                      </span>
+                    </>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Feedback message */}
+          {showFeedback && (
+            <div
+              className={clsx(
+                'mt-6 p-4 rounded-xl flex items-center gap-3 animate-fade-in',
+                {
+                  'bg-emerald-100 text-emerald-800': isCorrect,
+                  'bg-red-100 text-red-800': !isCorrect,
+                }
+              )}
+            >
+              {isCorrect ? (
+                <>
+                  <CheckCircle className="w-6 h-6 text-emerald-600" />
+                  <span className="font-medium">¡Correcto! +{question.points.toFixed(2)} puntos</span>
+                </>
+              ) : (
+                <>
+                  <XCircle className="w-6 h-6 text-red-600" />
+                  <span className="font-medium">
+                    {selectedAnswer === null
+                      ? 'Tiempo agotado. '
+                      : 'Incorrecto. '}
+                    La respuesta correcta es la opción {indexToLetter(question.correctAnswer)}.
+                  </span>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* Reportar error (ghost discreto) con tooltip */}
+          <div className="mt-8 flex justify-end">
+            <a
+              href="https://wa.link/40zqta"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative inline-flex items-center gap-1.5 px-2 py-1 text-xs text-slate-400 hover:text-slate-600 transition-colors"
+              aria-label="Reportar error en esta pregunta"
+            >
+              <Flag className="w-3.5 h-3.5" />
+              <span>Reportar error</span>
+              {/* Tooltip */}
+              <span className="pointer-events-none absolute right-0 bottom-full mb-2 px-2.5 py-1.5 rounded-md bg-slate-900 text-white text-[11px] font-sans whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-elevation-2 z-30">
+                ¿Error en la pregunta?
+              </span>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

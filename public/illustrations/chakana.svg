@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <g stroke="currentColor" stroke-width="2.5" fill="none" stroke-linejoin="miter" stroke-linecap="square">
+    <!-- Cruz escalonada Chakana: 3 escalones por brazo -->
+    <path d="
+      M 80,20
+      L 120,20
+      L 120,60
+      L 160,60
+      L 160,80
+      L 180,80
+      L 180,120
+      L 160,120
+      L 160,140
+      L 120,140
+      L 120,180
+      L 80,180
+      L 80,140
+      L 40,140
+      L 40,120
+      L 20,120
+      L 20,80
+      L 40,80
+      L 40,60
+      L 80,60
+      Z
+    "/>
+    <!-- Cuadrado central -->
+    <rect x="85" y="85" width="30" height="30"/>
+    <!-- Circulo central -->
+    <circle cx="100" cy="100" r="8"/>
+  </g>
+</svg>

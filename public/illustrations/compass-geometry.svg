@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Protractor (behind) -->
+  <g stroke="#D4AF37" stroke-width="1.8">
+    <path d="M50 220 A100 100 0 0 1 250 220" fill="none"/>
+    <line x1="50" y1="220" x2="250" y2="220"/>
+    <!-- Inner arc -->
+    <path d="M70 220 A80 80 0 0 1 230 220" fill="none" stroke-width="1"/>
+    <!-- Tick marks -->
+    <g stroke-width="1">
+      <line x1="62" y1="198" x2="72" y2="202"/>
+      <line x1="85" y1="155" x2="93" y2="162"/>
+      <line x1="118" y1="128" x2="122" y2="138"/>
+      <line x1="150" y1="120" x2="150" y2="130"/>
+      <line x1="182" y1="128" x2="178" y2="138"/>
+      <line x1="215" y1="155" x2="207" y2="162"/>
+      <line x1="238" y1="198" x2="228" y2="202"/>
+    </g>
+    <!-- Center dot -->
+    <circle cx="150" cy="220" r="3" fill="#D4AF37" stroke="none"/>
+  </g>
+
+  <!-- Compass -->
+  <g>
+    <!-- Top hinge -->
+    <circle cx="150" cy="50" r="8" fill="currentColor"/>
+    <circle cx="150" cy="50" r="3" fill="#ffffff" stroke="none"/>
+
+    <!-- Top grip -->
+    <path d="M144 30 Q144 20 150 20 Q156 20 156 30 L156 46 L144 46 Z" fill="currentColor"/>
+
+    <!-- Left leg (pencil side) -->
+    <path d="M150 58 L105 230" stroke-width="3"/>
+    <!-- Pencil tip -->
+    <path d="M102 228 L95 248 L108 233 Z" fill="#E67E22" stroke="currentColor"/>
+
+    <!-- Right leg (needle side) -->
+    <path d="M150 58 L195 230" stroke-width="3"/>
+    <!-- Needle point -->
+    <path d="M193 228 L195 245 L198 232 Z" fill="currentColor"/>
+
+    <!-- Arc being drawn -->
+    <path d="M105 230 Q150 205 195 230" stroke="#D4AF37" stroke-dasharray="4 3" fill="none"/>
+  </g>
+
+  <!-- Decorative tick -->
+  <circle cx="150" cy="220" r="6" fill="none" stroke="currentColor"/>
+</svg>

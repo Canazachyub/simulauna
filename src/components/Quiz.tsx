@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useExamStore, useCurrentQuestion, useProgress, useIsLastQuestion, useIsFirstQuestion } from '../hooks/useExam';
 import { useStopwatch } from '../hooks/useTimer';
 import { Question } from './Question';
 import {
   Loader2, ChevronLeft, ChevronRight, CheckCircle,
-  Clock, Grid3X3, FileCheck, AlertTriangle
+  Clock, List, FileCheck, AlertTriangle, X, ChevronDown, Sparkles
 } from 'lucide-react';
 import clsx from 'clsx';
 
@@ -32,12 +32,27 @@ export function Quiz() {
 
   const [showNavigator, setShowNavigator] = useState(false);
   const [showFinishModal, setShowFinishModal] = useState(false);
+  const [collapsedSubjects, setCollapsedSubjects] = useState<Record<string, boolean>>({});
+
+  // Dirección de navegación para animación (1 = avanzar, -1 = retroceder, 0 = idle/initial)
+  const prevIndexRef = useRef<number>(currentQuestionIndex);
+  const [navDirection, setNavDirection] = useState<1 | -1>(1);
+
+  useEffect(() => {
+    const prev = prevIndexRef.current;
+    if (currentQuestionIndex > prev) {
+      setNavDirection(1);
+    } else if (currentQuestionIndex < prev) {
+      setNavDirection(-1);
+    }
+    prevIndexRef.current = currentQuestionIndex;
+  }, [currentQuestionIndex]);
 
   // Cronómetro global del examen
   const { elapsedTime, formattedTime } = useStopwatch(status === 'in_progress');
 
   // Calcular preguntas contestadas y sin contestar
-  const { answeredCount, unansweredCount, unansweredIndexes } = useMemo(() => {
+  const { answeredCount, unansweredCount, unansweredIndexes, unansweredNumbers } = useMemo(() => {
     const answered = savedAnswers.size;
     const unanswered = questions.length - answered;
     const indexes: number[] = [];
@@ -46,8 +61,26 @@ export function Quiz() {
         indexes.push(idx);
       }
     });
-    return { answeredCount: answered, unansweredCount: unanswered, unansweredIndexes: indexes };
+    return {
+      answeredCount: answered,
+      unansweredCount: unanswered,
+      unansweredIndexes: indexes,
+      unansweredNumbers: indexes.map(i => i + 1),
+    };
   }, [savedAnswers, questions]);
+
+  // Tiempo promedio por pregunta (segundos)
+  const averageSecondsPerQuestion = useMemo(() => {
+    if (answeredCount === 0) return 0;
+    return Math.round(elapsedTime / answeredCount);
+  }, [elapsedTime, answeredCount]);
+
+  const averageFormatted = useMemo(() => {
+    const s = averageSecondsPerQuestion;
+    const mm = String(Math.floor(s / 60)).padStart(2, '0');
+    const ss = String(s % 60).padStart(2, '0');
+    return `${mm}:${ss}`;
+  }, [averageSecondsPerQuestion]);
 
   // Obtener respuesta guardada para la pregunta actual
   const currentSavedAnswer = currentQuestion ? savedAnswers.get(currentQuestion.id) ?? null : null;
@@ -71,6 +104,9 @@ export function Quiz() {
   const handleSelectAnswer = useCallback((index: number) => {
     if (!currentQuestion) return;
     saveAnswer(currentQuestion.id, index);
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      navigator.vibrate(10);
+    }
   }, [currentQuestion, saveAnswer]);
 
   const handleNext = useCallback(() => {
@@ -89,6 +125,51 @@ export function Quiz() {
     finishExam();
     navigate('/resultados');
   }, [finishExam, navigate]);
+
+  // Atajos de teclado globales
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target) {
+        const tag = target.tagName;
+        if (
+          tag === 'INPUT' ||
+          tag === 'TEXTAREA' ||
+          tag === 'SELECT' ||
+          target.isContentEditable
+        ) {
+          return;
+        }
+      }
+
+      // Evitar con modificadores
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+      if (e.key === 'ArrowLeft') {
+        if (!isFirstQuestion) {
+          e.preventDefault();
+          previousQuestion();
+        }
+      } else if (e.key === 'ArrowRight') {
+        if (!isLastQuestion) {
+          e.preventDefault();
+          nextQuestion();
+        }
+      } else if (/^[1-5]$/.test(e.key)) {
+        const idx = parseInt(e.key, 10) - 1;
+        if (currentQuestion && idx < currentQuestion.options.length) {
+          e.preventDefault();
+          saveAnswer(currentQuestion.id, idx);
+          if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+            navigator.vibrate(10);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentQuestion, isFirstQuestion, isLastQuestion, previousQuestion, nextQuestion, saveAnswer]);
 
   // Agrupar preguntas por asignatura para el navegador
   const questionsBySubject = useMemo(() => {
@@ -109,280 +190,434 @@ export function Quiz() {
     return groups;
   }, [questions, savedAnswers]);
 
+  const toggleSubject = useCallback((subject: string) => {
+    setCollapsedSubjects(prev => ({ ...prev, [subject]: !prev[subject] }));
+  }, []);
+
   // Loading state
   if (status === 'loading' || !currentQuestion) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-primary-600 animate-spin mx-auto mb-4" />
-          <p className="text-slate-600">Cargando pregunta...</p>
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 paper-bg relative">
+        <div className="absolute inset-x-0 top-0 h-96 spotlight-gold pointer-events-none" aria-hidden="true" />
+        <div className="text-center relative">
+          <Loader2 className="w-12 h-12 text-brand-primary animate-spin mx-auto mb-4" />
+          <p className="text-slate-600 font-sans">Cargando pregunta...</p>
         </div>
       </div>
     );
   }
 
+  const progressPercentage = (answeredCount / progress.total) * 100;
+  const isComplete = answeredCount === progress.total;
+
   return (
-    <div className="min-h-screen bg-slate-100">
-      {/* Header con progreso */}
-      <header className="bg-white shadow-sm sticky top-0 z-20">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
-            {/* Progreso */}
-            <div className="flex items-center gap-3">
-              <div className="text-sm text-slate-600">
-                <span className="font-bold text-primary-600">{progress.current}</span>
-                <span> / {progress.total}</span>
-              </div>
-              <div className="hidden sm:block w-24 h-2 bg-slate-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-primary-600 rounded-full transition-all duration-300"
-                  style={{ width: `${progress.percentage}%` }}
-                />
-              </div>
-            </div>
+    <div className="min-h-screen bg-andean-white relative pb-24">
+      {/* Spotlight dorado sutil arriba */}
+      <div
+        className="absolute inset-x-0 top-0 h-96 spotlight-gold pointer-events-none"
+        aria-hidden="true"
+      />
 
-            {/* Timer global - Estilo Google */}
-            <div className="flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-white border-2 border-blue-500 shadow-lg">
-              <div className="bg-blue-500 p-2 rounded-xl">
-                <Clock className="w-6 h-6 text-white" />
-              </div>
-              <span className="font-mono text-2xl font-bold tracking-wider text-blue-600">{formattedTime}</span>
-            </div>
+      {/* Constelación fija a la derecha (desktop) */}
+      <div
+        className="hidden lg:block fixed top-1/4 right-8 w-48 h-32 opacity-[0.08] pointer-events-none z-0"
+        style={{
+          backgroundImage: "url('/simulauna/illustrations/constellation.svg')",
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          color: '#003D7A',
+        }}
+        aria-hidden="true"
+      />
 
-            {/* Botones de acción */}
-            <div className="flex items-center gap-2">
-              {/* Navegador de preguntas */}
-              <button
-                onClick={() => setShowNavigator(!showNavigator)}
-                className={clsx(
-                  'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
-                  showNavigator
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                )}
+      {/* ========== HEADER sticky ultraminimal ========== */}
+      <header className="glass sticky top-0 z-20 border-b border-slate-200/60 h-14 relative overflow-hidden">
+        {/* Patrón sutil detrás del logo */}
+        <div
+          className="absolute left-0 top-0 bottom-0 w-48 andean-bold opacity-[0.04] text-brand-primary pointer-events-none"
+          aria-hidden="true"
+        />
+        <div className="relative h-full max-w-6xl mx-auto px-4 flex items-center gap-4">
+          {/* Izquierda: marca + asignatura dinámica */}
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="font-display text-base font-black text-slate-900 tracking-tight hidden sm:inline">
+              SimulaUNA
+            </span>
+            <span className="chip bg-brand-primary-50 text-brand-primary-700 border border-brand-primary-200 whitespace-nowrap truncate max-w-[40vw] sm:max-w-none ml-0.5">
+              {currentQuestion.subject}
+            </span>
+            {isComplete && (
+              <span
+                className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-accent/15 text-brand-accent-700 border border-brand-accent/40 text-[11px] font-semibold animate-bounce-in"
+                aria-live="polite"
               >
-                <Grid3X3 className="w-4 h-4" />
-                <span className="hidden sm:inline">Navegador</span>
-              </button>
+                <Sparkles className="w-3 h-3" aria-hidden="true" />
+                ¡Completo!
+              </span>
+            )}
+          </div>
 
-              {/* Calificar examen */}
-              <button
-                onClick={() => setShowFinishModal(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
-              >
-                <FileCheck className="w-4 h-4" />
-                <span className="hidden sm:inline">Calificar</span>
-              </button>
+          {/* Centro: progreso ultra fino */}
+          <div className="flex-1 flex flex-col items-stretch gap-1 min-w-0 px-2">
+            <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-brand-primary via-brand-primary-600 to-brand-accent transition-[width] duration-500 ease-out rounded-full"
+                style={{ width: `${progressPercentage}%` }}
+                role="progressbar"
+                aria-valuenow={answeredCount}
+                aria-valuemin={0}
+                aria-valuemax={progress.total}
+              />
+            </div>
+            <div className="text-[11px] text-slate-500 font-sans text-center tabular-nums hidden sm:block">
+              {answeredCount}/{progress.total} respondidas
             </div>
           </div>
 
-          {/* Indicador de asignatura */}
-          <div className="mt-2 flex items-center justify-between">
-            <span className="px-2 py-0.5 bg-primary-100 text-primary-700 rounded text-xs font-medium">
-              {currentQuestion.subject}
-            </span>
-            <span className="text-xs text-slate-500">
-              {answeredCount} contestadas / {unansweredCount} sin contestar
-            </span>
+          {/* Derecha: cronómetro + acciones */}
+          <div className="flex items-center gap-1.5">
+            <div
+              className="group relative flex items-center gap-1.5 px-2 py-1 rounded-md text-slate-600 hover:bg-slate-100 transition-colors"
+              aria-label={`Tiempo transcurrido ${formattedTime}`}
+            >
+              <Clock className="w-3.5 h-3.5 text-slate-400" />
+              <span className="font-mono text-sm tabular-nums">{formattedTime}</span>
+              {/* Tooltip */}
+              <div className="pointer-events-none absolute right-0 top-full mt-2 px-2.5 py-1.5 rounded-md bg-slate-900 text-white text-[11px] font-sans whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-elevation-2 z-30">
+                Promedio: {averageFormatted} / pregunta
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowNavigator(true)}
+              className="p-2 rounded-md text-slate-600 hover:bg-slate-100 transition-colors"
+              aria-label="Abrir navegador de preguntas"
+            >
+              <List className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => setShowFinishModal(true)}
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium text-slate-700 hover:bg-slate-100 transition-colors"
+              aria-label="Calificar examen"
+            >
+              <FileCheck className="w-3.5 h-3.5" />
+              <span>Calificar</span>
+            </button>
           </div>
         </div>
       </header>
 
-      {/* Panel navegador de preguntas */}
-      {showNavigator && (
-        <div className="fixed inset-0 z-30 bg-black/50" onClick={() => setShowNavigator(false)}>
-          <div
-            className="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-xl overflow-y-auto"
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="sticky top-0 bg-white border-b p-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-slate-800">Navegador de Preguntas</h3>
-                <button
-                  onClick={() => setShowNavigator(false)}
-                  className="p-1 hover:bg-slate-100 rounded"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="mt-2 flex gap-4 text-sm">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 rounded bg-emerald-500"></div>
-                  <span className="text-slate-600">Contestada</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 rounded bg-slate-300"></div>
-                  <span className="text-slate-600">Sin contestar</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 rounded ring-2 ring-primary-500 bg-primary-100"></div>
-                  <span className="text-slate-600">Actual</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-4 space-y-4">
-              {questionsBySubject.map((group, gIdx) => (
-                <div key={gIdx}>
-                  <h4 className="text-sm font-semibold text-slate-600 mb-2">{group.subject}</h4>
-                  <div className="grid grid-cols-8 gap-1.5">
-                    {group.questions.map(({ index, answered }) => (
-                      <button
-                        key={index}
-                        onClick={() => {
-                          goToQuestion(index);
-                          setShowNavigator(false);
-                        }}
-                        className={clsx(
-                          'w-8 h-8 rounded text-xs font-medium transition-all',
-                          index === currentQuestionIndex
-                            ? 'ring-2 ring-primary-500 bg-primary-100 text-primary-700'
-                            : answered
-                              ? 'bg-emerald-500 text-white hover:bg-emerald-600'
-                              : 'bg-slate-200 text-slate-600 hover:bg-slate-300'
-                        )}
-                      >
-                        {index + 1}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal de confirmación para finalizar */}
-      {showFinishModal && (
-        <div className="fixed inset-0 z-40 bg-black/50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 animate-fade-in">
-            <div className="text-center mb-6">
-              {unansweredCount > 0 ? (
-                <>
-                  <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-3" />
-                  <h3 className="text-xl font-bold text-slate-800 mb-2">
-                    Tienes preguntas sin contestar
-                  </h3>
-                  <p className="text-slate-600">
-                    Hay <strong>{unansweredCount} preguntas</strong> sin responder.
-                    Las preguntas sin contestar se calificarán como incorrectas.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto mb-3" />
-                  <h3 className="text-xl font-bold text-slate-800 mb-2">
-                    ¿Finalizar examen?
-                  </h3>
-                  <p className="text-slate-600">
-                    Has contestado todas las preguntas. Una vez que finalices,
-                    no podrás modificar tus respuestas.
-                  </p>
-                </>
-              )}
-            </div>
-
-            <div className="space-y-3">
-              <p className="text-sm text-slate-500 text-center">
-                Tiempo transcurrido: <strong>{formattedTime}</strong>
-              </p>
-
-              {unansweredCount > 0 && (
-                <button
-                  onClick={() => {
-                    if (unansweredIndexes.length > 0) {
-                      goToQuestion(unansweredIndexes[0]);
-                    }
-                    setShowFinishModal(false);
-                  }}
-                  className="btn-secondary w-full"
-                >
-                  Ir a pregunta sin contestar
-                </button>
-              )}
-
-              <button
-                onClick={handleFinishExam}
-                className="btn-primary w-full bg-emerald-600 hover:bg-emerald-700"
-              >
-                Calificar Examen
-              </button>
-
-              <button
-                onClick={() => setShowFinishModal(false)}
-                className="w-full py-2 text-slate-600 hover:text-slate-800 text-sm"
-              >
-                Continuar examen
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Question Content */}
-      <main className="container mx-auto px-4 py-6">
-        <Question
-          question={currentQuestion}
-          questionNumber={progress.current}
-          totalQuestions={progress.total}
-          selectedAnswer={currentSavedAnswer}
-          showFeedback={false}
-          isCorrect={null}
-          onSelectAnswer={handleSelectAnswer}
-        />
-
-        {/* Navigation Buttons */}
-        <div className="max-w-3xl mx-auto mt-6 flex gap-3">
-          <button
-            onClick={handlePrevious}
-            disabled={isFirstQuestion}
-            className={clsx(
-              'flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold transition-all',
-              isFirstQuestion
-                ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                : 'bg-white text-slate-700 hover:bg-slate-50 shadow-sm border border-slate-200'
-            )}
-          >
-            <ChevronLeft className="w-5 h-5" />
-            Anterior
-          </button>
-
-          <button
-            onClick={handleNext}
-            disabled={isLastQuestion}
-            className={clsx(
-              'flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold transition-all',
-              isLastQuestion
-                ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                : 'bg-primary-600 text-white hover:bg-primary-700 shadow-sm'
-            )}
-          >
-            Siguiente
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Quick info */}
-        <div className="max-w-3xl mx-auto mt-4 text-center text-sm text-slate-500">
-          Usa el navegador para saltar entre preguntas. Presiona "Calificar" cuando termines.
-        </div>
-
-        {/* Reportar errores */}
-        <div className="max-w-3xl mx-auto mt-6 text-center">
-          <a
-            href="https://wa.link/40zqta"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 text-xs text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-full border border-emerald-200 transition-colors"
-          >
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-            <span>¿Encontraste un error? Ayúdanos a mejorar</span>
-          </a>
+      {/* ========== MAIN ========== */}
+      <main className="relative z-10 max-w-3xl mx-auto px-4 py-8 md:py-12">
+        <div
+          key={currentQuestionIndex}
+          className={clsx(
+            navDirection === -1 ? 'animate-slide-in-left' : 'animate-slide-in-right'
+          )}
+        >
+          <Question
+            question={currentQuestion}
+            questionNumber={progress.current}
+            totalQuestions={progress.total}
+            selectedAnswer={currentSavedAnswer}
+            showFeedback={false}
+            isCorrect={null}
+            onSelectAnswer={handleSelectAnswer}
+          />
         </div>
       </main>
+
+      {/* ========== FOOTER sticky navegación ========== */}
+      <footer className="glass fixed bottom-0 left-0 right-0 z-20 border-t border-slate-200/60 h-16">
+        <div className="h-full max-w-6xl mx-auto px-4 flex items-center justify-between gap-3">
+          {/* Anterior */}
+          <button
+            onClick={handlePrevious}
+            className={clsx(
+              'inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors',
+              isFirstQuestion && 'opacity-40 pointer-events-none'
+            )}
+            aria-label="Pregunta anterior"
+            disabled={isFirstQuestion}
+          >
+            <ChevronLeft className="w-4 h-4" />
+            <span className="hidden sm:inline">Anterior</span>
+          </button>
+
+          {/* Minimapa compacto (desktop) con puntos decorativos a los lados */}
+          <div
+            className="hidden md:flex items-center gap-2"
+            role="navigation"
+            aria-label="Minimapa de preguntas"
+          >
+            {/* Puntos decorativos izquierda */}
+            <span className="flex items-center gap-1 mr-1 opacity-50" aria-hidden="true">
+              <span className="w-0.5 h-0.5 rounded-full bg-brand-accent/60" />
+              <span className="w-1 h-1 rounded-full bg-brand-accent/40" />
+              <span className="w-0.5 h-0.5 rounded-full bg-brand-accent/60" />
+            </span>
+
+            {questions.slice(0, 60).map((q, idx) => {
+              const answered = savedAnswers.has(q.id);
+              const isCurrent = idx === currentQuestionIndex;
+              const needsSeparator = idx > 0 && idx % 5 === 0;
+              return (
+                <div key={q.id} className="flex items-center">
+                  {needsSeparator && (
+                    <span className="w-1 h-1 rounded-full bg-slate-200 mr-2" aria-hidden="true" />
+                  )}
+                  <button
+                    onClick={() => goToQuestion(idx)}
+                    aria-label={`Ir a pregunta ${idx + 1}`}
+                    className={clsx(
+                      'rounded-full transition-all duration-150',
+                      isCurrent
+                        ? 'w-2.5 h-2.5 bg-brand-primary ring-2 ring-brand-primary/30'
+                        : answered
+                          ? 'w-1.5 h-1.5 bg-emerald-400/70 hover:bg-emerald-500'
+                          : 'w-1.5 h-1.5 bg-slate-200 hover:bg-slate-300'
+                    )}
+                  />
+                </div>
+              );
+            })}
+
+            {/* Puntos decorativos derecha */}
+            <span className="flex items-center gap-1 ml-1 opacity-50" aria-hidden="true">
+              <span className="w-0.5 h-0.5 rounded-full bg-brand-accent/60" />
+              <span className="w-1 h-1 rounded-full bg-brand-accent/40" />
+              <span className="w-0.5 h-0.5 rounded-full bg-brand-accent/60" />
+            </span>
+          </div>
+
+          {/* Contador mobile */}
+          <div className="md:hidden font-mono text-sm text-slate-600 tabular-nums">
+            {currentQuestionIndex + 1} / {progress.total}
+          </div>
+
+          {/* Siguiente / Calificar */}
+          {isLastQuestion ? (
+            <button
+              onClick={() => setShowFinishModal(true)}
+              className="btn-accent-gold shine-hover inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold"
+              aria-label="Calificar examen"
+            >
+              <FileCheck className="w-4 h-4" />
+              <span>Calificar</span>
+            </button>
+          ) : (
+            <button
+              onClick={handleNext}
+              className="btn-primary-brand shine-hover inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold"
+              aria-label="Siguiente pregunta"
+            >
+              <span>Siguiente</span>
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      </footer>
+
+      {/* ========== DRAWER navegador ========== */}
+      {showNavigator && (
+        <div
+          className="fixed inset-0 z-40 bg-black/30 animate-fade-in"
+          onClick={() => setShowNavigator(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navegador de preguntas"
+        >
+          <div
+            className="absolute right-0 top-0 h-full w-full max-w-sm bg-white shadow-elevation-4 overflow-hidden flex flex-col animate-slide-in-right"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Header del drawer con patrón andino sutil */}
+            <div className="sticky top-0 bg-white andean-bold text-brand-primary/20 border-b border-slate-200 relative">
+              <div className="relative px-5 py-4 flex items-center justify-between bg-white/70 backdrop-blur">
+                <h3 className="font-display text-xl font-bold text-slate-900 flex items-center gap-2">
+                  Navegador de preguntas
+                </h3>
+                <button
+                  onClick={() => setShowNavigator(false)}
+                  className="p-1.5 rounded-md text-slate-500 hover:bg-slate-100 transition-colors"
+                  aria-label="Cerrar navegador"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Leyenda */}
+            <div className="px-5 py-3 border-b border-slate-100 flex flex-wrap gap-3 text-xs text-slate-500">
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded bg-brand-primary-100 ring-1 ring-brand-primary-200"></div>
+                <span>Respondida</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded bg-slate-100"></div>
+                <span>Pendiente</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded ring-2 ring-brand-primary bg-white"></div>
+                <span>Actual</span>
+              </div>
+            </div>
+
+            {/* Grupos por asignatura como cards */}
+            <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3 bg-slate-50/50">
+              {questionsBySubject.map((group, gIdx) => {
+                const groupAnswered = group.questions.filter(q => q.answered).length;
+                const isCollapsed = !!collapsedSubjects[group.subject];
+                return (
+                  <div key={gIdx} className="card-elevated p-3 bg-white rounded-xl">
+                    <button
+                      onClick={() => toggleSubject(group.subject)}
+                      className="w-full flex items-center justify-between py-1 group"
+                      aria-expanded={!isCollapsed}
+                    >
+                      <div className="flex items-center gap-2">
+                        <ChevronDown
+                          className={clsx(
+                            'w-4 h-4 text-slate-400 transition-transform',
+                            isCollapsed && '-rotate-90'
+                          )}
+                        />
+                        <h4 className="font-display text-sm font-semibold text-slate-800">
+                          {group.subject}
+                        </h4>
+                      </div>
+                      <span className="text-xs font-mono text-slate-500 tabular-nums">
+                        {groupAnswered}/{group.questions.length}
+                      </span>
+                    </button>
+
+                    {!isCollapsed && (
+                      <div className="mt-2 grid grid-cols-5 sm:grid-cols-6 gap-1.5">
+                        {group.questions.map(({ index, answered }) => {
+                          const isCurrent = index === currentQuestionIndex;
+                          return (
+                            <button
+                              key={index}
+                              onClick={() => {
+                                goToQuestion(index);
+                                setShowNavigator(false);
+                              }}
+                              aria-label={`Ir a pregunta ${index + 1}`}
+                              aria-current={isCurrent ? 'true' : undefined}
+                              className={clsx(
+                                'w-11 h-11 rounded-lg text-xs font-semibold transition active:scale-95 tabular-nums',
+                                isCurrent
+                                  ? 'ring-2 ring-brand-primary shadow-elevation-2 bg-white text-brand-primary-700'
+                                  : answered
+                                    ? 'bg-brand-primary-100 text-brand-primary-800 ring-1 ring-brand-primary-200 hover:bg-brand-primary-50'
+                                    : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                              )}
+                            >
+                              {index + 1}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========== MODAL calificar ========== */}
+      {showFinishModal && (
+        <div
+          className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4 animate-fade-in"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="relative overflow-hidden bg-white/95 backdrop-blur-xl border border-white/50 rounded-2xl shadow-elevation-4 max-w-md w-full p-6 md:p-7 animate-bounce-in">
+            <div className="relative">
+              <div className="text-center mb-6">
+                {unansweredCount > 0 ? (
+                  <>
+                    <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-amber-100 flex items-center justify-center">
+                      <AlertTriangle className="w-7 h-7 text-amber-600" />
+                    </div>
+                    <h2 className="font-display text-2xl font-bold text-slate-900 mb-2">
+                      Tienes preguntas pendientes
+                    </h2>
+                    <p className="text-slate-600 font-sans">
+                      Hay <strong className="text-amber-700">{unansweredCount} preguntas</strong> sin responder.
+                      Las no contestadas se calificarán como incorrectas.
+                    </p>
+                    <div className="flex flex-wrap gap-1.5 mt-4 max-h-32 overflow-y-auto justify-center">
+                      {unansweredNumbers.map(n => (
+                        <button
+                          key={n}
+                          onClick={() => {
+                            setShowFinishModal(false);
+                            goToQuestion(n - 1);
+                          }}
+                          className="min-w-[2rem] h-8 px-2 rounded-md bg-amber-100 text-amber-700 hover:bg-amber-200 text-sm font-semibold active:scale-95 transition-transform font-mono tabular-nums"
+                        >
+                          {n}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-emerald-100 flex items-center justify-center">
+                      <CheckCircle className="w-7 h-7 text-emerald-600" />
+                    </div>
+                    <h2 className="font-display text-2xl font-bold text-slate-900 mb-2">
+                      ¿Finalizar examen?
+                    </h2>
+                    <p className="text-slate-600 font-sans">
+                      Has contestado todas las preguntas. Una vez que finalices,
+                      no podrás modificar tus respuestas.
+                    </p>
+                  </>
+                )}
+              </div>
+
+              <p className="text-sm text-slate-500 text-center mb-4 font-sans">
+                Tiempo transcurrido: <strong className="font-mono tabular-nums">{formattedTime}</strong>
+              </p>
+
+              <div className="space-y-2.5">
+                <button
+                  onClick={handleFinishExam}
+                  className="w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-elevation-2 transition-all active:scale-[0.99]"
+                >
+                  Calificar ahora
+                </button>
+
+                {unansweredCount > 0 && (
+                  <button
+                    onClick={() => {
+                      if (unansweredIndexes.length > 0) {
+                        goToQuestion(unansweredIndexes[0]);
+                      }
+                      setShowFinishModal(false);
+                    }}
+                    className="w-full py-2.5 rounded-xl font-medium text-slate-700 hover:bg-slate-100 transition-colors"
+                  >
+                    Ir a primera pendiente
+                  </button>
+                )}
+
+                <button
+                  onClick={() => setShowFinishModal(false)}
+                  className="w-full py-2 text-slate-500 hover:text-slate-700 text-sm font-sans transition-colors"
+                >
+                  Continuar examen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

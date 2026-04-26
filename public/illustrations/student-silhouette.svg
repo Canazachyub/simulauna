@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Head -->
+  <circle cx="145" cy="70" r="32"/>
+
+  <!-- Hair tuft -->
+  <path d="M120 52 Q135 38 160 42 Q172 46 175 58"/>
+
+  <!-- Neck -->
+  <path d="M138 100 L138 115 M155 100 L155 115"/>
+
+  <!-- Torso leaning forward reading -->
+  <path d="M138 115 Q110 130 95 175 Q88 210 100 245 Q115 260 160 258 Q205 255 220 240 Q230 215 225 180 Q218 135 175 115"/>
+
+  <!-- Arms holding book -->
+  <path d="M105 200 Q100 225 115 245 L135 270"/>
+  <path d="M215 200 Q220 225 205 245 L185 270"/>
+
+  <!-- Hands -->
+  <path d="M130 270 Q140 278 145 285"/>
+  <path d="M190 270 Q180 278 175 285"/>
+
+  <!-- Open book in lap -->
+  <path d="M110 280 L160 278 L210 280 L210 310 L160 308 L110 310 Z" fill="none"/>
+  <line x1="160" y1="278" x2="160" y2="308"/>
+  <line x1="122" y1="290" x2="152" y2="289" stroke-width="1.5"/>
+  <line x1="122" y1="298" x2="150" y2="297" stroke-width="1.5"/>
+  <line x1="170" y1="289" x2="200" y2="290" stroke-width="1.5"/>
+  <line x1="170" y1="297" x2="198" y2="298" stroke-width="1.5"/>
+
+  <!-- Legs sitting -->
+  <path d="M115 310 Q108 340 112 370 L155 372"/>
+  <path d="M205 310 Q212 340 208 370 L165 372"/>
+
+  <!-- Ground line -->
+  <line x1="80" y1="380" x2="230" y2="380" stroke-dasharray="4 4"/>
+</svg>

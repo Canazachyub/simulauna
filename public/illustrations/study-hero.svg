@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Desk surface -->
+  <path d="M60 440 L540 440 L560 480 L40 480 Z" fill="#003D7A" stroke="#003D7A"/>
+  <line x1="60" y1="440" x2="540" y2="440" stroke="#D4AF37" stroke-width="2"/>
+  <!-- Desk legs -->
+  <line x1="90" y1="480" x2="90" y2="560" stroke="#003D7A" stroke-width="4"/>
+  <line x1="510" y1="480" x2="510" y2="560" stroke="#003D7A" stroke-width="4"/>
+
+  <!-- Open book center -->
+  <g>
+    <path d="M200 430 L200 360 Q200 345 215 345 L295 355 L295 430 Z" fill="#ffffff" stroke="#003D7A"/>
+    <path d="M390 430 L390 360 Q390 345 375 345 L295 355 L295 430 Z" fill="#ffffff" stroke="#003D7A"/>
+    <line x1="295" y1="355" x2="295" y2="430" stroke="#003D7A"/>
+    <line x1="220" y1="375" x2="285" y2="378" stroke="#003D7A" stroke-width="1.5"/>
+    <line x1="220" y1="390" x2="285" y2="393" stroke="#003D7A" stroke-width="1.5"/>
+    <line x1="220" y1="405" x2="280" y2="408" stroke="#003D7A" stroke-width="1.5"/>
+    <line x1="305" y1="378" x2="370" y2="375" stroke="#003D7A" stroke-width="1.5"/>
+    <line x1="305" y1="393" x2="370" y2="390" stroke="#003D7A" stroke-width="1.5"/>
+    <line x1="305" y1="408" x2="365" y2="405" stroke="#003D7A" stroke-width="1.5"/>
+  </g>
+
+  <!-- Stack of books left -->
+  <g stroke="#003D7A">
+    <rect x="80" y="400" width="110" height="18" rx="2" fill="#D4AF37"/>
+    <rect x="85" y="382" width="105" height="18" rx="2" fill="#E67E22"/>
+    <rect x="78" y="364" width="112" height="18" rx="2" fill="#003D7A"/>
+    <circle cx="170" cy="409" r="2" fill="#ffffff" stroke="none"/>
+    <circle cx="170" cy="391" r="2" fill="#ffffff" stroke="none"/>
+    <circle cx="170" cy="373" r="2" fill="#ffffff" stroke="none"/>
+  </g>
+
+  <!-- Laptop right -->
+  <g stroke="#003D7A">
+    <path d="M410 430 L410 370 Q410 362 418 362 L512 362 Q520 362 520 370 L520 430 Z" fill="#ffffff"/>
+    <rect x="420" y="372" width="90" height="48" fill="#003D7A"/>
+    <path d="M400 430 L530 430 L535 440 L395 440 Z" fill="#D4AF37"/>
+    <line x1="455" y1="396" x2="485" y2="396" stroke="#D4AF37"/>
+    <line x1="445" y1="406" x2="495" y2="406" stroke="#D4AF37"/>
+  </g>
+
+  <!-- Pencil -->
+  <g stroke="#003D7A">
+    <path d="M220 340 L300 320 L310 324 L230 344 Z" fill="#E67E22"/>
+    <path d="M300 320 L315 316 L320 322 L312 326 Z" fill="#D4AF37"/>
+    <path d="M220 340 L215 350 L228 348 Z" fill="#003D7A"/>
+  </g>
+
+  <!-- Hourglass -->
+  <g stroke="#003D7A">
+    <path d="M350 260 L410 260" />
+    <path d="M350 340 L410 340" />
+    <path d="M355 260 L355 275 Q355 290 370 300 Q385 308 385 308 Q385 308 370 316 Q355 326 355 325 L355 340" fill="#ffffff"/>
+    <path d="M405 260 L405 275 Q405 290 390 300 Q385 302 385 308 Q385 314 390 316 Q405 326 405 325 L405 340" fill="#ffffff"/>
+    <path d="M362 266 L402 266 L390 292 L372 292 Z" fill="#D4AF37" stroke="none"/>
+    <path d="M372 324 L390 324 L398 336 L366 336 Z" fill="#D4AF37" stroke="none"/>
+    <line x1="383" y1="294" x2="383" y2="320" stroke="#D4AF37"/>
+  </g>
+
+  <!-- Decorative stars -->
+  <g stroke="#D4AF37" fill="none">
+    <path d="M140 180 L144 190 L154 194 L144 198 L140 208 L136 198 L126 194 L136 190 Z" fill="#D4AF37" stroke="none"/>
+    <path d="M480 150 L483 158 L491 161 L483 164 L480 172 L477 164 L469 161 L477 158 Z" fill="#E67E22" stroke="none"/>
+    <circle cx="90" cy="260" r="4" fill="#E67E22" stroke="none"/>
+    <circle cx="520" cy="280" r="4" fill="#003D7A" stroke="none"/>
+  </g>
+</svg>
