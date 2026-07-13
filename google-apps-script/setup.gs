@@ -1,4 +1,4 @@
-/**
+﻿/**
  * SimulaUNA - SETUP
  * ============================================
  * Funciones ejecutables SOLO desde el editor de Apps Script (nunca desde
@@ -261,15 +261,23 @@ function healthCheck() {
     }
   }
 
+  // Simula una petición GET incluyendo el token (igual que haría el
+  // frontend); sin él, doGet rechaza todo cuando SECRET_TOKEN está
+  // configurado y la suite fallaría completa con "Acceso no autorizado".
+  function hcGet_(params) {
+    const withToken = Object.assign({ token: SECRET_TOKEN }, params);
+    return JSON.parse(doGet({ parameter: withToken }).getContent());
+  }
+
   run('test (v2)', function () {
-    const res = JSON.parse(doGet({ parameter: { action: 'test' } }).getContent());
+    const res = hcGet_({ action: 'test' });
     assertHC_(res.success === true, 'success debe ser true');
     assertHC_(res.data.status === 'ok', 'status debe ser ok');
     assertHC_(res.data.version === 'v2', 'version debe ser v2');
   });
 
   run('config (legado)', function () {
-    const res = JSON.parse(doGet({ parameter: { action: 'config' } }).getContent());
+    const res = hcGet_({ action: 'config' });
     assertHC_(res.success === true, 'success debe ser true');
     assertHC_(typeof res.data === 'object', 'data debe ser un objeto');
     ['Ingenierías', 'Sociales', 'Biomédicas'].forEach(function (area) {
@@ -279,27 +287,27 @@ function healthCheck() {
   });
 
   run('questions area=Ingenierías (legado)', function () {
-    const res = JSON.parse(doGet({ parameter: { action: 'questions', area: 'Ingenierías' } }).getContent());
+    const res = hcGet_({ action: 'questions', area: 'Ingenierías' });
     assertHC_(res.success === true, 'success debe ser true');
     assertHC_(Array.isArray(res.data), 'data debe ser un array de preguntas');
   });
 
   run('getCepreCourses (legado)', function () {
-    const res = JSON.parse(doGet({ parameter: { action: 'getCepreCourses' } }).getContent());
+    const res = hcGet_({ action: 'getCepreCourses' });
     assertHC_(res.success === true, 'success debe ser true');
     assertHC_(Array.isArray(res.data.areas), 'debe incluir areas[]');
     assertHC_(!!res.data.coursesByArea, 'debe incluir coursesByArea');
   });
 
   run('getCursosConTemas (legado)', function () {
-    const res = JSON.parse(doGet({ parameter: { action: 'getCursosConTemas' } }).getContent());
+    const res = hcGet_({ action: 'getCursosConTemas' });
     assertHC_(res.success === true, 'success debe ser true');
     assertHC_(Array.isArray(res.data.cursos), 'data.cursos debe ser array');
     assertHC_(typeof res.data.totalCursos === 'number', 'totalCursos debe ser numérico');
   });
 
   run('checkAccess dummy (legado)', function () {
-    const res = JSON.parse(doGet({ parameter: { action: 'checkAccess', dni: '00000000', email: 'healthcheck@example.com' } }).getContent());
+    const res = hcGet_({ action: 'checkAccess', dni: '00000000', email: 'healthcheck@example.com' });
     assertHC_(res.success === true, 'success debe ser true');
     assertHC_(typeof res.data.canAccess === 'boolean', 'canAccess debe ser boolean');
     assertHC_('reason' in res.data, 'debe incluir reason');
@@ -307,26 +315,26 @@ function healthCheck() {
   });
 
   run('checkBanqueoAccess dummy (legado)', function () {
-    const res = JSON.parse(doGet({ parameter: { action: 'checkBanqueoAccess', dni: '00000000', email: 'healthcheck@example.com' } }).getContent());
+    const res = hcGet_({ action: 'checkBanqueoAccess', dni: '00000000', email: 'healthcheck@example.com' });
     assertHC_(res.success === true, 'success debe ser true');
     assertHC_(typeof res.data.canAccess === 'boolean', 'canAccess debe ser boolean');
   });
 
   run('getUniversidades (v2, incluye una)', function () {
-    const res = JSON.parse(doGet({ parameter: { action: 'getUniversidades' } }).getContent());
+    const res = hcGet_({ action: 'getUniversidades' });
     assertHC_(res.success === true, 'success debe ser true');
     assertHC_(res.data.some(function (u) { return u.codigo === 'una'; }), 'debe incluir una');
   });
 
   run('getConfig v2 default una', function () {
-    const res = JSON.parse(doGet({ parameter: { action: 'getConfig' } }).getContent());
+    const res = hcGet_({ action: 'getConfig' });
     assertHC_(res.success === true, 'success debe ser true');
     assertHC_(Array.isArray(res.data.divisiones), 'divisiones debe ser array');
     assertHC_(!!res.data.escala, 'debe incluir escala');
   });
 
   run('accion invalida devuelve error controlado', function () {
-    const res = JSON.parse(doGet({ parameter: { action: 'estoNoExiste' } }).getContent());
+    const res = hcGet_({ action: 'estoNoExiste' });
     assertHC_(res.success === false, 'success debe ser false');
   });
 
