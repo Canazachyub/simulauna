@@ -240,7 +240,7 @@ function Stepper({ step }: { step: number }) {
   return (
     <div className="mb-8">
       <div className="flex items-center gap-3">
-        {steps.map((s, i) => {
+        {steps.map((s) => {
           const active = step >= s.n;
           const current = step === s.n;
           return (

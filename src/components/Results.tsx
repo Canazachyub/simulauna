@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useUniversityStore } from '../hooks/useUniversity';
 import {
-  Trophy, Clock, Target, TrendingUp, RotateCcw,
+  Trophy, Target, TrendingUp, RotateCcw,
   CheckCircle, XCircle, User, CreditCard, BookOpen, Calendar,
   Grid3X3, ChevronLeft, ChevronRight, Table2, BarChart3, History, Award, Lightbulb,
   Sparkles, AlertTriangle, Scale, Star, ArrowRight, ChevronDown
@@ -13,7 +13,7 @@ import {
 } from 'recharts';
 import { useExamStore } from '../hooks/useExam';
 import { PERFORMANCE_MESSAGES } from '../types';
-import { formatTimeReadable, formatNumber, formatDate, indexToLetter } from '../utils/calculations';
+import { formatNumber, formatDate, indexToLetter } from '../utils/calculations';
 import { renderFormattedText } from '../utils/formatText';
 import { PDFGenerator } from './PDFGenerator';
 import { saveScore, getUserHistory, type UserHistory } from '../services/api';
@@ -113,6 +113,17 @@ export function Results() {
     return () => clearTimeout(t);
   }, [result]);
 
+  const answerMap = useMemo(() => {
+    const map = new Map<string, { selectedOption: number | null; isCorrect: boolean }>();
+    result?.answers.forEach(answer => {
+      map.set(answer.questionId, {
+        selectedOption: answer.selectedOption,
+        isCorrect: answer.isCorrect
+      });
+    });
+    return map;
+  }, [result?.answers]);
+
   if (!result) return null;
 
   const performanceInfo = PERFORMANCE_MESSAGES[result.performanceLevel];
@@ -134,17 +145,6 @@ export function Results() {
   const totalQuestions = result.answers.length;
   const notAnswered = result.answers.filter(a => a.selectedOption === null).length;
   const incorrectAnswered = totalQuestions - totalCorrect - notAnswered;
-
-  const answerMap = useMemo(() => {
-    const map = new Map<string, { selectedOption: number | null; isCorrect: boolean }>();
-    result.answers.forEach(answer => {
-      map.set(answer.questionId, {
-        selectedOption: answer.selectedOption,
-        isCorrect: answer.isCorrect
-      });
-    });
-    return map;
-  }, [result.answers]);
 
   const currentQuestion = reviewIndex !== null ? questions[reviewIndex] : null;
   const currentAnswer = currentQuestion ? answerMap.get(currentQuestion.id) : null;

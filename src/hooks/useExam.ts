@@ -11,7 +11,7 @@ import type {
 } from '../types';
 import { PERFORMANCE_THRESHOLDS } from '../types';
 import { getConfig, getExam, submitExam } from '../services/api';
-import { getPerformanceLevel, calculateExamResult } from '../utils/calculations';
+import { calculateExamResult } from '../utils/calculations';
 
 function procesoFromStudent(processType?: Student['processType']): string {
   return processType === 'CEPREUNA' ? 'CEPRE' : 'ORDINARIO';
