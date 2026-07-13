@@ -2,17 +2,20 @@ import { create } from 'zustand';
 import type {
   ExamStore,
   Student,
-  Config,
+  ConfigV2,
   Question,
   Answer,
   ExamResult,
-  AreaType
+  AreaType,
+  ReviewItem
 } from '../types';
-import { getConfig, getQuestions, getCepreSimulacro, MOCK_CONFIG, generateMockQuestions } from '../services/api';
-import { calculateExamResult } from '../utils/calculations';
+import { PERFORMANCE_THRESHOLDS } from '../types';
+import { getConfig, getExam, submitExam } from '../services/api';
+import { getPerformanceLevel, calculateExamResult } from '../utils/calculations';
 
-// Determinar si usar mock o API real
-const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true' || !import.meta.env.VITE_API_URL;
+function procesoFromStudent(processType?: Student['processType']): string {
+  return processType === 'CEPREUNA' ? 'CEPRE' : 'ORDINARIO';
+}
 
 export const useExamStore = create<ExamStore>((set, get) => ({
   // Estado inicial
@@ -26,27 +29,20 @@ export const useExamStore = create<ExamStore>((set, get) => ({
   result: null,
   error: null,
   startTime: null,
+  examSessionId: null,
+  universidad: null,
 
   // Establecer datos del estudiante
   setStudent: (student: Student) => {
     set({ student });
   },
 
-  // Cargar configuración desde la API
-  loadConfig: async () => {
-    set({ status: 'loading', error: null });
+  // Cargar configuración (divisiones + escala) de la universidad indicada
+  loadConfig: async (universidad: string) => {
+    set({ status: 'loading', error: null, universidad });
 
     try {
-      let config: Config;
-
-      if (USE_MOCK) {
-        // Simular delay de red
-        await new Promise(resolve => setTimeout(resolve, 500));
-        config = MOCK_CONFIG;
-      } else {
-        config = await getConfig();
-      }
-
+      const config: ConfigV2 = await getConfig(universidad, 'ORDINARIO');
       set({ config, status: 'idle' });
     } catch (error) {
       set({
@@ -56,35 +52,19 @@ export const useExamStore = create<ExamStore>((set, get) => ({
     }
   },
 
-  // Cargar preguntas para un área específica
-  loadQuestions: async (area: AreaType) => {
+  // Cargar preguntas del examen para una división específica (getExam v2)
+  loadQuestions: async (division: AreaType, universidad: string) => {
     const { student } = get();
-    set({ status: 'loading', error: null });
+    const proceso = procesoFromStudent(student?.processType);
+    set({ status: 'loading', error: null, universidad });
 
     try {
-      let questions: Question[];
-
-      if (USE_MOCK) {
-        // Simular delay de red
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        questions = generateMockQuestions(area);
-      } else {
-        // Si el proceso es CEPREUNA, usar las hojas CEPRE_
-        if (student?.processType === 'CEPREUNA') {
-          const result = await getCepreSimulacro(area);
-          // Mapear CepreQuestion a Question agregando campos faltantes
-          questions = result.questions.map((q, idx) => ({
-            ...q,
-            timeSeconds: 180, // 3 minutos por pregunta por defecto
-            points: 50, // 50 puntos por pregunta (3000/60)
-          })) as Question[];
-        } else {
-          // Proceso GENERAL o EXTRAORDINARIO usa bancos históricos
-          questions = await getQuestions(area);
-        }
-      }
-
-      set({ questions, status: 'ready' });
+      const result = await getExam(universidad, division, proceso);
+      set({
+        questions: result.questions,
+        examSessionId: result.examSessionId,
+        status: 'ready'
+      });
     } catch (error) {
       set({
         status: 'error',
@@ -112,7 +92,7 @@ export const useExamStore = create<ExamStore>((set, get) => ({
     set({ savedAnswers: newSavedAnswers });
   },
 
-  // Registrar una respuesta (con evaluación - usado al finalizar)
+  // Registrar una respuesta (con evaluación - usado al finalizar, legado)
   answerQuestion: (questionId: string, selectedOption: number | null, timeSpent: number) => {
     const { questions, answers } = get();
     const question = questions.find(q => q.id === questionId);
@@ -158,38 +138,101 @@ export const useExamStore = create<ExamStore>((set, get) => ({
     }
   },
 
-  // Finalizar el examen y calcular resultados
-  finishExam: () => {
-    const { student, questions, savedAnswers, config, startTime } = get();
+  // Finalizar el examen: envía respuestas a submitExam (servidor/mock califica) y arma el resultado
+  finishExam: async () => {
+    const { student, questions, savedAnswers, config, startTime, examSessionId, universidad: storedUniversidad } = get();
 
     if (!student || !startTime) return;
 
-    // Convertir savedAnswers a Answer[] con evaluación
+    const universidad = storedUniversidad || 'una';
+    const proceso = procesoFromStudent(student.processType);
     const totalTime = Math.floor((new Date().getTime() - startTime.getTime()) / 1000);
-    const timePerQuestion = totalTime / questions.length;
 
-    const evaluatedAnswers: Answer[] = questions.map(question => {
-      const selectedOption = savedAnswers.get(question.id) ?? null;
-      const isCorrect = selectedOption !== null && selectedOption === question.correctAnswer;
+    set({ status: 'loading', error: null });
 
-      return {
-        questionId: question.id,
-        selectedOption,
-        isCorrect,
-        timeSpent: timePerQuestion
+    const answersPayload = questions.map(question => ({
+      questionId: question.id,
+      selectedOption: savedAnswers.get(question.id) ?? null
+    }));
+
+    try {
+      let submitResult;
+      if (examSessionId) {
+        submitResult = await submitExam({
+          universidad,
+          examSessionId,
+          dni: student.dni,
+          answers: answersPayload
+        });
+      } else {
+        throw new Error('No hay una sesión de examen activa (examSessionId ausente).');
+      }
+
+      const reviewByQuestion = new Map<string, ReviewItem>(submitResult.review.map(r => [r.questionId, r]));
+
+      // Las preguntas del cliente llegaron sin correctAnswer/justification reales (contrato v2);
+      // se completan aquí con la revisión que devuelve submitExam, para que Results.tsx pueda
+      // seguir mostrando la revisión detallada sin cambios estructurales grandes.
+      const patchedQuestions: Question[] = questions.map(q => {
+        const review = reviewByQuestion.get(q.id);
+        if (!review) return q;
+        return { ...q, correctAnswer: review.correctAnswer, justification: review.justification ?? q.justification };
+      });
+
+      const evaluatedAnswers: Answer[] = questions.map(question => {
+        const review = reviewByQuestion.get(question.id);
+        const selectedOption = savedAnswers.get(question.id) ?? null;
+        return {
+          questionId: question.id,
+          selectedOption,
+          isCorrect: review?.isCorrect ?? false,
+          timeSpent: totalTime / (questions.length || 1)
+        };
+      });
+
+      const umbrales = config?.escala.umbrales ?? PERFORMANCE_THRESHOLDS;
+
+      const result: ExamResult = {
+        student,
+        date: new Date(),
+        totalScore: submitResult.totalScore,
+        maxScore: submitResult.maxScore,
+        percentage: submitResult.percentage,
+        subjectResults: submitResult.subjectResults,
+        answers: evaluatedAnswers,
+        totalTime,
+        performanceLevel: submitResult.performanceLevel,
+        umbrales,
+        universidad,
+        proceso,
+        review: submitResult.review
       };
-    });
 
-    const areaConfig = config?.[student.area] || null;
-    const result: ExamResult = calculateExamResult(
-      student,
-      questions,
-      evaluatedAnswers,
-      areaConfig,
-      startTime
-    );
-
-    set({ status: 'completed', result, answers: evaluatedAnswers });
+      set({
+        status: 'completed',
+        result,
+        answers: evaluatedAnswers,
+        questions: patchedQuestions
+      });
+    } catch (error) {
+      // Fallback: si submitExam falla (backend v2 no disponible aún), calificamos localmente
+      // usando calculateExamResult para no bloquear al usuario.
+      console.warn('submitExam falló, calificando localmente como fallback:', error);
+      const divisionConfig = config?.divisiones.find(d => d.codigo === student.area || d.nombre === student.area) ?? null;
+      const evaluatedAnswers: Answer[] = questions.map(question => {
+        const selectedOption = savedAnswers.get(question.id) ?? null;
+        const isCorrect = selectedOption !== null && selectedOption === question.correctAnswer;
+        return {
+          questionId: question.id,
+          selectedOption,
+          isCorrect,
+          timeSpent: totalTime / (questions.length || 1)
+        };
+      });
+      const umbrales = config?.escala.umbrales ?? PERFORMANCE_THRESHOLDS;
+      const result = calculateExamResult(student, questions, evaluatedAnswers, divisionConfig, startTime, umbrales, universidad, proceso);
+      set({ status: 'completed', result, answers: evaluatedAnswers });
+    }
   },
 
   // Reiniciar el examen
@@ -203,7 +246,9 @@ export const useExamStore = create<ExamStore>((set, get) => ({
       savedAnswers: new Map(),
       result: null,
       error: null,
-      startTime: null
+      startTime: null,
+      examSessionId: null,
+      universidad: null
     });
   },
 

@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useUniversityStore } from '../hooks/useUniversity';
 import {
   Trophy, Clock, Target, TrendingUp, RotateCcw,
   CheckCircle, XCircle, User, CreditCard, BookOpen, Calendar,
@@ -51,7 +52,10 @@ function formatRelativeDate(iso: string): string {
 
 export function Results() {
   const navigate = useNavigate();
+  const { universidad: universidadParam } = useParams<{ universidad: string }>();
+  const activaUniversidad = useUniversityStore(state => state.activa);
   const { result, questions, resetExam } = useExamStore();
+  const universidad = activaUniversidad || universidadParam || result?.universidad || 'una';
   const [reviewIndex, setReviewIndex] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<'review' | 'chart' | 'details' | 'history'>('review');
   const [userHistory, setUserHistory] = useState<UserHistory | null>(null);
@@ -63,7 +67,7 @@ export function Results() {
 
   useEffect(() => {
     if (!result) {
-      navigate('/');
+      navigate(`/${universidad}`);
       return;
     }
 
@@ -71,37 +75,35 @@ export function Results() {
       scoreSaved.current = true;
 
       const totalCorrect = result.answers.filter(a => a.isCorrect).length;
+      const resultUniversidad = result.universidad || universidad;
 
       const saveAndFetchHistory = async () => {
         setLoadingHistory(true);
 
-        console.log('📊 Guardando puntaje en historial_puntajes...', {
-          dni: result.student.dni,
-          score: result.totalScore,
-          area: result.student.area
-        });
-
+        // saveScore es @deprecated (el flujo nuevo persiste en submitExam), pero se mantiene
+        // como doble escritura mientras el backend v2 (getExam/submitExam) no esté desplegado.
         const saveResult = await saveScore({
           dni: result.student.dni,
           score: result.totalScore,
           maxScore: result.maxScore,
           area: result.student.area,
           correct: totalCorrect,
-          total: result.answers.length
+          total: result.answers.length,
+          universidad: resultUniversidad
         });
 
         console.log('✅ Puntaje guardado:', saveResult);
 
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        const history = await getUserHistory(result.student.dni);
+        const history = await getUserHistory(result.student.dni, resultUniversidad, result.proceso);
         setUserHistory(history);
         setLoadingHistory(false);
       };
 
       saveAndFetchHistory();
     }
-  }, [result, navigate]);
+  }, [result, navigate, universidad]);
 
   // Trigger animación del anillo
   useEffect(() => {
@@ -125,7 +127,7 @@ export function Results() {
 
   const handleRestart = () => {
     resetExam();
-    navigate('/');
+    navigate(`/${universidad}`);
   };
 
   const totalCorrect = result.answers.filter(a => a.isCorrect).length;
@@ -148,10 +150,13 @@ export function Results() {
   const currentAnswer = currentQuestion ? answerMap.get(currentQuestion.id) : null;
 
   // ===== HERO helpers =====
+  // Umbrales SIEMPRE desde result.umbrales (escala.umbrales de getConfig), nunca constantes
+  // fijas: cada universidad puede tener una escala totalmente distinta (ver docs/CONTRATO_API_V2.md §5).
+  const { excelente: umbralExcelente, bueno: umbralBueno, regular: umbralRegular } = result.umbrales;
   const score = result.totalScore;
-  const isExcellent = score >= 2400;
-  const isGood = score >= 1800 && score < 2400;
-  const isRegular = score >= 1200 && score < 1800;
+  const isExcellent = score >= umbralExcelente;
+  const isGood = score >= umbralBueno && score < umbralExcelente;
+  const isRegular = score >= umbralRegular && score < umbralBueno;
 
   const heroTitle = isExcellent
     ? '¡Estás listo!'
@@ -171,15 +176,17 @@ export function Results() {
 
   let nextThresholdLabel: string;
   let percentToNext: number;
-  if (score < 1200) {
-    nextThresholdLabel = `Te faltan ${formatNumber(1200 - score, 0)} pts para Regular`;
-    percentToNext = Math.max(0, Math.min(100, (score / 1200) * 100));
-  } else if (score < 1800) {
-    nextThresholdLabel = `Te faltan ${formatNumber(1800 - score, 0)} pts para Bueno`;
-    percentToNext = Math.max(0, Math.min(100, ((score - 1200) / 600) * 100));
-  } else if (score < 2400) {
-    nextThresholdLabel = `Te faltan ${formatNumber(2400 - score, 0)} pts para Excelente`;
-    percentToNext = Math.max(0, Math.min(100, ((score - 1800) / 600) * 100));
+  if (score < umbralRegular) {
+    nextThresholdLabel = `Te faltan ${formatNumber(umbralRegular - score, 0)} pts para Regular`;
+    percentToNext = umbralRegular > 0 ? Math.max(0, Math.min(100, (score / umbralRegular) * 100)) : 100;
+  } else if (score < umbralBueno) {
+    nextThresholdLabel = `Te faltan ${formatNumber(umbralBueno - score, 0)} pts para Bueno`;
+    const span = umbralBueno - umbralRegular;
+    percentToNext = span > 0 ? Math.max(0, Math.min(100, ((score - umbralRegular) / span) * 100)) : 100;
+  } else if (score < umbralExcelente) {
+    nextThresholdLabel = `Te faltan ${formatNumber(umbralExcelente - score, 0)} pts para Excelente`;
+    const span = umbralExcelente - umbralBueno;
+    percentToNext = span > 0 ? Math.max(0, Math.min(100, ((score - umbralBueno) / span) * 100)) : 100;
   } else {
     nextThresholdLabel = '¡Nivel Excelente alcanzado!';
     percentToNext = 100;
@@ -868,7 +875,7 @@ export function Results() {
                           </div>
                         </div>
                         <button
-                          onClick={() => navigate('/banqueo-tema')}
+                          onClick={() => navigate(`/${universidad}/banqueo-tema`)}
                           className="shine-hover inline-flex items-center gap-1.5 text-xs font-bold text-brand-primary-800 px-3 py-2 rounded-lg bg-brand-accent-500/15 hover:bg-brand-accent-500/25 active:scale-95 transition whitespace-nowrap"
                         >
                           Practicar
@@ -1262,7 +1269,7 @@ export function Results() {
             </div>
             <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
               <button
-                onClick={() => navigate('/banqueo-tema')}
+                onClick={() => navigate(`/${universidad}/banqueo-tema`)}
                 className="btn-accent-gold shine-hover inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold whitespace-nowrap"
               >
                 Practicar puntos débiles

@@ -2,11 +2,18 @@
 // TIPOS PRINCIPALES DEL SISTEMA
 // ============================================
 
-// Áreas de estudio disponibles
-export type AreaType = 'Ingenierías' | 'Sociales' | 'Biomédicas';
+// NOTA DE ARQUITECTURA (multi-universidad, ver docs/CONTRATO_API_V2.md):
+// AreaType deja de ser un union literal ('Ingenierías' | 'Sociales' | 'Biomédicas') y pasa a
+// ser un `string` libre: el código/nombre de la "división" académica que entrega `getConfig`
+// para la universidad activa. Se conserva el alias `AreaType` (y el nombre de campo `area` en
+// `Student`) para no forzar un rename masivo en componentes ya existentes; ambos son ahora
+// sinónimos de `string`. Ver `division` más abajo para el tipo nuevo explícito.
+export type AreaType = string;
 
-// Tipos de proceso de admisión
+// Tipos de proceso de admisión (histórico, UNA). El contrato v2 usa 'ORDINARIO' | 'CEPRE' |
+// 'EXTRAORDINARIO' para getExam/getConfig; se mantiene ProcessType para el flujo de registro.
 export type ProcessType = 'CEPREUNA' | 'GENERAL' | 'EXTRAORDINARIO';
+export type ProcesoV2 = 'ORDINARIO' | 'CEPRE' | 'EXTRAORDINARIO';
 
 // Estados del examen
 export type ExamStatus = 'idle' | 'loading' | 'ready' | 'in_progress' | 'completed' | 'error';
@@ -17,13 +24,15 @@ export type ExamStatus = 'idle' | 'loading' | 'ready' | 'in_progress' | 'complet
 export interface Student {
   dni: string;
   fullName: string;
+  /** Código/nombre de división académica (antes "área"). Ver nota AreaType arriba. */
   area: AreaType;
   processType?: ProcessType; // Tipo de proceso (CEPREUNA usa hojas CEPRE_)
 }
 
 // ============================================
-// CONFIGURACIÓN DE ASIGNATURAS
+// CONFIGURACIÓN DE ASIGNATURAS (legado, universidad 'una' vía adaptador)
 // ============================================
+/** @deprecated usar SubjectV2 dentro de Division (config v2) */
 export interface Subject {
   code: string | number;
   name: string;
@@ -33,6 +42,7 @@ export interface Subject {
   maxScore: number;
 }
 
+/** @deprecated usar Division (config v2) */
 export interface AreaConfig {
   name: AreaType;
   subjects: Subject[];
@@ -40,8 +50,72 @@ export interface AreaConfig {
   totalMaxScore: number;
 }
 
+/** @deprecated usar ConfigV2 (config v2) */
 export interface Config {
   [key: string]: AreaConfig;
+}
+
+// ============================================
+// CONFIGURACIÓN v2 — MULTI-UNIVERSIDAD (contrato docs/CONTRATO_API_V2.md §5)
+// ============================================
+export interface SubjectV2 {
+  name: string;
+  questionCount: number;
+  pointsPerQuestion: number;
+  weight: number;
+  maxScore: number;
+  orden?: number;
+}
+
+export interface Division {
+  codigo: string;
+  nombre: string;
+  tipo?: string;
+  subjects: SubjectV2[];
+  totalQuestions: number;
+  totalMaxScore: number;
+}
+
+export type ScoringEngine = 'suma_ponderada' | 'decimas' | 'vector_canal';
+
+export interface Escala {
+  motor: ScoringEngine;
+  escalaTotal: number;
+  umbrales: {
+    excelente: number;
+    bueno: number;
+    regular: number;
+  };
+  duracionMin: number;
+  nPreguntasTotal: number;
+}
+
+export interface ConfigV2 {
+  universidad: string;
+  proceso: string;
+  divisiones: Division[];
+  escala: Escala;
+}
+
+// ============================================
+// REGISTRO MAESTRO DE UNIVERSIDADES
+// ============================================
+export type UniversidadEstado = 'activa' | 'piloto' | 'oculta';
+export type ProcesoDisponible = 'ORDINARIO' | 'CEPRE' | 'EXTRAORDINARIO';
+
+export interface Universidad {
+  codigo: string;
+  nombre: string;
+  nombreCorto: string;
+  estado: UniversidadEstado;
+  procesos: ProcesoDisponible[];
+  cepreNombre: string;
+  colores: {
+    primario: string;
+    secundario: string;
+  };
+  logo: string;
+  orden: number;
 }
 
 // ============================================
@@ -79,6 +153,15 @@ export interface Answer {
   timeSpent: number; // Segundos que tardó en responder
 }
 
+// Item de revisión devuelto por submitExam (servidor califica, cliente solo muestra)
+export interface ReviewItem {
+  questionId: string;
+  correctAnswer: number;
+  selectedOption: number | null;
+  isCorrect: boolean;
+  justification?: string | null;
+}
+
 // ============================================
 // RESULTADOS DEL EXAMEN
 // ============================================
@@ -101,6 +184,13 @@ export interface ExamResult {
   answers: Answer[];
   totalTime: number; // Tiempo total en segundos
   performanceLevel: PerformanceLevel;
+  /** Umbrales usados para calcular performanceLevel (de escala.umbrales, NUNCA constantes fijas) */
+  umbrales: { excelente: number; bueno: number; regular: number };
+  /** Universidad y proceso del intento (multi-tenant, default 'una'/'ORDINARIO') */
+  universidad?: string;
+  proceso?: string;
+  /** Revisión detallada devuelta por submitExam (servidor); si no viene, se arma localmente */
+  review?: ReviewItem[];
 }
 
 export type PerformanceLevel = 'excellent' | 'good' | 'regular' | 'needs_practice';
@@ -118,7 +208,7 @@ export interface ExamStore {
   // Estado
   status: ExamStatus;
   student: Student | null;
-  config: Config | null;
+  config: ConfigV2 | null;
   questions: Question[];
   currentQuestionIndex: number;
   answers: Answer[];
@@ -126,18 +216,24 @@ export interface ExamStore {
   result: ExamResult | null;
   error: string | null;
   startTime: Date | null;
+  examSessionId: string | null;
+  /** Universidad resuelta explícitamente por loadConfig (evita depender de una carrera con el store global) */
+  universidad: string | null;
 
   // Acciones
   setStudent: (student: Student) => void;
-  loadConfig: () => Promise<void>;
-  loadQuestions: (area: AreaType) => Promise<void>;
+  // `universidad` se recibe explícito del componente llamante (resuelto vía useParams), en
+  // vez de leerse del store global, para evitar una carrera entre el efecto de
+  // UniversityGate (que fija la universidad activa) y el efecto que dispara la carga.
+  loadConfig: (universidad: string) => Promise<void>;
+  loadQuestions: (division: AreaType, universidad: string) => Promise<void>;
   startExam: () => void;
   saveAnswer: (questionId: string, selectedOption: number | null) => void; // Guardar sin evaluar
   answerQuestion: (questionId: string, selectedOption: number | null, timeSpent: number) => void;
   nextQuestion: () => void;
   previousQuestion: () => void;
   goToQuestion: (index: number) => void;
-  finishExam: () => void;
+  finishExam: () => Promise<void>;
   resetExam: () => void;
   setError: (error: string) => void;
 }
@@ -179,10 +275,12 @@ export interface ResultCardProps {
 }
 
 // ============================================
-// CONSTANTES
+// CONSTANTES (legado 'una' — @deprecated como fuente de verdad, ver getConfig/escala)
 // ============================================
+/** @deprecated la lista de áreas ahora viene de getConfig(universidad).divisiones */
 export const AREAS: AreaType[] = ['Ingenierías', 'Sociales', 'Biomédicas'];
 
+/** @deprecated usar Division.nombre / metadatos del registro; se conserva como fallback visual para 'una' */
 export const AREA_INFO: Record<AreaType, { description: string; icon: string; color: string }> = {
   'Ingenierías': {
     description: 'Arquitectura, Civil, Sistemas, Mecánica, Electrónica, Química, etc.',
@@ -201,9 +299,10 @@ export const AREA_INFO: Record<AreaType, { description: string; icon: string; co
   }
 };
 
+/** @deprecated NUNCA usar como fuente de verdad: usar escala.umbrales de getConfig/ExamResult.umbrales */
 export const PERFORMANCE_THRESHOLDS = {
-  excellent: 2400, // > 80%
-  good: 1800,      // > 60%
+  excelente: 2400, // > 80%
+  bueno: 1800,      // > 60%
   regular: 1200,   // > 40%
   // needs_practice: < 1200
 };

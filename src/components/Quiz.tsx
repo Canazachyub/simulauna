@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useExamStore, useCurrentQuestion, useProgress, useIsLastQuestion, useIsFirstQuestion } from '../hooks/useExam';
+import { useUniversityStore } from '../hooks/useUniversity';
 import { useStopwatch } from '../hooks/useTimer';
 import { Question } from './Question';
 import {
@@ -11,9 +12,13 @@ import clsx from 'clsx';
 
 export function Quiz() {
   const navigate = useNavigate();
+  const { universidad: universidadParam } = useParams<{ universidad: string }>();
+  const activaUniversidad = useUniversityStore(state => state.activa);
+  const universidad = activaUniversidad || universidadParam || 'una';
   const {
     status,
     student,
+    config,
     questions,
     savedAnswers,
     currentQuestionIndex,
@@ -25,6 +30,9 @@ export function Quiz() {
     finishExam
   } = useExamStore();
 
+  // Duración recomendada según la escala de la universidad activa (docs/CONTRATO_API_V2.md §5)
+  const recommendedDurationMin = config?.escala.duracionMin;
+
   const currentQuestion = useCurrentQuestion();
   const progress = useProgress();
   const isLastQuestion = useIsLastQuestion();
@@ -33,6 +41,7 @@ export function Quiz() {
   const [showNavigator, setShowNavigator] = useState(false);
   const [showFinishModal, setShowFinishModal] = useState(false);
   const [collapsedSubjects, setCollapsedSubjects] = useState<Record<string, boolean>>({});
+  const [isFinishing, setIsFinishing] = useState(false);
 
   // Dirección de navegación para animación (1 = avanzar, -1 = retroceder, 0 = idle/initial)
   const prevIndexRef = useRef<number>(currentQuestionIndex);
@@ -95,11 +104,11 @@ export function Quiz() {
   // Redirect si no hay datos
   useEffect(() => {
     if (!student) {
-      navigate('/registro');
+      navigate(`/${universidad}/registro`);
     } else if (questions.length === 0 && status !== 'loading') {
-      navigate('/confirmar');
+      navigate(`/${universidad}/confirmar`);
     }
-  }, [student, questions.length, status, navigate]);
+  }, [student, questions.length, status, navigate, universidad]);
 
   const handleSelectAnswer = useCallback((index: number) => {
     if (!currentQuestion) return;
@@ -121,10 +130,15 @@ export function Quiz() {
     }
   }, [isFirstQuestion, previousQuestion]);
 
-  const handleFinishExam = useCallback(() => {
-    finishExam();
-    navigate('/resultados');
-  }, [finishExam, navigate]);
+  const handleFinishExam = useCallback(async () => {
+    setIsFinishing(true);
+    try {
+      await finishExam();
+      navigate(`/${universidad}/resultados`);
+    } finally {
+      setIsFinishing(false);
+    }
+  }, [finishExam, navigate, universidad]);
 
   // Atajos de teclado globales
   useEffect(() => {
@@ -285,6 +299,9 @@ export function Quiz() {
               {/* Tooltip */}
               <div className="pointer-events-none absolute right-0 top-full mt-2 px-2.5 py-1.5 rounded-md bg-slate-900 text-white text-[11px] font-sans whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-elevation-2 z-30">
                 Promedio: {averageFormatted} / pregunta
+                {typeof recommendedDurationMin === 'number' && (
+                  <> · Duración recomendada: {recommendedDurationMin} min</>
+                )}
               </div>
             </div>
 
@@ -588,9 +605,17 @@ export function Quiz() {
               <div className="space-y-2.5">
                 <button
                   onClick={handleFinishExam}
-                  className="w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-elevation-2 transition-all active:scale-[0.99]"
+                  disabled={isFinishing}
+                  className="w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-elevation-2 transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  Calificar ahora
+                  {isFinishing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Calificando…
+                    </>
+                  ) : (
+                    'Calificar ahora'
+                  )}
                 </button>
 
                 {unansweredCount > 0 && (

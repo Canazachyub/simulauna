@@ -1,30 +1,34 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   User, CreditCard, BookOpen, Clock, GraduationCap,
   Play, Loader2, AlertCircle, CheckCircle2,
   Pencil, Shield, Star, Sparkles
 } from 'lucide-react';
 import { useExamStore } from '../hooks/useExam';
+import { useUniversityStore } from '../hooks/useUniversity';
 
 export function ExamConfirmation() {
   const navigate = useNavigate();
+  const { universidad: universidadParam } = useParams<{ universidad: string }>();
+  const activaUniversidad = useUniversityStore(state => state.activa);
+  const universidad = activaUniversidad || universidadParam || 'una';
   const { student, config, loadQuestions, status, error } = useExamStore();
 
   // Redirect if no student data
   useEffect(() => {
     if (!student) {
-      navigate('/registro');
+      navigate(`/${universidad}/registro`);
     }
-  }, [student, navigate]);
+  }, [student, navigate, universidad]);
 
   if (!student) return null;
 
-  const areaConfig = config?.[student.area];
+  const areaConfig = config?.divisiones.find(d => d.codigo === student.area || d.nombre === student.area);
 
   const handleStartExam = async () => {
-    await loadQuestions(student.area);
-    navigate('/examen');
+    await loadQuestions(student.area, universidad);
+    navigate(`/${universidad}/examen`);
   };
 
   const instructions = [
@@ -68,7 +72,7 @@ export function ExamConfirmation() {
           <p className="text-white/90 font-medium mb-6">{error}</p>
           <div className="flex gap-3 justify-center">
             <button
-              onClick={() => navigate('/registro')}
+              onClick={() => navigate(`/${universidad}/registro`)}
               className="px-5 py-2.5 rounded-xl border-2 border-white/30 font-semibold text-white hover:bg-white/10 transition"
             >
               Volver
@@ -272,7 +276,7 @@ export function ExamConfirmation() {
             <span>Comenzar simulacro</span>
           </button>
           <button
-            onClick={() => navigate('/registro')}
+            onClick={() => navigate(`/${universidad}/registro`)}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 font-semibold text-sm transition"
           >
             <Pencil className="w-3.5 h-3.5" />

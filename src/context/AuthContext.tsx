@@ -14,23 +14,38 @@ interface AuthContextValue {
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
-const STORAGE_KEY = 'simulauna_auth';
+const STORAGE_KEY = 'simulauna_auth_v2';
+const LEGACY_STORAGE_KEY = 'simulauna_auth';
 const TTL_MS = 30 * 60 * 1000; // 30 min
+
+function readStoredUser(key: string): AuthUser | null {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as AuthUser;
+    if (Date.now() > parsed.expiresAt) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return parsed;
+  } catch {
+    return null;
+  }
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return null;
-      const parsed = JSON.parse(raw) as AuthUser;
-      if (Date.now() > parsed.expiresAt) {
-        localStorage.removeItem(STORAGE_KEY);
-        return null;
-      }
-      return parsed;
-    } catch {
-      return null;
+    // Clave nueva primero; si no existe, migración silenciosa desde la clave legada.
+    const current = readStoredUser(STORAGE_KEY);
+    if (current) return current;
+
+    const legacy = readStoredUser(LEGACY_STORAGE_KEY);
+    if (legacy) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(legacy));
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
+      return legacy;
     }
+    return null;
   });
 
   useEffect(() => {

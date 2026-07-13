@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   User, CreditCard, ChevronRight, ChevronLeft, Loader2, AlertCircle,
   Mail, Phone, GraduationCap, Briefcase, ShieldAlert, Lock, Clock,
   MessageCircle, ArrowRight, Sparkles, Star, Shield
 } from 'lucide-react';
 import { useExamStore } from '../hooks/useExam';
+import { useUniversityStore } from '../hooks/useUniversity';
 import { validateDNI, validateName } from '../utils/calculations';
 import { registerUser, checkAccess } from '../services/api';
 import { AreaSelector } from './AreaSelector';
@@ -40,7 +41,10 @@ function detectBlockVariant(reason: string, isFraud: boolean, attemptCount: numb
   return 'blocked';
 }
 
-// Carreras organizadas por área
+// Carreras organizadas por área (legado, específico de 'una').
+// TODO(multi-universidad): para universidades ≠ 'una', esta lista aún no existe en el config
+// v2 (contrato no define `carreras` dentro de Division todavía); mientras tanto se usa un
+// campo de texto libre — ver renderizado condicional más abajo en el paso 2 del formulario.
 const CAREERS_BY_AREA: Record<AreaType, string[]> = {
   'Ingenierías': [
     'Ingeniería Agronómica',
@@ -280,7 +284,11 @@ function Stepper({ step }: { step: number }) {
 /* -------------------------------------------------------------------------- */
 export function StudentForm() {
   const navigate = useNavigate();
+  const { universidad: universidadParam } = useParams<{ universidad: string }>();
+  const activaUniversidad = useUniversityStore(state => state.activa);
+  const universidad = activaUniversidad || universidadParam || 'una';
   const { setStudent, loadConfig, config, status, error } = useExamStore();
+  const divisions = config?.divisiones ?? [];
 
   const [step, setStep] = useState(1);
   const [dni, setDni] = useState('');
@@ -302,9 +310,9 @@ export function StudentForm() {
   // Cargar configuración al montar
   useEffect(() => {
     if (!config) {
-      loadConfig();
+      loadConfig(universidad);
     }
-  }, [config, loadConfig]);
+  }, [config, loadConfig, universidad]);
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -386,7 +394,7 @@ export function StudentForm() {
 
     // Verificar acceso antes de continuar
     try {
-      const accessResult = await checkAccess(dni.trim(), email.trim().toLowerCase());
+      const accessResult = await checkAccess(dni.trim(), email.trim().toLowerCase(), universidad);
 
       if (!accessResult.canAccess) {
         setAccessDenied({
@@ -412,7 +420,8 @@ export function StudentForm() {
         phone: phone.trim(),
         processType: processType!,
         area: area!,
-        career
+        career,
+        universidad
       });
     } catch (err) {
       // Si falla el registro, continuamos de todos modos (no bloqueamos al usuario)
@@ -427,7 +436,7 @@ export function StudentForm() {
     });
 
     setIsSubmitting(false);
-    navigate('/confirmar');
+    navigate(`/${universidad}/confirmar`);
   };
 
   if (status === 'loading') {
@@ -453,7 +462,7 @@ export function StudentForm() {
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h2 className="font-display text-2xl font-black text-brand-primary-900 mb-2">Error de conexión</h2>
           <p className="text-slate-600 mb-6">{error}</p>
-          <button onClick={() => loadConfig()} className="px-5 py-2.5 rounded-xl bg-brand-primary-600 text-white font-bold hover:bg-brand-primary-700 transition">
+          <button onClick={() => loadConfig(universidad)} className="px-5 py-2.5 rounded-xl bg-brand-primary-600 text-white font-bold hover:bg-brand-primary-700 transition">
             Reintentar
           </button>
         </div>
@@ -555,7 +564,7 @@ export function StudentForm() {
 
             <div className="relative mt-8 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3">
               <button
-                onClick={() => navigate('/')}
+                onClick={() => navigate(`/${universidad}`)}
                 className="inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-700 font-bold hover:border-brand-primary-300 hover:bg-brand-primary-50 transition"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -663,7 +672,7 @@ export function StudentForm() {
                 <AreaSelector
                   selectedArea={area}
                   onSelectArea={handleSelectArea}
-                  config={config}
+                  divisions={divisions}
                 />
                 {errors.area && (
                   <p className="mt-2 text-[12px] text-red-600 flex items-center gap-1">
@@ -680,25 +689,44 @@ export function StudentForm() {
                     <GraduationCap className="w-3.5 h-3.5" />
                     Carrera profesional
                   </label>
-                  <select
-                    value={career}
-                    onChange={(e) => {
-                      setCareer(e.target.value);
-                      if (errors.career) setErrors({ ...errors, career: undefined });
-                    }}
-                    className={`w-full px-4 py-4 rounded-xl border-2 bg-white font-semibold text-slate-700 outline-none transition-all text-sm ${
-                      errors.career
-                        ? 'border-red-400 focus:border-red-500'
-                        : 'border-slate-200 hover:border-slate-300 focus:border-brand-primary-500 focus:shadow-[0_0_0_4px_rgba(212,175,55,0.25)]'
-                    }`}
-                  >
-                    <option value="">-- Selecciona una carrera --</option>
-                    {CAREERS_BY_AREA[area].map((careerOption) => (
-                      <option key={careerOption} value={careerOption}>
-                        {careerOption}
-                      </option>
-                    ))}
-                  </select>
+                  {universidad === 'una' && CAREERS_BY_AREA[area] ? (
+                    <select
+                      value={career}
+                      onChange={(e) => {
+                        setCareer(e.target.value);
+                        if (errors.career) setErrors({ ...errors, career: undefined });
+                      }}
+                      className={`w-full px-4 py-4 rounded-xl border-2 bg-white font-semibold text-slate-700 outline-none transition-all text-sm ${
+                        errors.career
+                          ? 'border-red-400 focus:border-red-500'
+                          : 'border-slate-200 hover:border-slate-300 focus:border-brand-primary-500 focus:shadow-[0_0_0_4px_rgba(212,175,55,0.25)]'
+                      }`}
+                    >
+                      <option value="">-- Selecciona una carrera --</option>
+                      {CAREERS_BY_AREA[area].map((careerOption) => (
+                        <option key={careerOption} value={careerOption}>
+                          {careerOption}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    // TODO(multi-universidad): reemplazar por lista desde config cuando el
+                    // contrato incluya carreras por división; por ahora texto libre.
+                    <input
+                      type="text"
+                      value={career}
+                      placeholder="Escribe tu carrera de interés"
+                      onChange={(e) => {
+                        setCareer(e.target.value);
+                        if (errors.career) setErrors({ ...errors, career: undefined });
+                      }}
+                      className={`w-full px-4 py-4 rounded-xl border-2 bg-white font-semibold text-slate-700 outline-none transition-all text-sm ${
+                        errors.career
+                          ? 'border-red-400 focus:border-red-500'
+                          : 'border-slate-200 hover:border-slate-300 focus:border-brand-primary-500 focus:shadow-[0_0_0_4px_rgba(212,175,55,0.25)]'
+                      }`}
+                    />
+                  )}
                   {errors.career && (
                     <p className="mt-2 text-[12px] text-red-600 flex items-center gap-1">
                       <AlertCircle className="w-3.5 h-3.5" />

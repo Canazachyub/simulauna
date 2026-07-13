@@ -5,6 +5,24 @@ import {
   Cog, HeartPulse, Landmark, UserPlus, Clock, TrendingUp,
   Star, Quote, Zap, FileText, Award, UserCircle2, BookMarked,
 } from 'lucide-react';
+import { useUniversityStore } from '../hooks/useUniversity';
+
+// Universidades del carrusel: `codigo` solo se define para las que ya existen en el registro
+// maestro (getUniversidades); el resto queda con tooltip "Próximamente" y sin link.
+const UNIVERSITY_LOGOS: { sigla: string; name: string; url: string; codigo?: string }[] = [
+  { sigla: 'UNA', name: 'Universidad Nacional del Altiplano - Puno', url: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Logo_UNAP.png', codigo: 'una' },
+  { sigla: 'UNAJ', name: 'Universidad Nacional de Juliaca', url: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/UNIVERSIDAD_NACIONAL_DE_JULIACA_%28UNAJ%29.png' },
+  { sigla: 'UNMSM', name: 'Universidad Nacional Mayor de San Marcos', url: 'https://upload.wikimedia.org/wikipedia/commons/4/46/UNMSM_Escudo_y_Nombre.png' },
+  { sigla: 'UNI', name: 'Universidad Nacional de Ingeniería', url: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Uni-logo_transparente_granate.png' },
+  { sigla: 'UNSA', name: 'Universidad Nacional de San Agustín - Arequipa', url: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/LOGO_UNSA.png', codigo: 'unsa' },
+  { sigla: 'UNSAAC', name: 'Universidad Nacional de San Antonio Abad - Cusco', url: 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Escudo_UNSAAC.png' },
+  { sigla: 'UNCP', name: 'Universidad Nacional del Centro del Perú', url: 'https://upload.wikimedia.org/wikipedia/commons/6/62/Logo_UNCP.png' },
+  { sigla: 'UNFV', name: 'Universidad Nacional Federico Villarreal', url: 'https://upload.wikimedia.org/wikipedia/commons/b/b5/Logo_UNFV.png' },
+  { sigla: 'UNALM', name: 'Universidad Nacional Agraria La Molina', url: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Unalm_logo.png' },
+  { sigla: 'UNT', name: 'Universidad Nacional de Trujillo', url: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Universidad_Nacional_de_Trujillo.png' },
+  { sigla: 'UNP', name: 'Universidad Nacional de Piura', url: 'https://upload.wikimedia.org/wikipedia/commons/2/25/Escudo_Universidad_Nacional_de_Piura.png' },
+  { sigla: 'UNSCH', name: 'Universidad Nacional San Cristóbal de Huamanga', url: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Logo_UNSCH.png' },
+];
 
 /* -------------------------------------------------------------------------- */
 /*  Asset paths — ilustraciones educativas                                    */
@@ -125,6 +143,16 @@ function StarTwinkle({ className = '', size = 14 }: { className?: string; size?:
 /* -------------------------------------------------------------------------- */
 export function Landing() {
   const navigate = useNavigate();
+  const registro = useUniversityStore(state => state.registro);
+  const loadRegistro = useUniversityStore(state => state.loadRegistro);
+
+  useEffect(() => {
+    loadRegistro();
+  }, [loadRegistro]);
+
+  // 'una' siempre navegable (compatibilidad total aunque el registro v2 no cargue aún);
+  // el resto solo si aparecen en el registro maestro con estado activa|piloto.
+  const registeredCodes = new Set(['una', ...registro.map(u => u.codigo)]);
 
   const handleWhatsAppClick = () => {
     window.open(
@@ -222,6 +250,25 @@ export function Landing() {
             <p className="mt-3 text-white/90 font-semibold text-sm md:text-base [text-shadow:0_1px_4px_rgba(0,0,0,0.6)]">
               UNA Puno · San Marcos · UNI · UNSA · UNSAAC · UNCP · UNFV · y todas las universidades del Perú.
             </p>
+
+            {/* Selector de universidad — solo las del registro maestro (getUniversidades) */}
+            {registro.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {registro.map((u) => (
+                  <button
+                    key={u.codigo}
+                    onClick={() => navigate(`/${u.codigo}`)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/25 text-white text-xs font-bold hover:bg-white/20 hover:border-white/50 transition-colors"
+                  >
+                    <GraduationCap className="w-3.5 h-3.5 text-brand-accent-300" />
+                    {u.nombreCorto}
+                    {u.estado === 'piloto' && (
+                      <span className="text-[9px] uppercase tracking-wider text-white/70">Piloto</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* Subtitle */}
             <p className="mt-6 text-white/95 font-medium text-lg md:text-xl max-w-xl leading-relaxed drop-shadow-lg [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]">
@@ -477,48 +524,29 @@ export function Landing() {
 
             <div className="flex overflow-hidden group">
               <div className="flex animate-marquee group-hover:[animation-play-state:paused] shrink-0 gap-14 md:gap-20 pr-14 md:pr-20 items-center">
-                {[
-                  { sigla: 'UNA', name: 'Universidad Nacional del Altiplano - Puno', url: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Logo_UNAP.png' },
-                  { sigla: 'UNAJ', name: 'Universidad Nacional de Juliaca', url: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/UNIVERSIDAD_NACIONAL_DE_JULIACA_%28UNAJ%29.png' },
-                  { sigla: 'UNMSM', name: 'Universidad Nacional Mayor de San Marcos', url: 'https://upload.wikimedia.org/wikipedia/commons/4/46/UNMSM_Escudo_y_Nombre.png' },
-                  { sigla: 'UNI', name: 'Universidad Nacional de Ingeniería', url: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Uni-logo_transparente_granate.png' },
-                  { sigla: 'UNSA', name: 'Universidad Nacional de San Agustín - Arequipa', url: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/LOGO_UNSA.png' },
-                  { sigla: 'UNSAAC', name: 'Universidad Nacional de San Antonio Abad - Cusco', url: 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Escudo_UNSAAC.png' },
-                  { sigla: 'UNCP', name: 'Universidad Nacional del Centro del Perú', url: 'https://upload.wikimedia.org/wikipedia/commons/6/62/Logo_UNCP.png' },
-                  { sigla: 'UNFV', name: 'Universidad Nacional Federico Villarreal', url: 'https://upload.wikimedia.org/wikipedia/commons/b/b5/Logo_UNFV.png' },
-                  { sigla: 'UNALM', name: 'Universidad Nacional Agraria La Molina', url: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Unalm_logo.png' },
-                  { sigla: 'UNT', name: 'Universidad Nacional de Trujillo', url: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Universidad_Nacional_de_Trujillo.png' },
-                  { sigla: 'UNP', name: 'Universidad Nacional de Piura', url: 'https://upload.wikimedia.org/wikipedia/commons/2/25/Escudo_Universidad_Nacional_de_Piura.png' },
-                  { sigla: 'UNSCH', name: 'Universidad Nacional San Cristóbal de Huamanga', url: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Logo_UNSCH.png' },
-                ].concat([
-                  { sigla: 'UNA', name: 'Universidad Nacional del Altiplano - Puno', url: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Logo_UNAP.png' },
-                  { sigla: 'UNAJ', name: 'Universidad Nacional de Juliaca', url: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/UNIVERSIDAD_NACIONAL_DE_JULIACA_%28UNAJ%29.png' },
-                  { sigla: 'UNMSM', name: 'Universidad Nacional Mayor de San Marcos', url: 'https://upload.wikimedia.org/wikipedia/commons/4/46/UNMSM_Escudo_y_Nombre.png' },
-                  { sigla: 'UNI', name: 'Universidad Nacional de Ingeniería', url: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Uni-logo_transparente_granate.png' },
-                  { sigla: 'UNSA', name: 'Universidad Nacional de San Agustín - Arequipa', url: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/LOGO_UNSA.png' },
-                  { sigla: 'UNSAAC', name: 'Universidad Nacional de San Antonio Abad - Cusco', url: 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Escudo_UNSAAC.png' },
-                  { sigla: 'UNCP', name: 'Universidad Nacional del Centro del Perú', url: 'https://upload.wikimedia.org/wikipedia/commons/6/62/Logo_UNCP.png' },
-                  { sigla: 'UNFV', name: 'Universidad Nacional Federico Villarreal', url: 'https://upload.wikimedia.org/wikipedia/commons/b/b5/Logo_UNFV.png' },
-                  { sigla: 'UNALM', name: 'Universidad Nacional Agraria La Molina', url: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Unalm_logo.png' },
-                  { sigla: 'UNT', name: 'Universidad Nacional de Trujillo', url: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Universidad_Nacional_de_Trujillo.png' },
-                  { sigla: 'UNP', name: 'Universidad Nacional de Piura', url: 'https://upload.wikimedia.org/wikipedia/commons/2/25/Escudo_Universidad_Nacional_de_Piura.png' },
-                  { sigla: 'UNSCH', name: 'Universidad Nacional San Cristóbal de Huamanga', url: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Logo_UNSCH.png' },
-                ]).map((u, idx) => (
-                  <div
-                    key={`${u.sigla}-${idx}`}
-                    title={u.name}
-                    className="flex flex-col items-center gap-2 shrink-0 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default"
-                  >
-                    <img
-                      src={u.url}
-                      alt={u.name}
-                      loading="lazy"
-                      className="h-16 md:h-20 w-auto object-contain select-none"
-                      style={{ maxWidth: '140px' }}
-                    />
-                    <span className="text-[10px] md:text-xs font-bold tracking-wider text-slate-500">{u.sigla}</span>
-                  </div>
-                ))}
+                {UNIVERSITY_LOGOS.concat(UNIVERSITY_LOGOS).map((u, idx) => {
+                  const isRegistered = Boolean(u.codigo && registeredCodes.has(u.codigo));
+                  const Tag = isRegistered ? 'button' : 'div';
+                  return (
+                    <Tag
+                      key={`${u.sigla}-${idx}`}
+                      title={isRegistered ? u.name : `${u.name} · Próximamente`}
+                      onClick={isRegistered ? () => navigate(`/${u.codigo}`) : undefined}
+                      className={`flex flex-col items-center gap-2 shrink-0 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 ${
+                        isRegistered ? 'cursor-pointer' : 'cursor-default'
+                      }`}
+                    >
+                      <img
+                        src={u.url}
+                        alt={u.name}
+                        loading="lazy"
+                        className="h-16 md:h-20 w-auto object-contain select-none"
+                        style={{ maxWidth: '140px' }}
+                      />
+                      <span className="text-[10px] md:text-xs font-bold tracking-wider text-slate-500">{u.sigla}</span>
+                    </Tag>
+                  );
+                })}
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   BookOpen, CreditCard, Mail, ChevronLeft, ChevronRight,
   Loader2, AlertCircle, Lock, CheckCircle, XCircle,
@@ -18,6 +18,7 @@ import {
 import { validateDNI } from '../utils/calculations';
 import { renderFormattedText, parseJustification } from '../utils/formatText';
 import { useAuth } from '../context/AuthContext';
+import { useUniversityStore } from '../hooks/useUniversity';
 import { CourseSelector, type CourseOption } from './CourseSelector';
 import clsx from 'clsx';
 
@@ -33,6 +34,9 @@ interface BanqueoAnswer {
 
 export function BanqueoPorTema() {
   const navigate = useNavigate();
+  const { universidad: universidadParam } = useParams<{ universidad: string }>();
+  const activaUniversidad = useUniversityStore(state => state.activa);
+  const universidad = activaUniversidad || universidadParam || 'una';
   const { user, isAuthenticated, login: authLogin, logout: authLogout } = useAuth();
 
   // Step state
@@ -133,21 +137,21 @@ export function BanqueoPorTema() {
       setTemas([]);
       setSelectedTema('');
 
-      getTemasPorCurso(selectedCurso)
+      getTemasPorCurso(selectedCurso, universidad)
         .then(data => setTemas(data))
         .catch(err => console.error('Error loading temas:', err))
         .finally(() => setLoadingTemas(false));
     }
-  }, [selectedCurso]);
+  }, [selectedCurso, universidad]);
 
   // Preload cursos list when already authenticated (skipped login step)
   useEffect(() => {
     if (isAuthenticated && step === 'select' && cursos.length === 0) {
-      getCursosConTemas()
+      getCursosConTemas(universidad)
         .then(data => setCursos(data))
         .catch(err => console.error('Error loading cursos:', err));
     }
-  }, [isAuthenticated, step, cursos.length]);
+  }, [isAuthenticated, step, cursos.length, universidad]);
 
   // Validations
   const validateEmail = (email: string): boolean => {
@@ -179,7 +183,7 @@ export function BanqueoPorTema() {
     setIsLoading(true);
 
     try {
-      const result = await checkBanqueoAccess(dni.trim(), email.trim().toLowerCase());
+      const result = await checkBanqueoAccess(dni.trim(), email.trim().toLowerCase(), universidad);
 
       if (!result.canAccess) {
         setLoginError(result.reason);
@@ -189,7 +193,7 @@ export function BanqueoPorTema() {
 
       authLogin(dni.trim(), email.trim().toLowerCase());
       // Load courses list
-      const cursosData = await getCursosConTemas();
+      const cursosData = await getCursosConTemas(universidad);
       setCursos(cursosData);
       setStep('select');
     } catch (error) {
@@ -230,7 +234,8 @@ export function BanqueoPorTema() {
         selectedCurso,
         selectedTema,
         undefined, // No usamos subtema para simplificar y mejorar velocidad
-        questionCount
+        questionCount,
+        universidad
       );
 
       if (result.error) {
@@ -473,7 +478,7 @@ export function BanqueoPorTema() {
             </div>
 
             <div className="flex gap-3 mt-8">
-              <button onClick={() => navigate('/')} className="btn-secondary flex-1">
+              <button onClick={() => navigate(`/${universidad}`)} className="btn-secondary flex-1">
                 <ChevronLeft className="w-5 h-5" />
                 Volver
               </button>
@@ -514,7 +519,7 @@ export function BanqueoPorTema() {
           {/* Header */}
           <div className="flex items-center justify-between mb-6 animate-fade-up">
             <nav className="flex items-center gap-1 text-sm text-slate-500 font-sans flex-wrap">
-              <button onClick={() => navigate('/')} className="hover:text-brand-primary-600 transition-colors">
+              <button onClick={() => navigate(`/${universidad}`)} className="hover:text-brand-primary-600 transition-colors">
                 Inicio
               </button>
               <ChevronRight className="w-4 h-4" />
@@ -747,7 +752,7 @@ export function BanqueoPorTema() {
           {/* CTA sticky */}
           <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-200 px-4 py-3 z-40 shadow-elevation-3">
             <div className="max-w-4xl mx-auto flex items-center gap-3">
-              <button onClick={() => navigate('/')} className="btn-secondary hidden sm:inline-flex">
+              <button onClick={() => navigate(`/${universidad}`)} className="btn-secondary hidden sm:inline-flex">
                 <Home className="w-4 h-4" />
                 Inicio
               </button>
@@ -1197,7 +1202,7 @@ export function BanqueoPorTema() {
                 <RotateCcw className="w-5 h-5" />
                 Otro tema
               </button>
-              <button onClick={() => navigate('/')} className="btn-secondary">
+              <button onClick={() => navigate(`/${universidad}`)} className="btn-secondary">
                 <Home className="w-5 h-5" />
                 Inicio
               </button>

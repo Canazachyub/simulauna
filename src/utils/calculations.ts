@@ -5,9 +5,16 @@ import type {
   ExamResult,
   Student,
   PerformanceLevel,
-  AreaConfig
+  AreaConfig,
+  Division
 } from '../types';
 import { PERFORMANCE_THRESHOLDS } from '../types';
+
+export interface Umbrales {
+  excelente: number;
+  bueno: number;
+  regular: number;
+}
 
 /**
  * Calcula los resultados por asignatura
@@ -15,7 +22,7 @@ import { PERFORMANCE_THRESHOLDS } from '../types';
 export function calculateSubjectResults(
   questions: Question[],
   answers: Answer[],
-  areaConfig: AreaConfig | null
+  areaConfig: AreaConfig | Division | null
 ): SubjectResult[] {
   // Agrupar preguntas por asignatura
   const subjectGroups = new Map<string, { questions: Question[]; answers: Answer[] }>();
@@ -71,12 +78,14 @@ export function calculateSubjectResults(
 }
 
 /**
- * Determina el nivel de rendimiento según el puntaje
+ * Determina el nivel de rendimiento según el puntaje.
+ * `umbrales` SIEMPRE debería venir de escala.umbrales (getConfig); PERFORMANCE_THRESHOLDS
+ * solo se usa como último fallback si no hay config disponible (nunca fuente de verdad).
  */
-export function getPerformanceLevel(totalScore: number): PerformanceLevel {
-  if (totalScore >= PERFORMANCE_THRESHOLDS.excellent) return 'excellent';
-  if (totalScore >= PERFORMANCE_THRESHOLDS.good) return 'good';
-  if (totalScore >= PERFORMANCE_THRESHOLDS.regular) return 'regular';
+export function getPerformanceLevel(totalScore: number, umbrales: Umbrales = PERFORMANCE_THRESHOLDS): PerformanceLevel {
+  if (totalScore >= umbrales.excelente) return 'excellent';
+  if (totalScore >= umbrales.bueno) return 'good';
+  if (totalScore >= umbrales.regular) return 'regular';
   return 'needs_practice';
 }
 
@@ -87,8 +96,11 @@ export function calculateExamResult(
   student: Student,
   questions: Question[],
   answers: Answer[],
-  areaConfig: AreaConfig | null,
-  startTime: Date
+  areaConfig: AreaConfig | Division | null,
+  startTime: Date,
+  umbrales: Umbrales = PERFORMANCE_THRESHOLDS,
+  universidad?: string,
+  proceso?: string
 ): ExamResult {
   const subjectResults = calculateSubjectResults(questions, answers, areaConfig);
 
@@ -107,7 +119,10 @@ export function calculateExamResult(
     subjectResults,
     answers,
     totalTime,
-    performanceLevel: getPerformanceLevel(totalScore)
+    performanceLevel: getPerformanceLevel(totalScore, umbrales),
+    umbrales,
+    universidad,
+    proceso
   };
 }
 

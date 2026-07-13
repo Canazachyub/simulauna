@@ -1,52 +1,39 @@
-import { CheckCircle2, ArrowRight, Cpu, Stethoscope, Scale } from 'lucide-react';
-import type { AreaType, Config } from '../types';
-import { AREA_INFO } from '../types';
+import { CheckCircle2, ArrowRight, Cpu, Stethoscope, Scale, GraduationCap } from 'lucide-react';
+import type { Division } from '../types';
 
 interface AreaSelectorProps {
-  selectedArea: AreaType | null;
-  onSelectArea: (area: AreaType) => void;
-  config: Config | null;
+  selectedArea: string | null;
+  onSelectArea: (division: string) => void;
+  /** Divisiones dinámicas de getConfig(universidad).divisiones — ya no un union fijo de 3 áreas */
+  divisions: Division[];
 }
 
-const AREA_ICONS: Record<AreaType, React.ElementType> = {
-  'Ingenierías': Cpu,
-  'Sociales': Scale,
-  'Biomédicas': Stethoscope
-};
-
-/**
- * Full-bleed dramatic area selector.
- * Each card owns its color block, texture, giant decorative SVG and reveal CTA.
- * Click handler (onSelectArea) and config API preserved verbatim.
- */
-const AREA_THEME: Record<AreaType, {
-  cardBg: string;
-  ringHover: string;
-  chipLabel: string;
-}> = {
-  'Ingenierías': {
+// Tema visual asignado por índice (ciclo de 3), no por nombre fijo de área — así funciona
+// para cualquier universidad/división sin importar cuántas o cómo se llamen.
+const AREA_ICONS: React.ElementType[] = [Cpu, Stethoscope, Scale];
+const AREA_THEME: { cardBg: string; ringHover: string; chipLabel: string }[] = [
+  {
     cardBg: 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900',
     ringHover: 'group-hover:ring-brand-accent/40',
     chipLabel: 'Exactas'
   },
-  'Biomédicas': {
+  {
     cardBg: 'bg-gradient-to-br from-rose-500 via-rose-600 to-rose-900',
     ringHover: 'group-hover:ring-brand-accent/40',
     chipLabel: 'Salud'
   },
-  'Sociales': {
+  {
     cardBg: 'bg-gradient-to-br from-amber-500 via-orange-600 to-orange-800',
     ringHover: 'group-hover:ring-brand-accent/40',
     chipLabel: 'Humanidades'
   }
-};
+];
 
-// Decorative giant SVGs (per-area theme). All absolute, pointer-events-none.
-// Preserves original inline SVG as a subtle underlay, plus educational PNG/SVG assets on top.
-function AreaDecorSVG({ area }: { area: AreaType }) {
+// Decorative giant SVGs, cicladas por índice igual que el tema.
+function AreaDecorSVG({ themeIndex }: { themeIndex: number }) {
   const common = 'absolute -right-10 -bottom-10 w-64 h-64 opacity-15 group-hover:opacity-25 transition-opacity duration-500 pointer-events-none';
 
-  if (area === 'Ingenierías') {
+  if (themeIndex === 0) {
     return (
       <>
         <svg className={common} viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -82,7 +69,7 @@ function AreaDecorSVG({ area }: { area: AreaType }) {
       </>
     );
   }
-  if (area === 'Biomédicas') {
+  if (themeIndex === 1) {
     return (
       <>
         <svg className={common} viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -149,24 +136,21 @@ function AreaDecorSVG({ area }: { area: AreaType }) {
   );
 }
 
-export function AreaSelector({ selectedArea, onSelectArea, config }: AreaSelectorProps) {
-  const areas: AreaType[] = ['Ingenierías', 'Sociales', 'Biomédicas'];
-
+export function AreaSelector({ selectedArea, onSelectArea, divisions }: AreaSelectorProps) {
   return (
     <div className="grid gap-5 md:grid-cols-3">
-      {areas.map((area, idx) => {
-        const Icon = AREA_ICONS[area];
-        const theme = AREA_THEME[area];
-        const isSelected = selectedArea === area;
-        const areaConfig = config?.[area];
-        const info = AREA_INFO[area];
+      {divisions.map((division, idx) => {
+        const themeIndex = idx % AREA_THEME.length;
+        const Icon = AREA_ICONS[themeIndex] || GraduationCap;
+        const theme = AREA_THEME[themeIndex];
+        const isSelected = selectedArea === division.codigo;
 
-        const keySubjects = areaConfig?.subjects?.slice(0, 4).map((s) => s.name || String(s)) ?? [];
+        const keySubjects = division.subjects.slice(0, 4).map((s) => s.name);
 
         return (
           <button
-            key={area}
-            onClick={() => onSelectArea(area)}
+            key={division.codigo}
+            onClick={() => onSelectArea(division.codigo)}
             style={{ animationDelay: `${idx * 120}ms` }}
             className={`
               group relative overflow-hidden rounded-3xl min-h-[480px]
@@ -206,8 +190,8 @@ export function AreaSelector({ selectedArea, onSelectArea, config }: AreaSelecto
               <path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" />
             </svg>
 
-            {/* Giant decorative per-area SVG */}
-            <AreaDecorSVG area={area} />
+            {/* Giant decorative per-theme SVG */}
+            <AreaDecorSVG themeIndex={themeIndex} />
 
             {/* Soft radial glow */}
             <div className="absolute -top-20 -left-20 w-60 h-60 rounded-full bg-white/10 blur-3xl pointer-events-none" />
@@ -224,9 +208,7 @@ export function AreaSelector({ selectedArea, onSelectArea, config }: AreaSelecto
               {/* Top chip */}
               <div className="inline-flex items-center gap-2 self-start px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 text-[11px] font-bold tracking-wider uppercase text-white text-shadow-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-accent animate-pulse" />
-                {areaConfig
-                  ? `${areaConfig.totalQuestions} preg · ${areaConfig.totalMaxScore.toLocaleString()} pts`
-                  : '60 preg · 3000 pts máx'}
+                {`${division.totalQuestions} preg · ${Math.round(division.totalMaxScore).toLocaleString()} pts`}
               </div>
 
               {/* Icon badge */}
@@ -236,11 +218,8 @@ export function AreaSelector({ selectedArea, onSelectArea, config }: AreaSelecto
 
               {/* Title */}
               <h3 className="mt-5 font-display text-4xl md:text-[2.6rem] font-black leading-[1.02] tracking-tightest text-white text-shadow-sm">
-                {area}
+                {division.nombre}
               </h3>
-              <p className="mt-2 text-sm text-white font-medium leading-relaxed max-w-[22ch] text-shadow-sm">
-                {info.description}
-              </p>
 
               {/* Category chip */}
               <span className="mt-3 inline-flex self-start px-2.5 py-1 rounded-full bg-black/30 border border-white/25 text-[10px] font-bold tracking-widest uppercase text-white">

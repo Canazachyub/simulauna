@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   BookOpen, CreditCard, Mail, ChevronLeft, ChevronRight,
   Loader2, AlertCircle, Lock, CheckCircle, XCircle,
@@ -17,6 +17,7 @@ import {
 import { validateDNI } from '../utils/calculations';
 import { renderFormattedText, parseJustification } from '../utils/formatText';
 import { useAuth } from '../context/AuthContext';
+import { useUniversityStore } from '../hooks/useUniversity';
 import { CourseSelector, type CourseOption } from './CourseSelector';
 import clsx from 'clsx';
 
@@ -37,8 +38,19 @@ const AREA_LABELS: Record<'ING' | 'BIO' | 'SOC', string> = {
   'SOC': 'Sociales'
 };
 
+/**
+ * Simulacro / banqueo del proceso CEPRE de la universidad activa. Converge lo que antes eran
+ * dos componentes separados (BanqueoCepreuna + SimulacroCepreuna) en la ruta única
+ * /:universidad/cepre (ver docs/CONTRATO_API_V2.md §5). El nombre visible se toma de
+ * `cepreNombre` del registro de universidades (ej. CEPREUNA, CEPRUNSA), no hardcodeado.
+ */
 export function BanqueoCepreuna() {
   const navigate = useNavigate();
+  const { universidad: universidadParam } = useParams<{ universidad: string }>();
+  const activaUniversidad = useUniversityStore(state => state.activa);
+  const universidad = activaUniversidad || universidadParam || 'una';
+  const registro = useUniversityStore(state => state.registro);
+  const cepreNombre = registro.find(u => u.codigo === universidad)?.cepreNombre || 'CEPREUNA';
   const { user, isAuthenticated, login: authLogin, logout: authLogout } = useAuth();
 
   // Step state
@@ -133,7 +145,7 @@ export function BanqueoCepreuna() {
     setIsLoading(true);
 
     try {
-      const result = await checkBanqueoAccess(dni.trim(), email.trim().toLowerCase());
+      const result = await checkBanqueoAccess(dni.trim(), email.trim().toLowerCase(), universidad);
 
       if (!result.canAccess) {
         setLoginError(result.reason);
@@ -177,10 +189,10 @@ export function BanqueoCepreuna() {
       let result;
       if (mode === 'cuadernillo') {
         // Modo cuadernillo: area + semana + course (sin count - trae TODAS)
-        result = await getCepreQuestions(selectedCourse, selectedArea, selectedSemana);
+        result = await getCepreQuestions(selectedCourse, selectedArea, selectedSemana, undefined, universidad);
       } else {
         // Modo general: course + ALL areas + count
-        result = await getCepreQuestions(selectedCourse, 'ALL', undefined, questionCount);
+        result = await getCepreQuestions(selectedCourse, 'ALL', undefined, questionCount, universidad);
       }
 
       if (result.error) {
@@ -313,13 +325,13 @@ export function BanqueoCepreuna() {
                   className="w-6 h-6 inline-block pointer-events-none"
                 />
                 <Sparkles className="w-3 h-3" />
-                CEPREUNA
+                {cepreNombre}
               </span>
               <h1 className="inline-block font-display text-4xl font-black text-brand-accent-600 gradient-text-gold leading-tight mb-2">
-                Banqueo CEPREUNA
+                Banqueo {cepreNombre}
               </h1>
               <p className="font-sans text-slate-600">
-                Practica con preguntas de los cuadernillos CEPREUNA por semana
+                Practica con preguntas de los cuadernillos {cepreNombre} por semana
               </p>
             </div>
 
@@ -387,7 +399,7 @@ export function BanqueoCepreuna() {
             </div>
 
             <div className="flex gap-3 mt-8">
-              <button onClick={() => navigate('/')} className="btn-secondary flex-1">
+              <button onClick={() => navigate(`/${universidad}`)} className="btn-secondary flex-1">
                 <ChevronLeft className="w-5 h-5" />
                 Volver
               </button>
@@ -439,7 +451,7 @@ export function BanqueoCepreuna() {
                 Elige el modo de práctica
               </h1>
               <p className="text-slate-600">
-                ¿Cómo deseas practicar con las preguntas CEPREUNA?
+                ¿Cómo deseas practicar con las preguntas {cepreNombre}?
               </p>
             </div>
 
@@ -494,7 +506,7 @@ export function BanqueoCepreuna() {
               </button>
             </div>
 
-            <button onClick={() => navigate('/')} className="btn-secondary w-full">
+            <button onClick={() => navigate(`/${universidad}`)} className="btn-secondary w-full">
               <Home className="w-5 h-5" />
               Volver al inicio
             </button>
@@ -532,12 +544,12 @@ export function BanqueoCepreuna() {
           {/* Header */}
           <div className="flex items-center justify-between mb-6 animate-fade-up">
             <nav className="flex items-center gap-1 text-sm text-slate-500 font-sans">
-              <button onClick={() => navigate('/')} className="hover:text-brand-primary-600 transition-colors">
+              <button onClick={() => navigate(`/${universidad}`)} className="hover:text-brand-primary-600 transition-colors">
                 Inicio
               </button>
               <ChevronRight className="w-4 h-4" />
               <button onClick={() => setStep('mode')} className="hover:text-brand-primary-600 transition-colors">
-                Banqueo CEPREUNA
+                Banqueo {cepreNombre}
               </button>
               <ChevronRight className="w-4 h-4" />
               <span className="text-slate-700 font-semibold">
@@ -568,7 +580,7 @@ export function BanqueoCepreuna() {
                   className="w-6 h-6 inline-block pointer-events-none"
                 />
                 <Sparkles className="w-3 h-3" />
-                CEPREUNA
+                {cepreNombre}
               </span>
               <span className="chip bg-white/70 text-brand-primary-700 text-[10px] font-mono">
                 {mode === 'cuadernillo' ? <Calendar className="w-3 h-3" /> : <Sparkles className="w-3 h-3" />}
@@ -576,7 +588,7 @@ export function BanqueoCepreuna() {
               </span>
             </div>
             <h1 className="inline-block font-display text-4xl md:text-5xl font-black text-brand-accent-600 gradient-text-gold leading-tight mb-3">
-              Banqueo CEPREUNA
+              Banqueo {cepreNombre}
             </h1>
             <p className="font-sans text-lg text-slate-600 max-w-2xl">
               {mode === 'cuadernillo'
@@ -780,7 +792,7 @@ export function BanqueoCepreuna() {
           {/* Header Editorial Andino */}
           <div className="card-elevated p-4 mb-4 relative overflow-hidden">
             <div className="absolute top-2 right-2 chip bg-brand-accent text-slate-900 text-[10px] font-mono font-bold border-2 border-brand-accent-700">
-              CEPREUNA
+              {cepreNombre}
             </div>
             <div className="flex items-center justify-between gap-3 flex-wrap">
               <div className="flex-1 min-w-0">
@@ -1113,7 +1125,7 @@ export function BanqueoCepreuna() {
           <div className="card-elevated p-8 mb-6 text-center animate-fade-up bg-aurora andean-overlay relative overflow-hidden">
             <div className="absolute top-4 right-4 flex gap-2">
               <span className="chip bg-brand-accent-100 text-brand-accent-900 text-[10px] font-mono font-bold border border-brand-accent-300">
-                CEPREUNA
+                {cepreNombre}
               </span>
               {isAuthenticated && (
                 <button
@@ -1201,7 +1213,7 @@ export function BanqueoCepreuna() {
                 <RotateCcw className="w-5 h-5" />
                 Otra práctica
               </button>
-              <button onClick={() => navigate('/')} className="btn-secondary">
+              <button onClick={() => navigate(`/${universidad}`)} className="btn-secondary">
                 <Home className="w-5 h-5" />
                 Inicio
               </button>
