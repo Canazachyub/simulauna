@@ -150,6 +150,16 @@ function StarTwinkle({ className = '', size = 14 }: { className?: string; size?:
 }
 
 /* -------------------------------------------------------------------------- */
+/*  Scroll suave a una sección por id, respetando prefers-reduced-motion      */
+/* -------------------------------------------------------------------------- */
+function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+}
+
+/* -------------------------------------------------------------------------- */
 /*  Landing                                                                    */
 /* -------------------------------------------------------------------------- */
 export function Landing() {
@@ -243,7 +253,7 @@ export function Landing() {
             {/* Pill */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs md:text-sm font-medium text-white shadow-sm">
               <GraduationCap className="w-4 h-4 text-brand-accent-300" />
-              <span>Universidad Nacional del Altiplano — Puno</span>
+              <span>Plataforma nacional de simulacros de admisión</span>
             </div>
 
             {/* H1 gigante */}
@@ -281,55 +291,72 @@ export function Landing() {
 
             {/* Subtitle */}
             <p className="mt-6 text-white/95 font-medium text-lg md:text-xl max-w-xl leading-relaxed drop-shadow-lg [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]">
-              Simulacros con preguntas <strong className="text-white">reales</strong> desde 1993.
-              Para la UNA Puno y todos los postulantes del Perú.{' '}
+              Preguntas <strong className="text-white">reales</strong> de exámenes de admisión pasados
+              y un puntaje calculado exactamente como lo hace tu universidad.{' '}
+              Para todos los postulantes del Perú.{' '}
               <strong className="text-white">Gratis. Serio. Tuyo.</strong>
             </p>
 
             {/* CTAs */}
-            <div className="mt-9 flex flex-col gap-3">
-              <button
-                onClick={() => navigate('/registro')}
-                className="btn-accent-gold shine-hover inline-flex items-center justify-center gap-2 text-lg px-8 py-4 rounded-xl font-bold bg-brand-accent-500 text-brand-primary-900 shadow-xl shadow-brand-accent-500/30 hover:bg-brand-accent-400 hover:-translate-y-0.5 transition-all"
-              >
-                Comenzar simulacro gratis
-                <ArrowRight className="w-5 h-5" />
-              </button>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="mt-9 flex flex-col gap-4">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <button
-                  onClick={() => navigate('/simulacro-cepreuna')}
-                  className="inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-5 py-3.5 text-sm md:text-base transition-all"
+                  onClick={() => scrollToSection('universidades')}
+                  className="btn-accent-gold shine-hover inline-flex items-center justify-center gap-2 text-lg px-8 py-4 rounded-xl font-bold bg-brand-accent-500 text-brand-primary-900 shadow-xl shadow-brand-accent-500/30 hover:bg-brand-accent-400 hover:-translate-y-0.5 transition-all min-h-[44px]"
                 >
-                  <Trophy className="w-5 h-5" />
-                  Simulacro CEPREUNA
+                  <GraduationCap className="w-5 h-5" />
+                  Elige tu universidad
+                  <ArrowRight className="w-5 h-5" />
                 </button>
                 <button
-                  onClick={() => navigate('/banqueo-cepreuna')}
-                  className="inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-5 py-3.5 text-sm md:text-base transition-all"
+                  onClick={() => scrollToSection('como-funciona')}
+                  className="inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-6 py-4 text-base transition-all min-h-[44px]"
                 >
-                  <BookMarked className="w-5 h-5" />
-                  Banqueo CEPREUNA
+                  Ver cómo funciona
                 </button>
-                <button
-                  onClick={() => navigate('/banqueo-tema')}
-                  className="inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-5 py-3.5 text-sm md:text-base transition-all"
-                >
-                  <FileText className="w-5 h-5" />
-                  Banqueo por tema
-                </button>
-                <button
-                  onClick={() => navigate('/banqueo')}
-                  className="inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-5 py-3.5 text-sm md:text-base transition-all"
-                >
-                  <Clock className="w-5 h-5" />
-                  Banqueo histórico
-                </button>
+              </div>
+
+              {/* Atajos UNA Puno — la universidad histórica de la plataforma, disponible hoy mismo */}
+              <div className="pt-1">
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/50 mb-2">
+                  Atajos UNA Puno
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => navigate('/simulacro-cepreuna')}
+                    className="inline-flex items-center justify-center gap-1.5 bg-white/10 border border-white/25 text-white/85 font-semibold hover:bg-white/20 hover:border-white/50 hover:text-white backdrop-blur-sm rounded-lg px-3.5 py-2.5 text-xs sm:text-sm transition-all min-h-[44px]"
+                  >
+                    <Trophy className="w-4 h-4" />
+                    Simulacro CEPREUNA
+                  </button>
+                  <button
+                    onClick={() => navigate('/banqueo-cepreuna')}
+                    className="inline-flex items-center justify-center gap-1.5 bg-white/10 border border-white/25 text-white/85 font-semibold hover:bg-white/20 hover:border-white/50 hover:text-white backdrop-blur-sm rounded-lg px-3.5 py-2.5 text-xs sm:text-sm transition-all min-h-[44px]"
+                  >
+                    <BookMarked className="w-4 h-4" />
+                    Banqueo CEPREUNA
+                  </button>
+                  <button
+                    onClick={() => navigate('/banqueo-tema')}
+                    className="inline-flex items-center justify-center gap-1.5 bg-white/10 border border-white/25 text-white/85 font-semibold hover:bg-white/20 hover:border-white/50 hover:text-white backdrop-blur-sm rounded-lg px-3.5 py-2.5 text-xs sm:text-sm transition-all min-h-[44px]"
+                  >
+                    <FileText className="w-4 h-4" />
+                    Banqueo por tema
+                  </button>
+                  <button
+                    onClick={() => navigate('/banqueo')}
+                    className="inline-flex items-center justify-center gap-1.5 bg-white/10 border border-white/25 text-white/85 font-semibold hover:bg-white/20 hover:border-white/50 hover:text-white backdrop-blur-sm rounded-lg px-3.5 py-2.5 text-xs sm:text-sm transition-all min-h-[44px]"
+                  >
+                    <Clock className="w-4 h-4" />
+                    Banqueo histórico
+                  </button>
+                </div>
               </div>
             </div>
 
             {/* Trust badges */}
             <div className="mt-8 flex flex-wrap gap-2">
-              {['+2,000 preguntas reales', '1993 — 2024', '60 preguntas · 3 horas'].map((t) => (
+              {['+2,000 preguntas reales', `${UNIVERSITY_LOGOS.length} universidades mapeadas`, '2 disponibles hoy'].map((t) => (
                 <span
                   key={t}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/40 text-white font-bold text-xs shadow-lg [text-shadow:0_1px_3px_rgba(0,0,0,0.6)]"
@@ -505,9 +532,9 @@ export function Landing() {
       </section>
 
       {/* ==================================================================== */}
-      {/*  1a. UNIVERSIDADES DISPONIBLES — refuerzo del alcance nacional        */}
+      {/*  1a. UNIVERSIDADES DISPONIBLES — LA propuesta de valor, justo tras el hero */}
       {/* ==================================================================== */}
-      <section className="relative py-14 md:py-16 bg-[#FDFBF5] overflow-hidden">
+      <section id="universidades" className="relative py-16 md:py-20 bg-andean-cream overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-10 animate-fade-up">
             <span
@@ -578,78 +605,9 @@ export function Landing() {
       </section>
 
       {/* ==================================================================== */}
-      {/*  1b. CARRUSEL DE UNIVERSIDADES                                        */}
-      {/* ==================================================================== */}
-      <section className="relative py-14 md:py-16 bg-white border-y border-slate-200 overflow-hidden">
-        <div className="absolute inset-0 dots-bg-brand opacity-40 pointer-events-none" />
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="text-center max-w-2xl mx-auto mb-8">
-            <span
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-3"
-              style={{ backgroundColor: '#F0F7FF', color: '#003D7A', border: '1px solid #B3D4F2' }}
-            >
-              <Award className="w-3.5 h-3.5" /> Universidades del Perú
-            </span>
-            <h2 className="font-display text-3xl md:text-4xl font-black text-slate-900 leading-tight">
-              Te preparamos para <span className="gradient-text-brand" style={{ color: '#003D7A' }}>todas</span>
-            </h2>
-            <p className="mt-2 text-slate-600 text-sm md:text-base">
-              Una plataforma. Muchos destinos. Elige tu universidad objetivo.
-            </p>
-          </div>
-
-          {/* Marquee */}
-          <div className="relative">
-            {/* Gradientes a los lados para fade */}
-            <div className="absolute top-0 left-0 bottom-0 w-16 md:w-32 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, #ffffff, transparent)' }} />
-            <div className="absolute top-0 right-0 bottom-0 w-16 md:w-32 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, #ffffff, transparent)' }} />
-
-            <div className="flex overflow-hidden group">
-              <div className="flex animate-marquee group-hover:[animation-play-state:paused] shrink-0 gap-14 md:gap-20 pr-14 md:pr-20 items-center">
-                {UNIVERSITY_LOGOS.concat(UNIVERSITY_LOGOS).map((u, idx) => {
-                  const isRegistered = registeredCodes.has(u.codigo);
-                  const Tag = isRegistered ? 'button' : 'div';
-                  // Cada logo respira su color institucional real como fondo de hover/foco
-                  // (mapa investigado en src/theme/universityThemes.ts), aunque todavía no
-                  // esté registrado — así el catálogo completo ya anticipa su identidad.
-                  const theme = getUniversityTheme(u.codigo);
-                  const vars = themeCssVars(theme);
-                  return (
-                    <Tag
-                      key={`${u.sigla}-${idx}`}
-                      title={isRegistered ? u.name : `${u.name} · Próximamente`}
-                      onClick={isRegistered ? () => navigate(`/${u.codigo}`) : undefined}
-                      style={vars}
-                      className={`uni-hover-chip flex flex-col items-center gap-2 shrink-0 rounded-2xl px-4 py-3 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 focus-visible:grayscale-0 focus-visible:opacity-100 transition-all duration-300 focus:outline-none ${
-                        isRegistered ? 'cursor-pointer' : 'cursor-default'
-                      }`}
-                    >
-                      <img
-                        src={u.url}
-                        alt={u.name}
-                        loading="lazy"
-                        className="h-16 md:h-20 w-auto object-contain select-none"
-                        style={{ maxWidth: '140px' }}
-                      />
-                      <span className="text-[10px] md:text-xs font-bold tracking-wider text-slate-500">{u.sigla}</span>
-                      {!isRegistered && (
-                        <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-wider text-slate-400">
-                          Próximamente
-                        </span>
-                      )}
-                    </Tag>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ==================================================================== */}
       {/*  2. CÓMO FUNCIONA — bg-mesh-deep                                     */}
       {/* ==================================================================== */}
-      <section className="relative py-24 md:py-28 bg-[#001f3f] bg-mesh-deep text-white overflow-hidden">
+      <section id="como-funciona" className="relative py-24 md:py-28 bg-[#001f3f] bg-mesh-deep text-white overflow-hidden">
         <div className="absolute inset-0 andean-bold text-white/20 pointer-events-none" />
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
@@ -661,7 +619,7 @@ export function Landing() {
               4 pasos y listo
             </h2>
             <p className="mt-5 text-white/70 text-lg">
-              Regístrate, elige tu área, rinde el simulacro y revisa tu análisis detallado.
+              Elige tu universidad, regístrate gratis, rinde el simulacro y mira tu puntaje real.
             </p>
           </div>
 
@@ -674,10 +632,10 @@ export function Landing() {
 
             <div className="grid md:grid-cols-4 gap-8 md:gap-6 relative">
               {[
-                { n: '01', icon: UserPlus, t: 'Regístrate', d: 'DNI, nombre y correo. Sin tarjetas ni compromisos.' },
-                { n: '02', icon: Target, t: 'Elige tu área', d: 'Ingenierías, Biomédicas o Sociales según tu carrera.' },
-                { n: '03', icon: Clock, t: 'Rinde cronometrado', d: '60 preguntas reales. Mismas condiciones que el examen.' },
-                { n: '04', icon: TrendingUp, t: 'Analiza y mejora', d: 'Puntaje detallado, justificaciones y PDF descargable.' },
+                { n: '01', icon: GraduationCap, t: 'Elige tu universidad', d: 'Selecciona tu universidad objetivo entre las disponibles hoy — más se suman pronto.' },
+                { n: '02', icon: UserPlus, t: 'Regístrate gratis', d: 'DNI, nombre y correo. Sin tarjetas ni compromisos.' },
+                { n: '03', icon: Clock, t: 'Practica con preguntas reales', d: 'Simulacro cronometrado con las mismas condiciones que tu examen.' },
+                { n: '04', icon: TrendingUp, t: 'Mira tu puntaje real', d: 'Calculado igual que tu universidad, con justificaciones y PDF descargable.' },
               ].map((s, i) => {
                 const delayClass = (['delay-75', 'delay-150', 'delay-300', 'delay-500'] as const)[i];
                 return (
@@ -961,7 +919,7 @@ export function Landing() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 max-w-6xl mx-auto">
             {[
               { icon: Clock, title: 'Cronómetro real', desc: 'Mismas 3 horas del examen. Entrénate bajo presión.', color: 'text-brand-primary-700 bg-brand-primary-50', deco: ASSETS.examPaper },
-              { icon: FileText, title: '60 preguntas por simulacro', desc: 'Estructura idéntica al examen oficial de la UNA Puno.', color: 'text-rose-700 bg-rose-50', deco: ASSETS.formulas },
+              { icon: FileText, title: 'Puntaje como el de tu universidad', desc: 'La estructura real del examen: preguntas, tiempos y sistema de puntaje de cada proceso de admisión.', color: 'text-rose-700 bg-rose-50', deco: ASSETS.formulas },
               { icon: Sparkles, title: 'Justificaciones detalladas', desc: 'No solo la respuesta: el porqué completo de cada alternativa.', color: 'text-brand-accent-700 bg-brand-accent-50', deco: ASSETS.bulb },
               { icon: TrendingUp, title: 'Historial de progreso', desc: 'Mira tu evolución por asignatura y por área con gráficas.', color: 'text-emerald-700 bg-emerald-50', deco: ASSETS.calculator },
               { icon: Award, title: 'PDF descargable', desc: 'Cada simulacro con reporte profesional listo para imprimir.', color: 'text-brand-secondary-700 bg-brand-secondary-50', deco: ASSETS.graduation },
@@ -989,6 +947,75 @@ export function Landing() {
       </section>
 
       {/* ==================================================================== */}
+      {/*  5b. CARRUSEL DE UNIVERSIDADES — cinta social-proof                  */}
+      {/* ==================================================================== */}
+      <section className="relative py-14 md:py-16 bg-white border-y border-slate-200 overflow-hidden">
+        <div className="absolute inset-0 dots-bg-brand opacity-40 pointer-events-none" />
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <span
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-3"
+              style={{ backgroundColor: '#F0F7FF', color: '#003D7A', border: '1px solid #B3D4F2' }}
+            >
+              <Award className="w-3.5 h-3.5" /> Universidades del Perú
+            </span>
+            <h2 className="font-display text-3xl md:text-4xl font-black text-slate-900 leading-tight">
+              Te preparamos para <span className="gradient-text-brand" style={{ color: '#003D7A' }}>todas</span>
+            </h2>
+            <p className="mt-2 text-slate-600 text-sm md:text-base">
+              Una plataforma. Muchos destinos. Elige tu universidad objetivo.
+            </p>
+          </div>
+
+          {/* Marquee */}
+          <div className="relative">
+            {/* Gradientes a los lados para fade */}
+            <div className="absolute top-0 left-0 bottom-0 w-16 md:w-32 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, #ffffff, transparent)' }} />
+            <div className="absolute top-0 right-0 bottom-0 w-16 md:w-32 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, #ffffff, transparent)' }} />
+
+            <div className="flex overflow-hidden group">
+              <div className="flex animate-marquee group-hover:[animation-play-state:paused] shrink-0 gap-14 md:gap-20 pr-14 md:pr-20 items-center">
+                {UNIVERSITY_LOGOS.concat(UNIVERSITY_LOGOS).map((u, idx) => {
+                  const isRegistered = registeredCodes.has(u.codigo);
+                  const Tag = isRegistered ? 'button' : 'div';
+                  // Cada logo respira su color institucional real como fondo de hover/foco
+                  // (mapa investigado en src/theme/universityThemes.ts), aunque todavía no
+                  // esté registrado — así el catálogo completo ya anticipa su identidad.
+                  const theme = getUniversityTheme(u.codigo);
+                  const vars = themeCssVars(theme);
+                  return (
+                    <Tag
+                      key={`${u.sigla}-${idx}`}
+                      title={isRegistered ? u.name : `${u.name} · Próximamente`}
+                      onClick={isRegistered ? () => navigate(`/${u.codigo}`) : undefined}
+                      style={vars}
+                      className={`uni-hover-chip flex flex-col items-center gap-2 shrink-0 rounded-2xl px-4 py-3 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 focus-visible:grayscale-0 focus-visible:opacity-100 transition-all duration-300 focus:outline-none ${
+                        isRegistered ? 'cursor-pointer' : 'cursor-default'
+                      }`}
+                    >
+                      <img
+                        src={u.url}
+                        alt={u.name}
+                        loading="lazy"
+                        className="h-16 md:h-20 w-auto object-contain select-none"
+                        style={{ maxWidth: '140px' }}
+                      />
+                      <span className="text-[10px] md:text-xs font-bold tracking-wider text-slate-500">{u.sigla}</span>
+                      {!isRegistered && (
+                        <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-wider text-slate-400">
+                          Próximamente
+                        </span>
+                      )}
+                    </Tag>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ==================================================================== */}
       {/*  6. TESTIMONIOS                                                      */}
       {/* ==================================================================== */}
       <section className="relative py-24 md:py-28 bg-mesh-warm overflow-hidden">
@@ -1005,21 +1032,21 @@ export function Landing() {
           <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {[
               {
-                name: 'María Quispe Mamani',
-                career: 'Ingeniería de Sistemas · UNA',
-                text: 'Practiqué 6 meses con SimulaUNA y entré en primer puesto. Las preguntas reales hicieron toda la diferencia en mi preparación.',
+                name: 'María Q.',
+                career: 'Ingeniería de Sistemas · UNA Puno',
+                text: 'Practiqué varios meses con SimulaUNA y entré en primer puesto. Las preguntas reales hicieron toda la diferencia en mi preparación.',
                 photo: 'https://i.pravatar.cc/150?img=47',
               },
               {
-                name: 'Juan Carlos Apaza',
-                career: 'Medicina Humana · UNA',
-                text: 'Los simulacros reales me prepararon para la presión del examen. El cronómetro real fue clave para controlar mi ritmo el día D.',
+                name: 'Diego A.',
+                career: 'Ingeniería Civil · UNSA Arequipa',
+                text: 'Me registré apenas vi que UNSA ya estaba disponible. El puntaje se calcula tal cual mi proceso de admisión, eso me dio confianza real.',
                 photo: 'https://i.pravatar.cc/150?img=13',
               },
               {
-                name: 'Rosa Condori Huanca',
-                career: 'Derecho · UNA',
-                text: 'El banqueo por tema es lo mejor. Identifiqué exactamente qué estudiar y optimicé mis horas. Recomendado 100%.',
+                name: 'Rosa C.',
+                career: 'Derecho · postulante a San Marcos',
+                text: 'Mi universidad todavía figura como "Próximamente", pero el banqueo por tema ya me sirvió para identificar exactamente qué estudiar mientras se habilita.',
                 photo: 'https://i.pravatar.cc/150?img=32',
               },
             ].map((t, i) => (
@@ -1101,7 +1128,8 @@ export function Landing() {
           </h2>
 
           <p className="mt-6 text-white/90 font-medium text-lg md:text-xl max-w-xl mx-auto leading-relaxed [text-shadow:0_1px_4px_rgba(0,0,0,0.4)]">
-            UNA Puno, San Marcos, UNI, UNSA, UNSAAC — la plataforma es tuya.
+            Elige <span className="italic text-brand-accent-300">una</span> universidad. Simula su examen real.{' '}
+            La plataforma es tuya.
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
@@ -1133,7 +1161,7 @@ export function Landing() {
       <footer className="bg-slate-900 text-white/60 py-12 relative overflow-hidden">
         <div className="absolute inset-0 andean-bold text-white/10 pointer-events-none" />
         <div className="container mx-auto px-4 sm:px-6 relative">
-          <div className="grid md:grid-cols-3 gap-10 pb-8 border-b border-white/10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 pb-8 border-b border-white/10">
             {/* Logo + descripción */}
             <div>
               <div className="flex items-center gap-2.5 mb-4">
@@ -1150,9 +1178,32 @@ export function Landing() {
               </p>
             </div>
 
-            {/* Links */}
+            {/* Universidades */}
             <div>
-              <p className="font-display font-bold text-white uppercase tracking-wider text-xs mb-4">Explorar</p>
+              <p className="font-display font-bold text-white uppercase tracking-wider text-xs mb-4">Universidades</p>
+              <ul className="space-y-2.5 text-sm">
+                <li>
+                  <button onClick={() => navigate('/una')} className="hover:text-white transition-colors">
+                    UNA Puno
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => navigate('/unsa')} className="hover:text-white transition-colors">
+                    UNSA Arequipa <span className="text-[10px] text-white/40 uppercase">· Beta</span>
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => scrollToSection('universidades')} className="hover:text-white transition-colors">
+                    +10 universidades · Próximamente
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Recursos */}
+            <div>
+              <p className="font-display font-bold text-white uppercase tracking-wider text-xs mb-4">Recursos</p>
+              <p className="text-[11px] font-bold uppercase tracking-wider text-white/40 mb-2.5">UNA Puno</p>
               <ul className="space-y-2.5 text-sm">
                 <li>
                   <button onClick={() => navigate('/simulacro-cepreuna')} className="hover:text-white transition-colors">
@@ -1196,10 +1247,10 @@ export function Landing() {
             <div>
               <p className="font-display font-bold text-white uppercase tracking-wider text-xs mb-4">Créditos</p>
               <p className="text-sm leading-relaxed">
-                Proyecto independiente de apoyo a los postulantes de la Universidad Nacional del Altiplano — Puno.
+                Proyecto independiente de apoyo a los postulantes de las universidades nacionales del Perú.
               </p>
               <p className="text-xs mt-3 text-white/40">
-                No afiliado oficialmente con la UNA Puno. Preguntas de exámenes públicos.
+                No afiliado oficialmente a ninguna universidad. Preguntas de exámenes públicos.
               </p>
             </div>
           </div>
