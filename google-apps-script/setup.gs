@@ -242,22 +242,26 @@ function seedDummyBancoSheet_(ss, curso, preguntas, correctAnswers) {
 // ============================================
 
 /**
- * Suite ejecutable desde el editor: llama a los handlers legados (config,
- * questions area=Ingenierías, getCepreCourses, getCursosConTemas,
- * checkAccess dummy) a través de doGet() y verifica la FORMA de la
- * respuesta (no requiere datos reales en las hojas, solo que no truene y
- * que las claves esperadas existan). Imprime PASS/FAIL por caso y un
- * resumen final "0-FAIL".
+ * Suite LIGERA ejecutable desde el editor (~1 min): verifica la FORMA de
+ * las respuestas (no requiere datos reales, solo que no truene y que las
+ * claves esperadas existan). Imprime PASS/FAIL con duración por caso.
+ *
+ * IMPORTANTE: las 2 pruebas pesadas viven aparte por el límite de 6 min
+ * por ejecución de Apps Script (juntas con cache frío lo exceden):
+ *   - healthCheckQuestions()      → action legada `questions` (18 hojas Banco_)
+ *   - healthCheckCursosConTemas() → `getCursosConTemas` (36 hojas, cachea 30 min)
+ * La cobertura completa "0-FAIL" = las 3 ejecuciones sin FAIL.
  */
 function healthCheck() {
   const results = [];
 
   function run(name, fn) {
+    const t0 = Date.now();
     try {
       fn();
-      results.push({ name: name, ok: true });
+      results.push({ name: name, ok: true, ms: Date.now() - t0 });
     } catch (err) {
-      results.push({ name: name, ok: false, error: err.toString() });
+      results.push({ name: name, ok: false, error: err.toString(), ms: Date.now() - t0 });
     }
   }
 
@@ -286,24 +290,11 @@ function healthCheck() {
     });
   });
 
-  run('questions area=Ingenierías (legado)', function () {
-    const res = hcGet_({ action: 'questions', area: 'Ingenierías' });
-    assertHC_(res.success === true, 'success debe ser true');
-    assertHC_(Array.isArray(res.data), 'data debe ser un array de preguntas');
-  });
-
   run('getCepreCourses (legado)', function () {
     const res = hcGet_({ action: 'getCepreCourses' });
     assertHC_(res.success === true, 'success debe ser true');
     assertHC_(Array.isArray(res.data.areas), 'debe incluir areas[]');
     assertHC_(!!res.data.coursesByArea, 'debe incluir coursesByArea');
-  });
-
-  run('getCursosConTemas (legado)', function () {
-    const res = hcGet_({ action: 'getCursosConTemas' });
-    assertHC_(res.success === true, 'success debe ser true');
-    assertHC_(Array.isArray(res.data.cursos), 'data.cursos debe ser array');
-    assertHC_(typeof res.data.totalCursos === 'number', 'totalCursos debe ser numérico');
   });
 
   run('checkAccess dummy (legado)', function () {
@@ -338,18 +329,77 @@ function healthCheck() {
     assertHC_(res.success === false, 'success debe ser false');
   });
 
-  // ---- Reporte ----
+  const report = hcReport_('healthCheck (ligero)', results);
+  console.log('Recuerda correr también healthCheckQuestions() y healthCheckCursosConTemas().');
+  return report;
+}
+
+// ============================================
+// healthCheck - pruebas pesadas (ejecuciones separadas)
+// ============================================
+
+/**
+ * Prueba PESADA 1: action legada `questions` (lee las 18 hojas Banco_
+ * completas — el mismo trabajo que hace producción al armar un examen).
+ * Correr en su propia ejecución. Si la duración reportada supera ~45s,
+ * también es un problema en producción (timeout del frontend): avisar.
+ */
+function healthCheckQuestions() {
+  const results = [];
+  const t0 = Date.now();
+  try {
+    const res = hcRequest_({ action: 'questions', area: 'Ingenierías' });
+    assertHC_(res.success === true, 'success debe ser true');
+    assertHC_(Array.isArray(res.data), 'data debe ser un array de preguntas');
+    results.push({ name: 'questions area=Ingenierías (legado)', ok: true, ms: Date.now() - t0 });
+  } catch (err) {
+    results.push({ name: 'questions area=Ingenierías (legado)', ok: false, error: err.toString(), ms: Date.now() - t0 });
+  }
+  return hcReport_('healthCheckQuestions', results);
+}
+
+/**
+ * Prueba PESADA 2: getCursosConTemas (recorre ~36 hojas; cachea 30 min,
+ * por lo que solo la primera corrida es lenta). Correr en su propia
+ * ejecución.
+ */
+function healthCheckCursosConTemas() {
+  const results = [];
+  const t0 = Date.now();
+  try {
+    const res = hcRequest_({ action: 'getCursosConTemas' });
+    assertHC_(res.success === true, 'success debe ser true');
+    assertHC_(Array.isArray(res.data.cursos), 'data.cursos debe ser array');
+    assertHC_(typeof res.data.totalCursos === 'number', 'totalCursos debe ser numérico');
+    results.push({ name: 'getCursosConTemas (legado)', ok: true, ms: Date.now() - t0 });
+  } catch (err) {
+    results.push({ name: 'getCursosConTemas (legado)', ok: false, error: err.toString(), ms: Date.now() - t0 });
+  }
+  return hcReport_('healthCheckCursosConTemas', results);
+}
+
+// ---- Helpers compartidos del healthCheck ----
+
+/** Petición GET simulada con token (versión top-level para las pruebas pesadas). */
+function hcRequest_(params) {
+  const withToken = Object.assign({ token: SECRET_TOKEN }, params);
+  return JSON.parse(doGet({ parameter: withToken }).getContent());
+}
+
+/** Imprime PASS/FAIL con duración por prueba y el resumen N-FAIL. */
+function hcReport_(title, results) {
   let failCount = 0;
   results.forEach(function (r) {
+    const secs = ' (' + ((r.ms || 0) / 1000).toFixed(1) + 's)';
     if (r.ok) {
-      console.log('PASS - ' + r.name);
+      console.log('PASS - ' + r.name + secs);
     } else {
       failCount++;
-      console.log('FAIL - ' + r.name + ' :: ' + r.error);
+      console.log('FAIL - ' + r.name + secs + ' :: ' + r.error);
     }
   });
 
-  console.log('\n=== healthCheck: ' + (results.length - failCount) + '/' + results.length + ' PASS, ' + failCount + '-FAIL ===');
+  console.log('\n=== ' + title + ': ' + (results.length - failCount) + '/' + results.length + ' PASS, ' + failCount + '-FAIL ===');
   return { total: results.length, failed: failCount, results: results };
 }
 
