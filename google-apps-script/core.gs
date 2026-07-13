@@ -235,10 +235,21 @@ function setCachedJson(key, value, ttlSeconds) {
  * CURSOS_CANONICOS (definida en adapter_una.gs) para no romper nada
  * durante la transicion.
  */
+// Memo de ejecución: getCursoCanonical se llama UNA VEZ POR FILA en los
+// recorridos de banqueo (miles de filas × 36 hojas); sin esto, cada llamada
+// haría una ida y vuelta a CacheService + JSON.parse y getCursosConTemas
+// excede el límite de 6 min (regresión detectada en healthCheckCursosConTemas).
+let cursosCanonicosMemo_ = null;
+
 function getCursosCanonicosMap_() {
+  if (cursosCanonicosMemo_) return cursosCanonicosMemo_;
+
   const CACHE_KEY = 'core:cursos_canonicos';
   const cached = getCachedJson(CACHE_KEY);
-  if (cached) return cached;
+  if (cached) {
+    cursosCanonicosMemo_ = cached;
+    return cached;
+  }
 
   let map = null;
   try {
@@ -273,6 +284,7 @@ function getCursosCanonicosMap_() {
   }
 
   setCachedJson(CACHE_KEY, map, 1800);
+  cursosCanonicosMemo_ = map;
   return map;
 }
 
