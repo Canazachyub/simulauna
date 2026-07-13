@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef } from 'react';
+import { useEffect, useState, useMemo, useRef, lazy, Suspense } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useUniversityStore } from '../hooks/useUniversity';
 import {
@@ -7,10 +7,9 @@ import {
   Grid3X3, ChevronLeft, ChevronRight, Table2, BarChart3, History, Award, Lightbulb,
   Sparkles, AlertTriangle, Scale, Star, ArrowRight, ChevronDown
 } from 'lucide-react';
-import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  Cell, LineChart, Line
-} from 'recharts';
+// Recharts vive en su propio chunk lazy (ver src/components/results/ResultsCharts.tsx):
+// solo se descarga al abrir las tabs Gráfico/Historial.
+import type { ChartDataItem } from './results/ResultsCharts';
 import { useExamStore } from '../hooks/useExam';
 import { PERFORMANCE_MESSAGES } from '../types';
 import { formatNumber, formatDate, indexToLetter } from '../utils/calculations';
@@ -20,12 +19,16 @@ import { saveScore, getUserHistory, type UserHistory } from '../services/api';
 import { resolveThemeVars } from '../utils/universityTheme';
 import clsx from 'clsx';
 
-interface ChartDataItem {
-  name: string;
-  fullName: string;
-  percentage: number;
-  correct: number;
-  total: number;
+const SubjectBarChart = lazy(() =>
+  import('./results/ResultsCharts').then(m => ({ default: m.SubjectBarChart }))
+);
+const HistoryLineChart = lazy(() =>
+  import('./results/ResultsCharts').then(m => ({ default: m.HistoryLineChart }))
+);
+
+/** Placeholder mientras se descarga el chunk de Recharts (respeta reduced-motion vía animate-pulse global). */
+function ChartSkeleton() {
+  return <div className="w-full h-full rounded-xl bg-slate-100 animate-pulse" aria-hidden="true" />;
 }
 
 const PHOTOS = {
@@ -826,75 +829,13 @@ export function Results() {
               </div>
 
               <div style={{ height: Math.max(400, chartData.length * 45 + 40) }} className="w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={chartData}
-                    layout="vertical"
-                    margin={{ top: 10, right: 40, left: 120, bottom: 10 }}
-                  >
-                    <defs>
-                      {/* Barras con el color institucional de la universidad activa (nunca BRAND_PRIMARY fijo) */}
-                      <linearGradient id="barGradientHigh" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stopColor={uniPrimaryAccessible} stopOpacity={0.85} />
-                        <stop offset="100%" stopColor={BRAND_ACCENT} stopOpacity={0.95} />
-                      </linearGradient>
-                      <linearGradient id="barGradientLow" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stopColor="#94A3B8" stopOpacity={0.75} />
-                        <stop offset="100%" stopColor={uniPrimaryAccessible} stopOpacity={0.9} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="2 4" stroke="#E2E8F0" horizontal={false} />
-                    <XAxis
-                      type="number"
-                      domain={[0, 100]}
-                      tickFormatter={(value) => `${value}%`}
-                      stroke="#94A3B8"
-                      fontSize={11}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis
-                      type="category"
-                      dataKey="name"
-                      stroke="#475569"
-                      tick={{ fontSize: 11, fill: '#475569', fontWeight: 600 }}
-                      width={115}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <Tooltip
-                      cursor={{ fill: 'var(--uni-primary-soft)' }}
-                      content={({ payload }) => {
-                        if (!payload || payload.length === 0) return null;
-                        const data = payload[0].payload as ChartDataItem;
-                        return (
-                          <div className="glass rounded-xl px-4 py-3 shadow-elevation-3 border border-white/40">
-                            <p className="font-display font-bold text-slate-800 mb-1">{data.fullName}</p>
-                            <p className="font-mono text-sm">
-                              <span className="font-bold" style={{ color: uniPrimaryAccessible }}>
-                                {data.percentage.toFixed(1)}%
-                              </span>
-                              <span className="text-slate-500"> · {data.correct}/{data.total}</span>
-                            </p>
-                          </div>
-                        );
-                      }}
-                    />
-                    <Bar
-                      dataKey="percentage"
-                      radius={[0, 8, 8, 0]}
-                      barSize={24}
-                      background={{ fill: '#F1F5F9', radius: 8 }}
-                    >
-                      {chartData.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={entry.percentage >= 60 ? 'url(#barGradientHigh)' : 'url(#barGradientLow)'}
-                        />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
+                <Suspense fallback={<ChartSkeleton />}>
+                  <SubjectBarChart
+                    chartData={chartData}
+                    accent={uniPrimaryAccessible}
+                    gold={BRAND_ACCENT}
+                  />
+                </Suspense>
               </div>
             </div>
 
@@ -1148,8 +1089,8 @@ export function Results() {
                       Evolución de tus puntajes
                     </h3>
                     <div style={{ height: 260 }} className="w-full">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart
+                      <Suspense fallback={<ChartSkeleton />}>
+                        <HistoryLineChart
                           data={[...userHistory.history].reverse().map((h, idx) => ({
                             intento: `#${idx + 1}`,
                             puntaje: h.puntaje,
@@ -1157,58 +1098,10 @@ export function Results() {
                             isBest: h.puntaje === userHistory.mejorPuntaje,
                             isLatest: idx === userHistory.history.length - 1
                           }))}
-                          margin={{ top: 10, right: 30, left: 10, bottom: 10 }}
-                        >
-                          <CartesianGrid strokeDasharray="2 4" stroke="#E2E8F0" />
-                          <XAxis dataKey="intento" stroke="#94A3B8" fontSize={11} tickLine={false} axisLine={false} />
-                          <YAxis stroke="#94A3B8" fontSize={11} tickLine={false} axisLine={false} />
-                          <Tooltip
-                            cursor={{ stroke: uniPrimaryAccessible, strokeWidth: 1, strokeDasharray: '4 4' }}
-                            content={({ payload }) => {
-                              if (!payload || payload.length === 0) return null;
-                              const data = payload[0].payload;
-                              return (
-                                <div className="glass rounded-xl px-4 py-3 shadow-elevation-3 border border-white/40">
-                                  <p className="font-display font-bold text-slate-800">{data.intento}</p>
-                                  <p className="font-mono font-bold" style={{ color: uniPrimaryAccessible }}>
-                                    {formatNumber(data.puntaje, 0)} pts
-                                  </p>
-                                  <p className="font-mono text-slate-500 text-xs">{data.porcentaje}% correctas</p>
-                                </div>
-                              );
-                            }}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="puntaje"
-                            stroke={uniPrimaryAccessible}
-                            strokeWidth={3}
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            dot={((props: any) => {
-                              const { cx, cy, payload, index } = props;
-                              if (cx === undefined || cy === undefined || !payload) {
-                                return <g key={`dot-empty-${index ?? 0}`} />;
-                              }
-                              const fill = payload.isBest ? BRAND_ACCENT : payload.isLatest ? uniPrimaryAccessible : '#fff';
-                              const stroke = payload.isBest ? BRAND_ACCENT : uniPrimaryAccessible;
-                              const r = payload.isBest || payload.isLatest ? 7 : 5;
-                              return (
-                                <circle
-                                  key={`dot-${index ?? 0}`}
-                                  cx={cx}
-                                  cy={cy}
-                                  r={r}
-                                  fill={fill}
-                                  stroke={stroke}
-                                  strokeWidth={2}
-                                />
-                              );
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            }) as any}
-                            activeDot={{ r: 9, fill: BRAND_ACCENT, stroke: uniPrimaryAccessible, strokeWidth: 2 }}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
+                          accent={uniPrimaryAccessible}
+                          gold={BRAND_ACCENT}
+                        />
+                      </Suspense>
                     </div>
                   </div>
                 )}

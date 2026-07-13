@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Download, Loader2 } from 'lucide-react';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+// jspdf/jspdf-autotable pesan ~500KB minificados: se cargan con import()
+// dinámico DENTRO de generatePDF para que no entren al chunk de Results
+// (solo se descargan si el usuario pulsa "Descargar PDF").
+import type jsPDF from 'jspdf';
 import type { ExamResult } from '../types';
 import { PERFORMANCE_MESSAGES } from '../types';
 import { formatNumber, formatDate, formatTimeReadable } from '../utils/calculations';
@@ -37,7 +39,11 @@ export function PDFGenerator({ result, accentColor = '#003D7A', universidadNombr
     setIsGenerating(true);
 
     try {
-      const doc = new jsPDF();
+      const [{ default: JsPDF }, { default: autoTable }] = await Promise.all([
+        import('jspdf'),
+        import('jspdf-autotable')
+      ]);
+      const doc = new JsPDF();
       const pageWidth = doc.internal.pageSize.getWidth();
       const margin = 20;
       let yPos = 20;
