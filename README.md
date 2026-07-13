@@ -2,6 +2,15 @@
 
 Plataforma web para realizar simulacros del examen de admisión de la **Universidad Nacional del Altiplano (UNA) Puno, Perú**. Permite a los estudiantes practicar con preguntas reales organizadas por área académica y recibir retroalimentación detallada de su desempeño.
 
+## Arquitectura multi-universidad (v2)
+
+SimulaUNA nació como una plataforma de una sola universidad (UNA Puno) y evolucionó a una **plataforma multi-tenant**: el mismo frontend y el mismo backend (Google Apps Script) sirven simulacros y banqueos para varias universidades del Perú, cada una con su propia configuración de escala, procesos disponibles y colores de marca — sin duplicar código.
+
+- **Qué es**: un registro maestro de universidades (`getUniversidades`) es la fuente de verdad de qué universidades están disponibles, en qué estado (`activa` | `piloto` | `oculta`), qué procesos ofrecen (`ORDINARIO`, `CEPRE`, `EXTRAORDINARIO`) y sus colores de marca. El frontend consume ese registro para renderizar rutas, chips de universidad y acentos de color; el backend resuelve cada request por el código de universidad (tenant) contra sus propias hojas de Google Sheets.
+- **Cómo se agrega una universidad nueva**: sin tocar código de React. Ver la guía paso a paso en [`google-apps-script/README.md` § "Cómo agregar la universidad número 8"](google-apps-script/README.md) y el contrato completo de endpoints/datos en [`docs/CONTRATO_API_V2.md`](docs/CONTRATO_API_V2.md) (§5 detalla la arquitectura de frontend: rutas, store `useUniversity`, acentos de color).
+- **Rutas nuevas `/:universidad/*`**: cada universidad tiene su propio espacio de rutas — `/:universidad` (landing de universidad), `/:universidad/registro`, `/:universidad/confirmar`, `/:universidad/examen`, `/:universidad/resultados`, `/:universidad/banqueo`, `/:universidad/banqueo-tema`, `/:universidad/cepre`. Las rutas legadas sin prefijo (`/registro`, `/examen`, `/resultados`, etc.) siguen funcionando y redirigen a `/una/...` para no romper enlaces existentes (ver `src/App.tsx`).
+- **Acentos de marca por universidad**: `UniversityPage.tsx` expone `--uni-primary`/`--uni-secondary` como CSS vars derivadas del registro y las aplica con moderación — solo en el hero de la página de universidad, los chips/tarjetas de proceso y el anillo de progreso de resultados (`Results.tsx`). Todo lo demás permanece en la paleta neutral "Editorial Andino". Los colores se verifican contra WCAG AA con `src/utils/color.ts` (`ensureAccessible`), que oscurece automáticamente un color de marca si no alcanza 4.5:1 de contraste.
+
 ## Tabla de Contenidos
 
 - [Características](#características)
@@ -1230,9 +1239,9 @@ Carga desde Google Fonts con `preconnect` en `index.html`.
 - `paper-texture.svg` — textura de papel (feTurbulence)
 
 #### Logos de universidades (`public/logos/`)
-Carpeta creada para recibir logos descargados. Actualmente el carrusel del Landing referencia **12 logos directo desde Wikipedia Commons**:
+**Resuelto (v1.6.1)**: los 12 logos del carrusel del Landing se descargaron de Wikimedia Commons y se sirven localmente desde `public/logos/`, referenciados en `Landing.tsx` como `/simulauna/logos/{archivo}.png`:
 
-| Sigla | Universidad | Archivo destino |
+| Sigla | Universidad | Archivo local |
 |-------|-------------|-----------------|
 | UNA | Nacional del Altiplano — Puno | `una.png` |
 | UNAJ | Nacional de Juliaca | `unaj.png` |
@@ -1246,8 +1255,6 @@ Carpeta creada para recibir logos descargados. Actualmente el carrusel del Landi
 | UNT | Nacional de Trujillo | `unt.png` |
 | UNP | Nacional de Piura | `unp.png` |
 | UNSCH | San Cristóbal de Huamanga | `unsch.png` |
-
-> **Para migrar a archivos locales**: descargar cada PNG a `public/logos/{sigla}.png` y reemplazar en `Landing.tsx` las URLs de `upload.wikimedia.org` por `/simulauna/logos/{archivo}.png`.
 
 #### Fotografías (Unsplash — URLs CDN)
 Verificadas con WebFetch. Usadas como `backgroundImage` con opacidades 0.08-0.22 + overlays:
@@ -1384,14 +1391,15 @@ Invocación: `/frontend-design`, `/landing-page`, etc. Recargar con `/reload-plu
 
 ### Pendientes para continuar
 
-1. **Reemplazar URLs de Wikipedia por logos locales**: descargar los 12 PNGs a `public/logos/` y actualizar el array en `Landing.tsx:~430`. Mejora performance + independencia de CDN externa.
-2. **Reducir animaciones del hero**: hay 8 `StarTwinkle` simultáneas; auditoría sugirió bajarlas a 4 para no sobrecargar GPU móvil.
+1. ~~**Reemplazar URLs de Wikipedia por logos locales**~~ — **Resuelto (v1.6.1)**: los 12 PNGs se descargaron a `public/logos/` y `Landing.tsx` referencia rutas locales `/simulauna/logos/{archivo}.png`.
+2. ~~**Reducir animaciones del hero**~~ — **Resuelto (v1.6.1)**: bajadas de 8 a 4 `StarTwinkle` en el hero del Landing.
 3. **Replicar logo animado** de `BanqueoPorTema` en `Banqueo.tsx`, `BanqueoCepreuna.tsx`, `SimulacroCepreuna.tsx` para consistencia (si el usuario lo pide).
 4. **Fotos de avatares reales**: los testimonios usan `pravatar.cc` (placeholders). Si hay estudiantes UNA reales con consentimiento, sustituir.
 5. **Carrusel de logos**: el marquee es infinito. Considerar añadir click handlers que lleven a una página/modal con info de cada universidad y tipos de exámenes.
 6. **Dark mode**: no implementado aún. El design system está preparado con `brand.*` — requiere duplicar scales para `dark:*`.
 7. **Fotografías Unsplash**: dependencia externa CDN. Para producción robusta, considerar descargar y servir localmente desde `public/photos/`.
 8. **Tests visuales**: no hay snapshots ni e2e (Playwright) — considerar para prevenir regresiones en rediseños futuros.
+9. **Acentos por universidad**: implementados con moderación en `UniversityPage.tsx` (hero + chips de proceso) y `Results.tsx` (anillo de progreso), con verificación AA vía `src/utils/color.ts`. Falta extender a más universidades reales cuando se agreguen al registro (`getUniversidades`) y, si algún color de marca no pasa AA incluso oscurecido, definir manualmente un color derivado en el backend.
 
 ---
 

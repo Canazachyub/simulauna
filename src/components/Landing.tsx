@@ -9,19 +9,21 @@ import { useUniversityStore } from '../hooks/useUniversity';
 
 // Universidades del carrusel: `codigo` solo se define para las que ya existen en el registro
 // maestro (getUniversidades); el resto queda con tooltip "Próximamente" y sin link.
+// Logos servidos localmente desde public/logos/ (descargados de Wikimedia Commons con
+// atribución CC/dominio público de cada universidad; ver README.md § Arquitectura multi-universidad).
 const UNIVERSITY_LOGOS: { sigla: string; name: string; url: string; codigo?: string }[] = [
-  { sigla: 'UNA', name: 'Universidad Nacional del Altiplano - Puno', url: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Logo_UNAP.png', codigo: 'una' },
-  { sigla: 'UNAJ', name: 'Universidad Nacional de Juliaca', url: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/UNIVERSIDAD_NACIONAL_DE_JULIACA_%28UNAJ%29.png' },
-  { sigla: 'UNMSM', name: 'Universidad Nacional Mayor de San Marcos', url: 'https://upload.wikimedia.org/wikipedia/commons/4/46/UNMSM_Escudo_y_Nombre.png' },
-  { sigla: 'UNI', name: 'Universidad Nacional de Ingeniería', url: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Uni-logo_transparente_granate.png' },
-  { sigla: 'UNSA', name: 'Universidad Nacional de San Agustín - Arequipa', url: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/LOGO_UNSA.png', codigo: 'unsa' },
-  { sigla: 'UNSAAC', name: 'Universidad Nacional de San Antonio Abad - Cusco', url: 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Escudo_UNSAAC.png' },
-  { sigla: 'UNCP', name: 'Universidad Nacional del Centro del Perú', url: 'https://upload.wikimedia.org/wikipedia/commons/6/62/Logo_UNCP.png' },
-  { sigla: 'UNFV', name: 'Universidad Nacional Federico Villarreal', url: 'https://upload.wikimedia.org/wikipedia/commons/b/b5/Logo_UNFV.png' },
-  { sigla: 'UNALM', name: 'Universidad Nacional Agraria La Molina', url: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Unalm_logo.png' },
-  { sigla: 'UNT', name: 'Universidad Nacional de Trujillo', url: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Universidad_Nacional_de_Trujillo.png' },
-  { sigla: 'UNP', name: 'Universidad Nacional de Piura', url: 'https://upload.wikimedia.org/wikipedia/commons/2/25/Escudo_Universidad_Nacional_de_Piura.png' },
-  { sigla: 'UNSCH', name: 'Universidad Nacional San Cristóbal de Huamanga', url: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/Logo_UNSCH.png' },
+  { sigla: 'UNA', name: 'Universidad Nacional del Altiplano - Puno', url: '/simulauna/logos/una.png', codigo: 'una' },
+  { sigla: 'UNAJ', name: 'Universidad Nacional de Juliaca', url: '/simulauna/logos/unaj.png' },
+  { sigla: 'UNMSM', name: 'Universidad Nacional Mayor de San Marcos', url: '/simulauna/logos/sanmarcos.png' },
+  { sigla: 'UNI', name: 'Universidad Nacional de Ingeniería', url: '/simulauna/logos/uni.png' },
+  { sigla: 'UNSA', name: 'Universidad Nacional de San Agustín - Arequipa', url: '/simulauna/logos/unsa.png', codigo: 'unsa' },
+  { sigla: 'UNSAAC', name: 'Universidad Nacional de San Antonio Abad - Cusco', url: '/simulauna/logos/unsaac.png' },
+  { sigla: 'UNCP', name: 'Universidad Nacional del Centro del Perú', url: '/simulauna/logos/uncp.png' },
+  { sigla: 'UNFV', name: 'Universidad Nacional Federico Villarreal', url: '/simulauna/logos/unfv.png' },
+  { sigla: 'UNALM', name: 'Universidad Nacional Agraria La Molina', url: '/simulauna/logos/unalm.png' },
+  { sigla: 'UNT', name: 'Universidad Nacional de Trujillo', url: '/simulauna/logos/unt.png' },
+  { sigla: 'UNP', name: 'Universidad Nacional de Piura', url: '/simulauna/logos/unp.png' },
+  { sigla: 'UNSCH', name: 'Universidad Nacional San Cristóbal de Huamanga', url: '/simulauna/logos/unsch.png' },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -203,15 +205,11 @@ export function Landing() {
         <div className="absolute -top-24 -right-32 w-[520px] h-[520px] rounded-full bg-brand-accent/30 blur-3xl animate-blob-morph animate-drift-slow pointer-events-none" />
         <div className="absolute bottom-10 -left-32 w-[420px] h-[420px] rounded-full bg-brand-secondary/25 blur-3xl animate-blob-morph animate-drift-slow pointer-events-none" />
 
-        {/* Layer 4 — estrellas flotantes */}
+        {/* Layer 4 — estrellas flotantes (4, distribuidas en las esquinas del hero para menor carga GPU en móvil) */}
         <StarTwinkle className="absolute top-24 left-[12%] w-3 h-3 text-brand-accent-200 animate-star-twinkle" size={12} />
         <StarTwinkle className="absolute top-16 left-[48%] w-4 h-4 text-white animate-star-twinkle delay-150" size={16} />
-        <StarTwinkle className="absolute top-40 right-[30%] w-2 h-2 text-brand-accent-300 animate-star-twinkle delay-300" size={8} />
         <StarTwinkle className="absolute top-[55%] left-[8%] w-3 h-3 text-white/80 animate-star-twinkle delay-500" size={14} />
         <StarTwinkle className="absolute top-[28%] right-[12%] w-5 h-5 text-brand-accent-300 animate-star-twinkle delay-75" size={20} />
-        <StarTwinkle className="absolute top-[70%] left-[42%] w-2 h-2 text-white animate-star-twinkle delay-700" size={10} />
-        <StarTwinkle className="absolute top-[18%] right-[48%] w-3 h-3 text-brand-accent-200 animate-star-twinkle delay-300" size={12} />
-        <StarTwinkle className="absolute top-[48%] right-[6%] w-4 h-4 text-white/70 animate-star-twinkle delay-500" size={14} />
 
         {/* Layer 3 — silueta de montañas en la base */}
         <div
@@ -492,6 +490,70 @@ export function Landing() {
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-20">
           <span className="font-mono text-[10px] text-white font-bold tracking-[0.3em] drop-shadow-lg [text-shadow:0_1px_3px_rgba(0,0,0,0.7)]">SCROLL</span>
           <ChevronDown className="w-4 h-4 text-white animate-bounce drop-shadow-lg" />
+        </div>
+      </section>
+
+      {/* ==================================================================== */}
+      {/*  1a. UNIVERSIDADES DISPONIBLES — refuerzo del alcance nacional        */}
+      {/* ==================================================================== */}
+      <section className="relative py-14 md:py-16 bg-[#FDFBF5] overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="text-center max-w-2xl mx-auto mb-10 animate-fade-up">
+            <span
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-3"
+              style={{ backgroundColor: '#F0F7FF', color: '#003D7A', border: '1px solid #B3D4F2' }}
+            >
+              <GraduationCap className="w-3.5 h-3.5" /> Para todos los postulantes del Perú
+            </span>
+            <h2 className="font-display text-3xl md:text-4xl font-black text-slate-900 leading-tight">
+              Universidades disponibles
+            </h2>
+            <p className="mt-2 text-slate-600 text-sm md:text-base">
+              Elige tu universidad objetivo y empieza a practicar hoy mismo.
+            </p>
+          </div>
+
+          {registro.length > 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+              {registro.map((u) => {
+                const logoEntry = UNIVERSITY_LOGOS.find(l => l.codigo === u.codigo);
+                return (
+                  <button
+                    key={u.codigo}
+                    onClick={() => navigate(`/${u.codigo}`)}
+                    className="group relative flex flex-col items-center gap-3 p-5 rounded-2xl bg-white border border-slate-100 shadow-elevation-1 hover:shadow-elevation-3 hover:-translate-y-1 transition-all duration-300 text-center shine-hover"
+                  >
+                    {u.estado === 'piloto' && (
+                      <span className="absolute top-3 right-3 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-accent-100 text-brand-accent-700 border border-brand-accent-200">
+                        Beta
+                      </span>
+                    )}
+                    <img
+                      src={logoEntry?.url || u.logo}
+                      alt={u.nombre}
+                      loading="lazy"
+                      className="h-14 w-auto object-contain"
+                    />
+                    <span className="text-sm font-bold text-slate-800 leading-tight">{u.nombreCorto}</span>
+                  </button>
+                );
+              })}
+
+              {UNIVERSITY_LOGOS.filter((l) => !l.codigo).map((u) => (
+                <div
+                  key={u.sigla}
+                  title={`${u.name} · Próximamente`}
+                  className="relative flex flex-col items-center gap-3 p-5 rounded-2xl bg-slate-50 border border-slate-100 text-center grayscale opacity-70"
+                >
+                  <span className="absolute top-3 right-3 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-200 text-slate-500">
+                    Próx.
+                  </span>
+                  <img src={u.url} alt={u.name} loading="lazy" className="h-14 w-auto object-contain" />
+                  <span className="text-sm font-bold text-slate-500 leading-tight">{u.sigla}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

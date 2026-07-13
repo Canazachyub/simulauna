@@ -1203,7 +1203,7 @@ export const MOCK_UNIVERSIDADES: Universidad[] = [
     procesos: ['ORDINARIO', 'CEPRE', 'EXTRAORDINARIO'],
     cepreNombre: 'CEPREUNA',
     colores: { primario: '#003D7A', secundario: '#D4AF37' },
-    logo: '/logos/una.svg',
+    logo: '/simulauna/logos/una.png',
     orden: 1
   },
   {
@@ -1214,7 +1214,7 @@ export const MOCK_UNIVERSIDADES: Universidad[] = [
     procesos: ['ORDINARIO'],
     cepreNombre: 'CEPRUNSA',
     colores: { primario: '#7A1F2B', secundario: '#F2B705' },
-    logo: '/logos/unsa.svg',
+    logo: '/simulauna/logos/unsa.png',
     orden: 2
   }
 ];

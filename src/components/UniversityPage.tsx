@@ -5,6 +5,7 @@ import {
   Trophy, Loader2, AlertCircle, ShieldCheck
 } from 'lucide-react';
 import { useUniversityStore } from '../hooks/useUniversity';
+import { ensureAccessible } from '../utils/color';
 
 /**
  * Página de una universidad específica: hero con marca propia + tarjetas de procesos
@@ -58,7 +59,11 @@ export function UniversityPage() {
     );
   }
 
-  const primary = universidad.colores?.primario || '#003D7A';
+  // El primario del registro se usa como texto/ícono sobre fondos blancos (tarjetas de
+  // proceso) y como fondo con texto blanco encima (hero) — en ambos casos se exige AA
+  // (4.5:1); si la universidad trae un color que no alcanza, se deriva un tono más
+  // oscuro que preserva el matiz de marca (ver src/utils/color.ts).
+  const primary = ensureAccessible(universidad.colores?.primario || '#003D7A', '#FFFFFF', 4.5);
   const secondary = universidad.colores?.secundario || '#D4AF37';
   const procesos = universidad.procesos || [];
   const hasOrdinario = procesos.includes('ORDINARIO') || procesos.includes('EXTRAORDINARIO');

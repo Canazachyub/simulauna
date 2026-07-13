@@ -17,6 +17,7 @@ import { formatNumber, formatDate, indexToLetter } from '../utils/calculations';
 import { renderFormattedText } from '../utils/formatText';
 import { PDFGenerator } from './PDFGenerator';
 import { saveScore, getUserHistory, type UserHistory } from '../services/api';
+import { ensureAccessible } from '../utils/color';
 import clsx from 'clsx';
 
 interface ChartDataItem {
@@ -54,6 +55,7 @@ export function Results() {
   const navigate = useNavigate();
   const { universidad: universidadParam } = useParams<{ universidad: string }>();
   const activaUniversidad = useUniversityStore(state => state.activa);
+  const registroUniversidades = useUniversityStore(state => state.registro);
   const { result, questions, resetExam } = useExamStore();
   const universidad = activaUniversidad || universidadParam || result?.universidad || 'una';
   const [reviewIndex, setReviewIndex] = useState<number | null>(null);
@@ -172,7 +174,17 @@ export function Results() {
       ? 'inline-block text-brand-primary-700 gradient-text-brand'
       : 'text-slate-900';
 
-  const ringStroke = isExcellent ? BRAND_ACCENT : isGood ? BRAND_PRIMARY : isRegular ? '#D97706' : '#DC2626';
+  // Acento por universidad: el anillo de resultados usa el color primario de la
+  // universidad activa (solo si no es 'una', que ya es el brand por defecto), siempre
+  // verificado contra AA sobre el fondo claro del hero. El resto de la escala de
+  // desempeño (excelente=dorado, regular=ámbar, bajo=rojo) es semántica y no cambia
+  // por universidad — moderación del acento (ver docs/CONTRATO_API_V2.md §5).
+  const universidadRegistrada = registroUniversidades.find(u => u.codigo === universidad);
+  const uniPrimaryAccessible = (universidad && universidad !== 'una' && universidadRegistrada?.colores?.primario)
+    ? ensureAccessible(universidadRegistrada.colores.primario, '#FFFFFF', 4.5)
+    : BRAND_PRIMARY;
+
+  const ringStroke = isExcellent ? BRAND_ACCENT : isGood ? uniPrimaryAccessible : isRegular ? '#D97706' : '#DC2626';
 
   let nextThresholdLabel: string;
   let percentToNext: number;
