@@ -6,24 +6,33 @@ import {
   Star, Quote, Zap, FileText, Award, UserCircle2, BookMarked,
 } from 'lucide-react';
 import { useUniversityStore } from '../hooks/useUniversity';
+import { getUniversityTheme, themeCssVars } from '../theme/universityThemes';
+import {
+  UniversityCardRegistered,
+  UniversityCardComingSoon,
+  UniversityCardSkeleton,
+} from './landing/UniversityCards';
 
-// Universidades del carrusel: `codigo` solo se define para las que ya existen en el registro
-// maestro (getUniversidades); el resto queda con tooltip "Próximamente" y sin link.
+// Universidades del carrusel: `codigo` identifica su tema institucional (ver
+// src/theme/universityThemes.ts) para TODAS — registradas y "Próximamente" por igual.
+// La navegación real solo se habilita para las que aparecen en el registro maestro
+// (getUniversidades); el resto queda con tooltip "Próximamente" y sin link, pero ya
+// respira su color real.
 // Logos servidos localmente desde public/logos/ (descargados de Wikimedia Commons con
 // atribución CC/dominio público de cada universidad; ver README.md § Arquitectura multi-universidad).
-const UNIVERSITY_LOGOS: { sigla: string; name: string; url: string; codigo?: string }[] = [
+const UNIVERSITY_LOGOS: { sigla: string; name: string; url: string; codigo: string }[] = [
   { sigla: 'UNA', name: 'Universidad Nacional del Altiplano - Puno', url: '/simulauna/logos/una.png', codigo: 'una' },
-  { sigla: 'UNAJ', name: 'Universidad Nacional de Juliaca', url: '/simulauna/logos/unaj.png' },
-  { sigla: 'UNMSM', name: 'Universidad Nacional Mayor de San Marcos', url: '/simulauna/logos/sanmarcos.png' },
-  { sigla: 'UNI', name: 'Universidad Nacional de Ingeniería', url: '/simulauna/logos/uni.png' },
+  { sigla: 'UNAJ', name: 'Universidad Nacional de Juliaca', url: '/simulauna/logos/unaj.png', codigo: 'unaj' },
+  { sigla: 'UNMSM', name: 'Universidad Nacional Mayor de San Marcos', url: '/simulauna/logos/sanmarcos.png', codigo: 'sanmarcos' },
+  { sigla: 'UNI', name: 'Universidad Nacional de Ingeniería', url: '/simulauna/logos/uni.png', codigo: 'uni' },
   { sigla: 'UNSA', name: 'Universidad Nacional de San Agustín - Arequipa', url: '/simulauna/logos/unsa.png', codigo: 'unsa' },
-  { sigla: 'UNSAAC', name: 'Universidad Nacional de San Antonio Abad - Cusco', url: '/simulauna/logos/unsaac.png' },
-  { sigla: 'UNCP', name: 'Universidad Nacional del Centro del Perú', url: '/simulauna/logos/uncp.png' },
-  { sigla: 'UNFV', name: 'Universidad Nacional Federico Villarreal', url: '/simulauna/logos/unfv.png' },
-  { sigla: 'UNALM', name: 'Universidad Nacional Agraria La Molina', url: '/simulauna/logos/unalm.png' },
-  { sigla: 'UNT', name: 'Universidad Nacional de Trujillo', url: '/simulauna/logos/unt.png' },
-  { sigla: 'UNP', name: 'Universidad Nacional de Piura', url: '/simulauna/logos/unp.png' },
-  { sigla: 'UNSCH', name: 'Universidad Nacional San Cristóbal de Huamanga', url: '/simulauna/logos/unsch.png' },
+  { sigla: 'UNSAAC', name: 'Universidad Nacional de San Antonio Abad - Cusco', url: '/simulauna/logos/unsaac.png', codigo: 'unsaac' },
+  { sigla: 'UNCP', name: 'Universidad Nacional del Centro del Perú', url: '/simulauna/logos/uncp.png', codigo: 'uncp' },
+  { sigla: 'UNFV', name: 'Universidad Nacional Federico Villarreal', url: '/simulauna/logos/unfv.png', codigo: 'unfv' },
+  { sigla: 'UNALM', name: 'Universidad Nacional Agraria La Molina', url: '/simulauna/logos/unalm.png', codigo: 'unalm' },
+  { sigla: 'UNT', name: 'Universidad Nacional de Trujillo', url: '/simulauna/logos/unt.png', codigo: 'unt' },
+  { sigla: 'UNP', name: 'Universidad Nacional de Piura', url: '/simulauna/logos/unp.png', codigo: 'unp' },
+  { sigla: 'UNSCH', name: 'Universidad Nacional San Cristóbal de Huamanga', url: '/simulauna/logos/unsch.png', codigo: 'unsch' },
 ];
 
 /* -------------------------------------------------------------------------- */
@@ -147,6 +156,8 @@ export function Landing() {
   const navigate = useNavigate();
   const registro = useUniversityStore(state => state.registro);
   const loadRegistro = useUniversityStore(state => state.loadRegistro);
+  const registroLoading = useUniversityStore(state => state.loading);
+  const registroError = useUniversityStore(state => state.error);
 
   useEffect(() => {
     loadRegistro();
@@ -513,44 +524,53 @@ export function Landing() {
             </p>
           </div>
 
+          {registroLoading && registro.length === 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-5 max-w-5xl mx-auto">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <UniversityCardSkeleton key={i} />
+              ))}
+            </div>
+          )}
+
+          {!registroLoading && registro.length === 0 && registroError && (
+            <div className="max-w-md mx-auto text-center rounded-2xl border border-amber-200 bg-amber-50 px-6 py-8">
+              <p className="text-sm font-semibold text-amber-800">
+                No pudimos cargar el listado de universidades por ahora.
+              </p>
+              <p className="mt-1 text-xs text-amber-700">
+                UNA Puno sigue disponible: puedes empezar tu simulacro igual.
+              </p>
+              <button
+                onClick={() => navigate('/una')}
+                className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold px-4 py-2.5 rounded-full bg-amber-600 text-white hover:bg-amber-700 transition-colors min-h-[44px]"
+              >
+                Ir a UNA Puno <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
+
           {registro.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-5 max-w-5xl mx-auto">
               {registro.map((u) => {
                 const logoEntry = UNIVERSITY_LOGOS.find(l => l.codigo === u.codigo);
                 return (
-                  <button
+                  <UniversityCardRegistered
                     key={u.codigo}
+                    universidad={u}
+                    logoUrl={logoEntry?.url || u.logo}
                     onClick={() => navigate(`/${u.codigo}`)}
-                    className="group relative flex flex-col items-center gap-3 p-5 rounded-2xl bg-white border border-slate-100 shadow-elevation-1 hover:shadow-elevation-3 hover:-translate-y-1 transition-all duration-300 text-center shine-hover"
-                  >
-                    {u.estado === 'piloto' && (
-                      <span className="absolute top-3 right-3 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-accent-100 text-brand-accent-700 border border-brand-accent-200">
-                        Beta
-                      </span>
-                    )}
-                    <img
-                      src={logoEntry?.url || u.logo}
-                      alt={u.nombre}
-                      loading="lazy"
-                      className="h-14 w-auto object-contain"
-                    />
-                    <span className="text-sm font-bold text-slate-800 leading-tight">{u.nombreCorto}</span>
-                  </button>
+                  />
                 );
               })}
 
-              {UNIVERSITY_LOGOS.filter((l) => !l.codigo).map((u) => (
-                <div
+              {UNIVERSITY_LOGOS.filter((l) => !registeredCodes.has(l.codigo)).map((u) => (
+                <UniversityCardComingSoon
                   key={u.sigla}
-                  title={`${u.name} · Próximamente`}
-                  className="relative flex flex-col items-center gap-3 p-5 rounded-2xl bg-slate-50 border border-slate-100 text-center grayscale opacity-70"
-                >
-                  <span className="absolute top-3 right-3 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-200 text-slate-500">
-                    Próx.
-                  </span>
-                  <img src={u.url} alt={u.name} loading="lazy" className="h-14 w-auto object-contain" />
-                  <span className="text-sm font-bold text-slate-500 leading-tight">{u.sigla}</span>
-                </div>
+                  sigla={u.sigla}
+                  name={u.name}
+                  logoUrl={u.url}
+                  codigo={u.codigo}
+                />
               ))}
             </div>
           )}
@@ -587,14 +607,20 @@ export function Landing() {
             <div className="flex overflow-hidden group">
               <div className="flex animate-marquee group-hover:[animation-play-state:paused] shrink-0 gap-14 md:gap-20 pr-14 md:pr-20 items-center">
                 {UNIVERSITY_LOGOS.concat(UNIVERSITY_LOGOS).map((u, idx) => {
-                  const isRegistered = Boolean(u.codigo && registeredCodes.has(u.codigo));
+                  const isRegistered = registeredCodes.has(u.codigo);
                   const Tag = isRegistered ? 'button' : 'div';
+                  // Cada logo respira su color institucional real como fondo de hover/foco
+                  // (mapa investigado en src/theme/universityThemes.ts), aunque todavía no
+                  // esté registrado — así el catálogo completo ya anticipa su identidad.
+                  const theme = getUniversityTheme(u.codigo);
+                  const vars = themeCssVars(theme);
                   return (
                     <Tag
                       key={`${u.sigla}-${idx}`}
                       title={isRegistered ? u.name : `${u.name} · Próximamente`}
                       onClick={isRegistered ? () => navigate(`/${u.codigo}`) : undefined}
-                      className={`flex flex-col items-center gap-2 shrink-0 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300 ${
+                      style={vars}
+                      className={`uni-hover-chip flex flex-col items-center gap-2 shrink-0 rounded-2xl px-4 py-3 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 focus-visible:grayscale-0 focus-visible:opacity-100 transition-all duration-300 focus:outline-none ${
                         isRegistered ? 'cursor-pointer' : 'cursor-default'
                       }`}
                     >
@@ -606,6 +632,11 @@ export function Landing() {
                         style={{ maxWidth: '140px' }}
                       />
                       <span className="text-[10px] md:text-xs font-bold tracking-wider text-slate-500">{u.sigla}</span>
+                      {!isRegistered && (
+                        <span className="text-[8px] md:text-[9px] font-bold uppercase tracking-wider text-slate-400">
+                          Próximamente
+                        </span>
+                      )}
                     </Tag>
                   );
                 })}

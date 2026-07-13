@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, type ReactNode } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { checkBanqueoAccess } from '../../services/api';
 import { validateDNI } from '../../utils/calculations';
 import { useAuth } from '../../context/AuthContext';
 import { useUniversityStore } from '../../hooks/useUniversity';
+import { resolveThemeVars } from '../../utils/universityTheme';
 import { PracticeLogin } from './PracticeLogin';
 import { PracticeQuiz } from './PracticeQuiz';
 import { PracticeResults } from './PracticeResults';
@@ -31,7 +32,9 @@ export function PracticeSession({ mode }: { mode: PracticeMode }) {
   const navigate = useNavigate();
   const { universidad: universidadParam } = useParams<{ universidad: string }>();
   const activaUniversidad = useUniversityStore(state => state.activa);
+  const registroUniversidades = useUniversityStore(state => state.registro);
   const universidad = activaUniversidad || universidadParam || 'una';
+  const themeVars = resolveThemeVars(universidad, registroUniversidades);
   const { user, isAuthenticated, login: authLogin, logout: authLogout } = useAuth();
 
   const [step, setStep] = useState<Step>(isAuthenticated ? 'select' : 'login');
@@ -47,6 +50,12 @@ export function PracticeSession({ mode }: { mode: PracticeMode }) {
   const [startTime, setStartTime] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [showAllAnsweredModal, setShowAllAnsweredModal] = useState(false);
+
+  // Racha de aciertos consecutivos (solo estado en memoria, ver docs/CONTRATO_API_V2.md §5):
+  // sube con cada respuesta correcta según el orden en que el usuario va respondiendo, se
+  // reinicia en cualquier incorrecta y al empezar una sesión nueva.
+  const [streak, setStreak] = useState(0);
+  const [bestStreak, setBestStreak] = useState(0);
 
   // Timer del quiz
   useEffect(() => {
@@ -106,6 +115,8 @@ export function PracticeSession({ mode }: { mode: PracticeMode }) {
     setElapsedTime(0);
     setShowAllAnsweredModal(false);
     setLoginError('');
+    setStreak(0);
+    setBestStreak(0);
     setStep('login');
   };
 
@@ -135,6 +146,8 @@ export function PracticeSession({ mode }: { mode: PracticeMode }) {
       setStartTime(Date.now());
       setElapsedTime(0);
       setShowAllAnsweredModal(false);
+      setStreak(0);
+      setBestStreak(0);
       setStep('quiz');
     } catch {
       setLoginError('Error al cargar preguntas. Intenta de nuevo.');
@@ -148,6 +161,13 @@ export function PracticeSession({ mode }: { mode: PracticeMode }) {
     const newAnswers = new Map(answers);
     newAnswers.set(question.id, { questionId: question.id, selectedOption: optionIndex, isCorrect, answeredAt: Date.now() });
     setAnswers(newAnswers);
+    // Racha de aciertos consecutivos según el orden en que se responde (no el orden de las
+    // preguntas): sube con cada acierto, se reinicia con cualquier fallo.
+    setStreak(prev => {
+      const next = isCorrect ? prev + 1 : 0;
+      setBestStreak(best => Math.max(best, next));
+      return next;
+    });
   };
 
   const handleFinishQuiz = () => {
@@ -167,11 +187,18 @@ export function PracticeSession({ mode }: { mode: PracticeMode }) {
     setElapsedTime(0);
     setShowAllAnsweredModal(false);
     setLoginError('');
+    setStreak(0);
+    setBestStreak(0);
     setStep('select');
   };
 
+  // Theming institucional coherente en los 4 pasos: se aplica una sola vez en el contenedor
+  // raíz (las CSS vars heredan por el DOM, ver src/utils/universityTheme.ts) para no duplicar
+  // la resolución de tema en cada paso ni en Quiz.tsx.
+  let content: ReactNode;
+
   if (step === 'login') {
-    return (
+    content = (
       <PracticeLogin
         mode={mode}
         isAuthenticated={isAuthenticated}
@@ -183,11 +210,9 @@ export function PracticeSession({ mode }: { mode: PracticeMode }) {
         onBack={goHome}
       />
     );
-  }
-
-  if (step === 'select') {
+  } else if (step === 'select') {
     const SelectStep = mode.SelectStep;
-    return (
+    content = (
       <SelectStep
         universidad={universidad}
         isAuthenticated={isAuthenticated}
@@ -199,10 +224,8 @@ export function PracticeSession({ mode }: { mode: PracticeMode }) {
         onSubmit={handleSelectSubmit}
       />
     );
-  }
-
-  if (step === 'quiz') {
-    return (
+  } else if (step === 'quiz') {
+    content = (
       <PracticeQuiz
         mode={mode}
         meta={meta}
@@ -215,23 +238,27 @@ export function PracticeSession({ mode }: { mode: PracticeMode }) {
         elapsedTimeLabel={formatTime(elapsedTime)}
         showAllAnsweredModal={showAllAnsweredModal}
         setShowAllAnsweredModal={setShowAllAnsweredModal}
+        streak={streak}
+      />
+    );
+  } else {
+    // step === 'results'
+    content = (
+      <PracticeResults
+        mode={mode}
+        meta={meta}
+        questions={questions}
+        results={results}
+        elapsedTimeLabel={formatTime(elapsedTime)}
+        elapsedTimeSeconds={elapsedTime}
+        isAuthenticated={isAuthenticated}
+        onLogout={handleLogout}
+        onReset={handleReset}
+        onHome={goHome}
+        bestStreak={bestStreak}
       />
     );
   }
 
-  // step === 'results'
-  return (
-    <PracticeResults
-      mode={mode}
-      meta={meta}
-      questions={questions}
-      results={results}
-      elapsedTimeLabel={formatTime(elapsedTime)}
-      elapsedTimeSeconds={elapsedTime}
-      isAuthenticated={isAuthenticated}
-      onLogout={handleLogout}
-      onReset={handleReset}
-      onHome={goHome}
-    />
-  );
+  return <div style={themeVars}>{content}</div>;
 }

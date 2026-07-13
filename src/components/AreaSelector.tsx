@@ -151,15 +151,20 @@ export function AreaSelector({ selectedArea, onSelectArea, divisions }: AreaSele
           <button
             key={division.codigo}
             onClick={() => onSelectArea(division.codigo)}
-            style={{ animationDelay: `${idx * 120}ms` }}
+            aria-pressed={isSelected}
+            style={{
+              animationDelay: `${idx * 120}ms`,
+              ...(isSelected ? { boxShadow: '0 0 0 4px var(--uni-primary-safe), 0 30px 60px -15px rgba(0,0,0,0.4)' } : {}),
+            }}
             className={`
               group relative overflow-hidden rounded-3xl min-h-[480px]
               ${theme.cardBg} text-white text-left
               transition-all duration-300 cursor-pointer
               animate-[fadeUp_0.7s_ease-out_both]
               ring-2 ring-white/0 ${theme.ringHover}
+              focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/60
               ${isSelected
-                ? 'ring-4 ring-brand-accent/70 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.4)] -translate-y-1'
+                ? '-translate-y-1'
                 : 'shadow-[0_20px_40px_-10px_rgba(0,0,0,0.25)] hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.4)] hover:-translate-y-1.5'
               }
             `}
@@ -196,9 +201,12 @@ export function AreaSelector({ selectedArea, onSelectArea, divisions }: AreaSele
             {/* Soft radial glow */}
             <div className="absolute -top-20 -left-20 w-60 h-60 rounded-full bg-white/10 blur-3xl pointer-events-none" />
 
-            {/* Selection check */}
+            {/* Selection check — color institucional de la universidad activa */}
             {isSelected && (
-              <div className="absolute top-5 left-5 z-10 w-9 h-9 rounded-full bg-brand-accent text-brand-primary-900 flex items-center justify-center shadow-lg animate-bounce-in">
+              <div
+                className="absolute top-5 left-5 z-10 w-9 h-9 rounded-full text-white flex items-center justify-center shadow-lg animate-bounce-in"
+                style={{ backgroundColor: 'var(--uni-primary-safe)' }}
+              >
                 <CheckCircle2 className="w-5 h-5" strokeWidth={3} />
               </div>
             )}
@@ -241,22 +249,25 @@ export function AreaSelector({ selectedArea, onSelectArea, divisions }: AreaSele
               )}
             </div>
 
-            {/* Reveal CTA bar */}
+            {/* Reveal CTA bar — institucional cuando está seleccionada, dorado en preview de hover */}
             <div
               className={`
                 absolute left-0 right-0 bottom-0 z-20 px-6 py-4
-                bg-brand-accent text-brand-primary-900 font-black text-sm
+                font-black text-sm
                 flex items-center justify-between
                 translate-y-full group-hover:translate-y-0
-                ${isSelected ? 'translate-y-0' : ''}
+                ${isSelected ? 'translate-y-0 text-white' : 'bg-brand-accent text-brand-primary-900'}
                 transition-transform duration-300 ease-out
                 shadow-[0_-10px_30px_-5px_rgba(0,0,0,0.3)]
               `}
+              style={isSelected ? { backgroundColor: 'var(--uni-primary-safe)' } : undefined}
             >
               <span className="inline-flex items-center gap-2">
                 {isSelected ? 'Área seleccionada' : 'Explorar área'}
               </span>
-              <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-brand-primary-900 text-brand-accent">
+              <span
+                className={`inline-flex items-center justify-center w-7 h-7 rounded-full ${isSelected ? 'bg-white/20 text-white' : 'bg-brand-primary-900 text-brand-accent'}`}
+              >
                 <ArrowRight className="w-4 h-4" strokeWidth={3} />
               </span>
             </div>

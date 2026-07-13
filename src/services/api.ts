@@ -1213,7 +1213,8 @@ export const MOCK_UNIVERSIDADES: Universidad[] = [
     estado: 'piloto',
     procesos: ['ORDINARIO'],
     cepreNombre: 'CEPRUNSA',
-    colores: { primario: '#7A1F2B', secundario: '#F2B705' },
+    // Guinda de la bandera de Arequipa + amarillo dorado (ver src/theme/universityThemes.ts)
+    colores: { primario: '#7B1B2C', secundario: '#F2C230' },
     logo: '/simulauna/logos/unsa.png',
     orden: 2
   }

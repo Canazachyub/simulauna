@@ -4,9 +4,10 @@ import { useExamStore, useCurrentQuestion, useProgress, useIsLastQuestion, useIs
 import { useUniversityStore } from '../hooks/useUniversity';
 import { useStopwatch } from '../hooks/useTimer';
 import { Question } from './Question';
+import { resolveThemeVars } from '../utils/universityTheme';
 import {
   Loader2, ChevronLeft, ChevronRight, CheckCircle,
-  Clock, List, FileCheck, AlertTriangle, X, ChevronDown, Sparkles
+  Clock, List, FileCheck, AlertTriangle, X, ChevronDown, Sparkles, AlarmClockCheck
 } from 'lucide-react';
 import clsx from 'clsx';
 
@@ -14,7 +15,9 @@ export function Quiz() {
   const navigate = useNavigate();
   const { universidad: universidadParam } = useParams<{ universidad: string }>();
   const activaUniversidad = useUniversityStore(state => state.activa);
+  const registroUniversidades = useUniversityStore(state => state.registro);
   const universidad = activaUniversidad || universidadParam || 'una';
+  const themeVars = resolveThemeVars(universidad, registroUniversidades);
   const {
     status,
     student,
@@ -59,6 +62,13 @@ export function Quiz() {
 
   // Cronómetro global del examen
   const { elapsedTime, formattedTime } = useStopwatch(status === 'in_progress');
+
+  // Estados de alerta del cronómetro respecto a la duración recomendada de la escala activa
+  // (>=75% amarillo, >=100% rojo). Sin duración recomendada, el cronómetro queda neutral.
+  const recommendedSeconds = typeof recommendedDurationMin === 'number' ? recommendedDurationMin * 60 : null;
+  const timeRatio = recommendedSeconds ? elapsedTime / recommendedSeconds : 0;
+  const isTimeWarning = recommendedSeconds !== null && timeRatio >= 0.75 && timeRatio < 1;
+  const isTimeCritical = recommendedSeconds !== null && timeRatio >= 1;
 
   // Calcular preguntas contestadas y sin contestar
   const { answeredCount, unansweredCount, unansweredIndexes, unansweredNumbers } = useMemo(() => {
@@ -225,7 +235,7 @@ export function Quiz() {
   const isComplete = answeredCount === progress.total;
 
   return (
-    <div className="min-h-screen bg-andean-white relative pb-24">
+    <div className="min-h-screen bg-andean-white relative pb-24" style={themeVars}>
       {/* Spotlight dorado sutil arriba */}
       <div
         className="absolute inset-x-0 top-0 h-96 spotlight-gold pointer-events-none"
@@ -246,9 +256,16 @@ export function Quiz() {
 
       {/* ========== HEADER sticky ultraminimal ========== */}
       <header className="glass sticky top-0 z-20 border-b border-slate-200/60 h-14 relative overflow-hidden">
+        {/* Barra superior tematizada con el color institucional de la universidad activa */}
+        <div
+          className="absolute inset-x-0 top-0 h-[3px]"
+          style={{ background: 'linear-gradient(90deg, var(--uni-primary) 0%, var(--uni-primary-deep) 60%, var(--uni-primary) 100%)' }}
+          aria-hidden="true"
+        />
         {/* Patrón sutil detrás del logo */}
         <div
-          className="absolute left-0 top-0 bottom-0 w-48 andean-bold opacity-[0.04] text-brand-primary pointer-events-none"
+          className="absolute left-0 top-0 bottom-0 w-48 andean-bold opacity-[0.04] pointer-events-none"
+          style={{ color: 'var(--uni-primary)' }}
           aria-hidden="true"
         />
         <div className="relative h-full max-w-6xl mx-auto px-4 flex items-center gap-4">
@@ -257,7 +274,14 @@ export function Quiz() {
             <span className="font-display text-base font-black text-slate-900 tracking-tight hidden sm:inline">
               SimulaUNA
             </span>
-            <span className="chip bg-brand-primary-50 text-brand-primary-700 border border-brand-primary-200 whitespace-nowrap truncate max-w-[40vw] sm:max-w-none ml-0.5">
+            <span
+              className="chip whitespace-nowrap truncate max-w-[40vw] sm:max-w-none ml-0.5 border"
+              style={{
+                backgroundColor: 'var(--uni-primary-soft)',
+                color: 'var(--uni-primary-safe)',
+                borderColor: 'var(--uni-primary-soft)',
+              }}
+            >
               {currentQuestion.subject}
             </span>
             {isComplete && (
@@ -271,17 +295,25 @@ export function Quiz() {
             )}
           </div>
 
-          {/* Centro: progreso ultra fino */}
+          {/* Centro: progreso ultra fino + porcentaje */}
           <div className="flex-1 flex flex-col items-stretch gap-1 min-w-0 px-2">
-            <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-brand-primary via-brand-primary-600 to-brand-accent transition-[width] duration-500 ease-out rounded-full"
-                style={{ width: `${progressPercentage}%` }}
-                role="progressbar"
-                aria-valuenow={answeredCount}
-                aria-valuemin={0}
-                aria-valuemax={progress.total}
-              />
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                <div
+                  className="h-full transition-[width] duration-500 ease-out rounded-full"
+                  style={{
+                    width: `${progressPercentage}%`,
+                    background: 'linear-gradient(90deg, var(--uni-primary) 0%, var(--uni-primary-deep) 70%, #D4AF37 100%)',
+                  }}
+                  role="progressbar"
+                  aria-valuenow={answeredCount}
+                  aria-valuemin={0}
+                  aria-valuemax={progress.total}
+                />
+              </div>
+              <span className="text-[11px] font-mono font-bold tabular-nums text-slate-500 hidden sm:inline">
+                {Math.round(progressPercentage)}%
+              </span>
             </div>
             <div className="text-[11px] text-slate-500 font-sans text-center tabular-nums hidden sm:block">
               {answeredCount}/{progress.total} respondidas
@@ -291,10 +323,21 @@ export function Quiz() {
           {/* Derecha: cronómetro + acciones */}
           <div className="flex items-center gap-1.5">
             <div
-              className="group relative flex items-center gap-1.5 px-2 py-1 rounded-md text-slate-600 hover:bg-slate-100 transition-colors"
-              aria-label={`Tiempo transcurrido ${formattedTime}`}
+              className={clsx(
+                'group relative flex items-center gap-1.5 px-2 py-1 rounded-md transition-colors',
+                isTimeCritical
+                  ? 'text-red-700 bg-red-50 hover:bg-red-100'
+                  : isTimeWarning
+                    ? 'text-amber-700 bg-amber-50 hover:bg-amber-100'
+                    : 'text-slate-600 hover:bg-slate-100'
+              )}
+              aria-label={`Tiempo transcurrido ${formattedTime}${isTimeCritical ? ', superaste la duración recomendada' : isTimeWarning ? ', te acercas a la duración recomendada' : ''}`}
             >
-              <Clock className="w-3.5 h-3.5 text-slate-400" />
+              {isTimeWarning || isTimeCritical ? (
+                <AlarmClockCheck className={clsx('w-3.5 h-3.5', isTimeCritical ? 'text-red-500' : 'text-amber-500', 'animate-pulse')} aria-hidden="true" />
+              ) : (
+                <Clock className="w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
+              )}
               <span className="font-mono text-sm tabular-nums">{formattedTime}</span>
               {/* Tooltip */}
               <div className="pointer-events-none absolute right-0 top-full mt-2 px-2.5 py-1.5 rounded-md bg-slate-900 text-white text-[11px] font-sans whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-elevation-2 z-30">
@@ -345,20 +388,20 @@ export function Quiz() {
         </div>
       </main>
 
-      {/* ========== FOOTER sticky navegación ========== */}
-      <footer className="glass fixed bottom-0 left-0 right-0 z-20 border-t border-slate-200/60 h-16">
-        <div className="h-full max-w-6xl mx-auto px-4 flex items-center justify-between gap-3">
+      {/* ========== FOOTER sticky navegación (nav inferior cómoda con el pulgar en móvil) ========== */}
+      <footer className="glass fixed bottom-0 left-0 right-0 z-20 border-t border-slate-200/60 h-16 shadow-[0_-4px_16px_-4px_rgba(15,23,42,0.08)]">
+        <div className="h-full max-w-6xl mx-auto px-3 sm:px-4 flex items-center justify-between gap-2 sm:gap-3">
           {/* Anterior */}
           <button
             onClick={handlePrevious}
             className={clsx(
-              'inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors',
+              'inline-flex items-center justify-center gap-1.5 min-w-11 min-h-11 px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 active:scale-95 transition-all',
               isFirstQuestion && 'opacity-40 pointer-events-none'
             )}
             aria-label="Pregunta anterior"
             disabled={isFirstQuestion}
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-5 h-5 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Anterior</span>
           </button>
 
@@ -387,14 +430,16 @@ export function Quiz() {
                   <button
                     onClick={() => goToQuestion(idx)}
                     aria-label={`Ir a pregunta ${idx + 1}`}
+                    aria-current={isCurrent ? 'true' : undefined}
                     className={clsx(
                       'rounded-full transition-all duration-150',
                       isCurrent
-                        ? 'w-2.5 h-2.5 bg-brand-primary ring-2 ring-brand-primary/30'
+                        ? 'w-2.5 h-2.5'
                         : answered
                           ? 'w-1.5 h-1.5 bg-emerald-400/70 hover:bg-emerald-500'
                           : 'w-1.5 h-1.5 bg-slate-200 hover:bg-slate-300'
                     )}
+                    style={isCurrent ? { backgroundColor: 'var(--uni-primary-safe)', boxShadow: '0 0 0 3px var(--uni-primary-soft)' } : undefined}
                   />
                 </div>
               );
@@ -417,7 +462,7 @@ export function Quiz() {
           {isLastQuestion ? (
             <button
               onClick={() => setShowFinishModal(true)}
-              className="btn-accent-gold shine-hover inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold"
+              className="btn-accent-gold shine-hover inline-flex items-center justify-center gap-1.5 min-h-11 px-5 py-2 rounded-lg text-sm font-semibold active:scale-95 transition-transform"
               aria-label="Calificar examen"
             >
               <FileCheck className="w-4 h-4" />
@@ -426,7 +471,11 @@ export function Quiz() {
           ) : (
             <button
               onClick={handleNext}
-              className="btn-primary-brand shine-hover inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold"
+              className="shine-hover inline-flex items-center justify-center gap-1.5 min-h-11 px-5 py-2 rounded-lg text-sm font-semibold text-white active:scale-95 transition-transform"
+              style={{
+                backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)',
+                boxShadow: '0 10px 25px -10px var(--uni-primary)',
+              }}
               aria-label="Siguiente pregunta"
             >
               <span>Siguiente</span>
@@ -450,7 +499,7 @@ export function Quiz() {
             onClick={e => e.stopPropagation()}
           >
             {/* Header del drawer con patrón andino sutil */}
-            <div className="sticky top-0 bg-white andean-bold text-brand-primary/20 border-b border-slate-200 relative">
+            <div className="sticky top-0 bg-white andean-bold border-b border-slate-200 relative" style={{ color: 'var(--uni-primary-soft)' }}>
               <div className="relative px-5 py-4 flex items-center justify-between bg-white/70 backdrop-blur">
                 <h3 className="font-display text-xl font-bold text-slate-900 flex items-center gap-2">
                   Navegador de preguntas
@@ -465,18 +514,21 @@ export function Quiz() {
               </div>
             </div>
 
-            {/* Leyenda */}
-            <div className="px-5 py-3 border-b border-slate-100 flex flex-wrap gap-3 text-xs text-slate-500">
+            {/* Leyenda con mejor contraste (texto AA vía --uni-primary-safe) */}
+            <div className="px-5 py-3 border-b border-slate-100 flex flex-wrap gap-3 text-xs font-medium text-slate-600">
               <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded bg-brand-primary-100 ring-1 ring-brand-primary-200"></div>
+                <div
+                  className="w-3 h-3 rounded"
+                  style={{ backgroundColor: 'var(--uni-primary-soft)', boxShadow: '0 0 0 1px var(--uni-primary-safe)' }}
+                ></div>
                 <span>Respondida</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded bg-slate-100"></div>
+                <div className="w-3 h-3 rounded bg-slate-100 ring-1 ring-slate-200"></div>
                 <span>Pendiente</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded ring-2 ring-brand-primary bg-white"></div>
+                <div className="w-3 h-3 rounded ring-2 bg-white" style={{ boxShadow: '0 0 0 2px var(--uni-primary-safe)' }}></div>
                 <span>Actual</span>
               </div>
             </div>
@@ -520,16 +572,23 @@ export function Quiz() {
                                 goToQuestion(index);
                                 setShowNavigator(false);
                               }}
-                              aria-label={`Ir a pregunta ${index + 1}`}
+                              aria-label={`Ir a pregunta ${index + 1}${answered ? ', respondida' : ', pendiente'}${isCurrent ? ', actual' : ''}`}
                               aria-current={isCurrent ? 'true' : undefined}
                               className={clsx(
-                                'w-11 h-11 rounded-lg text-xs font-semibold transition active:scale-95 tabular-nums',
+                                'w-11 h-11 rounded-lg text-xs font-semibold transition active:scale-95 tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
                                 isCurrent
-                                  ? 'ring-2 ring-brand-primary shadow-elevation-2 bg-white text-brand-primary-700'
+                                  ? 'shadow-elevation-2 bg-white'
                                   : answered
-                                    ? 'bg-brand-primary-100 text-brand-primary-800 ring-1 ring-brand-primary-200 hover:bg-brand-primary-50'
+                                    ? 'hover:brightness-95'
                                     : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
                               )}
+                              style={
+                                isCurrent
+                                  ? { boxShadow: '0 0 0 2px var(--uni-primary-safe)', color: 'var(--uni-primary-safe)' }
+                                  : answered
+                                    ? { backgroundColor: 'var(--uni-primary-soft)', color: 'var(--uni-primary-safe)', boxShadow: '0 0 0 1px var(--uni-primary-soft)' }
+                                    : undefined
+                              }
                             >
                               {index + 1}
                             </button>

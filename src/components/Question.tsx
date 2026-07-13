@@ -261,7 +261,14 @@ export function Question({
                 </span>
               </div>
               <div className="flex flex-wrap items-center gap-2 pb-1">
-                <span className="chip bg-brand-primary-50 text-brand-primary-700 border border-brand-primary-200">
+                <span
+                  className="chip border"
+                  style={{
+                    backgroundColor: 'var(--uni-primary-soft, #E6EEF7)',
+                    color: 'var(--uni-primary-safe, #003D7A)',
+                    borderColor: 'var(--uni-primary-soft, #E6EEF7)',
+                  }}
+                >
                   {question.subject}
                 </span>
                 {question.sourceFile && (
@@ -328,15 +335,18 @@ export function Question({
                   // Idle: color suavizado por índice
                   [LETTER_BG_IDLE[index] || 'bg-slate-400/50 text-white']:
                     optionState === 'default',
-                  // Selected: brand primary + ring glow + pulse ring breve
-                  'bg-brand-primary text-white ring-4 ring-brand-primary/20 animate-pulse-ring':
-                    optionState === 'selected',
+                  // Selected: pulso dorado decorativo (independiente del color institucional)
+                  'text-white animate-pulse-ring': optionState === 'selected',
                   // Correct
                   'bg-emerald-500 text-white': optionState === 'correct',
                   // Incorrect
                   'bg-red-500 text-white': optionState === 'incorrect',
                 }
               );
+              // Selected: color institucional (--uni-primary) + ring glow + pulse ring breve
+              const letterCircleStyle = optionState === 'selected'
+                ? { backgroundColor: 'var(--uni-primary-safe, #003D7A)', color: '#fff' }
+                : undefined;
 
               return (
                 <button
@@ -346,11 +356,11 @@ export function Question({
                   aria-pressed={isSelected}
                   aria-label={`Opción ${letter}`}
                   className={clsx(
-                    'relative w-full rounded-2xl p-4 md:p-5 text-left transition-all duration-150 flex items-center gap-4 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/40 focus-visible:ring-offset-2 shine-hover overflow-hidden',
+                    'relative w-full rounded-2xl p-4 md:p-5 text-left transition-all duration-150 flex items-center gap-4 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 shine-hover overflow-hidden',
                     {
                       'border-2 border-slate-200 bg-white hover:border-slate-400 hover:shadow-elevation-2':
                         optionState === 'default',
-                      'border-2 border-brand-primary bg-brand-primary-50 shadow-elevation-2 scale-[1.02]':
+                      'border-2 shadow-elevation-2 scale-[1.02]':
                         optionState === 'selected',
                       'border-2 border-emerald-500 bg-emerald-50':
                         optionState === 'correct',
@@ -360,9 +370,15 @@ export function Question({
                         showFeedback && optionState === 'default',
                     }
                   )}
+                  style={{
+                    ...(optionState === 'selected'
+                      ? { borderColor: 'var(--uni-primary-safe, #003D7A)', backgroundColor: 'var(--uni-primary-soft, #E6EEF7)' }
+                      : {}),
+                    ['--tw-ring-color' as string]: 'var(--uni-primary-safe, #003D7A)',
+                  }}
                 >
                   {/* Círculo letra */}
-                  <div className={letterCircleClass}>
+                  <div className={letterCircleClass} style={letterCircleStyle}>
                     {optionState === 'correct' ? (
                       <CheckCircle className="w-5 h-5" />
                     ) : optionState === 'incorrect' ? (
@@ -376,10 +392,11 @@ export function Question({
                   <span
                     className={clsx('flex-1 font-sans text-base md:text-[17px] leading-relaxed', {
                       'text-slate-800': optionState === 'default',
-                      'text-brand-primary-800 font-medium': optionState === 'selected',
+                      'font-medium': optionState === 'selected',
                       'text-emerald-800 font-medium': optionState === 'correct',
                       'text-red-800': optionState === 'incorrect',
                     })}
+                    style={optionState === 'selected' ? { color: 'var(--uni-primary-safe, #003D7A)' } : undefined}
                   >
                     <FormattedText text={option} />
                   </span>
@@ -388,7 +405,8 @@ export function Question({
                   {optionState === 'selected' && (
                     <>
                       <Check
-                        className="flex-shrink-0 w-5 h-5 text-brand-primary animate-bounce-in"
+                        className="flex-shrink-0 w-5 h-5 animate-bounce-in"
+                        style={{ color: 'var(--uni-primary-safe, #003D7A)' }}
                         aria-hidden="true"
                       />
                       {/* Check dorado en esquina sup. derecha */}
@@ -408,6 +426,8 @@ export function Question({
           {/* Feedback message */}
           {showFeedback && (
             <div
+              role="status"
+              aria-live="polite"
               className={clsx(
                 'mt-6 p-4 rounded-xl flex items-center gap-3 animate-fade-in',
                 {

@@ -17,7 +17,7 @@ import { formatNumber, formatDate, indexToLetter } from '../utils/calculations';
 import { renderFormattedText } from '../utils/formatText';
 import { PDFGenerator } from './PDFGenerator';
 import { saveScore, getUserHistory, type UserHistory } from '../services/api';
-import { ensureAccessible } from '../utils/color';
+import { resolveThemeVars } from '../utils/universityTheme';
 import clsx from 'clsx';
 
 interface ChartDataItem {
@@ -36,8 +36,8 @@ const PHOTOS = {
   studyWoman: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&q=80&auto=format&fit=crop',
 };
 
-// Paleta brand
-const BRAND_PRIMARY = '#003D7A';
+// Paleta brand (solo el dorado semántico del nivel Excelente; el resto del
+// acento viene del tema institucional vía resolveThemeVars)
 const BRAND_ACCENT = '#D4AF37';
 
 function formatRelativeDate(iso: string): string {
@@ -168,21 +168,25 @@ export function Results() {
         ? 'Sigue practicando'
         : 'Hay mucho por mejorar';
 
+  // "Bueno" usa el gradiente institucional (--uni-primary → --uni-primary-deep) en vez del
+  // gradiente fijo de marca, para que el título del hero también refleje la universidad activa.
   const heroTitleClass = isExcellent
     ? 'inline-block text-brand-accent-600 gradient-text-gold'
     : isGood
-      ? 'inline-block text-brand-primary-700 gradient-text-brand'
+      ? 'inline-block bg-clip-text text-transparent'
       : 'text-slate-900';
+  const heroTitleStyle = isGood
+    ? { backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)' }
+    : undefined;
 
-  // Acento por universidad: el anillo de resultados usa el color primario de la
-  // universidad activa (solo si no es 'una', que ya es el brand por defecto), siempre
-  // verificado contra AA sobre el fondo claro del hero. El resto de la escala de
-  // desempeño (excelente=dorado, regular=ámbar, bajo=rojo) es semántica y no cambia
-  // por universidad — moderación del acento (ver docs/CONTRATO_API_V2.md §5).
+  // Acento por universidad: el anillo de resultados, tabs y gráficos usan SIEMPRE el tema
+  // institucional resuelto vía src/theme/universityThemes.ts (única fuente de theming) — los
+  // colores del registro maestro tienen precedencia, con fallback local si aún no está
+  // registrada. El resto de la escala de desempeño (excelente=dorado, regular=ámbar,
+  // bajo=rojo) es semántica y no cambia por universidad (ver docs/CONTRATO_API_V2.md §5).
   const universidadRegistrada = registroUniversidades.find(u => u.codigo === universidad);
-  const uniPrimaryAccessible = (universidad && universidad !== 'una' && universidadRegistrada?.colores?.primario)
-    ? ensureAccessible(universidadRegistrada.colores.primario, '#FFFFFF', 4.5)
-    : BRAND_PRIMARY;
+  const themeVars = resolveThemeVars(universidad, registroUniversidades);
+  const uniPrimaryAccessible = (themeVars as Record<string, string>)['--uni-primary-safe'];
 
   const ringStroke = isExcellent ? BRAND_ACCENT : isGood ? uniPrimaryAccessible : isRegular ? '#D97706' : '#DC2626';
 
@@ -251,7 +255,7 @@ export function Results() {
   const firstName = (result.student.fullName || '').trim().split(/\s+/)[0] || 'estudiante';
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4">
+    <div className="min-h-screen bg-slate-50 py-8 px-4" style={themeVars}>
       <div className="max-w-5xl mx-auto space-y-8">
 
         {/* ============ 1. HERO DEL SCORE ============ */}
@@ -324,6 +328,7 @@ export function Results() {
                 'font-display text-5xl md:text-7xl font-black tracking-tightest mb-2 animate-fade-up delay-100',
                 heroTitleClass
               )}
+              style={heroTitleStyle}
             >
               {heroTitle}
             </h1>
@@ -392,24 +397,24 @@ export function Results() {
 
             {/* Métricas inline */}
             <div className="grid grid-cols-3 gap-6 md:gap-12 w-full max-w-2xl mb-8 animate-fade-up delay-400">
-              <div className="flex flex-col items-center">
-                <span className="font-display text-3xl md:text-4xl font-black text-slate-900 tabular-nums">
+              <div className="flex flex-col items-center overflow-hidden">
+                <span className="font-display text-3xl md:text-4xl font-black text-slate-900 tabular-nums animate-number-roll">
                   {result.percentage.toFixed(0)}%
                 </span>
                 <span className="mt-1 text-[10px] md:text-xs uppercase tracking-wider font-semibold text-slate-500">
                   Precisión
                 </span>
               </div>
-              <div className="flex flex-col items-center border-x border-slate-200">
-                <span className="font-display text-3xl md:text-4xl font-black text-slate-900 tabular-nums">
+              <div className="flex flex-col items-center border-x border-slate-200 overflow-hidden">
+                <span className="font-display text-3xl md:text-4xl font-black text-slate-900 tabular-nums animate-number-roll" style={{ animationDelay: '80ms' }}>
                   {totalCorrect}<span className="text-slate-400">/{totalQuestions}</span>
                 </span>
                 <span className="mt-1 text-[10px] md:text-xs uppercase tracking-wider font-semibold text-slate-500">
                   Correctas
                 </span>
               </div>
-              <div className="flex flex-col items-center">
-                <span className="font-display text-3xl md:text-4xl font-black text-slate-900 tabular-nums font-mono">
+              <div className="flex flex-col items-center overflow-hidden">
+                <span className="font-display text-3xl md:text-4xl font-black text-slate-900 tabular-nums font-mono animate-number-roll" style={{ animationDelay: '160ms' }}>
                   {timeMM}:{timeSS}
                 </span>
                 <span className="mt-1 text-[10px] md:text-xs uppercase tracking-wider font-semibold text-slate-500">
@@ -426,8 +431,11 @@ export function Results() {
               </div>
               <div className="h-2 rounded-full bg-slate-200/80 overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-brand-primary-600 via-brand-primary-500 to-brand-accent-500 transition-all duration-[1500ms]"
-                  style={{ width: `${percentToNext}%` }}
+                  className="h-full rounded-full transition-all duration-[1500ms]"
+                  style={{
+                    width: `${percentToNext}%`,
+                    backgroundImage: 'linear-gradient(90deg, var(--uni-primary) 0%, var(--uni-primary-deep) 60%, #D4AF37 100%)',
+                  }}
                 />
               </div>
 
@@ -485,9 +493,11 @@ export function Results() {
                   className={clsx(
                     'flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl font-semibold text-sm transition whitespace-nowrap',
                     active
-                      ? 'bg-white shadow-elevation-2 text-brand-primary-800'
+                      ? 'bg-white shadow-elevation-2'
                       : 'text-slate-600 hover:text-slate-900'
                   )}
+                  style={active ? { color: 'var(--uni-primary-safe)' } : undefined}
+                  aria-current={active ? 'page' : undefined}
                 >
                   <Icon className="w-4 h-4" />
                   {t.label}
@@ -526,29 +536,41 @@ export function Results() {
               </div>
             </div>
 
-            {/* Grid de preguntas */}
+            {/* Grid de preguntas — color + ícono para que el estado sea escaneable sin depender solo del color */}
             <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-2">
               {questions.map((q, idx) => {
                 const a = answerMap.get(q.id);
                 const isCorrect = a?.isCorrect;
                 const isUnanswered = a?.selectedOption === null || a?.selectedOption === undefined;
                 const isActive = reviewIndex === idx;
+                const statusLabel = isUnanswered ? 'sin responder' : isCorrect ? 'correcta' : 'incorrecta';
                 return (
                   <button
                     key={q.id}
                     onClick={() => setReviewIndex(idx)}
                     className={clsx(
-                      'aspect-square rounded-xl text-xs font-bold transition-all hover:scale-110 shadow-elevation-1',
-                      isActive && 'ring-2 ring-offset-2 ring-brand-primary-500 scale-110 z-10',
+                      'relative aspect-square rounded-xl text-xs font-bold transition-all hover:scale-110 shadow-elevation-1 focus-visible:outline-none',
+                      isActive && 'scale-110 z-10 ring-2 ring-offset-2',
                       isUnanswered
                         ? 'bg-slate-200 text-slate-600 hover:bg-slate-300'
                         : isCorrect
                           ? 'bg-emerald-500 text-white hover:bg-emerald-600'
                           : 'bg-red-500 text-white hover:bg-red-600'
                     )}
-                    title={q.subject}
+                    style={isActive ? { ['--tw-ring-color' as string]: 'var(--uni-primary-safe)' } : undefined}
+                    title={`${q.subject} — ${statusLabel}`}
+                    aria-label={`Pregunta ${idx + 1}, ${statusLabel}`}
                   >
                     {idx + 1}
+                    {!isUnanswered && (
+                      <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-white flex items-center justify-center shadow-sm">
+                        {isCorrect ? (
+                          <CheckCircle className="w-3 h-3 text-emerald-600" aria-hidden="true" />
+                        ) : (
+                          <XCircle className="w-3 h-3 text-red-600" aria-hidden="true" />
+                        )}
+                      </span>
+                    )}
                   </button>
                 );
               })}
@@ -564,14 +586,17 @@ export function Results() {
                   <h3 className="font-display text-lg font-bold text-slate-800">
                     Pregunta {(reviewIndex ?? 0) + 1} de {questions.length}
                   </h3>
-                  <span className="chip bg-brand-primary-50 text-brand-primary-700 border border-brand-primary-100">
+                  <span
+                    className="chip border"
+                    style={{ backgroundColor: 'var(--uni-primary-soft)', color: 'var(--uni-primary-safe)', borderColor: 'var(--uni-primary-soft)' }}
+                  >
                     {currentQuestion.subject}
                   </span>
                 </div>
 
                 <div className="mb-4">
                   <p className="text-slate-800 leading-relaxed">
-                    <span className="font-semibold text-brand-primary-600">P{(reviewIndex ?? 0) + 1}.</span>{' '}
+                    <span className="font-semibold" style={{ color: 'var(--uni-primary-safe)' }}>P{(reviewIndex ?? 0) + 1}.</span>{' '}
                     <span dangerouslySetInnerHTML={{ __html: renderFormattedText(currentQuestion.questionText) }} />
                   </p>
                 </div>
@@ -679,7 +704,9 @@ export function Results() {
                   <div className="mt-4">
                     <button
                       onClick={() => setShowJustification(!showJustification)}
-                      className="flex items-center gap-2 text-brand-primary-600 hover:text-brand-primary-700 text-sm font-semibold transition-colors"
+                      aria-expanded={showJustification}
+                      className="flex items-center gap-2 text-sm font-semibold transition-colors hover:opacity-80"
+                      style={{ color: 'var(--uni-primary-safe)' }}
                     >
                       <Lightbulb className="w-4 h-4" />
                       {showJustification ? 'Ocultar justificación' : 'Ver justificación'}
@@ -714,11 +741,14 @@ export function Results() {
                     onClick={() => setReviewIndex(Math.min(questions.length - 1, (reviewIndex ?? 0) + 1))}
                     disabled={reviewIndex === questions.length - 1}
                     className={clsx(
-                      'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold transition-all',
-                      reviewIndex === questions.length - 1
-                        ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                        : 'btn-primary-brand'
+                      'flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold text-white transition-all active:scale-[0.98]',
+                      reviewIndex === questions.length - 1 && 'bg-slate-100 text-slate-400 cursor-not-allowed'
                     )}
+                    style={
+                      reviewIndex === questions.length - 1
+                        ? undefined
+                        : { backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)' }
+                    }
                   >
                     Siguiente
                     <ChevronRight className="w-4 h-4" />
@@ -762,7 +792,10 @@ export function Results() {
 
               <div className="card-elevated p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-9 h-9 rounded-xl bg-brand-primary-100 text-brand-primary-700 flex items-center justify-center">
+                  <div
+                    className="w-9 h-9 rounded-xl flex items-center justify-center"
+                    style={{ backgroundColor: 'var(--uni-primary-soft)', color: 'var(--uni-primary-safe)' }}
+                  >
                     <Scale className="w-5 h-5" />
                   </div>
                   <span className="text-xs uppercase tracking-wider font-semibold text-slate-500">Balance</span>
@@ -800,13 +833,14 @@ export function Results() {
                     margin={{ top: 10, right: 40, left: 120, bottom: 10 }}
                   >
                     <defs>
+                      {/* Barras con el color institucional de la universidad activa (nunca BRAND_PRIMARY fijo) */}
                       <linearGradient id="barGradientHigh" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stopColor={BRAND_PRIMARY} stopOpacity={0.85} />
+                        <stop offset="0%" stopColor={uniPrimaryAccessible} stopOpacity={0.85} />
                         <stop offset="100%" stopColor={BRAND_ACCENT} stopOpacity={0.95} />
                       </linearGradient>
                       <linearGradient id="barGradientLow" x1="0" y1="0" x2="1" y2="0">
                         <stop offset="0%" stopColor="#94A3B8" stopOpacity={0.75} />
-                        <stop offset="100%" stopColor={BRAND_PRIMARY} stopOpacity={0.9} />
+                        <stop offset="100%" stopColor={uniPrimaryAccessible} stopOpacity={0.9} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="2 4" stroke="#E2E8F0" horizontal={false} />
@@ -829,7 +863,7 @@ export function Results() {
                       axisLine={false}
                     />
                     <Tooltip
-                      cursor={{ fill: 'rgba(0, 61, 122, 0.04)' }}
+                      cursor={{ fill: 'var(--uni-primary-soft)' }}
                       content={({ payload }) => {
                         if (!payload || payload.length === 0) return null;
                         const data = payload[0].payload as ChartDataItem;
@@ -837,7 +871,7 @@ export function Results() {
                           <div className="glass rounded-xl px-4 py-3 shadow-elevation-3 border border-white/40">
                             <p className="font-display font-bold text-slate-800 mb-1">{data.fullName}</p>
                             <p className="font-mono text-sm">
-                              <span className="font-bold text-brand-primary-700">
+                              <span className="font-bold" style={{ color: uniPrimaryAccessible }}>
                                 {data.percentage.toFixed(1)}%
                               </span>
                               <span className="text-slate-500"> · {data.correct}/{data.total}</span>
@@ -929,10 +963,14 @@ export function Results() {
                 const chipClass = subject.percentage >= 80
                   ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
                   : subject.percentage >= 60
-                    ? 'bg-brand-primary-50 text-brand-primary-700 border-brand-primary-100'
+                    ? 'border'
                     : subject.percentage >= 40
                       ? 'bg-amber-100 text-amber-700 border-amber-200'
                       : 'bg-red-100 text-red-700 border-red-200';
+                // Tramo 60-79%: color institucional de la universidad activa (no un azul fijo).
+                const chipStyle = subject.percentage >= 60 && subject.percentage < 80
+                  ? { backgroundColor: 'var(--uni-primary-soft)', color: 'var(--uni-primary-safe)', borderColor: 'var(--uni-primary-soft)' }
+                  : undefined;
 
                 const circleClass = subject.percentage >= 60
                   ? 'bg-emerald-500 text-white'
@@ -958,7 +996,7 @@ export function Results() {
                           {subject.correctAnswers}/{subject.totalQuestions} · {formatNumber(subject.pointsObtained)} pts
                         </div>
                       </div>
-                      <span className={clsx('chip border', chipClass)}>
+                      <span className={clsx('chip border', chipClass)} style={chipStyle}>
                         {subject.percentage.toFixed(1)}%
                       </span>
                       <ChevronDown
@@ -1125,14 +1163,14 @@ export function Results() {
                           <XAxis dataKey="intento" stroke="#94A3B8" fontSize={11} tickLine={false} axisLine={false} />
                           <YAxis stroke="#94A3B8" fontSize={11} tickLine={false} axisLine={false} />
                           <Tooltip
-                            cursor={{ stroke: BRAND_PRIMARY, strokeWidth: 1, strokeDasharray: '4 4' }}
+                            cursor={{ stroke: uniPrimaryAccessible, strokeWidth: 1, strokeDasharray: '4 4' }}
                             content={({ payload }) => {
                               if (!payload || payload.length === 0) return null;
                               const data = payload[0].payload;
                               return (
                                 <div className="glass rounded-xl px-4 py-3 shadow-elevation-3 border border-white/40">
                                   <p className="font-display font-bold text-slate-800">{data.intento}</p>
-                                  <p className="font-mono text-brand-primary-700 font-bold">
+                                  <p className="font-mono font-bold" style={{ color: uniPrimaryAccessible }}>
                                     {formatNumber(data.puntaje, 0)} pts
                                   </p>
                                   <p className="font-mono text-slate-500 text-xs">{data.porcentaje}% correctas</p>
@@ -1143,7 +1181,7 @@ export function Results() {
                           <Line
                             type="monotone"
                             dataKey="puntaje"
-                            stroke={BRAND_PRIMARY}
+                            stroke={uniPrimaryAccessible}
                             strokeWidth={3}
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             dot={((props: any) => {
@@ -1151,8 +1189,8 @@ export function Results() {
                               if (cx === undefined || cy === undefined || !payload) {
                                 return <g key={`dot-empty-${index ?? 0}`} />;
                               }
-                              const fill = payload.isBest ? BRAND_ACCENT : payload.isLatest ? BRAND_PRIMARY : '#fff';
-                              const stroke = payload.isBest ? BRAND_ACCENT : BRAND_PRIMARY;
+                              const fill = payload.isBest ? BRAND_ACCENT : payload.isLatest ? uniPrimaryAccessible : '#fff';
+                              const stroke = payload.isBest ? BRAND_ACCENT : uniPrimaryAccessible;
                               const r = payload.isBest || payload.isLatest ? 7 : 5;
                               return (
                                 <circle
@@ -1167,7 +1205,7 @@ export function Results() {
                               );
                             // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             }) as any}
-                            activeDot={{ r: 9, fill: BRAND_ACCENT, stroke: BRAND_PRIMARY, strokeWidth: 2 }}
+                            activeDot={{ r: 9, fill: BRAND_ACCENT, stroke: uniPrimaryAccessible, strokeWidth: 2 }}
                           />
                         </LineChart>
                       </ResponsiveContainer>
@@ -1185,20 +1223,22 @@ export function Results() {
                     const pctChipClass = pct >= 80
                       ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
                       : pct >= 60
-                        ? 'bg-brand-primary-50 text-brand-primary-700 border-brand-primary-100'
+                        ? 'border'
                         : pct >= 40
                           ? 'bg-amber-100 text-amber-700 border-amber-200'
                           : 'bg-red-100 text-red-700 border-red-200';
+                    const pctChipStyle = pct >= 60 && pct < 80
+                      ? { backgroundColor: 'var(--uni-primary-soft)', color: 'var(--uni-primary-safe)', borderColor: 'var(--uni-primary-soft)' }
+                      : undefined;
 
                     return (
                       <div
                         key={index}
                         className={clsx(
                           'rounded-xl border p-3 flex items-center gap-3 transition',
-                          isLatest
-                            ? 'border-brand-primary-200 bg-brand-primary-50/40'
-                            : 'border-slate-200 bg-white hover:shadow-elevation-2'
+                          !isLatest && 'border-slate-200 bg-white hover:shadow-elevation-2'
                         )}
+                        style={isLatest ? { borderColor: 'var(--uni-primary-soft)', backgroundColor: 'var(--uni-primary-soft)' } : undefined}
                       >
                         <div className={clsx(
                           'flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-display font-black text-sm',
@@ -1212,7 +1252,10 @@ export function Results() {
                               {formatRelativeDate(entry.fecha)}
                             </span>
                             {isLatest && (
-                              <span className="chip bg-brand-primary-600 text-white text-[10px] px-2 py-0.5">
+                              <span
+                                className="chip text-white text-[10px] px-2 py-0.5"
+                                style={{ backgroundColor: 'var(--uni-primary-safe)' }}
+                              >
                                 Actual
                               </span>
                             )}
@@ -1230,7 +1273,7 @@ export function Results() {
                           <div className="font-display font-black text-lg text-slate-900 font-mono tabular-nums">
                             {formatNumber(entry.puntaje, 0)}
                           </div>
-                          <span className={clsx('chip border text-[10px] py-0.5', pctChipClass)}>
+                          <span className={clsx('chip border text-[10px] py-0.5', pctChipClass)} style={pctChipStyle}>
                             {pct.toFixed(0)}%
                           </span>
                         </div>
@@ -1289,7 +1332,11 @@ export function Results() {
               </button>
               <div className="flex gap-2">
                 <div className="flex-1 [&_button]:!bg-white/10 [&_button]:!text-white [&_button]:!border [&_button]:!border-white/30 [&_button]:hover:!bg-white/20 [&_button]:!rounded-xl [&_button]:!px-4 [&_button]:!py-3 [&_button]:!font-semibold [&_button]:!backdrop-blur">
-                  <PDFGenerator result={result} />
+                  <PDFGenerator
+                    result={result}
+                    accentColor={uniPrimaryAccessible}
+                    universidadNombre={universidadRegistrada?.nombre}
+                  />
                 </div>
                 <button
                   onClick={handleRestart}
@@ -1305,7 +1352,7 @@ export function Results() {
         </section>
 
         <p className="text-center text-slate-400 text-sm font-display">
-          SimulaUNA · Universidad Nacional del Altiplano
+          SimulaUNA · {universidadRegistrada?.nombre || 'Universidad Nacional del Altiplano'}
         </p>
       </div>
     </div>

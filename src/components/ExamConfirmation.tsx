@@ -7,12 +7,16 @@ import {
 } from 'lucide-react';
 import { useExamStore } from '../hooks/useExam';
 import { useUniversityStore } from '../hooks/useUniversity';
+import { resolveThemeVars } from '../utils/universityTheme';
 
 export function ExamConfirmation() {
   const navigate = useNavigate();
   const { universidad: universidadParam } = useParams<{ universidad: string }>();
   const activaUniversidad = useUniversityStore(state => state.activa);
+  const registroUniversidades = useUniversityStore(state => state.registro);
   const universidad = activaUniversidad || universidadParam || 'una';
+  const themeVars = resolveThemeVars(universidad, registroUniversidades);
+  const universidadRegistrada = registroUniversidades.find(u => u.codigo === universidad);
   const { student, config, loadQuestions, status, error } = useExamStore();
 
   // Redirect if no student data
@@ -100,7 +104,7 @@ export function ExamConfirmation() {
   return (
     <div
       className="min-h-screen relative overflow-hidden bg-gradient-hero bg-hero-solid text-white py-14 px-4"
-      style={{ backgroundColor: '#001529' }}
+      style={{ backgroundColor: '#001529', ...themeVars }}
     >
       {/* --- DECORATIVE BACKGROUND LAYERS --- */}
       {/* Mountains silhouette */}
@@ -166,10 +170,20 @@ export function ExamConfirmation() {
       <div className="relative z-20 max-w-3xl mx-auto">
         {/* Hero */}
         <div className="text-center mb-10 animate-fade-up">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-accent/25 border border-brand-accent/50 text-brand-accent text-xs font-black tracking-[0.25em] uppercase backdrop-blur-sm text-shadow-sm">
-            <Sparkles className="w-3.5 h-3.5" />
-            Todo listo
-          </span>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-accent/25 border border-brand-accent/50 text-brand-accent text-xs font-black tracking-[0.25em] uppercase backdrop-blur-sm text-shadow-sm">
+              <Sparkles className="w-3.5 h-3.5" />
+              Todo listo
+            </span>
+            {universidadRegistrada && (
+              <span
+                className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-white text-xs font-black tracking-[0.15em] uppercase backdrop-blur-sm shadow-lg"
+                style={{ backgroundColor: 'var(--uni-primary-safe)' }}
+              >
+                {universidadRegistrada.nombreCorto || universidadRegistrada.nombre}
+              </span>
+            )}
+          </div>
           <h1 className="mt-5 font-display text-5xl md:text-7xl font-black leading-[1.02] tracking-tightest text-white text-shadow">
             Es hora,{' '}
             <span className="italic text-brand-accent inline-block animate-fade-up text-shadow" style={{ animationDelay: '150ms' }}>
@@ -181,8 +195,11 @@ export function ExamConfirmation() {
           </p>
         </div>
 
-        {/* Glass profile card */}
-        <div className="relative rounded-3xl glass p-6 md:p-8 animate-fade-up" style={{ animationDelay: '200ms' }}>
+        {/* Glass profile card — borde superior con el color institucional de la universidad activa */}
+        <div
+          className="relative rounded-3xl glass p-6 md:p-8 animate-fade-up border-t-4"
+          style={{ animationDelay: '200ms', borderTopColor: 'var(--uni-primary-safe)' }}
+        >
           <div className="corner-accent absolute top-0 right-0 w-16 h-16 pointer-events-none" />
           <h2 className="text-xs font-black uppercase tracking-[0.25em] text-brand-accent mb-5 flex items-center gap-2">
             <Shield className="w-3.5 h-3.5" />

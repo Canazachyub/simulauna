@@ -8,10 +8,30 @@ import { formatNumber, formatDate, formatTimeReadable } from '../utils/calculati
 
 interface PDFGeneratorProps {
   result: ExamResult;
+  /** Color institucional (hex) de la universidad activa, ya garantizado AA — ver
+   * src/theme/universityThemes.ts. Si no se recibe, usa el azul de marca por defecto. */
+  accentColor?: string;
+  /** Nombre completo de la universidad activa (registro maestro), para el encabezado del PDF. */
+  universidadNombre?: string;
 }
 
-export function PDFGenerator({ result }: PDFGeneratorProps) {
+/** #RRGGBB → [r, g, b] (0-255) para las APIs de color de jsPDF, que no aceptan hex directo. */
+function hexToRgbTuple(hex: string): [number, number, number] {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return [0, 61, 122];
+  const n = parseInt(m[1], 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
+/** Mezcla un [r,g,b] hacia blanco (0-1) para tintes suaves de fondo (cajas de score, etc). */
+function lightenRgb([r, g, b]: [number, number, number], amount: number): [number, number, number] {
+  const mix = (c: number) => Math.round(c + (255 - c) * amount);
+  return [mix(r), mix(g), mix(b)];
+}
+
+export function PDFGenerator({ result, accentColor = '#003D7A', universidadNombre = 'Universidad Nacional del Altiplano' }: PDFGeneratorProps) {
   const [isGenerating, setIsGenerating] = useState(false);
+  const [accentR, accentG, accentB] = hexToRgbTuple(accentColor);
 
   const generatePDF = async () => {
     setIsGenerating(true);
@@ -22,8 +42,8 @@ export function PDFGenerator({ result }: PDFGeneratorProps) {
       const margin = 20;
       let yPos = 20;
 
-      // Header
-      doc.setFillColor(79, 70, 229); // primary-600
+      // Header — color institucional de la universidad activa
+      doc.setFillColor(accentR, accentG, accentB);
       doc.rect(0, 0, pageWidth, 45, 'F');
 
       doc.setTextColor(255, 255, 255);
@@ -34,7 +54,7 @@ export function PDFGenerator({ result }: PDFGeneratorProps) {
       doc.setFontSize(12);
       doc.setFont('helvetica', 'normal');
       doc.text('Resultados del Examen Simulacro', pageWidth / 2, 30, { align: 'center' });
-      doc.text('Universidad Nacional del Altiplano', pageWidth / 2, 38, { align: 'center' });
+      doc.text(universidadNombre, pageWidth / 2, 38, { align: 'center' });
 
       yPos = 55;
 
@@ -56,12 +76,13 @@ export function PDFGenerator({ result }: PDFGeneratorProps) {
 
       yPos += 55;
 
-      // Score box
+      // Score box — tinte suave del color institucional
       const performanceInfo = PERFORMANCE_MESSAGES[result.performanceLevel];
-      doc.setFillColor(238, 242, 255); // primary-50
+      const [scoreBoxR, scoreBoxG, scoreBoxB] = lightenRgb([accentR, accentG, accentB], 0.9);
+      doc.setFillColor(scoreBoxR, scoreBoxG, scoreBoxB);
       doc.roundedRect(margin, yPos, pageWidth - margin * 2, 35, 3, 3, 'F');
 
-      doc.setTextColor(79, 70, 229); // primary-600
+      doc.setTextColor(accentR, accentG, accentB);
       doc.setFontSize(28);
       doc.setFont('helvetica', 'bold');
       doc.text(formatNumber(result.totalScore, 2), pageWidth / 2, yPos + 18, { align: 'center' });
@@ -148,13 +169,15 @@ export function PDFGenerator({ result }: PDFGeneratorProps) {
         `${formatNumber(result.totalScore)} / ${formatNumber(result.maxScore)}`
       ]);
 
+      const [tableTintR, tableTintG, tableTintB] = lightenRgb([accentR, accentG, accentB], 0.9);
+
       autoTable(doc, {
         startY: yPos,
         head: [['Asignatura', 'Correctas', 'Porcentaje', 'Puntos']],
         body: tableData,
         theme: 'striped',
         headStyles: {
-          fillColor: [79, 70, 229],
+          fillColor: [accentR, accentG, accentB],
           textColor: [255, 255, 255],
           fontStyle: 'bold',
           halign: 'center'
@@ -173,15 +196,15 @@ export function PDFGenerator({ result }: PDFGeneratorProps) {
           fillColor: [248, 250, 252]
         },
         footStyles: {
-          fillColor: [238, 242, 255],
-          textColor: [79, 70, 229],
+          fillColor: [tableTintR, tableTintG, tableTintB],
+          textColor: [accentR, accentG, accentB],
           fontStyle: 'bold'
         },
         didParseCell: function(data) {
           // Style the last row (totals)
           if (data.row.index === tableData.length - 1) {
-            data.cell.styles.fillColor = [238, 242, 255];
-            data.cell.styles.textColor = [79, 70, 229];
+            data.cell.styles.fillColor = [tableTintR, tableTintG, tableTintB];
+            data.cell.styles.textColor = [accentR, accentG, accentB];
             data.cell.styles.fontStyle = 'bold';
           }
         },
@@ -200,7 +223,7 @@ export function PDFGenerator({ result }: PDFGeneratorProps) {
         { align: 'center' }
       );
       doc.text(
-        'Universidad Nacional del Altiplano - Puno',
+        universidadNombre,
         pageWidth / 2,
         finalY + 6,
         { align: 'center' }

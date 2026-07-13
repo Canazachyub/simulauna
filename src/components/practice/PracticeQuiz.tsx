@@ -1,6 +1,6 @@
 import {
   ChevronLeft, ChevronRight, CheckCircle, XCircle, Trophy, Lightbulb, Clock,
-  FileText, Tag, Send
+  FileText, Tag, Send, Flame
 } from 'lucide-react';
 import { renderFormattedText, parseJustification } from '../../utils/formatText';
 import clsx from 'clsx';
@@ -18,6 +18,8 @@ interface Props {
   elapsedTimeLabel: string;
   showAllAnsweredModal: boolean;
   setShowAllAnsweredModal: (show: boolean) => void;
+  /** Racha de aciertos consecutivos en la sesión actual (solo estado en memoria). */
+  streak: number;
 }
 
 function getOptionClass(
@@ -75,7 +77,7 @@ function QuestionBadges({ mode, question }: { mode: PracticeMode; question: Prac
  * feedback inmediato, navegación y navegador de preguntas + modal de "todas respondidas". */
 export function PracticeQuiz({
   mode, meta, questions, currentIndex, setCurrentIndex, answers, onAnswer, onFinish,
-  elapsedTimeLabel, showAllAnsweredModal, setShowAllAnsweredModal
+  elapsedTimeLabel, showAllAnsweredModal, setShowAllAnsweredModal, streak
 }: Props) {
   const currentQuestion = questions[currentIndex];
   const currentAnswer = currentQuestion ? answers.get(currentQuestion.id) : null;
@@ -96,7 +98,10 @@ export function PracticeQuiz({
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap gap-1 mb-1.5">
-                <span className="chip bg-brand-primary-50 text-brand-primary-700 text-[10px] font-mono">
+                <span
+                  className="chip text-[10px] font-mono"
+                  style={{ backgroundColor: 'var(--uni-primary-soft)', color: 'var(--uni-primary-safe)' }}
+                >
                   <CourseIcon className="w-3 h-3" />
                   {meta.course}
                 </span>
@@ -117,6 +122,15 @@ export function PracticeQuiz({
                     {meta.semana}
                   </span>
                 )}
+                {streak >= 2 && (
+                  <span
+                    className="chip bg-orange-50 text-orange-700 border border-orange-200 text-[10px] font-mono font-bold animate-bounce-in"
+                    aria-label={`Racha de ${streak} aciertos consecutivos`}
+                  >
+                    <Flame className="w-3 h-3 fill-orange-500 text-orange-500" />
+                    Racha ×{streak}
+                  </span>
+                )}
               </div>
               <h2 className="font-display font-bold text-slate-800 text-sm">
                 Pregunta {currentIndex + 1} de {questions.length}
@@ -124,14 +138,14 @@ export function PracticeQuiz({
             </div>
 
             <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5">
-              <Clock className="w-4 h-4 text-brand-primary-600" />
+              <Clock className="w-4 h-4" style={{ color: 'var(--uni-primary-safe)' }} />
               <span className="font-mono text-base font-bold text-slate-800">{elapsedTimeLabel}</span>
             </div>
 
             <div className="text-right">
               <span className="text-[10px] text-slate-500 font-mono uppercase tracking-wider">Respondidas</span>
               <p className="font-display font-bold text-base">
-                <span className="text-brand-primary-600">{answeredCount}</span>
+                <span style={{ color: 'var(--uni-primary-safe)' }}>{answeredCount}</span>
                 <span className="text-slate-400">/{questions.length}</span>
               </p>
             </div>
@@ -139,8 +153,11 @@ export function PracticeQuiz({
 
           <div className="mt-3 h-1.5 bg-slate-100 rounded-full overflow-hidden">
             <div
-              className="h-full bg-mesh-brand transition-all duration-300"
-              style={{ width: `${(answeredCount / questions.length) * 100}%` }}
+              className="h-full transition-all duration-300"
+              style={{
+                width: `${(answeredCount / questions.length) * 100}%`,
+                backgroundImage: 'linear-gradient(90deg, var(--uni-primary) 0%, var(--uni-primary-deep) 70%, #D4AF37 100%)',
+              }}
             />
           </div>
         </div>
@@ -200,36 +217,45 @@ export function PracticeQuiz({
           </div>
 
           {isAnswered && (
-            <div className={clsx(
-              'mt-6 p-4 rounded-xl animate-fade-in',
-              currentAnswer.isCorrect
-                ? 'bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200'
-                : 'bg-gradient-to-r from-red-50 to-orange-50 border border-red-200'
-            )}>
-              <div className="flex items-center gap-2 mb-2">
+            <div
+              role="status"
+              aria-live="polite"
+              className={clsx(
+                'mt-6 p-4 rounded-xl animate-fade-in',
+                currentAnswer.isCorrect
+                  ? 'bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200'
+                  : 'bg-gradient-to-r from-red-50 to-orange-50 border border-red-200'
+              )}
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <span
+                  className={clsx(
+                    'flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center animate-bounce-in',
+                    currentAnswer.isCorrect ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'
+                  )}
+                  aria-hidden="true"
+                >
+                  {currentAnswer.isCorrect ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+                </span>
                 {currentAnswer.isCorrect ? (
-                  <>
-                    <CheckCircle className="w-5 h-5 text-emerald-600" />
-                    <span className="font-bold text-emerald-700">¡Correcto!</span>
-                  </>
+                  <span className="font-bold text-emerald-700">
+                    ¡Correcto!{streak >= 2 && <span className="ml-1.5 font-normal text-emerald-600">racha ×{streak}</span>}
+                  </span>
                 ) : (
-                  <>
-                    <XCircle className="w-5 h-5 text-red-600" />
-                    <span className="font-bold text-red-700">
-                      Incorrecto - La respuesta correcta es: {String.fromCharCode(65 + currentQuestion.correctAnswer)}
-                    </span>
-                  </>
+                  <span className="font-bold text-red-700">
+                    Incorrecto — la respuesta correcta es: {String.fromCharCode(65 + currentQuestion.correctAnswer)}
+                  </span>
                 )}
               </div>
 
               {currentQuestion.justification && (() => {
                 const { text, images } = parseJustification(currentQuestion.justification);
                 return (
-                  <div className="mt-3 p-3 bg-white/50 rounded-lg">
+                  <div className="mt-3 p-3 bg-white/60 rounded-lg border border-white/80">
                     <div className="flex items-start gap-2">
                       <Lightbulb className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
                       <div className="flex-1">
-                        <p className="font-semibold text-slate-700 text-sm mb-1">Justificación:</p>
+                        <p className="font-semibold text-slate-700 text-sm mb-1">Justificación</p>
                         {text && (
                           <div
                             className="text-slate-600 text-sm leading-relaxed"

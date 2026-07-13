@@ -1,5 +1,5 @@
 import {
-  CheckCircle, XCircle, RotateCcw, Home, Lightbulb, Clock, FileText, Target, LogOut, BookOpen
+  CheckCircle, XCircle, RotateCcw, Home, Lightbulb, Clock, FileText, Target, LogOut, BookOpen, Flame
 } from 'lucide-react';
 import { renderFormattedText, parseJustification } from '../../utils/formatText';
 import clsx from 'clsx';
@@ -13,6 +13,8 @@ interface Props {
   elapsedTimeLabel: string;
   elapsedTimeSeconds: number;
   isAuthenticated: boolean;
+  /** Mejor racha de aciertos consecutivos de la sesión (0 si no hubo; se muestra desde 2). */
+  bestStreak: number;
   onLogout: () => void;
   onReset: () => void;
   onHome: () => void;
@@ -50,7 +52,7 @@ function ReviewBadges({ mode, question, index }: { mode: PracticeMode; question:
 /** Paso de resultados compartido: anillo de porcentaje, estadísticas, acciones y revisión
  * completa de las preguntas con su justificación. */
 export function PracticeResults({
-  mode, meta, questions, results, elapsedTimeLabel, elapsedTimeSeconds, isAuthenticated, onLogout, onReset, onHome
+  mode, meta, questions, results, elapsedTimeLabel, elapsedTimeSeconds, isAuthenticated, bestStreak, onLogout, onReset, onHome
 }: Props) {
   const correctCount = results.filter(r => r.isCorrect).length;
   const percentage = Math.round((correctCount / questions.length) * 100);
@@ -152,6 +154,12 @@ export function PracticeResults({
               <Target className="w-4 h-4" />
               <span>Promedio: <strong className="font-mono">{Math.round(avgTimePerQuestion)}s</strong></span>
             </div>
+            {bestStreak >= 2 && (
+              <div className="flex items-center gap-2 text-orange-600" aria-label={`Mejor racha: ${bestStreak} aciertos consecutivos`}>
+                <Flame className="w-4 h-4" />
+                <span>Mejor racha: <strong className="font-mono">×{bestStreak}</strong></span>
+              </div>
+            )}
           </div>
 
           <div className="flex flex-wrap gap-3 justify-center">

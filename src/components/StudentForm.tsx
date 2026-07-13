@@ -9,6 +9,7 @@ import { useExamStore } from '../hooks/useExam';
 import { useUniversityStore } from '../hooks/useUniversity';
 import { validateDNI, validateName } from '../utils/calculations';
 import { registerUser, checkAccess } from '../services/api';
+import { resolveThemeVars } from '../utils/universityTheme';
 import { AreaSelector } from './AreaSelector';
 import type { AreaType, ProcessType } from '../types';
 
@@ -185,12 +186,12 @@ function FloatingInput({ id, label, value, onChange, icon: Icon, error, type = '
           error
             ? 'border-red-400 focus-within:border-red-500'
             : focused
-              ? 'border-brand-primary-500 shadow-[0_0_0_4px_rgba(212,175,55,0.25)]'
+              ? 'border-[var(--uni-primary-safe)] shadow-[0_0_0_4px_var(--uni-primary-soft)]'
               : 'border-slate-200 hover:border-slate-300'
         }`}
       >
         <Icon className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors ${
-          focused ? 'text-brand-primary-600' : error ? 'text-red-500' : 'text-slate-400'
+          focused ? 'text-[var(--uni-primary-safe)]' : error ? 'text-red-500' : 'text-slate-400'
         }`} />
         <label
           htmlFor={id}
@@ -200,7 +201,7 @@ function FloatingInput({ id, label, value, onChange, icon: Icon, error, type = '
               ? 'top-1 text-[10px] uppercase tracking-wider font-semibold'
               : 'top-1/2 -translate-y-1/2 text-sm'
           } ${
-            error ? 'text-red-500' : focused ? 'text-brand-primary-600' : 'text-slate-500'
+            error ? 'text-red-500' : focused ? 'text-[var(--uni-primary-safe)]' : 'text-slate-500'
           }`}
         >
           {label}
@@ -248,9 +249,10 @@ function Stepper({ step }: { step: number }) {
               <div
                 className={`relative w-10 h-10 rounded-full flex items-center justify-center text-sm font-black shrink-0 transition-all ${
                   active
-                    ? 'bg-gradient-to-br from-brand-primary-600 to-brand-primary-800 text-white border-2 border-brand-accent shadow-lg shadow-brand-accent/30'
+                    ? 'text-white border-2 border-brand-accent shadow-lg shadow-brand-accent/30'
                     : 'bg-white text-slate-400 border-2 border-slate-200'
                 }`}
+                style={active ? { backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)' } : undefined}
               >
                 {s.n.toString().padStart(2, '0').slice(-1)}
                 {current && (
@@ -259,8 +261,11 @@ function Stepper({ step }: { step: number }) {
               </div>
               <div className="flex-1 h-2 rounded-full bg-slate-200/70 overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-brand-primary-600 via-brand-primary-500 to-brand-accent transition-all duration-500 ease-out"
-                  style={{ width: active ? '100%' : '0%' }}
+                  className="h-full transition-all duration-500 ease-out"
+                  style={{
+                    width: active ? '100%' : '0%',
+                    backgroundImage: 'linear-gradient(90deg, var(--uni-primary) 0%, var(--uni-primary-deep) 60%, #D4AF37 100%)',
+                  }}
                 />
               </div>
             </div>
@@ -268,10 +273,10 @@ function Stepper({ step }: { step: number }) {
         })}
       </div>
       <div className="mt-2 flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.2em]">
-        <span className={step >= 1 ? 'text-brand-primary-800' : 'text-slate-400'}>
+        <span className="text-slate-400" style={step >= 1 ? { color: 'var(--uni-primary-safe)' } : undefined}>
           01 · {steps[0].label}
         </span>
-        <span className={step >= 2 ? 'text-brand-primary-800' : 'text-slate-400'}>
+        <span className="text-slate-400" style={step >= 2 ? { color: 'var(--uni-primary-safe)' } : undefined}>
           02 · {steps[1].label}
         </span>
       </div>
@@ -286,7 +291,9 @@ export function StudentForm() {
   const navigate = useNavigate();
   const { universidad: universidadParam } = useParams<{ universidad: string }>();
   const activaUniversidad = useUniversityStore(state => state.activa);
+  const registroUniversidades = useUniversityStore(state => state.registro);
   const universidad = activaUniversidad || universidadParam || 'una';
+  const themeVars = resolveThemeVars(universidad, registroUniversidades);
   const { setStudent, loadConfig, config, status, error } = useExamStore();
   const divisions = config?.divisiones ?? [];
 
@@ -471,7 +478,7 @@ export function StudentForm() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-mesh-warm py-12 md:py-16 px-4">
+    <div className="min-h-screen relative overflow-hidden bg-mesh-warm py-12 md:py-16 px-4" style={themeVars}>
       <RichBackground />
 
       <div className={`relative z-10 mx-auto ${step === 2 ? 'max-w-4xl' : 'max-w-2xl'}`}>
@@ -565,14 +572,18 @@ export function StudentForm() {
             <div className="relative mt-8 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3">
               <button
                 onClick={() => navigate(`/${universidad}`)}
-                className="inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-700 font-bold hover:border-brand-primary-300 hover:bg-brand-primary-50 transition"
+                className="inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-700 font-bold hover:border-[var(--uni-primary-safe)] hover:bg-[var(--uni-primary-soft)] transition"
               >
                 <ChevronLeft className="w-4 h-4" />
                 Volver
               </button>
               <button
                 onClick={handleNextStep}
-                className="group relative flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-brand-primary-600 to-brand-primary-800 text-white font-black text-base shadow-[0_15px_35px_-10px_rgba(0,61,122,0.55)] hover:shadow-[0_20px_45px_-10px_rgba(0,61,122,0.7)] hover:-translate-y-0.5 transition-all overflow-hidden"
+                className="group relative flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-white font-black text-base hover:-translate-y-0.5 transition-all overflow-hidden"
+                style={{
+                  backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)',
+                  boxShadow: '0 15px 35px -10px var(--uni-primary)',
+                }}
               >
                 <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent" />
                 <span className="relative">Siguiente</span>
@@ -629,7 +640,7 @@ export function StudentForm() {
             <div className="relative space-y-7">
               {/* Process Type */}
               <div>
-                <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-primary-700 mb-2.5">
+                <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.18em] mb-2.5" style={{ color: 'var(--uni-primary-safe)' }}>
                   <Briefcase className="w-3.5 h-3.5" />
                   Proceso de admisión
                 </label>
@@ -644,9 +655,12 @@ export function StudentForm() {
                       }}
                       className={`relative px-2 py-3.5 rounded-xl border-2 text-xs sm:text-sm font-black transition-all overflow-hidden ${
                         processType === type
-                          ? 'border-brand-accent bg-gradient-to-br from-brand-primary-50 to-brand-accent/15 text-brand-primary-900 shadow-md shadow-brand-accent/30'
-                          : 'border-slate-300 bg-white text-slate-700 hover:border-brand-primary-400 hover:bg-brand-primary-50/60'
+                          ? 'border-brand-accent shadow-md shadow-brand-accent/30'
+                          : 'border-slate-300 bg-white text-slate-700 hover:border-[var(--uni-primary-safe)] hover:bg-[var(--uni-primary-soft)]'
                       }`}
+                      style={processType === type
+                        ? { backgroundImage: 'linear-gradient(135deg, var(--uni-primary-soft) 0%, rgba(212,175,55,0.15) 100%)', color: 'var(--uni-primary-safe)' }
+                        : undefined}
                     >
                       {processType === type && (
                         <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-brand-accent" />
@@ -665,7 +679,7 @@ export function StudentForm() {
 
               {/* Area */}
               <div>
-                <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-primary-700 mb-2.5">
+                <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.18em] mb-2.5" style={{ color: 'var(--uni-primary-safe)' }}>
                   <GraduationCap className="w-3.5 h-3.5" />
                   Área académica
                 </label>
@@ -685,7 +699,7 @@ export function StudentForm() {
               {/* Career */}
               {area && (
                 <div className="animate-fade-up">
-                  <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-primary-700 mb-2.5">
+                  <label className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.18em] mb-2.5" style={{ color: 'var(--uni-primary-safe)' }}>
                     <GraduationCap className="w-3.5 h-3.5" />
                     Carrera profesional
                   </label>
@@ -699,7 +713,7 @@ export function StudentForm() {
                       className={`w-full px-4 py-4 rounded-xl border-2 bg-white font-semibold text-slate-700 outline-none transition-all text-sm ${
                         errors.career
                           ? 'border-red-400 focus:border-red-500'
-                          : 'border-slate-200 hover:border-slate-300 focus:border-brand-primary-500 focus:shadow-[0_0_0_4px_rgba(212,175,55,0.25)]'
+                          : 'border-slate-200 hover:border-slate-300 focus:border-[var(--uni-primary-safe)] focus:shadow-[0_0_0_4px_var(--uni-primary-soft)]'
                       }`}
                     >
                       <option value="">-- Selecciona una carrera --</option>
@@ -723,7 +737,7 @@ export function StudentForm() {
                       className={`w-full px-4 py-4 rounded-xl border-2 bg-white font-semibold text-slate-700 outline-none transition-all text-sm ${
                         errors.career
                           ? 'border-red-400 focus:border-red-500'
-                          : 'border-slate-200 hover:border-slate-300 focus:border-brand-primary-500 focus:shadow-[0_0_0_4px_rgba(212,175,55,0.25)]'
+                          : 'border-slate-200 hover:border-slate-300 focus:border-[var(--uni-primary-safe)] focus:shadow-[0_0_0_4px_var(--uni-primary-soft)]'
                       }`}
                     />
                   )}
@@ -740,7 +754,7 @@ export function StudentForm() {
             <div className="relative mt-9 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3">
               <button
                 onClick={() => setStep(1)}
-                className="inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-700 font-bold hover:border-brand-primary-300 hover:bg-brand-primary-50 transition"
+                className="inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-700 font-bold hover:border-[var(--uni-primary-safe)] hover:bg-[var(--uni-primary-soft)] transition"
               >
                 <ChevronLeft className="w-4 h-4" />
                 Anterior
@@ -748,7 +762,11 @@ export function StudentForm() {
               <button
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="group relative flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-brand-primary-600 to-brand-primary-800 text-white font-black text-base shadow-[0_15px_35px_-10px_rgba(0,61,122,0.55)] hover:shadow-[0_20px_45px_-10px_rgba(0,61,122,0.7)] hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:cursor-not-allowed overflow-hidden"
+                className="group relative flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-white font-black text-base hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:cursor-not-allowed overflow-hidden"
+                style={{
+                  backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)',
+                  boxShadow: '0 15px 35px -10px var(--uni-primary)',
+                }}
               >
                 <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent" />
                 {isSubmitting ? (
@@ -767,7 +785,10 @@ export function StudentForm() {
 
             {/* Trust chip */}
             <div className="relative mt-8 flex justify-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-primary-50 border border-brand-primary-100 text-xs font-semibold text-brand-primary-700">
+              <div
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-semibold"
+                style={{ backgroundColor: 'var(--uni-primary-soft)', borderColor: 'var(--uni-primary-soft)', color: 'var(--uni-primary-safe)' }}
+              >
                 <Shield className="w-3.5 h-3.5 text-brand-accent" />
                 Datos protegidos · Solo para generar tu simulacro
               </div>

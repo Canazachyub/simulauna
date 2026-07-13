@@ -1,21 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   GraduationCap, ArrowRight, ArrowLeft, BookOpen, Clock, FileText,
   Trophy, Loader2, AlertCircle, ShieldCheck
 } from 'lucide-react';
 import { useUniversityStore } from '../hooks/useUniversity';
-import { ensureAccessible } from '../utils/color';
+import { getUniversityTheme, themeCssVars } from '../theme/universityThemes';
+import { UniversityStats } from './landing/UniversityStats';
 
 /**
  * Página de una universidad específica: hero con marca propia + tarjetas de procesos
  * disponibles (Simulacro / Banqueo / Banqueo por tema / CEPRE), según `procesos` del
  * registro maestro (getUniversidades). Ver docs/CONTRATO_API_V2.md §5.
+ *
+ * El theming es 100% dinámico vía src/theme/universityThemes.ts: el registro maestro
+ * (universidad.colores) tiene precedencia sobre el mapa local investigado; ambos pasan
+ * por ensureAccessible() antes de servir de fondo con texto/ícono blanco encima (AA).
  */
 export function UniversityPage() {
   const navigate = useNavigate();
   const { universidad: codigo } = useParams<{ universidad: string }>();
   const { registro, loading, error, loadRegistro, setActiva } = useUniversityStore();
+  const [logoFailed, setLogoFailed] = useState(false);
 
   useEffect(() => {
     loadRegistro();
@@ -26,6 +32,10 @@ export function UniversityPage() {
   }, [codigo, setActiva]);
 
   const universidad = registro.find(u => u.codigo === codigo);
+
+  useEffect(() => {
+    setLogoFailed(false);
+  }, [universidad?.codigo]);
 
   if (loading && !universidad) {
     return (
@@ -51,7 +61,7 @@ export function UniversityPage() {
           <p className="text-slate-500 text-sm mb-6">
             {error || 'No se pudo cargar la información de esta universidad todavía.'}
           </p>
-          <button onClick={() => navigate('/')} className="btn-primary-brand px-5 py-2.5 rounded-xl font-semibold">
+          <button onClick={() => navigate('/')} className="btn-primary-brand px-5 py-2.5 rounded-xl font-semibold min-h-[44px]">
             Volver al inicio
           </button>
         </div>
@@ -59,15 +69,19 @@ export function UniversityPage() {
     );
   }
 
-  // El primario del registro se usa como texto/ícono sobre fondos blancos (tarjetas de
-  // proceso) y como fondo con texto blanco encima (hero) — en ambos casos se exige AA
-  // (4.5:1); si la universidad trae un color que no alcanza, se deriva un tono más
-  // oscuro que preserva el matiz de marca (ver src/utils/color.ts).
-  const primary = ensureAccessible(universidad.colores?.primario || '#003D7A', '#FFFFFF', 4.5);
-  const secondary = universidad.colores?.secundario || '#D4AF37';
+  // Fuente única de theming: el color del registro maestro (si viene) tiene precedencia
+  // sobre el mapa local investigado; themeCssVars ya deriva --uni-primary-safe (AA
+  // garantizado, útil tanto para texto sobre claro como para fondos con blanco encima,
+  // pues el contraste es simétrico), --uni-primary-soft (tinte para hovers/fondos
+  // suaves) y --uni-primary-deep (ancla oscura de gradientes).
+  const theme = getUniversityTheme(universidad.codigo, universidad.colores);
+  const vars = themeCssVars(theme) as CSSProperties;
+
   const procesos = universidad.procesos || [];
   const hasOrdinario = procesos.includes('ORDINARIO') || procesos.includes('EXTRAORDINARIO');
   const hasCepre = procesos.includes('CEPRE');
+  const statsProceso = procesos.includes('ORDINARIO') ? 'ORDINARIO' : (procesos[0] || 'ORDINARIO');
+  const logoUrl = universidad.logo || `/simulauna/logos/${universidad.codigo}.png`;
 
   const processCards = [
     hasOrdinario && {
@@ -105,53 +119,80 @@ export function UniversityPage() {
   ].filter((c): c is Exclude<typeof c, false | undefined> => Boolean(c));
 
   return (
-    <div
-      className="min-h-screen bg-andean-white"
-      style={{ '--uni-primary': primary, '--uni-secondary': secondary } as React.CSSProperties}
-    >
-      {/* HERO con marca de la universidad */}
-      <section
-        className="relative overflow-hidden text-white py-16 md:py-24 px-4"
-        style={{ backgroundColor: 'var(--uni-primary)' }}
-      >
-        <div className="absolute inset-0 andean-bold text-white/10 pointer-events-none" />
+    <div className="min-h-screen bg-andean-white" style={vars}>
+      {/* HERO con marca institucional real — gradiente propio + patrón andino */}
+      <section className="relative overflow-hidden text-white">
+        <div
+          className="absolute inset-0"
+          style={{ backgroundImage: 'linear-gradient(150deg, var(--uni-primary-safe) 0%, var(--uni-primary-deep) 100%)' }}
+        />
+        <div className="absolute inset-0 andean-bold text-white/15 pointer-events-none" />
         <div className="absolute inset-0 noise opacity-30 pointer-events-none" />
-        <div className="relative max-w-4xl mx-auto text-center">
-          <button
-            onClick={() => navigate('/')}
-            className="inline-flex items-center gap-1.5 text-white/80 hover:text-white text-sm font-semibold mb-6 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Todas las universidades
-          </button>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
 
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs md:text-sm font-medium mb-5">
-            <GraduationCap className="w-4 h-4" style={{ color: 'var(--uni-secondary)' }} />
-            <span>{universidad.nombre}</span>
-            {universidad.estado === 'piloto' && (
-              <span className="ml-1 px-2 py-0.5 rounded-full bg-white/15 text-[10px] font-bold uppercase tracking-wider">
-                Piloto
-              </span>
-            )}
-          </div>
+        <div className="relative max-w-5xl mx-auto px-4 pt-8 pb-14 md:pt-10 md:pb-20">
+          {/* Breadcrumb / volver al selector */}
+          <nav aria-label="Ruta de navegación" className="flex items-center gap-2 text-xs md:text-sm text-white/70 mb-8 md:mb-10">
+            <button
+              onClick={() => navigate('/')}
+              className="uni-hover-chip inline-flex items-center gap-1.5 min-h-[44px] -ml-2 px-2.5 rounded-lg text-white/85 hover:text-white font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            >
+              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+              Todas las universidades
+            </button>
+            <span aria-hidden="true" className="text-white/40">/</span>
+            <span className="text-white font-semibold truncate max-w-[10rem] sm:max-w-none">{universidad.nombreCorto}</span>
+          </nav>
 
-          <h1 className="font-display text-4xl md:text-6xl font-black tracking-tightest leading-[1.02] mb-4">
-            {universidad.nombreCorto}
-          </h1>
-          <p className="text-white/90 max-w-xl mx-auto text-base md:text-lg">
-            Simulacros con preguntas reales, banqueo por curso y preparación
-            {hasCepre ? ` para ${universidad.cepreNombre}` : ''}. Gratis. Serio. Tuyo.
-          </p>
+          <div className="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-8 text-center md:text-left">
+            {/* Badge de logo local (public/logos/<codigo>.png) */}
+            <div className="shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-white shadow-2xl border-4 border-white/30 flex items-center justify-center p-3 md:p-4">
+              {!logoFailed ? (
+                <img
+                  src={logoUrl}
+                  alt={`Logo de ${universidad.nombre}`}
+                  onError={() => setLogoFailed(true)}
+                  className="max-w-full max-h-full object-contain"
+                />
+              ) : (
+                <GraduationCap className="w-10 h-10 md:w-14 md:h-14" style={{ color: 'var(--uni-primary-safe)' }} aria-hidden="true" />
+              )}
+            </div>
 
-          <div className="mt-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold">
-            <ShieldCheck className="w-3.5 h-3.5" style={{ color: 'var(--uni-secondary)' }} />
-            Datos protegidos · Acceso gratuito al primer intento
+            <div className="flex-1 min-w-0">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs md:text-sm font-medium mb-4">
+                <GraduationCap className="w-4 h-4" style={{ color: 'var(--uni-secondary)' }} aria-hidden="true" />
+                <span>{universidad.nombre}</span>
+                {universidad.estado === 'piloto' && (
+                  <span className="ml-1 px-2 py-0.5 rounded-full bg-white text-[10px] font-black uppercase tracking-wider" style={{ color: 'var(--uni-primary-safe)' }}>
+                    Beta
+                  </span>
+                )}
+              </div>
+
+              <h1 className="font-display text-4xl sm:text-5xl md:text-7xl font-black tracking-tightest leading-[0.95] [text-shadow:0_4px_20px_rgba(0,0,0,0.35)]">
+                {universidad.nombreCorto}
+              </h1>
+
+              <p className="mt-4 text-white/90 max-w-xl mx-auto md:mx-0 text-base md:text-lg leading-relaxed">
+                Simulacros con preguntas reales, banqueo por curso y preparación
+                {hasCepre ? ` para ${universidad.cepreNombre}` : ''}. Gratis. Serio. Tuyo.
+              </p>
+
+              <div className="mt-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold">
+                <ShieldCheck className="w-3.5 h-3.5" style={{ color: 'var(--uni-secondary)' }} aria-hidden="true" />
+                Datos protegidos · Acceso gratuito al primer intento
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Stats del banco de preguntas — carga perezosa (getConfig), con skeleton */}
+      <UniversityStats codigo={universidad.codigo} proceso={statsProceso} />
+
       {/* Tarjetas de procesos disponibles */}
-      <section className="max-w-5xl mx-auto px-4 py-12 md:py-16">
+      <section className="max-w-5xl mx-auto px-4 pt-10 pb-12 md:pt-14 md:pb-16">
         <h2 className="font-display text-2xl font-bold text-slate-800 mb-6 text-center">
           ¿Qué quieres practicar hoy?
         </h2>
@@ -162,22 +203,29 @@ export function UniversityPage() {
               <button
                 key={card.key}
                 onClick={() => navigate(card.to)}
-                className="group text-left card-elevated p-6 rounded-2xl border border-slate-200 hover:-translate-y-1 hover:shadow-elevation-3 transition-all"
+                className="uni-process-card group relative text-left card-elevated p-6 rounded-2xl border-2 border-slate-200 hover:-translate-y-1 hover:shadow-elevation-3 transition-all focus:outline-none focus-visible:ring-4"
+                style={{ '--tw-ring-color': 'var(--uni-primary-soft)' } as CSSProperties}
               >
+                {/* Acento del tema — el dorado/secundario solo aparece como detalle, nunca como fondo con texto */}
+                <span
+                  className="absolute top-5 right-5 w-2.5 h-2.5 rounded-full"
+                  style={{ backgroundColor: 'var(--uni-secondary)' }}
+                  aria-hidden="true"
+                />
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-white"
-                  style={{ backgroundColor: 'var(--uni-primary)' }}
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-white shadow-md"
+                  style={{ backgroundColor: 'var(--uni-primary-safe)' }}
                 >
-                  <Icon className="w-6 h-6" />
+                  <Icon className="w-6 h-6" aria-hidden="true" />
                 </div>
                 <h3 className="font-display text-lg font-bold text-slate-800 mb-1">{card.title}</h3>
                 <p className="text-sm text-slate-500 mb-4">{card.description}</p>
                 <span
                   className="inline-flex items-center gap-1.5 text-sm font-bold"
-                  style={{ color: 'var(--uni-primary)' }}
+                  style={{ color: 'var(--uni-primary-safe)' }}
                 >
                   {card.cta}
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                 </span>
               </button>
             );
