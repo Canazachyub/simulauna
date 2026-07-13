@@ -68,9 +68,9 @@ function setupCore() {
       'activa',
       'ORDINARIO,CEPRE',
       'CEPREUNA',
-      '#7A0019',
-      '#FFC72C',
-      '/logos/una.svg',
+      '#003D7A',
+      '#E67E22',
+      '/logos/una.png',
       0
     ]);
   }
@@ -192,8 +192,8 @@ function seedPilotoUNSA() {
     'ORDINARIO',
     'CEPRUNSA',
     '#8B0000',
-    '#FFFFFF',
-    '/logos/unsa.svg',
+    '#D4AF37',
+    '/logos/unsa.png',
     1
   ];
 
