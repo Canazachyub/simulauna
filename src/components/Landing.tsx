@@ -395,9 +395,9 @@ function CtaMascot() {
       alt=""
       aria-hidden="true"
       loading="lazy"
-      className="relative z-20 mx-auto mb-4 w-28 opacity-95 animate-float-y select-none drop-shadow-2xl pointer-events-none
-        md:absolute md:z-20 md:mx-0 md:mb-0 md:inset-auto md:right-0 md:bottom-0 md:w-40 md:translate-y-[10%]
-        lg:w-56 lg:top-1/2 lg:bottom-auto lg:-translate-y-[35%] lg:translate-x-[30%]"
+      // Ítem flex normal (columna propia en lg+, arriba y centrado en móvil):
+      // sin position absolute, la superposición con el contenido es imposible.
+      className="w-28 lg:w-52 xl:w-60 shrink-0 opacity-95 animate-float-y select-none drop-shadow-2xl pointer-events-none"
       onError={() => setBroken(true)}
     />
   );
@@ -1328,10 +1328,12 @@ export function Landing() {
         <StarTwinkle className="absolute bottom-20 left-[30%] text-brand-accent-200 animate-star-twinkle delay-500" size={14} />
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="relative text-center max-w-3xl mx-auto animate-fade-up">
-          {/* Mascota del CTA — parte de la composición, no un adorno de esquina
-              (Dirección v3: máx. 2 apariciones nuevas). */}
+          {/* Layout SIN superposición: en lg+ el lobito ocupa su PROPIA columna
+              flex al lado del texto (jamás encima — el absoluto anterior tapaba
+              el contenido en anchos 1024-1280px); en móvil va arriba, centrado. */}
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-2 lg:gap-12 animate-fade-up">
           <CtaMascot />
+          <div className="relative text-center max-w-3xl">
 
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur border border-white/40 text-white text-xs font-bold uppercase tracking-[0.2em] mb-7 shadow-xl [text-shadow:0_1px_3px_rgba(0,0,0,0.5)]">
             <Sparkles className="w-3.5 h-3.5" /> Tu primer simulacro es gratis
@@ -1369,6 +1371,7 @@ export function Landing() {
           <p className="mt-7 text-white/80 text-sm font-medium [text-shadow:0_1px_3px_rgba(0,0,0,0.4)]">
             Sin tarjeta · Sin compromiso · Solo practica
           </p>
+          </div>
           </div>
         </div>
       </section>
