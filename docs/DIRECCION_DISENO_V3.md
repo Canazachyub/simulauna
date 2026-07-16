@@ -71,6 +71,29 @@ sombra larga difusa, fondo transparente. Paleta: azul profundo #003D7A, dorado
 | `icono-puntaje.png` | Ícono 3D: podio con trofeo dorado y anillo de progreso azul alrededor, hexágono igual | cuadrada |
 | `aula-virtual.png` | Laptop 3D abierta mostrando una clase con profesor caricatura y pizarra, ambiente cálido, estudiantes como avatares pequeños | 4:3 |
 
+### Tanda 2 — Reemplazo de TODO lo genérico (decisión del usuario: cero Unsplash/pravatar)
+
+Hoy hay 10 fotos de Unsplash (fondos al 8-22% de opacidad en Landing/StudentForm/Results)
+y 3 avatares pravatar (testimonios). Se reemplazan por ilustraciones propias, mismo
+bloque de estilo común + este añadido para fondos: "ilustración digital plana con
+profundidad suave, paleta limitada a azul #003D7A, crema #FBF7F0, dorado #D4AF37 y
+toques naranja #E67E22, sin texto".
+
+| Archivo | Contenido | Proporción | Reemplaza |
+|---|---|---|---|
+| `bg-estudio.png` | Escritorio de estudio visto cenital: cuaderno abierto, laptop, taza, lámpara cálida | 16:9 | photo-1456513..., photo-1434030... |
+| `bg-biblioteca.png` | Interior de biblioteca ilustrada con estantes altos y luz dorada | 16:9 | photo-1509062..., photo-1532012... |
+| `bg-graduacion.png` | Birretes lanzados al aire sobre cielo azul degradado, confeti dorado | 16:9 | photo-1513258... |
+| `bg-colaboracion.png` | Tres estudiantes caricatura estudiando juntos en una mesa, vista 3/4 | 16:9 | photo-1523240..., photo-1522202... |
+| `bg-campus.png` | Explanada de campus universitario ilustrado con edificio y árboles | 16:9 | photo-1427504..., photo-1503676..., photo-1571260... |
+| `avatar-estudiante-1.png` | Retrato busto 3D estilo Pixar: estudiante mujer joven peruana sonriente, polo azul, fondo círculo crema | cuadrada | pravatar img=47 |
+| `avatar-estudiante-2.png` | Retrato busto 3D: estudiante hombre joven con lentes, casaca naranja, fondo círculo azul suave | cuadrada | pravatar img=13 |
+| `avatar-estudiante-3.png` | Retrato busto 3D: estudiante mujer con cabello recogido y audífonos al cuello, fondo círculo dorado suave | cuadrada | pravatar img=32 |
+
+Los avatares son personajes ilustrados genéricos (NO caras de personas reales) — se
+presentan como testimonios ilustrativos, coherente con la decisión previa de no
+inventar identidades reales.
+
 Post-proceso: comprimir a WebP si >400KB; conservar PNG con transparencia para la mascota.
 
 ## Reglas duras

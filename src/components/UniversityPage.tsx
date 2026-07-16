@@ -2,11 +2,12 @@ import { useEffect, useState, type CSSProperties } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   GraduationCap, ArrowRight, ArrowLeft, BookOpen, Clock, FileText,
-  Trophy, Loader2, AlertCircle, ShieldCheck
+  Trophy, Loader2, AlertCircle, ShieldCheck, MonitorPlay
 } from 'lucide-react';
 import { useUniversityStore } from '../hooks/useUniversity';
 import { getUniversityTheme, themeCssVars } from '../theme/universityThemes';
 import { UniversityStats } from './landing/UniversityStats';
+import { SectionCurve } from './landing/SectionCurve';
 
 /**
  * Página de una universidad específica: hero con marca propia + tarjetas de procesos
@@ -22,6 +23,7 @@ export function UniversityPage() {
   const { universidad: codigo } = useParams<{ universidad: string }>();
   const { registro, loading, error, loadRegistro, setActiva } = useUniversityStore();
   const [logoFailed, setLogoFailed] = useState(false);
+  const [aulaIconFailed, setAulaIconFailed] = useState(false);
 
   useEffect(() => {
     loadRegistro();
@@ -35,6 +37,7 @@ export function UniversityPage() {
 
   useEffect(() => {
     setLogoFailed(false);
+    setAulaIconFailed(false);
   }, [universidad?.codigo]);
 
   if (loading && !universidad) {
@@ -170,7 +173,7 @@ export function UniversityPage() {
                 )}
               </div>
 
-              <h1 className="font-display text-4xl sm:text-5xl md:text-7xl font-black tracking-tightest leading-[0.95] [text-shadow:0_4px_20px_rgba(0,0,0,0.35)]">
+              <h1 className="font-display text-display-tight text-4xl sm:text-5xl md:text-7xl font-black [text-shadow:0_4px_20px_rgba(0,0,0,0.35)]">
                 {universidad.nombreCorto}
               </h1>
 
@@ -186,6 +189,9 @@ export function UniversityPage() {
             </div>
           </div>
         </div>
+
+        {/* Divisor curvo hacia el contenido (blanco, mismo tono que bg-andean-white) */}
+        <SectionCurve fill="#ffffff" />
       </section>
 
       {/* Stats del banco de preguntas — carga perezosa (getConfig), con skeleton */}
@@ -193,7 +199,7 @@ export function UniversityPage() {
 
       {/* Tarjetas de procesos disponibles */}
       <section className="max-w-5xl mx-auto px-4 pt-10 pb-12 md:pt-14 md:pb-16">
-        <h2 className="font-display text-2xl font-bold text-slate-800 mb-6 text-center">
+        <h2 className="font-display text-display-tight text-2xl font-bold text-slate-800 mb-6 text-center">
           ¿Qué quieres practicar hoy?
         </h2>
         <div className="grid sm:grid-cols-2 gap-5">
@@ -203,7 +209,7 @@ export function UniversityPage() {
               <button
                 key={card.key}
                 onClick={() => navigate(card.to)}
-                className="uni-process-card group relative text-left card-elevated p-6 rounded-2xl border-2 border-slate-200 hover:-translate-y-1 hover:shadow-elevation-3 transition-all focus:outline-none focus-visible:ring-4"
+                className="uni-process-card shadow-tinted shadow-tinted-hover group relative text-left card-elevated p-6 rounded-2xl border-2 border-slate-200 transition-all focus:outline-none focus-visible:ring-4"
                 style={{ '--tw-ring-color': 'var(--uni-primary-soft)' } as CSSProperties}
               >
                 {/* Acento del tema — el dorado/secundario solo aparece como detalle, nunca como fondo con texto */}
@@ -221,8 +227,8 @@ export function UniversityPage() {
                 <h3 className="font-display text-lg font-bold text-slate-800 mb-1">{card.title}</h3>
                 <p className="text-sm text-slate-500 mb-4">{card.description}</p>
                 <span
-                  className="inline-flex items-center gap-1.5 text-sm font-bold"
-                  style={{ color: 'var(--uni-primary-safe)' }}
+                  className="btn-glow !px-4 !py-2 text-sm text-white"
+                  style={{ backgroundColor: 'var(--uni-primary-safe)' }}
                 >
                   {card.cta}
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
@@ -230,6 +236,44 @@ export function UniversityPage() {
               </button>
             );
           })}
+
+          {/* Aula virtual — Próximamente: visualmente presente pero claramente no-activa;
+              navega al placeholder ComingSoon (ver docs/DIRECCION_DISENO_V3.md §Aulas virtuales). */}
+          <button
+            key="aula-virtual"
+            onClick={() => navigate(`/${universidad.codigo}/aula`)}
+            className="uni-process-card shadow-tinted shadow-tinted-hover group relative text-left card-elevated p-6 rounded-2xl border-2 border-dashed border-slate-300 transition-all focus:outline-none focus-visible:ring-4"
+            style={{ '--tw-ring-color': 'var(--uni-primary-soft)' } as CSSProperties}
+          >
+            <span
+              className="absolute top-5 right-5 inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-sm"
+              style={{ backgroundColor: 'var(--uni-secondary)', color: '#1e293b' }}
+            >
+              Próximamente
+            </span>
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-white shadow-md overflow-hidden"
+              style={{ backgroundColor: 'var(--uni-primary-safe)' }}
+            >
+              {!aulaIconFailed ? (
+                <img
+                  src="/simulauna/illustrations/aula-virtual.png"
+                  alt=""
+                  aria-hidden="true"
+                  onError={() => setAulaIconFailed(true)}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <MonitorPlay className="w-6 h-6" aria-hidden="true" />
+              )}
+            </div>
+            <h3 className="font-display text-lg font-bold text-slate-800 mb-1">Aula virtual</h3>
+            <p className="text-sm text-slate-500 mb-4">Clases en vivo, seguimiento de tu avance y material por curso — muy pronto.</p>
+            <span className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-400">
+              Ver más
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+            </span>
+          </button>
         </div>
       </section>
     </div>

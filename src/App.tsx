@@ -16,6 +16,8 @@ const BanqueoPorTema = lazy(() => import('./components/BanqueoPorTema').then(m =
 // BanqueoCepreuna es la base elegida para converger BanqueoCepreuna + SimulacroCepreuna en
 // la ruta única /:universidad/cepre (ver componente para el detalle de la decisión).
 const CepreSession = lazy(() => import('./components/BanqueoCepreuna').then(m => ({ default: m.BanqueoCepreuna })));
+// Placeholder del Aula virtual (LMS aún no construido, ver docs/DIRECCION_DISENO_V3.md §Aulas virtuales).
+const AulaComingSoon = lazy(() => import('./components/AulaComingSoon').then(m => ({ default: m.AulaComingSoon })));
 
 function RouteFallback() {
   return (
@@ -120,6 +122,7 @@ function App() {
             <Route path="/:universidad/banqueo" element={<UniversityGate><Banqueo /></UniversityGate>} />
             <Route path="/:universidad/banqueo-tema" element={<UniversityGate><BanqueoPorTema /></UniversityGate>} />
             <Route path="/:universidad/cepre" element={<UniversityGate><CepreSession /></UniversityGate>} />
+            <Route path="/:universidad/aula" element={<UniversityGate><AulaComingSoon /></UniversityGate>} />
 
             {/* Redirects legados EXACTOS (react-router-dom v6 prioriza rutas estáticas sobre
                 :universidad aunque estén declaradas después, así que estos paths ganan). */}
