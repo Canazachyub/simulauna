@@ -29,7 +29,7 @@ export function UniversityCardRegistered({ universidad, logoUrl, onClick }: Regi
     <button
       onClick={onClick}
       style={vars}
-      className="group relative flex flex-col overflow-hidden rounded-3xl bg-white border border-slate-100 shadow-elevation-2 hover:shadow-elevation-4 hover:-translate-y-1.5 transition-all duration-300 text-left focus:outline-none focus-visible:ring-4"
+      className="group relative flex flex-col overflow-hidden rounded-3xl bg-white border border-slate-100 shadow-tinted shadow-tinted-hover hover:-translate-y-1.5 transition-all duration-300 text-left focus:outline-none focus-visible:ring-4"
     >
       <div
         className="h-20 md:h-24 relative shrink-0"

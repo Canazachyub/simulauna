@@ -272,6 +272,67 @@ input, textarea, [contenteditable="true"] {
     background-color: var(--uni-primary-soft, rgba(0,61,122,0.06));
     border-color: var(--uni-secondary, #D4AF37);
   }
+
+  /* ==========================================================
+     Dirección de Diseño v3 — "Editorial Andino Premium"
+     Los 5 patrones premium (docs/DIRECCION_DISENO_V3.md)
+     ========================================================== */
+
+  /* Patrón 1 — CTA pill con glow del propio color (nunca sombra gris).
+     Toma --uni-primary si el contenedor lo define (temas institucionales);
+     en el Landing nacional cae al azul brand (#003D7A). Fallback plano
+     primero para navegadores sin soporte de rgb(from ...); la segunda
+     declaración lo sobreescribe donde el color relativo funciona. */
+  .btn-glow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 1rem 2rem;
+    font-weight: 700;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 8px 25px rgba(0,61,122,0.30);
+    box-shadow: 0 8px 25px rgb(from var(--uni-primary, #003D7A) r g b / 0.30);
+  }
+  .btn-glow:hover,
+  .btn-glow:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0,61,122,0.45);
+    box-shadow: 0 12px 32px rgb(from var(--uni-primary, #003D7A) r g b / 0.45);
+  }
+  .btn-glow:active { transform: translateY(0); }
+
+  /* Patrón 2 — sombras tintadas en tarjetas (doble capa, nunca negro puro).
+     Mismo mecanismo de variable: dentro de una tarjeta de universidad con
+     --uni-primary inyectado, el tinte adopta el color institucional real. */
+  .shadow-tinted {
+    box-shadow: 0 16px 32px rgba(0,61,122,.18), 0 4px 12px rgba(0,61,122,.10);
+    box-shadow:
+      0 16px 32px rgb(from var(--uni-primary, #003D7A) r g b / 0.18),
+      0 4px 12px rgb(from var(--uni-primary, #003D7A) r g b / 0.10);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .shadow-tinted-hover:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 24px 44px rgba(0,61,122,.24), 0 6px 16px rgba(0,61,122,.14);
+    box-shadow:
+      0 24px 44px rgb(from var(--uni-primary, #003D7A) r g b / 0.24),
+      0 6px 16px rgb(from var(--uni-primary, #003D7A) r g b / 0.14);
+  }
+
+  /* Patrón 4 — titulares "display tight": Fraunces 700-900,
+     letter-spacing -0.02em, line-height 1.1–1.2. */
+  .text-display-tight {
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  /* Navbar sticky del Landing */
+  .navbar-shadow-soft {
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
 }
 
 @keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }

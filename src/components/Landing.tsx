@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ComponentType } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  ArrowRight, Sparkles, Target, Trophy, GraduationCap, ChevronDown,
+  ArrowRight, Sparkles, Trophy, GraduationCap, ChevronDown,
   Cog, HeartPulse, Landmark, UserPlus, Clock, TrendingUp,
-  Star, Quote, Zap, FileText, Award, UserCircle2, BookMarked,
+  Star, Quote, Zap, FileText, Award, BookMarked, Rocket,
 } from 'lucide-react';
 import { useUniversityStore } from '../hooks/useUniversity';
 import { getUniversityTheme, themeCssVars } from '../theme/universityThemes';
@@ -12,6 +12,8 @@ import {
   UniversityCardComingSoon,
   UniversityCardSkeleton,
 } from './landing/UniversityCards';
+import { LandingNavbar } from './landing/LandingNavbar';
+import { SectionCurve } from './landing/SectionCurve';
 
 // Universidades del carrusel: `codigo` identifica su tema institucional (ver
 // src/theme/universityThemes.ts) para TODAS — registradas y "Próximamente" por igual.
@@ -49,6 +51,22 @@ const ASSETS = {
   studentSil: '/simulauna/illustrations/student-silhouette.svg',
   compass: '/simulauna/illustrations/compass-geometry.svg',
   bulb: '/simulauna/illustrations/lightbulb-idea.svg',
+};
+
+/* -------------------------------------------------------------------------- */
+/*  Ilustraciones 3D nuevas (Dirección de Diseño v3) — AÚN NO GENERADAS.       */
+/*  Todo <img> que las use trae onError con fallback gracioso (oculta el      */
+/*  contenedor o cae a un ícono Lucide existente) para que el Landing se vea  */
+/*  perfecto con y sin estos assets.                                          */
+/* -------------------------------------------------------------------------- */
+const ASSETS_3D = {
+  // Mascota: un lobito muy estudioso (sin identidad andina en el personaje).
+  mascotaLobito: '/simulauna/illustrations/mascota-lobito.png',
+  cohete: '/simulauna/illustrations/cohete-despegue.png',
+  iconoElige: '/simulauna/illustrations/icono-elige.png',
+  iconoRegistro: '/simulauna/illustrations/icono-registro.png',
+  iconoPractica: '/simulauna/illustrations/icono-practica.png',
+  iconoPuntaje: '/simulauna/illustrations/icono-puntaje.png',
 };
 
 /* -------------------------------------------------------------------------- */
@@ -150,6 +168,99 @@ function StarTwinkle({ className = '', size = 14 }: { className?: string; size?:
 }
 
 /* -------------------------------------------------------------------------- */
+/*  Asteroide lineal (línea + cráteres) — decoración alrededor de la mascota  */
+/* -------------------------------------------------------------------------- */
+function AsteroidLine({ className = '', size = 20 }: { className?: string; size?: number }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      className={className}
+      aria-hidden="true"
+      fill="none"
+    >
+      <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="9" cy="9" r="1.3" fill="currentColor" />
+      <circle cx="15" cy="13.5" r="1" fill="currentColor" />
+      <circle cx="10.5" cy="16" r="0.8" fill="currentColor" />
+    </svg>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Mascota del hero — un lobito muy estudioso flotando entre asteroides.     */
+/*  La imagen 3D aún no existe: si falla la carga, el componente entero se    */
+/*  oculta (no placeholder feo) y la columna izquierda del hero ocupa todo   */
+/*  el ancho gracias al layout flex del contenedor padre.                     */
+/* -------------------------------------------------------------------------- */
+function HeroMascot() {
+  const [broken, setBroken] = useState(false);
+  if (broken) return null;
+
+  return (
+    <div className="hidden lg:flex relative w-[380px] xl:w-[440px] h-[420px] xl:h-[460px] shrink-0 items-center justify-center">
+      {/* glow detrás */}
+      <div className="absolute inset-0 m-auto w-[340px] h-[340px] rounded-[45%_55%_40%_60%/55%_45%_60%_40%] bg-brand-accent/25 blur-3xl animate-blob-morph pointer-events-none" />
+
+      {/* asteroides / estrellas lineales alrededor */}
+      <StarTwinkle className="absolute top-4 left-2 text-brand-accent-300 animate-star-twinkle" size={18} />
+      <StarTwinkle className="absolute bottom-16 right-2 text-white animate-star-twinkle delay-300" size={14} />
+      <AsteroidLine className="absolute top-20 right-0 text-white/70 animate-float-slow delay-150" size={26} />
+      <AsteroidLine className="absolute bottom-6 left-6 text-brand-accent-200/80 animate-float-y delay-500" size={20} />
+
+      <img
+        src={ASSETS_3D.mascotaLobito}
+        alt="Mascota SimulaUNA: un lobito muy estudioso"
+        loading="lazy"
+        className="relative z-10 w-[280px] xl:w-[320px] max-h-full object-contain animate-float-y select-none drop-shadow-2xl pointer-events-none"
+        onError={() => setBroken(true)}
+      />
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Cohete 3D despegando junto a los números de la franja "en números".      */
+/*  Oculto en móvil; si la imagen aún no existe, no deja hueco (onError).     */
+/* -------------------------------------------------------------------------- */
+function CoheteFloat() {
+  const [broken, setBroken] = useState(false);
+  if (broken) return null;
+  return (
+    <img
+      src={ASSETS_3D.cohete}
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      className="hidden md:block absolute right-6 lg:right-14 top-1/2 -translate-y-1/2 w-28 lg:w-36 opacity-90 animate-float-y pointer-events-none select-none drop-shadow-2xl"
+      onError={() => setBroken(true)}
+    />
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Ícono 3D de un paso de "Cómo funciona" con caída elegante a Lucide.       */
+/*  Las ilustraciones 3D (icono-elige.png, etc.) aún no existen: mientras     */
+/*  no estén, onError cae al ícono Lucide que ya usábamos — cero placeholders */
+/*  rotos.                                                                    */
+/* -------------------------------------------------------------------------- */
+function StepIcon({ src, fallback: Fallback }: { src: string; fallback: ComponentType<{ className?: string }> }) {
+  const [broken, setBroken] = useState(false);
+  if (broken) return <Fallback className="w-6 h-6" />;
+  return (
+    <img
+      src={src}
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      className="w-9 h-9 object-contain"
+      onError={() => setBroken(true)}
+    />
+  );
+}
+
+/* -------------------------------------------------------------------------- */
 /*  Scroll suave a una sección por id, respetando prefers-reduced-motion      */
 /* -------------------------------------------------------------------------- */
 function scrollToSection(id: string) {
@@ -186,6 +297,8 @@ export function Landing() {
 
   return (
     <div className="min-h-screen bg-[#FDFBF5] text-slate-800 font-sans overflow-x-hidden">
+      <LandingNavbar />
+
       {/* ==================================================================== */}
       {/*  1. HERO — cinematic                                                 */}
       {/* ==================================================================== */}
@@ -246,18 +359,19 @@ export function Landing() {
         {/* Overlay oscuro inferior para legibilidad sobre montañas */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none z-[1]" />
 
-        {/* Contenido */}
-        <div className="relative container mx-auto px-4 sm:px-6 py-20 md:py-28 grid lg:grid-cols-12 gap-10 lg:gap-12 items-center w-full z-20">
+        {/* Contenido — flex (no grid): si la mascota falla al cargar, la
+            columna izquierda ocupa naturalmente todo el ancho, sin huecos. */}
+        <div className="relative container mx-auto px-4 sm:px-6 py-20 md:py-28 flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-14 w-full z-20">
           {/* LEFT */}
-          <div className="lg:col-span-6 animate-fade-up">
+          <div className="flex-1 min-w-0 animate-fade-up">
             {/* Pill */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs md:text-sm font-medium text-white shadow-sm">
               <GraduationCap className="w-4 h-4 text-brand-accent-300" />
               <span>Plataforma nacional de simulacros de admisión</span>
             </div>
 
-            {/* H1 gigante */}
-            <h1 className="mt-6 font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tightest text-white drop-shadow-2xl [text-shadow:0_4px_20px_rgba(0,0,0,0.7)]">
+            {/* H1 gigante — display tight (patrón 4: Fraunces 700-900, -0.02em, 1.1-1.2) */}
+            <h1 className="mt-6 font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-display-tight text-white drop-shadow-2xl [text-shadow:0_4px_20px_rgba(0,0,0,0.7)]">
               Prepárate
               <br />
               para la <span className="gradient-text-gold" style={{ color: '#D4AF37' }}>universidad</span>
@@ -297,12 +411,31 @@ export function Landing() {
               <strong className="text-white">Gratis. Serio. Tuyo.</strong>
             </p>
 
+            {/* Fila de stats reales */}
+            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+              {[
+                { v: `${UNIVERSITY_LOGOS.length}`, l: 'universidades mapeadas' },
+                { v: '+2,000', l: 'preguntas reales' },
+                { v: '100%', l: 'gratis' },
+              ].map((s) => (
+                <div key={s.l} className="flex items-baseline gap-1.5">
+                  <span className="font-display text-2xl md:text-3xl font-black text-brand-accent-400 [text-shadow:0_1px_4px_rgba(0,0,0,0.5)]">
+                    {s.v}
+                  </span>
+                  <span className="text-xs md:text-sm font-semibold text-white/80 uppercase tracking-wide">
+                    {s.l}
+                  </span>
+                </div>
+              ))}
+            </div>
+
             {/* CTAs */}
             <div className="mt-9 flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={() => scrollToSection('universidades')}
-                  className="btn-accent-gold shine-hover inline-flex items-center justify-center gap-2 text-lg px-8 py-4 rounded-xl font-bold bg-brand-accent-500 text-brand-primary-900 shadow-xl shadow-brand-accent-500/30 hover:bg-brand-accent-400 hover:-translate-y-0.5 transition-all min-h-[44px]"
+                  style={{ '--uni-primary': '#D4AF37' } as CSSProperties}
+                  className="btn-glow shine-hover text-lg bg-brand-accent-500 text-brand-primary-900 hover:bg-brand-accent-400 min-h-[44px]"
                 >
                   <GraduationCap className="w-5 h-5" />
                   Elige tu universidad
@@ -310,7 +443,7 @@ export function Landing() {
                 </button>
                 <button
                   onClick={() => scrollToSection('como-funciona')}
-                  className="inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-xl px-6 py-4 text-base transition-all min-h-[44px]"
+                  className="inline-flex items-center justify-center gap-2 bg-white/15 border-2 border-white/60 text-white font-bold hover:bg-white/30 hover:border-white backdrop-blur-sm shadow-xl rounded-full px-6 py-4 text-base transition-all min-h-[44px]"
                 >
                   Ver cómo funciona
                 </button>
@@ -353,175 +486,11 @@ export function Landing() {
                 </div>
               </div>
             </div>
-
-            {/* Trust badges */}
-            <div className="mt-8 flex flex-wrap gap-2">
-              {['+2,000 preguntas reales', `${UNIVERSITY_LOGOS.length} universidades mapeadas`, '2 disponibles hoy'].map((t) => (
-                <span
-                  key={t}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/40 text-white font-bold text-xs shadow-lg [text-shadow:0_1px_3px_rgba(0,0,0,0.6)]"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-brand-accent-400" />
-                  {t}
-                </span>
-              ))}
-            </div>
           </div>
 
-          {/* RIGHT — mockup cinematográfico */}
-          <div className="lg:col-span-6 relative h-[500px] md:h-[560px] animate-slide-in-right">
-            {/* glow detrás */}
-            <div className="absolute top-10 right-6 w-[420px] h-[420px] rounded-[45%_55%_40%_60%/55%_45%_60%_40%] bg-brand-accent/30 blur-3xl animate-blob-morph" />
-
-            {/* Ilustraciones educativas decorativas */}
-            <img
-              src={ASSETS.formulas}
-              alt=""
-              aria-hidden="true"
-              className="absolute -top-4 right-2 w-48 opacity-30 animate-float-y pointer-events-none select-none"
-            />
-            <img
-              src={ASSETS.atom}
-              alt=""
-              aria-hidden="true"
-              className="absolute bottom-8 -left-6 w-32 opacity-40 animate-spin-slow pointer-events-none select-none"
-            />
-            <img
-              src={ASSETS.books}
-              alt=""
-              aria-hidden="true"
-              className="absolute top-1/2 -right-4 w-24 opacity-40 animate-float-slow delay-300 pointer-events-none select-none"
-            />
-
-            {/* Score card principal */}
-            <div className="absolute top-0 right-0 md:right-4 w-[320px] md:w-[380px] rounded-3xl bg-white shadow-[0_30px_60px_-20px_rgba(0,0,0,0.45)] border border-white p-6 transition-transform hover:-translate-y-0.5">
-              <div className="flex items-center justify-between mb-5">
-                <div className="flex items-center gap-2.5">
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
-                    style={{ backgroundColor: '#D4AF37', color: '#002458' }}
-                  >
-                    <UserCircle2 className="w-6 h-6" strokeWidth={2.2} />
-                  </div>
-                  <div>
-                    <p className="text-[11px] text-slate-500 font-medium uppercase tracking-wider">Simulacro 03</p>
-                    <p className="text-sm font-bold text-slate-900">Ingenierías</p>
-                  </div>
-                </div>
-                <span
-                  className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full"
-                  style={{ backgroundColor: '#D1FAE5', color: '#047857' }}
-                >
-                  Excelente
-                </span>
-              </div>
-
-              {/* Anillo + lista */}
-              <div className="flex items-center gap-5">
-                <div className="relative w-[140px] h-[140px] flex-shrink-0">
-                  <svg viewBox="0 0 180 180" className="w-full h-full -rotate-90">
-                    <circle cx="90" cy="90" r="76" fill="none" stroke="#F7EDCA" strokeWidth="12" />
-                    <circle
-                      cx="90"
-                      cy="90"
-                      r="76"
-                      fill="none"
-                      stroke="#D4AF37"
-                      strokeWidth="12"
-                      strokeLinecap="round"
-                      strokeDasharray={`${2 * Math.PI * 76 * 0.82} ${2 * Math.PI * 76}`}
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="font-display text-4xl font-black leading-none" style={{ color: '#001f3f' }}>2450</span>
-                    <span className="text-[11px] font-medium mt-1" style={{ color: '#64748b' }}>/ 3000</span>
-                  </div>
-                </div>
-
-                <div className="flex-1 space-y-2.5">
-                  {[
-                    { n: 'Matemática', v: 85, gradient: 'linear-gradient(90deg, #0066CC 0%, #003D7A 100%)' },
-                    { n: 'Física', v: 72, gradient: 'linear-gradient(90deg, #F4A261 0%, #E67E22 100%)' },
-                    { n: 'Química', v: 78, gradient: 'linear-gradient(90deg, #34D399 0%, #059669 100%)' },
-                    { n: 'R. Verbal', v: 90, gradient: 'linear-gradient(90deg, #F4CF5F 0%, #D4AF37 100%)' },
-                    { n: 'R. Mat.', v: 88, gradient: 'linear-gradient(90deg, #FB7185 0%, #E11D48 100%)' },
-                  ].map((s) => (
-                    <div key={s.n}>
-                      <div className="flex justify-between text-[11px] mb-1">
-                        <span className="font-semibold" style={{ color: '#334155' }}>{s.n}</span>
-                        <span className="font-bold" style={{ color: '#0f172a' }}>{s.v}%</span>
-                      </div>
-                      <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: '#F1F5F9' }}>
-                        <div
-                          className="h-full rounded-full"
-                          style={{ width: `${s.v}%`, backgroundImage: s.gradient }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Footer chips */}
-              <div className="mt-5 flex flex-wrap gap-2">
-                <span
-                  className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full border"
-                  style={{ backgroundColor: '#ECFDF5', color: '#047857', borderColor: '#A7F3D0' }}
-                >
-                  <Target className="w-3 h-3" /> 58/60 correctas
-                </span>
-                <span
-                  className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full border"
-                  style={{ backgroundColor: '#F0F7FF', color: '#003D7A', borderColor: '#B3D4F2' }}
-                >
-                  <Clock className="w-3 h-3" /> 2h 12m
-                </span>
-              </div>
-            </div>
-
-            {/* Preview pregunta */}
-            <div className="absolute bottom-0 left-0 md:left-2 w-[280px] rounded-2xl bg-white shadow-[0_20px_40px_-12px_rgba(0,0,0,0.35)] border border-slate-100 p-4 transition-transform hover:-translate-y-0.5">
-              <div className="flex items-center gap-2 mb-2">
-                <span
-                  className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded"
-                  style={{ backgroundColor: '#003D7A', color: '#ffffff' }}
-                >
-                  Pregunta 12
-                </span>
-                <span className="text-[10px] font-semibold" style={{ color: '#64748b' }}>
-                  Álgebra · 50 pts
-                </span>
-              </div>
-              <p className="text-xs text-slate-800 leading-relaxed mb-3 font-medium">
-                Si x² − 5x + 6 = 0, ¿cuál es la suma de las raíces?
-              </p>
-              <div className="space-y-1.5">
-                {[
-                  { l: 'A) 5', active: true },
-                  { l: 'B) 6', active: false },
-                  { l: 'C) −5', active: false },
-                ].map((o) => (
-                  <div
-                    key={o.l}
-                    className="text-[11px] px-2.5 py-2 rounded-md border font-medium shadow-sm"
-                    style={
-                      o.active
-                        ? { borderColor: '#003D7A', backgroundColor: '#F0F7FF', color: '#002458', fontWeight: 700 }
-                        : { borderColor: '#E2E8F0', color: '#475569', backgroundColor: '#ffffff' }
-                    }
-                  >
-                    {o.l}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Badge dorado flotante */}
-            <div className="absolute top-6 -left-2 md:left-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-amber-400 text-slate-900 font-bold border-2 border-amber-300 shadow-lg">
-              <Trophy className="w-4 h-4" />
-              <span className="text-xs font-black uppercase tracking-wider">Nuevo récord</span>
-            </div>
-          </div>
+          {/* RIGHT — mascota lobito flotando (Dirección v3 §Hero); se auto-oculta
+              si la imagen 3D aún no existe (ver HeroMascot / onError). */}
+          <HeroMascot />
         </div>
 
         {/* Scroll indicator */}
@@ -529,6 +498,9 @@ export function Landing() {
           <span className="font-mono text-[10px] text-white font-bold tracking-[0.3em] drop-shadow-lg [text-shadow:0_1px_3px_rgba(0,0,0,0.7)]">SCROLL</span>
           <ChevronDown className="w-4 h-4 text-white animate-bounce drop-shadow-lg" />
         </div>
+
+        {/* Divisor curvo hacia la sección "Universidades disponibles" (crema) */}
+        <SectionCurve fill="#fefaf3" heightClassName="h-10 md:h-20" />
       </section>
 
       {/* ==================================================================== */}
@@ -543,7 +515,7 @@ export function Landing() {
             >
               <GraduationCap className="w-3.5 h-3.5" /> Para todos los postulantes del Perú
             </span>
-            <h2 className="font-display text-3xl md:text-4xl font-black text-slate-900 leading-tight">
+            <h2 className="font-display text-3xl md:text-4xl font-black text-slate-900 text-display-tight">
               Universidades disponibles
             </h2>
             <p className="mt-2 text-slate-600 text-sm md:text-base">
@@ -615,7 +587,7 @@ export function Landing() {
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-accent-500/15 border border-brand-accent-400/40 text-brand-accent-300 text-xs font-bold uppercase tracking-[0.2em] mb-5">
               <Sparkles className="w-3.5 h-3.5" /> Proceso simple
             </span>
-            <h2 className="font-display text-5xl md:text-6xl font-black gradient-text-gold leading-[1.02] tracking-tightest">
+            <h2 className="font-display text-5xl md:text-6xl font-black gradient-text-gold text-display-tight">
               4 pasos y listo
             </h2>
             <p className="mt-5 text-white/70 text-lg">
@@ -632,14 +604,17 @@ export function Landing() {
 
             <div className="grid md:grid-cols-4 gap-8 md:gap-6 relative">
               {[
-                { n: '01', icon: GraduationCap, t: 'Elige tu universidad', d: 'Selecciona tu universidad objetivo entre las disponibles hoy — más se suman pronto.' },
-                { n: '02', icon: UserPlus, t: 'Regístrate gratis', d: 'DNI, nombre y correo. Sin tarjetas ni compromisos.' },
-                { n: '03', icon: Clock, t: 'Practica con preguntas reales', d: 'Simulacro cronometrado con las mismas condiciones que tu examen.' },
-                { n: '04', icon: TrendingUp, t: 'Mira tu puntaje real', d: 'Calculado igual que tu universidad, con justificaciones y PDF descargable.' },
+                { n: '01', icon: GraduationCap, img: ASSETS_3D.iconoElige, t: 'Elige tu universidad', d: 'Selecciona tu universidad objetivo entre las disponibles hoy — más se suman pronto.' },
+                { n: '02', icon: UserPlus, img: ASSETS_3D.iconoRegistro, t: 'Regístrate gratis', d: 'DNI, nombre y correo. Sin tarjetas ni compromisos.' },
+                { n: '03', icon: Clock, img: ASSETS_3D.iconoPractica, t: 'Practica con preguntas reales', d: 'Simulacro cronometrado con las mismas condiciones que tu examen.' },
+                { n: '04', icon: TrendingUp, img: ASSETS_3D.iconoPuntaje, t: 'Mira tu puntaje real', d: 'Calculado igual que tu universidad, con justificaciones y PDF descargable.' },
               ].map((s, i) => {
                 const delayClass = (['delay-75', 'delay-150', 'delay-300', 'delay-500'] as const)[i];
+                // Ruptura del grid (patrón 5): offset vertical alterno en desktop,
+                // se pierde por completo en <768px (móvil siempre plano).
+                const staggerClass = i % 2 === 1 ? 'md:translate-y-6' : 'md:-translate-y-3';
                 return (
-                  <div key={s.n} className={`relative group animate-fade-up ${delayClass}`}>
+                  <div key={s.n} className={`relative group animate-fade-up ${delayClass} ${staggerClass}`}>
                     {/* Card */}
                     <div
                       className="relative rounded-2xl border border-white/15 p-6 pt-20 h-full shadow-2xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-brand-accent-400/60"
@@ -682,7 +657,7 @@ export function Landing() {
                             color: '#F4CF5F',
                           }}
                         >
-                          <s.icon className="w-6 h-6" />
+                          <StepIcon src={s.img} fallback={s.icon} />
                         </div>
                       </div>
 
@@ -710,6 +685,9 @@ export function Landing() {
             </div>
           </div>
         </div>
+
+        {/* Divisor curvo hacia "Tres áreas, una meta" (blanco) */}
+        <SectionCurve fill="#ffffff" flip />
       </section>
 
       {/* ==================================================================== */}
@@ -723,7 +701,7 @@ export function Landing() {
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary-50 border border-brand-primary-200 text-brand-primary-700 text-xs font-bold uppercase tracking-[0.2em] mb-5">
               Áreas académicas
             </span>
-            <h2 className="font-display text-5xl md:text-6xl font-black text-slate-900 leading-[1.02] tracking-tightest">
+            <h2 className="font-display text-5xl md:text-6xl font-black text-slate-900 text-display-tight">
               Tres áreas, <span className="gradient-text-brand italic">una meta</span>
             </h2>
           </div>
@@ -849,13 +827,14 @@ export function Landing() {
           className="hidden md:block absolute left-10 top-1/2 -translate-y-1/2 w-24 opacity-20 animate-float-y text-brand-accent pointer-events-none" />
         <img src="/simulauna/illustrations/compass-geometry.svg" alt="" aria-hidden="true"
           className="hidden md:block absolute right-10 bottom-10 w-32 opacity-15 animate-spin-slow pointer-events-none" />
+        <CoheteFloat />
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-16 animate-fade-up">
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-accent-500/15 border border-brand-accent-400/40 text-brand-accent-300 text-xs font-bold uppercase tracking-[0.2em] mb-5">
-              La plataforma en números
+              <Rocket className="w-3.5 h-3.5" aria-hidden="true" /> La plataforma en números
             </span>
-            <h2 className="font-display text-4xl md:text-5xl font-black tracking-tightest leading-[1.05]">
+            <h2 className="font-display text-4xl md:text-5xl font-black text-display-tight">
               Hecho con <span className="italic text-brand-accent-400 gradient-text-gold">amor</span> para estudiantes preuniversitarios del Perú
             </h2>
             <p className="mt-5 text-white/80 text-base md:text-lg font-medium leading-relaxed">
@@ -884,6 +863,9 @@ export function Landing() {
             ))}
           </div>
         </div>
+
+        {/* Divisor curvo hacia Features (slate-50) */}
+        <SectionCurve fill="#f8fafc" />
       </section>
 
       {/* ==================================================================== */}
@@ -895,7 +877,7 @@ export function Landing() {
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary-50 border border-brand-primary-200 text-brand-primary-700 text-xs font-bold uppercase tracking-[0.2em] mb-5">
               Por qué SimulaUNA
             </span>
-            <h2 className="font-display text-5xl md:text-6xl font-black text-slate-900 leading-[1.02] tracking-tightest">
+            <h2 className="font-display text-5xl md:text-6xl font-black text-slate-900 text-display-tight">
               Todo lo que necesitas <span className="gradient-text-brand italic">para destacar</span>
             </h2>
           </div>
@@ -927,7 +909,7 @@ export function Landing() {
             ].map((f, i) => (
               <div
                 key={f.title}
-                className={`group relative h-full rounded-3xl bg-white p-7 border border-slate-100 shadow-[0_1px_2px_0_rgba(15,23,42,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(15,23,42,0.18)] hover:-translate-y-1 transition-all duration-300 overflow-hidden animate-fade-up delay-${((i % 4 + 1) * 150) as 150 | 300 | 500 | 700}`}
+                className={`group relative h-full rounded-3xl bg-white p-7 border border-slate-100 shadow-tinted shadow-tinted-hover transition-all duration-300 overflow-hidden animate-fade-up delay-${((i % 4 + 1) * 150) as 150 | 300 | 500 | 700}`}
               >
                 <div className={`w-14 h-14 rounded-2xl ${f.color} flex items-center justify-center mb-5 shadow-sm group-hover:scale-110 transition-transform relative z-10`}>
                   <f.icon className="w-7 h-7" />
@@ -959,7 +941,7 @@ export function Landing() {
             >
               <Award className="w-3.5 h-3.5" /> Universidades del Perú
             </span>
-            <h2 className="font-display text-3xl md:text-4xl font-black text-slate-900 leading-tight">
+            <h2 className="font-display text-3xl md:text-4xl font-black text-slate-900 text-display-tight">
               Te preparamos para <span className="gradient-text-brand" style={{ color: '#003D7A' }}>todas</span>
             </h2>
             <p className="mt-2 text-slate-600 text-sm md:text-base">
@@ -1024,7 +1006,7 @@ export function Landing() {
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/70 backdrop-blur border border-brand-primary-200 text-brand-primary-700 text-xs font-bold uppercase tracking-[0.2em] mb-5">
               <Star className="w-3.5 h-3.5 fill-current" /> Voces de ingresantes
             </span>
-            <h2 className="font-display text-5xl md:text-6xl font-black gradient-text-brand leading-[1.02] tracking-tightest">
+            <h2 className="font-display text-5xl md:text-6xl font-black gradient-text-brand text-display-tight">
               Historias que inspiran
             </h2>
           </div>
@@ -1052,7 +1034,7 @@ export function Landing() {
             ].map((t, i) => (
               <div
                 key={t.name}
-                className={`relative bg-white rounded-3xl p-7 overflow-hidden shadow-[0_20px_40px_-15px_rgba(15,23,42,0.15)] hover:shadow-[0_30px_60px_-15px_rgba(15,23,42,0.22)] hover:-translate-y-1 transition-all duration-500 animate-fade-up delay-${((i + 1) * 150) as 150 | 300 | 500}`}
+                className={`relative bg-white rounded-3xl p-7 overflow-hidden shadow-tinted shadow-tinted-hover transition-all duration-500 animate-fade-up delay-${((i + 1) * 150) as 150 | 300 | 500}`}
               >
                 <Quote className="absolute top-5 right-5 w-10 h-10 text-brand-accent-300/60" />
                 <img
@@ -1086,6 +1068,9 @@ export function Landing() {
             ))}
           </div>
         </div>
+
+        {/* Divisor curvo hacia el CTA final (azul brand) */}
+        <SectionCurve fill="#003D7A" flip />
       </section>
 
       {/* ==================================================================== */}
@@ -1121,7 +1106,7 @@ export function Landing() {
             <Sparkles className="w-3.5 h-3.5" /> Tu primer simulacro es gratis
           </span>
 
-          <h2 className="font-display text-5xl md:text-7xl font-black tracking-tightest leading-[0.95] text-white [text-shadow:0_4px_16px_rgba(0,0,0,0.45)]">
+          <h2 className="font-display text-5xl md:text-7xl font-black text-display-tight text-white [text-shadow:0_4px_16px_rgba(0,0,0,0.45)]">
             Tu universidad te espera a
             <br />
             <span className="italic text-brand-accent-400 gradient-text-gold">60 preguntas</span>
@@ -1135,14 +1120,15 @@ export function Landing() {
           <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={() => navigate('/registro')}
-              className="btn-accent-gold shine-hover inline-flex items-center justify-center gap-2 text-xl px-10 py-5 rounded-xl font-black bg-brand-accent-500 text-brand-primary-900 shadow-2xl shadow-brand-accent-500/30 hover:bg-brand-accent-400 hover:-translate-y-0.5 transition-all"
+              style={{ '--uni-primary': '#D4AF37' } as CSSProperties}
+              className="btn-glow shine-hover text-xl bg-brand-accent-500 text-brand-primary-900 font-black hover:bg-brand-accent-400"
             >
               Registrarme ahora
               <ArrowRight className="w-6 h-6" />
             </button>
             <button
               onClick={handleWhatsAppClick}
-              className="inline-flex items-center justify-center gap-2 px-8 py-5 rounded-xl bg-white/10 text-white font-bold border-2 border-white/30 backdrop-blur hover:bg-white/20 transition-all"
+              className="inline-flex items-center justify-center gap-2 px-8 py-5 rounded-full bg-white/10 text-white font-bold border-2 border-white/30 backdrop-blur hover:bg-white/20 transition-all"
             >
               Hablar por WhatsApp
             </button>
