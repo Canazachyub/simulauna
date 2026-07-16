@@ -5,11 +5,43 @@ import { useUniversityStore } from '../hooks/useUniversity';
 import { useStopwatch } from '../hooks/useTimer';
 import { Question } from './Question';
 import { resolveThemeVars } from '../utils/universityTheme';
+import { CoachTour, type CoachTourStep } from './onboarding/CoachTour';
 import {
   Loader2, ChevronLeft, ChevronRight, CheckCircle,
   Clock, List, FileCheck, AlertTriangle, X, ChevronDown, Sparkles, AlarmClockCheck
 } from 'lucide-react';
 import clsx from 'clsx';
+
+/** Tour de primera vez del simulacro (ver src/components/onboarding/CoachTour.tsx). Los
+ * selectores apuntan a los `data-tour="quiz-*"` del header más abajo. En móvil el botón
+ * "Calificar" del header está oculto (`hidden sm:inline-flex`) — CoachTour detecta el
+ * elemento con tamaño 0 y degrada ese paso a tarjeta centrada sin halo. */
+const SIMULACRO_TOUR_STEPS: CoachTourStep[] = [
+  {
+    title: '¡Hola! Soy tu guía',
+    text: 'Te muestro rapidito cómo funciona tu simulacro antes de que empieces a resolver.',
+  },
+  {
+    selector: '[data-tour="quiz-cronometro"]',
+    title: 'Tu tiempo corre aquí',
+    text: 'El cronómetro cuenta desde que inicias. Míralo de reojo para no pasarte del tiempo recomendado.',
+  },
+  {
+    selector: '[data-tour="quiz-navegador"]',
+    title: 'Salta a cualquier pregunta',
+    text: 'Abre el navegador para revisar o cambiar de pregunta cuando quieras, sin perder tus respuestas.',
+  },
+  {
+    selector: '[data-tour="quiz-progreso"]',
+    title: 'Tu avance en un vistazo',
+    text: 'Esta barra crece con cada pregunta que respondes, así sabes cuánto te falta.',
+  },
+  {
+    selector: '[data-tour="quiz-calificar"]',
+    title: 'Cuando termines, califica aquí',
+    text: 'Puedes calificar en cualquier momento; te avisamos si dejas preguntas sin responder.',
+  },
+];
 
 export function Quiz() {
   const navigate = useNavigate();
@@ -236,6 +268,14 @@ export function Quiz() {
 
   return (
     <div className="min-h-screen bg-andean-white relative pb-24" style={themeVars}>
+      {/* Tour de primera vez: se activa apenas el simulacro está listo/en progreso (no
+          durante la carga) y sólo si nunca se vio (localStorage `simulauna_tour_simulacro`). */}
+      <CoachTour
+        name="simulacro"
+        steps={SIMULACRO_TOUR_STEPS}
+        active={status === 'ready' || status === 'in_progress'}
+      />
+
       {/* Spotlight dorado sutil arriba */}
       <div
         className="absolute inset-x-0 top-0 h-96 spotlight-gold pointer-events-none"
@@ -296,7 +336,7 @@ export function Quiz() {
           </div>
 
           {/* Centro: progreso ultra fino + porcentaje */}
-          <div className="flex-1 flex flex-col items-stretch gap-1 min-w-0 px-2">
+          <div className="flex-1 flex flex-col items-stretch gap-1 min-w-0 px-2" data-tour="quiz-progreso">
             <div className="flex items-center gap-2">
               <div className="flex-1 h-1.5 rounded-full bg-slate-100 overflow-hidden">
                 <div
@@ -332,6 +372,7 @@ export function Quiz() {
                     : 'text-slate-600 hover:bg-slate-100'
               )}
               aria-label={`Tiempo transcurrido ${formattedTime}${isTimeCritical ? ', superaste la duración recomendada' : isTimeWarning ? ', te acercas a la duración recomendada' : ''}`}
+              data-tour="quiz-cronometro"
             >
               {isTimeWarning || isTimeCritical ? (
                 <AlarmClockCheck className={clsx('w-3.5 h-3.5', isTimeCritical ? 'text-red-500' : 'text-amber-500', 'animate-pulse')} aria-hidden="true" />
@@ -352,6 +393,7 @@ export function Quiz() {
               onClick={() => setShowNavigator(true)}
               className="p-2 rounded-md text-slate-600 hover:bg-slate-100 transition-colors"
               aria-label="Abrir navegador de preguntas"
+              data-tour="quiz-navegador"
             >
               <List className="w-4 h-4" />
             </button>
@@ -360,6 +402,7 @@ export function Quiz() {
               onClick={() => setShowFinishModal(true)}
               className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium text-slate-700 hover:bg-slate-100 transition-colors"
               aria-label="Calificar examen"
+              data-tour="quiz-calificar"
             >
               <FileCheck className="w-3.5 h-3.5" />
               <span>Calificar</span>

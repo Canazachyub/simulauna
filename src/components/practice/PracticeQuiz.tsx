@@ -227,59 +227,85 @@ export function PracticeQuiz({
                   : 'bg-gradient-to-r from-red-50 to-orange-50 border border-red-200'
               )}
             >
-              <div className="flex items-center gap-3 mb-2">
-                <span
-                  className={clsx(
-                    'flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center animate-bounce-in',
-                    currentAnswer.isCorrect ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'
+              <div className="flex items-start gap-3">
+                {/* Reacción del lobito — puramente decorativa (aria-hidden): el feedback
+                    accesible ya está en el texto de al lado. No bloquea la justificación,
+                    sólo acompaña. En reduced-motion, la regla global de index.css neutraliza
+                    animate-bounce-in y aparece estático. */}
+                <div className="flex-shrink-0 flex flex-col items-center gap-1">
+                  <img
+                    src={currentAnswer.isCorrect ? '/simulauna/illustrations/lobito-celebra.webp' : '/simulauna/illustrations/lobito-animo.webp'}
+                    alt=""
+                    aria-hidden="true"
+                    className="w-16 h-16 sm:w-20 sm:h-20 object-contain animate-bounce-in"
+                  />
+                  {currentAnswer.isCorrect && streak >= 3 && (
+                    <span
+                      className="chip bg-orange-100 text-orange-700 text-[10px] font-mono font-bold px-2 py-0.5 animate-bounce-in"
+                      aria-hidden="true"
+                    >
+                      <Flame className="w-3 h-3 fill-orange-500 text-orange-500" />
+                      ×{streak}
+                    </span>
                   )}
-                  aria-hidden="true"
-                >
-                  {currentAnswer.isCorrect ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
-                </span>
-                {currentAnswer.isCorrect ? (
-                  <span className="font-bold text-emerald-700">
-                    ¡Correcto!{streak >= 2 && <span className="ml-1.5 font-normal text-emerald-600">racha ×{streak}</span>}
-                  </span>
-                ) : (
-                  <span className="font-bold text-red-700">
-                    Incorrecto — la respuesta correcta es: {String.fromCharCode(65 + currentQuestion.correctAnswer)}
-                  </span>
-                )}
-              </div>
+                </div>
 
-              {currentQuestion.justification && (() => {
-                const { text, images } = parseJustification(currentQuestion.justification);
-                return (
-                  <div className="mt-3 p-3 bg-white/60 rounded-lg border border-white/80">
-                    <div className="flex items-start gap-2">
-                      <Lightbulb className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
-                      <div className="flex-1">
-                        <p className="font-semibold text-slate-700 text-sm mb-1">Justificación</p>
-                        {text && (
-                          <div
-                            className="text-slate-600 text-sm leading-relaxed"
-                            dangerouslySetInnerHTML={{ __html: renderFormattedText(text) }}
-                          />
-                        )}
-                        {images.length > 0 && (
-                          <div className="mt-3 space-y-2">
-                            {images.map((imgUrl, idx) => (
-                              <img
-                                key={idx}
-                                src={imgUrl}
-                                alt={`Imagen justificación ${idx + 1}`}
-                                className="max-w-full h-auto rounded-lg shadow-md border border-slate-200"
-                                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 mb-2 flex-wrap">
+                    <span
+                      className={clsx(
+                        'flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center animate-bounce-in',
+                        currentAnswer.isCorrect ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'
+                      )}
+                      aria-hidden="true"
+                    >
+                      {currentAnswer.isCorrect ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+                    </span>
+                    {currentAnswer.isCorrect ? (
+                      <span className="font-bold text-emerald-700">
+                        ¡Correcto!{streak >= 2 && <span className="ml-1.5 font-normal text-emerald-600">racha ×{streak}</span>}
+                      </span>
+                    ) : (
+                      <span className="font-bold text-red-700">
+                        Incorrecto — la respuesta correcta es: {String.fromCharCode(65 + currentQuestion.correctAnswer)}
+                      </span>
+                    )}
                   </div>
-                );
-              })()}
+
+                  {currentQuestion.justification && (() => {
+                    const { text, images } = parseJustification(currentQuestion.justification);
+                    return (
+                      <div className="mt-3 p-3 bg-white/60 rounded-lg border border-white/80">
+                        <div className="flex items-start gap-2">
+                          <Lightbulb className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                          <div className="flex-1">
+                            <p className="font-semibold text-slate-700 text-sm mb-1">Justificación</p>
+                            {text && (
+                              <div
+                                className="text-slate-600 text-sm leading-relaxed"
+                                dangerouslySetInnerHTML={{ __html: renderFormattedText(text) }}
+                              />
+                            )}
+                            {images.length > 0 && (
+                              <div className="mt-3 space-y-2">
+                                {images.map((imgUrl, idx) => (
+                                  <img
+                                    key={idx}
+                                    src={imgUrl}
+                                    alt={`Imagen justificación ${idx + 1}`}
+                                    className="max-w-full h-auto rounded-lg shadow-md border border-slate-200"
+                                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                                  />
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
             </div>
           )}
         </div>

@@ -5,11 +5,37 @@ import {
 } from 'lucide-react';
 import { AVAILABLE_COURSES, getBanqueoQuestions } from '../../../services/api';
 import { CourseSelector, type CourseOption } from '../../CourseSelector';
+import { CoachTour, type CoachTourStep } from '../../onboarding/CoachTour';
 import type { PracticeSelectStepProps, QuestionCount } from '../types';
 import clsx from 'clsx';
 
 const COURSE_OPTIONS: CourseOption[] = AVAILABLE_COURSES.map(c => ({ name: c }));
 const estTime = (n: number) => Math.ceil((n * 45) / 60);
+
+/** Tour de primera vez del Banqueo histórico (ver src/components/onboarding/CoachTour.tsx).
+ * Este SelectStep sólo se monta para el modo "banqueo" (practiceModes.ts), así que el tour
+ * es propio de esta pantalla y no de banqueoTema/CEPRE (que tienen su propio SelectStep). */
+const BANQUEO_TOUR_STEPS: CoachTourStep[] = [
+  {
+    title: '¡Hola! Soy tu guía',
+    text: 'Te muestro rapidito cómo funciona el Banqueo antes de que empieces a practicar.',
+  },
+  {
+    selector: '[data-tour="banqueo-curso"]',
+    title: 'Elige tu curso',
+    text: 'Busca por nombre o cambia entre vista lista y cuadrícula para encontrar tu curso más rápido.',
+  },
+  {
+    selector: '[data-tour="banqueo-cantidad"]',
+    title: 'Cantidad de preguntas',
+    text: 'Elige cuántas preguntas quieres practicar: rápido, balanceado o profundo.',
+  },
+  {
+    selector: '[data-tour="banqueo-feedback"]',
+    title: 'Feedback al toque',
+    text: 'Apenas respondas cada pregunta, te decimos si acertaste y por qué, con la justificación completa.',
+  },
+];
 
 /** SelecciÃ³n de filtros del banqueo histÃ³rico: sÃ³lo curso + cantidad de preguntas. */
 export function BanqueoCourseSelect({
@@ -28,6 +54,7 @@ export function BanqueoCourseSelect({
 
   return (
     <div className="min-h-screen bg-andean-white relative overflow-hidden py-8 px-4 pb-32">
+      <CoachTour name="banqueo" steps={BANQUEO_TOUR_STEPS} active />
       <img
         src="/simulauna/illustrations/study-hero.svg"
         alt=""
@@ -82,11 +109,11 @@ export function BanqueoCourseSelect({
           </p>
         </div>
 
-        <div className="mb-8 animate-fade-up" style={{ animationDelay: '120ms' }}>
+        <div className="mb-8 animate-fade-up" style={{ animationDelay: '120ms' }} data-tour="banqueo-curso">
           <CourseSelector courses={COURSE_OPTIONS} selected={selectedCourse || null} onSelect={setSelectedCourse} />
         </div>
 
-        <div className="card-elevated p-6 md:p-8 mb-8 animate-fade-up" style={{ animationDelay: '180ms' }}>
+        <div className="card-elevated p-6 md:p-8 mb-8 animate-fade-up" style={{ animationDelay: '180ms' }} data-tour="banqueo-cantidad">
           <div className="flex items-center gap-2 mb-4">
             <Zap className="w-5 h-5 text-brand-accent-600" />
             <h3 className="font-display text-lg font-bold text-slate-800">Cantidad de preguntas</h3>
@@ -160,6 +187,7 @@ export function BanqueoCourseSelect({
               onClick={handleStart}
               className="btn-accent-gold flex-1 sm:flex-none shine-hover"
               disabled={!selectedCourse || isLoading}
+              data-tour="banqueo-feedback"
             >
               {isLoading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
