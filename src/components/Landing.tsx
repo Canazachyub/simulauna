@@ -61,26 +61,26 @@ const ASSETS = {
 /* -------------------------------------------------------------------------- */
 const ASSETS_3D = {
   // Mascota: un lobito muy estudioso (sin identidad andina en el personaje).
-  mascotaLobito: '/simulauna/illustrations/mascota-lobito.png',
-  cohete: '/simulauna/illustrations/cohete-despegue.png',
+  mascotaLobito: '/simulauna/illustrations/mascota-lobito.webp',
+  cohete: '/simulauna/illustrations/cohete-despegue.webp',
   // Los íconos de pasos vuelven a ser Lucide (decisión del usuario: los PNG
   // pequeños se veían mal; solo se reemplazan ilustraciones grandes).
 };
 
 /* -------------------------------------------------------------------------- */
-/*  Fotografías reales — Unsplash (CDN)                                       */
+/*  Fondos "universo" propios (Tanda 2 — cero Unsplash/pravatar) y avatares    */
+/*  ilustrados de testimonios. Ver docs/DIRECCION_DISENO_V3.md §Tanda 2.       */
 /* -------------------------------------------------------------------------- */
-const PHOTOS = {
-  studyWoman: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&q=80&auto=format&fit=crop',
-  openBooks: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&q=80&auto=format&fit=crop',
-  graduation: 'https://images.unsplash.com/photo-1513258496099-48168024aec0?w=1200&q=80&auto=format&fit=crop',
-  studentLaptop: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1200&q=80&auto=format&fit=crop',
-  library: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200&q=80&auto=format&fit=crop',
-  books: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1200&q=80&auto=format&fit=crop',
-  peruMountain: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=80&auto=format&fit=crop',
-  libraryWoman: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=1600&q=80&auto=format&fit=crop',
-  examPerson: 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=1200&q=80&auto=format&fit=crop',
-  studyDesk: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200&q=80&auto=format&fit=crop',
+const UNIVERSO = {
+  nebulosa: '/simulauna/illustrations/bg-universo-nebulosa.webp',
+  constelacion: '/simulauna/illustrations/bg-universo-constelacion.webp',
+  despegue: '/simulauna/illustrations/bg-universo-despegue.webp',
+};
+
+const AVATARS = {
+  estudiante1: '/simulauna/illustrations/avatar-estudiante-1.webp',
+  estudiante2: '/simulauna/illustrations/avatar-estudiante-2.webp',
+  estudiante3: '/simulauna/illustrations/avatar-estudiante-3.webp',
 };
 
 /* -------------------------------------------------------------------------- */
@@ -240,6 +240,45 @@ function CoheteFloat() {
 }
 
 /* -------------------------------------------------------------------------- */
+/*  Mascota pequeña del CTA final — acompaña el botón sin estorbar (misma     */
+/*  lógica onError que HeroMascot: si la imagen no carga, no deja hueco).     */
+/* -------------------------------------------------------------------------- */
+function CtaMascot() {
+  const [broken, setBroken] = useState(false);
+  if (broken) return null;
+  return (
+    <img
+      src={ASSETS_3D.mascotaLobito}
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      className="hidden sm:block absolute -bottom-2 right-2 md:right-10 w-20 md:w-28 opacity-90 animate-float-y select-none drop-shadow-2xl pointer-events-none"
+      onError={() => setBroken(true)}
+    />
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Mascota del estado de error de "Universidades disponibles" — acompaña el  */
+/*  mensaje sin reemplazar el ícono semántico de alerta (con moderación:      */
+/*  esta es la segunda y última aparición nueva de la mascota, junto al CTA). */
+/* -------------------------------------------------------------------------- */
+function ErrorStateMascot() {
+  const [broken, setBroken] = useState(false);
+  if (broken) return null;
+  return (
+    <img
+      src={ASSETS_3D.mascotaLobito}
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      className="w-16 mx-auto mb-2 animate-float-y select-none drop-shadow-lg pointer-events-none"
+      onError={() => setBroken(true)}
+    />
+  );
+}
+
+/* -------------------------------------------------------------------------- */
 /*  Ícono de paso de "Cómo funciona": Lucide siempre (los PNG pequeños se     */
 /*  veían mal — decisión del usuario; los assets 3D quedan para ilustraciones */
 /*  grandes).                                                                 */
@@ -304,14 +343,13 @@ export function Landing() {
             backgroundRepeat: 'no-repeat',
           }}
         />
-        {/* Textura fotográfica sutil — mujer estudiando en biblioteca */}
+        {/* Fondo "universo" propio — nebulosa azul profundo con dorado/naranja */}
         <div
-          className="absolute inset-0 pointer-events-none opacity-[0.22]"
+          className="absolute inset-0 pointer-events-none opacity-40"
           style={{
-            backgroundImage: `url('${PHOTOS.libraryWoman}')`,
+            backgroundImage: `url('${UNIVERSO.nebulosa}')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            filter: 'blur(2px)',
           }}
         />
         {/* Overlay oscurecedor definitivo */}
@@ -523,6 +561,7 @@ export function Landing() {
 
           {!registroLoading && registro.length === 0 && registroError && (
             <div className="max-w-md mx-auto text-center rounded-2xl border border-amber-200 bg-amber-50 px-6 py-8">
+              <ErrorStateMascot />
               <p className="text-sm font-semibold text-amber-800">
                 No pudimos cargar el listado de universidades por ahora.
               </p>
@@ -803,6 +842,16 @@ export function Landing() {
       {/*  4. STATS BAND — números gigantes                                    */}
       {/* ==================================================================== */}
       <section className="relative py-24 md:py-28 bg-[#002458] bg-brand-primary-900 text-white overflow-hidden">
+        {/* Fondo "universo" propio — cohete despegando, azul profundo con dorado/naranja */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-45"
+          style={{
+            backgroundImage: `url('${UNIVERSO.despegue}')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <div className="absolute inset-0 bg-[#002458]/60 pointer-events-none" />
         <div className="absolute inset-0 andean-bold text-white/20 pointer-events-none" />
         <div className="absolute inset-0 bg-constellation opacity-30 pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(at_20%_30%,rgba(212,175,55,0.25),transparent_55%),radial-gradient(at_80%_70%,rgba(0,102,204,0.25),transparent_55%)] pointer-events-none" />
@@ -883,11 +932,12 @@ export function Landing() {
             </p>
           </div>
 
-          {/* Hero fotográfico de sección */}
+          {/* Banda "universo" propia de sección — galaxia azul profundo con dorado/naranja */}
           <div className="relative max-w-5xl mx-auto mb-16 rounded-3xl overflow-hidden aspect-[21/9] shadow-elevation-4">
             <img
-              src={PHOTOS.studyDesk}
-              alt="Estudiantes preparándose"
+              src="/simulauna/illustrations/bg-universo-galaxia.webp"
+              alt=""
+              aria-hidden="true"
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -986,7 +1036,7 @@ export function Landing() {
                       title={isRegistered ? u.name : `${u.name} · Próximamente`}
                       onClick={isRegistered ? () => navigate(`/${u.codigo}`) : undefined}
                       style={vars}
-                      className={`uni-hover-chip flex flex-col items-center gap-2 shrink-0 rounded-2xl px-4 py-3 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 focus-visible:grayscale-0 focus-visible:opacity-100 transition-all duration-300 focus:outline-none ${
+                      className={`uni-hover-chip flex flex-col items-center gap-2 shrink-0 rounded-2xl px-4 py-3 opacity-90 hover:opacity-100 focus-visible:opacity-100 transition-all duration-300 focus:outline-none ${
                         isRegistered ? 'cursor-pointer' : 'cursor-default'
                       }`}
                     >
@@ -1032,19 +1082,19 @@ export function Landing() {
                 name: 'María Q.',
                 career: 'Ingeniería de Sistemas · UNA Puno',
                 text: 'Practiqué varios meses con SimulaUNA y entré en primer puesto. Los exámenes pasados de mi universidad hicieron toda la diferencia en mi preparación.',
-                photo: 'https://i.pravatar.cc/150?img=47',
+                photo: AVATARS.estudiante1,
               },
               {
                 name: 'Diego A.',
                 career: 'Ingeniería Civil · UNSA Arequipa',
                 text: 'Me registré apenas vi que UNSA ya estaba disponible. El puntaje se calcula tal cual mi proceso de admisión, eso me dio confianza real.',
-                photo: 'https://i.pravatar.cc/150?img=13',
+                photo: AVATARS.estudiante2,
               },
               {
                 name: 'Rosa C.',
                 career: 'Derecho · postulante a San Marcos',
                 text: 'Mi universidad todavía figura como "Próximamente", pero el banqueo por tema ya me sirvió para identificar exactamente qué estudiar mientras se habilita.',
-                photo: 'https://i.pravatar.cc/150?img=32',
+                photo: AVATARS.estudiante3,
               },
             ].map((t, i) => (
               <div
@@ -1093,12 +1143,13 @@ export function Landing() {
       {/* ==================================================================== */}
       <section className="relative py-24 md:py-28 bg-[#003D7A] bg-mesh-brand animate-gradient overflow-hidden text-white">
         <img
-          src={PHOTOS.graduation}
+          src={UNIVERSO.constelacion}
           alt=""
           aria-hidden="true"
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
+          className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none"
         />
+        <div className="absolute inset-0 bg-[#003D7A]/50 pointer-events-none" />
         <div className="absolute inset-0 andean-bold text-white/20 pointer-events-none" />
         <div className="absolute inset-0 noise opacity-30 pointer-events-none" />
         <img
@@ -1155,6 +1206,9 @@ export function Landing() {
           </p>
           </div>
         </div>
+
+        {/* Mascota pequeña acompañando el CTA (Dirección v3: máx. 2 apariciones nuevas) */}
+        <CtaMascot />
       </section>
 
       {/* ==================================================================== */}

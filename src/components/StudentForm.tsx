@@ -13,14 +13,6 @@ import { resolveThemeVars } from '../utils/universityTheme';
 import { AreaSelector } from './AreaSelector';
 import type { AreaType, ProcessType } from '../types';
 
-const PHOTOS = {
-  desk: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1200&q=80&auto=format&fit=crop',
-  openBooks: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&q=80&auto=format&fit=crop',
-  graduation: 'https://images.unsplash.com/photo-1513258496099-48168024aec0?w=1200&q=80&auto=format&fit=crop',
-  library: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200&q=80&auto=format&fit=crop',
-  studyWoman: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&q=80&auto=format&fit=crop',
-};
-
 type BlockVariant = 'fraud' | 'cuota' | 'blocked';
 
 const WHATSAPP_BASE = 'https://wa.me/51900266810';
@@ -135,15 +127,6 @@ function RichBackground() {
           <path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" />
         </svg>
       ))}
-
-      {/* Warmth fotográfico */}
-      <img
-        src={PHOTOS.studyWoman}
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-        className="absolute top-0 right-0 w-1/2 h-full object-cover opacity-[0.08] pointer-events-none hidden lg:block"
-      />
     </>
   );
 }
@@ -594,13 +577,6 @@ export function StudentForm() {
             {/* Testimonial chip */}
             <div className="relative mt-8 flex justify-center">
               <div className="relative inline-flex items-center gap-3 px-4 py-2.5 rounded-full bg-white/90 backdrop-blur border border-slate-200 text-xs text-slate-800 shadow-sm max-w-full overflow-hidden">
-                <img
-                  src={PHOTOS.openBooks}
-                  alt=""
-                  aria-hidden="true"
-                  loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover opacity-[0.12] pointer-events-none rounded-full"
-                />
                 <div className="relative z-10 flex -space-x-1 shrink-0">
                   {[0, 1, 2].map((i) => (
                     <Star key={i} className="w-3.5 h-3.5 text-brand-accent fill-brand-accent" />

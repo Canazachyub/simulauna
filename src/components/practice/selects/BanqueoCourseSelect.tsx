@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import {
   ChevronRight, Loader2, AlertCircle, CheckCircle, Home, Sparkles,
   Target, LogOut, Zap, Timer, Clock, Brain
@@ -11,7 +11,7 @@ import clsx from 'clsx';
 const COURSE_OPTIONS: CourseOption[] = AVAILABLE_COURSES.map(c => ({ name: c }));
 const estTime = (n: number) => Math.ceil((n * 45) / 60);
 
-/** Selección de filtros del banqueo histórico: sólo curso + cantidad de preguntas. */
+/** SelecciÃ³n de filtros del banqueo histÃ³rico: sÃ³lo curso + cantidad de preguntas. */
 export function BanqueoCourseSelect({
   universidad, isAuthenticated, userDni, isLoading, error, onBack, onLogout, onSubmit
 }: PracticeSelectStepProps) {
@@ -29,7 +29,7 @@ export function BanqueoCourseSelect({
   return (
     <div className="min-h-screen bg-andean-white relative overflow-hidden py-8 px-4 pb-32">
       <img
-        src="/illustrations/study-hero.svg"
+        src="/simulauna/illustrations/study-hero.svg"
         alt=""
         aria-hidden="true"
         className="hidden lg:block absolute top-24 right-8 w-48 opacity-40 pointer-events-none"
@@ -47,10 +47,10 @@ export function BanqueoCourseSelect({
               type="button"
               onClick={onLogout}
               className="chip bg-white/70 hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 transition-colors font-sans"
-              title="Cerrar sesión"
+              title="Cerrar sesiÃ³n"
             >
               <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Cerrar sesión</span>
+              <span className="hidden sm:inline">Cerrar sesiÃ³n</span>
             </button>
           )}
         </div>
@@ -59,7 +59,7 @@ export function BanqueoCourseSelect({
           <div className="flex items-center gap-2 mb-3">
             <span className="chip bg-white/70 text-brand-primary-700 text-[10px] font-bold uppercase tracking-[0.18em] font-mono">
               <Target className="w-3 h-3" />
-              Práctica enfocada
+              PrÃ¡ctica enfocada
             </span>
             {isAuthenticated && userDni && (
               <span className="chip bg-emerald-50 text-emerald-700 text-[10px] font-mono">
@@ -70,7 +70,7 @@ export function BanqueoCourseSelect({
           </div>
           <h1 className="inline-flex items-center gap-3 font-display text-4xl md:text-5xl font-black text-brand-primary-800 gradient-text-brand leading-tight mb-3">
             <img
-              src="/illustrations/exam-paper.svg"
+              src="/simulauna/illustrations/exam-paper.svg"
               alt=""
               aria-hidden="true"
               className="w-12 h-12 opacity-80 pointer-events-none hidden sm:inline-block"
@@ -78,7 +78,7 @@ export function BanqueoCourseSelect({
             Elige tu curso
           </h1>
           <p className="font-sans text-lg text-slate-600 max-w-2xl">
-            Practica enfocado en un solo tema. Preguntas reales de exámenes anteriores UNAP.
+            Practica enfocado en un solo tema. Preguntas reales de exÃ¡menes anteriores UNAP.
           </p>
         </div>
 
@@ -93,7 +93,7 @@ export function BanqueoCourseSelect({
           </div>
           <div className="grid grid-cols-3 gap-3">
             {([
-              { count: 10 as QuestionCount, icon: Timer, label: 'Rápido' },
+              { count: 10 as QuestionCount, icon: Timer, label: 'RÃ¡pido' },
               { count: 15 as QuestionCount, icon: Target, label: 'Balanceado' },
               { count: 20 as QuestionCount, icon: Brain, label: 'Profundo' },
             ]).map(({ count, icon: Icon, label }) => {
@@ -166,7 +166,7 @@ export function BanqueoCourseSelect({
               ) : (
                 <>
                   <Sparkles className="w-5 h-5" />
-                  Comenzar práctica
+                  Comenzar prÃ¡ctica
                   <ChevronRight className="w-5 h-5" />
                 </>
               )}

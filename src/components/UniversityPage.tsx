@@ -270,7 +270,7 @@ export function UniversityPage() {
             >
               {!aulaIconFailed ? (
                 <img
-                  src="/simulauna/illustrations/aula-virtual.png"
+                  src="/simulauna/illustrations/aula-virtual.webp"
                   alt=""
                   aria-hidden="true"
                   onError={() => setAulaIconFailed(true)}

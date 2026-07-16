@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import {
   ChevronLeft, ChevronRight, Loader2, AlertCircle, Home, FileText,
   Sparkles, Target, Calendar, Layers, LogOut, Zap
@@ -13,16 +13,16 @@ type CepreSubStep = 'mode' | 'filters';
 type CepreMode = 'cuadernillo' | 'general';
 
 const AREA_LABELS: Record<'ING' | 'BIO' | 'SOC', string> = {
-  ING: 'Ingenierías',
-  BIO: 'Biomédicas',
+  ING: 'IngenierÃ­as',
+  BIO: 'BiomÃ©dicas',
   SOC: 'Sociales',
 };
 
 /**
- * Selección de filtros del banqueo CEPRE: primero el sub-modo (cuadernillo completo por
- * área+semana+curso, o curso general mezclando las 3 áreas), luego los filtros propios de
- * cada sub-modo. Se remonta cada vez que se vuelve al paso "select" (reset/logout), así que
- * siempre arranca de nuevo en la elección de sub-modo.
+ * SelecciÃ³n de filtros del banqueo CEPRE: primero el sub-modo (cuadernillo completo por
+ * Ã¡rea+semana+curso, o curso general mezclando las 3 Ã¡reas), luego los filtros propios de
+ * cada sub-modo. Se remonta cada vez que se vuelve al paso "select" (reset/logout), asÃ­ que
+ * siempre arranca de nuevo en la elecciÃ³n de sub-modo.
  */
 export function CepreSelect({
   universidad, isAuthenticated, isLoading, error, onBack, onLogout, onSubmit
@@ -65,10 +65,10 @@ export function CepreSelect({
                   type="button"
                   onClick={onLogout}
                   className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-red-600 transition-colors px-2 py-1 rounded-md hover:bg-red-50"
-                  title="Cerrar sesión"
+                  title="Cerrar sesiÃ³n"
                 >
                   <LogOut className="w-4 h-4" />
-                  Cerrar sesión
+                  Cerrar sesiÃ³n
                 </button>
               )}
             </div>
@@ -76,8 +76,8 @@ export function CepreSelect({
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-700 rounded-2xl mb-4 shadow-lg">
                 <Layers className="w-8 h-8 text-white" />
               </div>
-              <h1 className="text-2xl font-bold text-slate-800 mb-2">Elige el modo de práctica</h1>
-              <p className="text-slate-600">¿Cómo deseas practicar con las preguntas {cepreNombre}?</p>
+              <h1 className="text-2xl font-bold text-slate-800 mb-2">Elige el modo de prÃ¡ctica</h1>
+              <p className="text-slate-600">Â¿CÃ³mo deseas practicar con las preguntas {cepreNombre}?</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-4 mb-8">
@@ -92,10 +92,10 @@ export function CepreSelect({
                   <h3 className="text-lg font-bold text-slate-800">Cuadernillo</h3>
                 </div>
                 <p className="text-sm text-slate-600 mb-3">
-                  Practica con TODAS las preguntas de un cuadernillo específico (semana + área + curso).
+                  Practica con TODAS las preguntas de un cuadernillo especÃ­fico (semana + Ã¡rea + curso).
                 </p>
                 <div className="flex flex-wrap gap-1">
-                  <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded">Área</span>
+                  <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded">Ãrea</span>
                   <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded">Semana</span>
                   <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded">Curso</span>
                 </div>
@@ -113,7 +113,7 @@ export function CepreSelect({
                   <h3 className="text-lg font-bold text-slate-800">Curso General</h3>
                 </div>
                 <p className="text-sm text-slate-600 mb-3">
-                  Mezcla preguntas de las 3 áreas (ING + BIO + SOC) de un curso específico.
+                  Mezcla preguntas de las 3 Ã¡reas (ING + BIO + SOC) de un curso especÃ­fico.
                 </p>
                 <div className="flex flex-wrap gap-1">
                   <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">Curso</span>
@@ -140,8 +140,8 @@ export function CepreSelect({
   return (
     <div className="min-h-screen bg-andean-white relative overflow-hidden py-8 px-4 pb-32">
       <div className="absolute -top-24 -right-24 w-80 h-80 bg-mesh-gold opacity-30 rounded-full blur-3xl animate-blob-morph pointer-events-none hidden md:block" aria-hidden />
-      <img src="/illustrations/calculator.svg" alt="" aria-hidden="true" className="hidden md:block absolute top-24 right-10 w-40 opacity-35 animate-float-y pointer-events-none" />
-      <img src="/illustrations/atom.svg" alt="" aria-hidden="true" className="hidden lg:block absolute bottom-32 left-8 w-32 opacity-20 animate-spin-slow pointer-events-none" />
+      <img src="/simulauna/illustrations/calculator.svg" alt="" aria-hidden="true" className="hidden md:block absolute top-24 right-10 w-40 opacity-35 animate-float-y pointer-events-none" />
+      <img src="/simulauna/illustrations/atom.svg" alt="" aria-hidden="true" className="hidden lg:block absolute bottom-32 left-8 w-32 opacity-20 animate-spin-slow pointer-events-none" />
 
       <div className="max-w-4xl mx-auto relative z-10">
         <div className="flex items-center justify-between mb-6 animate-fade-up">
@@ -159,10 +159,10 @@ export function CepreSelect({
               type="button"
               onClick={onLogout}
               className="chip bg-white/70 hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 transition-colors font-sans"
-              title="Cerrar sesión"
+              title="Cerrar sesiÃ³n"
             >
               <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Cerrar sesión</span>
+              <span className="hidden sm:inline">Cerrar sesiÃ³n</span>
             </button>
           )}
         </div>
@@ -170,7 +170,7 @@ export function CepreSelect({
         <div className="mb-8 animate-fade-up" style={{ animationDelay: '60ms' }}>
           <div className="flex items-center gap-2 mb-3 flex-wrap">
             <span className="chip bg-brand-accent text-slate-900 text-[11px] font-bold uppercase tracking-[0.22em] font-mono border-2 border-brand-accent-400 shadow-elevation-1 px-3 py-1">
-              <img src="/illustrations/graduation-cap.svg" alt="" aria-hidden="true" className="w-6 h-6 inline-block pointer-events-none" />
+              <img src="/simulauna/illustrations/graduation-cap.svg" alt="" aria-hidden="true" className="w-6 h-6 inline-block pointer-events-none" />
               <Sparkles className="w-3 h-3" />
               {cepreNombre}
             </span>
@@ -184,8 +184,8 @@ export function CepreSelect({
           </h1>
           <p className="font-sans text-lg text-slate-600 max-w-2xl">
             {cepreMode === 'cuadernillo'
-              ? 'Elige área, semana y curso. Carga el cuadernillo completo con todas sus preguntas.'
-              : 'Elige tu curso. Mezcla preguntas de las 3 áreas (ING + BIO + SOC).'}
+              ? 'Elige Ã¡rea, semana y curso. Carga el cuadernillo completo con todas sus preguntas.'
+              : 'Elige tu curso. Mezcla preguntas de las 3 Ã¡reas (ING + BIO + SOC).'}
           </p>
         </div>
 
@@ -194,7 +194,7 @@ export function CepreSelect({
             <div className="card-elevated p-6 mb-6 animate-fade-up" style={{ animationDelay: '120ms' }}>
               <div className="flex items-center gap-2 mb-4">
                 <Target className="w-5 h-5 text-brand-primary-600" />
-                <h3 className="font-display text-lg font-bold text-slate-800">Área</h3>
+                <h3 className="font-display text-lg font-bold text-slate-800">Ãrea</h3>
               </div>
               <div className="grid grid-cols-3 gap-3">
                 {(['ING', 'BIO', 'SOC'] as const).map(area => {
@@ -252,7 +252,7 @@ export function CepreSelect({
             <div className="bg-brand-accent-50 rounded-2xl p-4 mb-6 border border-brand-accent-200 animate-fade-up">
               <p className="text-brand-accent-900 text-sm flex items-center gap-2 font-sans">
                 <FileText className="w-4 h-4 flex-shrink-0" />
-                Se cargarán TODAS las preguntas del cuadernillo <strong className="font-mono">{selectedSemana}</strong> <strong className="font-mono">{selectedArea}</strong>
+                Se cargarÃ¡n TODAS las preguntas del cuadernillo <strong className="font-mono">{selectedSemana}</strong> <strong className="font-mono">{selectedArea}</strong>
               </p>
             </div>
           </>
@@ -292,7 +292,7 @@ export function CepreSelect({
             <div className="bg-brand-primary-50 rounded-2xl p-4 mb-6 border border-brand-primary-200 animate-fade-up">
               <p className="text-brand-primary-900 text-sm flex items-center gap-2 font-sans">
                 <Sparkles className="w-4 h-4 flex-shrink-0" />
-                Se mezclarán preguntas de ING + BIO + SOC aleatoriamente
+                Se mezclarÃ¡n preguntas de ING + BIO + SOC aleatoriamente
               </p>
             </div>
           </>
@@ -317,7 +317,7 @@ export function CepreSelect({
                   <span className="font-display font-bold text-slate-800">{selectedCourse}</span>
                   {cepreMode === 'cuadernillo' && (
                     <span className="ml-2 chip bg-brand-accent-100 text-brand-accent-900 text-[10px] font-mono border border-brand-accent-300">
-                      {selectedArea} · {selectedSemana}
+                      {selectedArea} Â· {selectedSemana}
                     </span>
                   )}
                 </div>
