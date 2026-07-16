@@ -43,8 +43,10 @@ export function UniversityCardRegistered({ universidad, logoUrl, onClick }: Regi
         )}
       </div>
 
-      <div className="flex flex-col items-center flex-1 px-5 pb-5 -mt-9">
-        <div className="w-[4.5rem] h-[4.5rem] rounded-2xl bg-white shadow-elevation-2 border border-slate-100 flex items-center justify-center p-2.5">
+      {/* relative z-10: la franja de arriba es position:relative y sin esto pinta
+          ENCIMA del badge del logo, recortándolo (bug reportado por el usuario). */}
+      <div className="relative z-10 flex flex-col items-center flex-1 px-5 pb-5 -mt-10">
+        <div className="w-20 h-20 md:w-[5.5rem] md:h-[5.5rem] rounded-2xl bg-white shadow-elevation-3 border border-slate-100 flex items-center justify-center p-2.5">
           <img src={logoUrl} alt="" aria-hidden="true" loading="lazy" className="max-h-full max-w-full object-contain" />
         </div>
         <h3 className="mt-3 font-display text-base md:text-lg font-black text-slate-900 text-center leading-tight">
@@ -86,10 +88,11 @@ export function UniversityCardComingSoon({ sigla, name, logoUrl, codigo }: Comin
         className="h-20 md:h-24 relative shrink-0 opacity-70"
         style={{ backgroundImage: 'linear-gradient(135deg, var(--uni-primary-safe) 0%, var(--uni-primary-deep) 100%)' }}
       />
-      <div className="flex flex-col items-center flex-1 px-5 pb-5 -mt-9">
-        {/* El logo SIEMPRE nítido y a color (el estado "próximamente" ya lo comunican
-            el badge y el título gris — un logo en grayscale se vuelve ilegible). */}
-        <div className="w-[4.5rem] h-[4.5rem] rounded-2xl bg-white shadow-elevation-2 border border-slate-200 flex items-center justify-center p-2">
+      {/* relative z-10: sin esto la franja (position:relative) recorta el logo. */}
+      <div className="relative z-10 flex flex-col items-center flex-1 px-5 pb-5 -mt-10">
+        {/* El logo SIEMPRE nítido, completo y a color (el estado "próximamente" ya lo
+            comunican el badge y el título gris). */}
+        <div className="w-20 h-20 md:w-[5.5rem] md:h-[5.5rem] rounded-2xl bg-white shadow-elevation-3 border border-slate-200 flex items-center justify-center p-2">
           <img src={logoUrl} alt="" aria-hidden="true" loading="lazy" className="max-h-full max-w-full object-contain" />
         </div>
         <h3 className="mt-3 font-display text-base md:text-lg font-black text-slate-500 text-center leading-tight">
@@ -110,8 +113,8 @@ export function UniversityCardSkeleton() {
   return (
     <div className="relative flex flex-col overflow-hidden rounded-3xl bg-white border border-slate-100" aria-hidden="true">
       <div className="h-20 md:h-24 animate-shimmer" />
-      <div className="flex flex-col items-center flex-1 px-5 pb-5 -mt-9">
-        <div className="w-[4.5rem] h-[4.5rem] rounded-2xl bg-white shadow-elevation-1 border border-slate-100 p-2.5">
+      <div className="relative z-10 flex flex-col items-center flex-1 px-5 pb-5 -mt-10">
+        <div className="w-20 h-20 md:w-[5.5rem] md:h-[5.5rem] rounded-2xl bg-white shadow-elevation-1 border border-slate-100 p-2.5">
           <div className="w-full h-full rounded-lg animate-shimmer" />
         </div>
         <div className="mt-3 h-4 w-24 rounded-full animate-shimmer" />
