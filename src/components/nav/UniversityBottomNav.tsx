@@ -16,6 +16,13 @@ interface BottomItem {
 /** Rutas donde la bottom bar estorbaría (examen a pantalla completa, resultados). */
 const HIDDEN_SUFFIXES = ['/examen', '/resultados'];
 
+/** Único punto de verdad de "¿va a montarse la bottom bar en esta ruta?" — usado tanto por
+ * este componente (para decidir si renderizarse) como por UniversityGate en App.tsx (para
+ * decidir si reservarle espacio con padding-bottom), así ambas decisiones nunca divergen. */
+export function isBottomNavHiddenPath(pathname: string): boolean {
+  return HIDDEN_SUFFIXES.some((suffix) => pathname.endsWith(suffix));
+}
+
 /**
  * Barra de navegación inferior, solo móvil (<md), para el espacio de una
  * universidad (/:universidad/*). Se monta una única vez desde App.tsx dentro
@@ -28,7 +35,7 @@ export function UniversityBottomNav() {
   const navigate = useNavigate();
   const getUniversidad = useUniversityStore((s) => s.getUniversidad);
 
-  if (!codigo || HIDDEN_SUFFIXES.some((suffix) => location.pathname.endsWith(suffix))) {
+  if (!codigo || isBottomNavHiddenPath(location.pathname)) {
     return null;
   }
 

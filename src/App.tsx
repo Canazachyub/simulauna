@@ -1,10 +1,10 @@
 import { useEffect, Suspense, lazy, type ReactNode } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { useUniversityStore } from './hooks/useUniversity';
 import { QuickSwitch } from './components/nav/QuickSwitch';
 import { RouteTransition } from './components/nav/RouteTransition';
-import { UniversityBottomNav } from './components/nav/UniversityBottomNav';
+import { UniversityBottomNav, isBottomNavHiddenPath } from './components/nav/UniversityBottomNav';
 
 // Todas las rutas son lazy (ver docs/CONTRATO_API_V2.md §5) para no cargar el bundle completo
 // en la landing nacional.
@@ -42,6 +42,7 @@ function RouteFallback() {
  */
 function UniversityGate({ children }: { children: ReactNode }) {
   const { universidad } = useParams<{ universidad: string }>();
+  const location = useLocation();
   const registro = useUniversityStore(state => state.registro);
   const loading = useUniversityStore(state => state.loading);
   const loadRegistro = useUniversityStore(state => state.loadRegistro);
@@ -67,9 +68,20 @@ function UniversityGate({ children }: { children: ReactNode }) {
     }
   }
 
+  // Mismas condiciones exactas que usa UniversityBottomNav para decidir si se monta (ver
+  // isBottomNavHiddenPath): si la barra va a aparecer en <md, reservamos su espacio aquí para
+  // que el último CTA de cada página (UniversityPage, StudentForm, ExamConfirmation,
+  // AulaComingSoon, selects/resultados de practice) no quede tapado por sus ~56px + safe-area.
+  // El padding va en este wrapper interno, nunca en el min-h-screen de las páginas, para no
+  // romper sus fondos full-bleed (la franja extra hereda el fondo del body, casi idéntico al
+  // bg-andean-white/slate-50 que ya usan).
+  const showBottomNav = Boolean(universidad) && !isBottomNavHiddenPath(location.pathname);
+
   return (
     <>
-      {children}
+      <div className={showBottomNav ? 'pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-0' : undefined}>
+        {children}
+      </div>
       <UniversityBottomNav />
     </>
   );

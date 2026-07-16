@@ -581,6 +581,15 @@ input, textarea, [contenteditable="true"] {
   html { scroll-behavior: auto; }
 }
 
+/* Costo de animación del hero del Landing (Hallazgo #12): un IntersectionObserver en
+   Landing.tsx alterna `.hero-anims-paused` en la sección del hero cuando sale del viewport;
+   esta regla congela SOLO los elementos marcados `.hero-decor` dentro de ella (blobs,
+   estrellas, asteroides) — el float de la mascota queda fuera de `.hero-decor` a propósito
+   y sigue animándose siempre. Sin cambio visual mientras el hero está en pantalla. */
+.hero-anims-paused .hero-decor {
+  animation-play-state: paused;
+}
+
 /* ============================================================
    BENTO GRID — celdas asimétricas, mobile-first
    Patrón: grid-template-areas redefinido por breakpoint

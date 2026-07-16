@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, MessageCircle, GraduationCap, TrendingUp, BookMarked, Sparkles } from 'lucide-react';
 import { useUniversityStore } from '../hooks/useUniversity';
 import { resolveThemeVars } from '../utils/universityTheme';
+import { whatsappUrl } from '../constants/contact';
 import { SectionCurve } from './landing/SectionCurve';
 import { AulaMuro } from './aula/AulaMuro';
 
@@ -25,8 +26,7 @@ import { AulaMuro } from './aula/AulaMuro';
  * alimentado con datos reales.
  */
 
-// Mismo número que usa StudentForm.tsx (WHATSAPP_BASE) — lista de espera del Aula virtual.
-const WHATSAPP_BASE = 'https://wa.me/51900266810';
+// Mismo número que usa StudentForm.tsx (src/constants/contact.ts) — lista de espera del Aula virtual.
 const WHATSAPP_MESSAGE = 'Hola, quiero unirme a la lista de espera del Aula Virtual de SimulaUNA';
 
 const BULLETS = [
@@ -49,7 +49,7 @@ export function AulaComingSoon() {
   const universidad = registro.find((u) => u.codigo === codigo);
   const nombreUniversidad = universidad?.nombreCorto || universidad?.nombre || (codigo ? codigo.toUpperCase() : 'tu universidad');
   const themeVars = resolveThemeVars(codigo, registro);
-  const whatsappHref = `${WHATSAPP_BASE}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+  const whatsappHref = whatsappUrl(WHATSAPP_MESSAGE);
   const volverHref = `/${codigo || ''}`;
 
   return (

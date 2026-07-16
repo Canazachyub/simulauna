@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useUniversityStore } from '../hooks/useUniversity';
 import { getUniversityTheme, themeCssVars } from '../theme/universityThemes';
+import { whatsappUrl } from '../constants/contact';
 import {
   UniversityCardRegistered,
   UniversityCardComingSoon,
@@ -199,13 +200,14 @@ function HeroMascot() {
   return (
     <div className="hidden lg:flex relative w-[380px] xl:w-[440px] h-[420px] xl:h-[460px] shrink-0 items-center justify-center">
       {/* glow detrás */}
-      <div className="absolute inset-0 m-auto w-[340px] h-[340px] rounded-[45%_55%_40%_60%/55%_45%_60%_40%] bg-brand-accent/25 blur-3xl animate-blob-morph pointer-events-none" />
+      <div className="hero-decor absolute inset-0 m-auto w-[340px] h-[340px] rounded-[45%_55%_40%_60%/55%_45%_60%_40%] bg-brand-accent/25 blur-3xl animate-blob-morph pointer-events-none" />
 
-      {/* asteroides / estrellas lineales alrededor */}
-      <StarTwinkle className="absolute top-4 left-2 text-brand-accent-300 animate-star-twinkle" size={18} />
-      <StarTwinkle className="absolute bottom-16 right-2 text-white animate-star-twinkle delay-300" size={14} />
-      <AsteroidLine className="absolute top-20 right-0 text-white/70 animate-float-slow delay-150" size={26} />
-      <AsteroidLine className="absolute bottom-6 left-6 text-brand-accent-200/80 animate-float-y delay-500" size={20} />
+      {/* asteroides / estrellas lineales alrededor — NO la mascota: su animate-float-y sigue
+          corriendo siempre (deliberadamente sin la clase hero-decor), ver useEffect de arriba. */}
+      <StarTwinkle className="hero-decor absolute top-4 left-2 text-brand-accent-300 animate-star-twinkle" size={18} />
+      <StarTwinkle className="hero-decor absolute bottom-16 right-2 text-white animate-star-twinkle delay-300" size={14} />
+      <AsteroidLine className="hero-decor absolute top-20 right-0 text-white/70 animate-float-slow delay-150" size={26} />
+      <AsteroidLine className="hero-decor absolute bottom-6 left-6 text-brand-accent-200/80 animate-float-y delay-500" size={20} />
 
       <img
         src={ASSETS_3D.mascotaLobito}
@@ -308,6 +310,28 @@ export function Landing() {
   const registroLoading = useUniversityStore(state => state.loading);
   const registroError = useUniversityStore(state => state.error);
 
+  // Costo de animación del hero (Hallazgo #12): ~10 animaciones CSS infinitas simultáneas
+  // (blobs + estrellas + asteroides) siguen corriendo aunque el usuario haya hecho scroll
+  // varias pantallas más abajo. Un IntersectionObserver alterna `.hero-anims-paused` en la
+  // propia sección: la regla en index.css pone `animation-play-state: paused` SOLO en los
+  // elementos marcados `.hero-decor` (ver más abajo), nunca en el float de la mascota (fuera
+  // de esa clase a propósito) ni en el resto del sitio. Cero cambio visual mientras el hero
+  // está en pantalla; se manipula la clase directo por ref (sin useState) para no re-renderizar
+  // todo el Landing en cada scroll.
+  const heroRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        el.classList.toggle('hero-anims-paused', !entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     loadRegistro();
   }, [loadRegistro]);
@@ -317,10 +341,7 @@ export function Landing() {
   const registeredCodes = new Set(['una', ...registro.map(u => u.codigo)]);
 
   const handleWhatsAppClick = () => {
-    window.open(
-      'https://wa.me/51900266810?text=Hola,%20quiero%20acceso%20a%20la%20plataforma%20SimulaUNA',
-      '_blank'
-    );
+    window.open(whatsappUrl('Hola, quiero acceso a la plataforma SimulaUNA'), '_blank');
   };
 
   return (
@@ -331,6 +352,7 @@ export function Landing() {
       {/*  1. HERO — cinematic                                                 */}
       {/* ==================================================================== */}
       <section
+        ref={heroRef}
         className="relative min-h-[100vh] flex items-center overflow-hidden bg-hero-solid text-white"
         style={{ backgroundColor: '#001529' }}
       >
@@ -363,14 +385,14 @@ export function Landing() {
         <div className="absolute inset-0 noise pointer-events-none opacity-40" />
 
         {/* Layer 5 — blobs decorativos */}
-        <div className="absolute -top-24 -right-32 w-[520px] h-[520px] rounded-full bg-brand-accent/30 blur-3xl animate-blob-morph animate-drift-slow pointer-events-none" />
-        <div className="absolute bottom-10 -left-32 w-[420px] h-[420px] rounded-full bg-brand-secondary/25 blur-3xl animate-blob-morph animate-drift-slow pointer-events-none" />
+        <div className="hero-decor absolute -top-24 -right-32 w-[520px] h-[520px] rounded-full bg-brand-accent/30 blur-3xl animate-blob-morph animate-drift-slow pointer-events-none" />
+        <div className="hero-decor absolute bottom-10 -left-32 w-[420px] h-[420px] rounded-full bg-brand-secondary/25 blur-3xl animate-blob-morph animate-drift-slow pointer-events-none" />
 
         {/* Layer 4 — estrellas flotantes (4, distribuidas en las esquinas del hero para menor carga GPU en móvil) */}
-        <StarTwinkle className="absolute top-24 left-[12%] w-3 h-3 text-brand-accent-200 animate-star-twinkle" size={12} />
-        <StarTwinkle className="absolute top-16 left-[48%] w-4 h-4 text-white animate-star-twinkle delay-150" size={16} />
-        <StarTwinkle className="absolute top-[55%] left-[8%] w-3 h-3 text-white/80 animate-star-twinkle delay-500" size={14} />
-        <StarTwinkle className="absolute top-[28%] right-[12%] w-5 h-5 text-brand-accent-300 animate-star-twinkle delay-75" size={20} />
+        <StarTwinkle className="hero-decor absolute top-24 left-[12%] w-3 h-3 text-brand-accent-200 animate-star-twinkle" size={12} />
+        <StarTwinkle className="hero-decor absolute top-16 left-[48%] w-4 h-4 text-white animate-star-twinkle delay-150" size={16} />
+        <StarTwinkle className="hero-decor absolute top-[55%] left-[8%] w-3 h-3 text-white/80 animate-star-twinkle delay-500" size={14} />
+        <StarTwinkle className="hero-decor absolute top-[28%] right-[12%] w-5 h-5 text-brand-accent-300 animate-star-twinkle delay-75" size={20} />
 
         {/* Layer 3 — silueta de montañas en la base (solo el estilo inline;
             la clase bg-mountains-bottom repintaba el MISMO svg vía ::after) */}
@@ -1236,23 +1258,26 @@ export function Landing() {
               </p>
             </div>
 
-            {/* Universidades */}
+            {/* Universidades — derivado del registro maestro (useUniversityStore), no
+                hardcodeado: cada universidad registrada aparece con su nombreCorto y un
+                badge "Beta" si está en piloto; el conteo de "Próximamente" reutiliza el
+                mismo `registeredCodes` que ya filtra el carrusel/grilla de arriba. */}
             <div>
               <p className="font-display font-bold text-white uppercase tracking-wider text-xs mb-4">Universidades</p>
               <ul className="space-y-2.5 text-sm">
-                <li>
-                  <button onClick={() => navigate('/una')} className="hover:text-white transition-colors">
-                    UNA Puno
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => navigate('/unsa')} className="hover:text-white transition-colors">
-                    UNSA Arequipa <span className="text-[10px] text-white/40 uppercase">· Beta</span>
-                  </button>
-                </li>
+                {registro.map((u) => (
+                  <li key={u.codigo}>
+                    <button onClick={() => navigate(`/${u.codigo}`)} className="hover:text-white transition-colors">
+                      {u.nombreCorto}
+                      {u.estado === 'piloto' && (
+                        <span className="text-[10px] text-white/40 uppercase"> · Beta</span>
+                      )}
+                    </button>
+                  </li>
+                ))}
                 <li>
                   <button onClick={() => scrollToSection('universidades')} className="hover:text-white transition-colors">
-                    +10 universidades · Próximamente
+                    +{UNIVERSITY_LOGOS.filter((l) => !registeredCodes.has(l.codigo)).length} universidades · Próximamente
                   </button>
                 </li>
               </ul>

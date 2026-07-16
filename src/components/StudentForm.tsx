@@ -11,15 +11,15 @@ import { validateDNI, validateName } from '../utils/calculations';
 import { registerUser, checkAccess } from '../services/api';
 import { resolveThemeVars } from '../utils/universityTheme';
 import { AreaSelector } from './AreaSelector';
+import { whatsappUrl } from '../constants/contact';
 import type { AreaType, ProcessType } from '../types';
 
 type BlockVariant = 'fraud' | 'cuota' | 'blocked';
 
-const WHATSAPP_BASE = 'https://wa.me/51900266810';
 const WHATSAPP_MESSAGES: Record<BlockVariant, string> = {
-  fraud: 'Hola,%20tengo%20un%20problema%20con%20mi%20registro%20en%20SimulaUNA%20(datos%20ya%20vinculados).',
-  cuota: 'Hola,%20quiero%20solicitar%20mi%20c%C3%B3digo%20de%20acceso%20ilimitado%20a%20SimulaUNA.',
-  blocked: 'Hola,%20necesito%20soporte%20con%20mi%20acceso%20a%20SimulaUNA.'
+  fraud: 'Hola, tengo un problema con mi registro en SimulaUNA (datos ya vinculados).',
+  cuota: 'Hola, quiero solicitar mi código de acceso ilimitado a SimulaUNA.',
+  blocked: 'Hola, necesito soporte con mi acceso a SimulaUNA.'
 };
 
 function detectBlockVariant(reason: string, isFraud: boolean, attemptCount: number): BlockVariant {
@@ -831,7 +831,7 @@ export function StudentForm() {
 
         const cfg = variantConfig[variant];
         const Icon = cfg.IconComponent;
-        const whatsappHref = `${WHATSAPP_BASE}?text=${WHATSAPP_MESSAGES[variant]}`;
+        const whatsappHref = whatsappUrl(WHATSAPP_MESSAGES[variant]);
         const closeModal = () =>
           setAccessDenied({ show: false, reason: '', attemptCount: 0, isFraud: false });
 

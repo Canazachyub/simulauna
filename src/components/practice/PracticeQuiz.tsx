@@ -1,3 +1,4 @@
+import { useEffect, useId, useRef } from 'react';
 import {
   ChevronLeft, ChevronRight, CheckCircle, XCircle, Trophy, Lightbulb, Clock,
   FileText, Tag, Send, Flame
@@ -84,6 +85,50 @@ export function PracticeQuiz({
   const isAnswered = currentAnswer !== null && currentAnswer !== undefined;
   const answeredCount = answers.size;
   const CourseIcon = mode.courseIcon;
+
+  // Accesibilidad del modal "todas respondidas" (mismo patrón que src/components/onboarding/
+  // CoachTour.tsx): role=dialog + aria-modal + aria-labelledby, foco inicial al abrirse,
+  // Escape para cerrar, foco devuelto al elemento que abrió el modal al cerrarse, y un focus
+  // trap simple (Tab/Shift+Tab no se escapan del modal mientras esté abierto).
+  const modalTitleId = useId();
+  const modalDescId = useId();
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (showAllAnsweredModal) {
+      previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+      modalRef.current?.focus();
+    } else {
+      previouslyFocusedRef.current?.focus();
+      previouslyFocusedRef.current = null;
+    }
+  }, [showAllAnsweredModal]);
+
+  const handleModalKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      setShowAllAnsweredModal(false);
+      return;
+    }
+    if (e.key === 'Tab') {
+      const container = modalRef.current;
+      if (!container) return;
+      const focusables = container.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  };
 
   if (!currentQuestion) return null;
 
@@ -373,13 +418,22 @@ export function PracticeQuiz({
 
       {showAllAnsweredModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4 animate-fade-in">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl animate-slide-up">
+          <div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={modalTitleId}
+            aria-describedby={modalDescId}
+            tabIndex={-1}
+            onKeyDown={handleModalKeyDown}
+            className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl animate-slide-up focus:outline-none"
+          >
             <div className="text-center">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full mb-4">
-                <CheckCircle className="w-8 h-8 text-white" />
+                <CheckCircle className="w-8 h-8 text-white" aria-hidden="true" />
               </div>
-              <h2 className="text-xl font-bold text-slate-800 mb-2">¡Completaste todas las preguntas!</h2>
-              <p className="text-slate-600 mb-6">
+              <h2 id={modalTitleId} className="text-xl font-bold text-slate-800 mb-2">¡Completaste todas las preguntas!</h2>
+              <p id={modalDescId} className="text-slate-600 mb-6">
                 Has respondido las {questions.length} preguntas. ¿Deseas ver tus resultados finales?
               </p>
 

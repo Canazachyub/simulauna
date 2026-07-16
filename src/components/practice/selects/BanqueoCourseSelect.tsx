@@ -164,7 +164,9 @@ export function BanqueoCourseSelect({
           </div>
         )}
 
-        <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-200 px-4 py-3 z-40 shadow-elevation-3">
+        {/* bottom-[...] en <md: el UniversityBottomNav (56px + safe-area) vive fijo debajo de
+            esta barra; z-50 (por encima de su z-40) para que nunca tape "Comenzar práctica". */}
+        <div className="fixed bottom-[calc(3.5rem+env(safe-area-inset-bottom))] md:bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-slate-200 px-4 py-3 z-50 shadow-elevation-3">
           <div className="max-w-4xl mx-auto flex items-center gap-3">
             <button onClick={onBack} className="btn-secondary hidden sm:inline-flex">
               <Home className="w-4 h-4" />
