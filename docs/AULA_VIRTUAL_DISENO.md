@@ -12,8 +12,27 @@
 > Fecha: 2026-07. Ver también `docs/DIRECCION_DISENO_V3.md` §Aulas virtuales
 > (la previsión original: "backend sin cambios hoy, permisos.modalidad ya es
 > texto libre").
+>
+> **Actualización 2026-07 (v2 de la UI, mismo modelo de datos):** las
+> secciones §0 y §7 describían un **muro único** (`AulaMuro`, un solo grid
+> bento con todo). Feedback directo del usuario: eso se sentía como un
+> Padlet, y lo que se quiere es una **plataforma con navegación entre
+> secciones**, usando bento **dentro** de cada sección. La UI se rediseñó
+> en consecuencia (`AulaShell` reemplaza a `AulaMuro`) — ver la sección
+> nueva **"Arquitectura de navegación del aula (v2)"** al final de este
+> documento. El modelo de datos de §1-§12 sigue vigente tal cual (ciclos,
+> matrículas, pagos, horario, docentes, materiales, grupos, anuncios); solo
+> se agregan 3 hojas nuevas (`clases_en_vivo`, `grabaciones`, `recursos`) y
+> cambia el LAYOUT, no el backend propuesto.
 
 ## 0. Filosofía: "muro curado", no Padlet libre
+
+> **Evolucionado en v2** (ver sección final): el "coordinador decide el
+> layout" sigue siendo el principio rector (el alumno nunca arrastra ni
+> reordena nada), pero el layout dejó de ser un muro único — ahora es una
+> plataforma con secciones navegables, cada una con su propio bento
+> curado por el coordinador. Lo que NO cambia: cero drag&drop, cero "añadir
+> nota", el alumno solo consume.
 
 La referencia mental del usuario es Padlet, pero **invertida en quién
 decide el layout**: en Padlet el alumno arrastra notas y arma su propio
@@ -287,6 +306,14 @@ coordinador abrirá uno nuevo pronto") en vez de un link roto.
 
 ## 7. El muro curado — secciones del Aula del estudiante
 
+> **Evolucionado en v2:** esta tabla describía las celdas de un único muro
+> (`AulaMuro`, retirado). Hoy cada fila de esta tabla es, en su mayoría, una
+> **sección propia navegable** de `AulaShell` (ver sección final), y "Hoy en
+> tu aula" se convirtió en la sección **Inicio** con un countdown a la
+> próxima clase en vivo en vez de solo el próximo bloque de horario. La
+> tabla se conserva como referencia del contenido/fuente de cada pieza —
+> el mapeo exacto a secciones de la v2 está en la tabla de la sección final.
+
 Layout bento, **cero configuración del alumno**, mobile-first. Orden y
 tamaño de celda pensados por prioridad real de un alumno de academia
 (qué necesita saber HOY, en 5 segundos, al entrar):
@@ -389,6 +416,11 @@ Notas de diseño de estas actions (para cuando se implementen):
 CORE existente, ninguna nueva spreadsheet por universidad. `CORE.permisos`
 gana la modalidad `aula` como valor de texto (sin migración de esquema).
 
+> **v2:** se agregan 3 hojas más, mismo criterio (CORE, sin spreadsheet
+> nuevo): `clases_en_vivo`, `grabaciones`, `recursos` — ver su modelo
+> completo en "Arquitectura de navegación del aula (v2)" más abajo. Total
+> con v2: **11 hojas nuevas** en CORE.
+
 ## 12. Trazabilidad con la UI mock (Entregable 2)
 
 `src/components/aula/aulaMock.ts` define TypeScript types que son el
@@ -400,3 +432,180 @@ propuesta para `getAula` en §10. El día que exista el backend real, el
 único cambio en `src/components/aula/*.tsx` es reemplazar el import de
 `aulaMock.ts` por una llamada a `services/api.ts` — ningún componente de
 presentación cambia.
+
+> **v2:** `aulaMock.ts` agrega `ClaseEnVivoMock`, `GrabacionMock` y
+> `RecursoMock` (espejo de las 3 hojas nuevas) más los helpers
+> `getEstadoClaseEnVivo` y `getProximaClaseEnVivoMock` (estado derivado en
+> cliente, ver política de embebido más abajo). La composición visual pasó
+> de `AulaMuro.tsx` (retirado) a `AulaShell.tsx` + `ResourceViewer.tsx` —
+> ver el detalle completo en la sección siguiente.
+
+## 13. Arquitectura de navegación del aula (v2)
+
+### 13.0 Por qué se cambió
+
+Feedback directo del usuario, textual: *"No quiero el diseño Padlet [un
+solo muro]. Quiero que sea una PLATAFORMA con barra de navegación entre sus
+secciones, y usaremos la facilidad de bentos tipo Padlet DENTRO [de cada
+sección]... También poner links externos DENTRO de nuestra plataforma."*
+
+Auditoría del muro único (`AulaMuro`, retirado) contra ese feedback:
+
+- **Todo en una sola pantalla no escala.** El muro v1 ya tenía 7 celdas
+  (Hoy en tu aula, Horario, Anuncios, Materiales, Pagos, Grupo,
+  Simulacros) en un único `grid`. Agregar "Clases en vivo" y "Grabaciones"
+  como celdas 8 y 9 del mismo muro habría hecho scroll infinito la única
+  respuesta a "¿dónde veo mis Zoom de esta semana?" — exactamente el
+  síntoma "Padlet" que el usuario rechazó.
+- **Cero jerarquía de navegación = cero sensación de plataforma.** Un
+  muro no tiene "ir a", solo tiene scroll. Una plataforma real (el propio
+  benchmark del usuario para Meets/Zoom/grabaciones/PDFs) necesita que el
+  alumno pueda saltar directo a "Grabaciones" sin pasar visualmente por
+  Pagos y Horario en el camino.
+- **Los enlaces externos salían de la plataforma.** v1 abría
+  Drive/YouTube siempre en pestaña nueva (`target="_blank"`) — cumplía
+  "material publicado", pero no "dentro de nuestra plataforma". Esta v2
+  agrega `ResourceViewer.tsx`: un visor modal embebido que sí mantiene al
+  alumno dentro de `simulauna.school` mientras ve el PDF o el video.
+
+Lo que **no cambia**: el modelo de datos de §1-§12 (ciclos, matrículas,
+pagos, horario, docentes, materiales, grupos, anuncios), la filosofía de
+"coordinador decide, alumno solo consume" (§0), y el hecho de que hoy esto
+sigue siendo 100% mock (`aulaMock.ts`) sin backend v2.1 implementado.
+
+### 13.1 Secciones y navegación
+
+`AulaShell.tsx` (`src/components/aula/AulaShell.tsx`) reemplaza a
+`AulaMuro.tsx`. Navegación **interna** (no rutas nuevas de React Router):
+un `useState<SectionId>` decide qué sección se renderiza, con el id
+reflejado en `location.hash` (`#clases`, `#materiales`, …) vía
+`history.replaceState` solo para permitir compartir un deep-link — no se
+usa para el historial de navegación (no genera entradas nuevas, así que
+el botón "atrás" del navegador no queda saturado de cambios de pestaña).
+
+Presentación responsive:
+- **Móvil (\<lg):** tabs horizontales scrollables (`overflow-x-auto`),
+  ubicadas en el flujo normal ARRIBA del contenido — deliberadamente NO
+  en la parte inferior de la pantalla, para no competir con
+  `UniversityBottomNav` (la barra inferior fija de `/:universidad/*`, ver
+  `src/components/nav/UniversityBottomNav.tsx`). El padding-bottom que
+  `App.tsx` ya reserva para esa barra (`pb-[calc(4.5rem+...)]`) sigue
+  siendo el único mecanismo de coexistencia necesario; `AulaShell` no
+  añade padding propio.
+- **Escritorio (≥lg):** barra lateral compacta y `sticky` (`lg:sticky
+  lg:top-4`), ancho fijo de 13rem, con el contenido de la sección a la
+  derecha.
+
+| Sección (`SectionId`) | Ícono | Contenido | Componente |
+|---|---|---|---|
+| `inicio` | Home | Resumen: countdown a la próxima clase en vivo, último material, último anuncio, acceso rápido al grupo | `InicioResumen.tsx` |
+| `clases` | Video | Sesiones Meet/Zoom del ciclo, tarjeta por sesión con estado EN VIVO/próxima/pasada/cancelada | `ClasesEnVivo.tsx` |
+| `grabaciones` | Clapperboard | Grid de videos grabados, reproducción embebida al hacer clic | `Grabaciones.tsx` |
+| `materiales` | BookMarked | Acordeón de PDFs/documentos por curso, visor embebido + "abrir en pestaña nueva" | `MaterialesCurso.tsx` (evolucionado) |
+| `horario` | CalendarDays | Horario semanal completo | `HorarioSemanal.tsx` (sin cambios) |
+| `anuncios` | Megaphone | Feed de anuncios del coordinador | `AnunciosCoordinador.tsx` (sin cambios) |
+| `simulacros` | Trophy | Historial de simulacros rendidos en el ciclo | `MisSimulacrosCiclo.tsx` (sin cambios) |
+| `pagos` | Wallet | Mi estado de cuenta | `EstadoPagos.tsx` (sin cambios) |
+| `grupo` | Users | Grupo de WhatsApp del ciclo/turno | `MiGrupoWhatsapp.tsx` (sin cambios) |
+| `recursos` | Compass | Enlaces externos curados por el coordinador, agrupados por categoría, visor embebido con fallback | `RecursosExternos.tsx` |
+
+Cada sección arma **su propio bento** con `AulaSectionCard` (la celda
+base, sin cambios de contrato) — el bento no desapareció, dejó de ser un
+único grid de 9 celdas para ser el lenguaje visual repetido dentro de
+cada pestaña. `inicio` y `clases` siguen usando un grid de varias celdas
+(igual que antes); `pagos`/`grupo`/`anuncios`/`simulacros` (una sola
+tarjeta) se centran con un `max-width` propio para no estirarse
+edge-to-edge en pantallas anchas.
+
+### 13.2 Hoja `clases_en_vivo` (CORE)
+
+| Columna | Tipo | Notas |
+|---|---|---|
+| `id_clase` | texto | slug único |
+| `id_ciclo` | texto | FK |
+| `fecha` | fecha | `YYYY-MM-DD` |
+| `hora_inicio` / `hora_fin` | `HH:mm` | |
+| `curso` | texto | |
+| `docente` | texto | idealmente calza con `docentes.nombre` |
+| `plataforma` | texto | `meet`\|`zoom` |
+| `enlace` | texto | URL de la videollamada |
+| `estado` | texto | `programada`\|`cancelada` — **NO** es "en vivo ahora/próxima/pasada"; ese estado se deriva en el cliente comparando `fecha`+`hora_inicio`/`hora_fin` con el reloj del dispositivo (`getEstadoClaseEnVivo` en `aulaMock.ts`), porque pedirle al coordinador que edite Sheets al segundo exacto en que arranca cada clase no es realista. El coordinador solo escribe `cancelada` cuando de verdad suspende una sesión |
+
+Una fila por sesión (a diferencia de `horario`, que es el bloque
+recurrente semanal, `clases_en_vivo` son las instancias reales del ciclo —
+en la práctica muchas academias generan estas filas por lote desde
+`horario` al iniciar cada semana, pero eso es un detalle de operación del
+coordinador, no algo que el frontend necesite saber).
+
+### 13.3 Hoja `grabaciones` (CORE)
+
+| Columna | Tipo | Notas |
+|---|---|---|
+| `id_grabacion` | texto | slug único |
+| `id_ciclo` | texto | FK |
+| `fecha` | fecha | fecha de la clase grabada (para ordenar, más reciente primero) |
+| `curso` | texto | |
+| `docente` | texto | |
+| `titulo` | texto | ej. "Clase 8 — Razones y proporciones" |
+| `url_video` | texto | YouTube o Google Drive — el frontend detecta cuál es por el patrón de la URL (`detectResourceKind` en `ResourceViewer.tsx`), no hace falta una columna aparte para el tipo |
+| `duracion_min` | número | minutos, solo informativo (se muestra en la tarjeta) |
+
+### 13.4 Hoja `recursos` (CORE)
+
+| Columna | Tipo | Notas |
+|---|---|---|
+| `id_recurso` | texto | slug único |
+| `id_ciclo` | texto | FK (un recurso puede aplicar a un ciclo específico o repetirse a mano en varios — no hay "recurso global" en fase 1, simplicidad ante flexibilidad) |
+| `titulo` | texto | ej. "Simulador de tabla periódica" |
+| `descripcion` | texto | 1-2 líneas, para qué sirve |
+| `url` | texto | enlace externo (cualquier dominio) |
+| `categoria` | texto | libre (ej. "Química", "Matemática", "General") — agrupa las tarjetas en `RecursosExternos.tsx` |
+
+### 13.5 Política de embebido — qué se embebe, qué no, y por qué
+
+Pieza central: `ResourceViewer.tsx` (`src/components/aula/ResourceViewer.tsx`),
+un visor modal (`role="dialog"`, `aria-modal`, focus trap Tab/Shift+Tab,
+Escape cierra, devuelve el foco al cerrar — mismo patrón que
+`QuickSwitch.tsx`/`CoachTour.tsx`). Reescribe la URL "de humano" que pega
+el coordinador a su variante embebible:
+
+| Origen | Transformación | ¿Se puede embeber? |
+|---|---|---|
+| YouTube (`youtube.com`, `youtu.be`) | → `https://www.youtube-nocookie.com/embed/{id}` | **Sí** — diseñado por YouTube para vivir en un iframe de terceros |
+| Google Drive (`drive.google.com`) | → `https://drive.google.com/file/d/{id}/preview` | **Sí, si el archivo es público** ("cualquiera con el enlace", ver §5.1) — si no, el propio Drive rechaza el iframe y se activa el fallback |
+| Web genérica (hoja `recursos`) | Se usa la URL tal cual | **Depende del sitio** — muchos mandan `X-Frame-Options`/`frame-ancestors` que el navegador respeta bloqueando el iframe, sin que el frontend pueda evitarlo |
+| **Meet / Zoom (`clases_en_vivo`)** | — (nunca pasa por ResourceViewer) | **No, nunca** — ambos proveedores rechazan embeber la videollamada en sí, por diseño de producto, no por una cabecera evitable. `ClasesEnVivo.tsx` es honesto con esto: el botón "Unirme" siempre abre en pestaña nueva; lo que sí vive 100% dentro de SimulaUNA es la tarjeta con toda la información de la sesión (curso, docente, horario, plataforma, estado) |
+
+Detección de bloqueo (heurística, no perfecta — **limitación conocida y
+documentada en el código**): al abrir el visor se dispara un timeout de
+3 segundos; si el iframe no emitió su evento `load` en ese lapso, se
+asume bloqueado y se muestra un fallback ("Este recurso no permite verse
+embebido dentro de SimulaUNA" + botón "Abrir en pestaña nueva"). Esto es
+honesto pero imperfecto: en algunos navegadores el evento `load` de un
+iframe se dispara igual aunque el sitio remoto haya rechazado renderizarse
+(la navegación "completó" a nivel de red, aunque el contenido visible sea
+un rechazo) — no existe una API de plataforma que le diga con certeza al
+padre "tu iframe fue bloqueado por X-Frame-Options". El botón "Abrir en
+pestaña nueva" está SIEMPRE visible en el encabezado del visor (no solo
+como fallback), así que el alumno nunca queda sin salida aunque la
+detección falle en un caso límite.
+
+### 13.6 Componentes nuevos/evolucionados (v2)
+
+| Archivo | Rol |
+|---|---|
+| `AulaShell.tsx` | Shell de navegación (reemplaza `AulaMuro.tsx`, retirado) |
+| `ResourceViewer.tsx` | Visor modal embebido reutilizable + helpers `detectResourceKind`/`toEmbedUrl`/`extractYoutubeThumb` |
+| `InicioResumen.tsx` | Sección "Inicio" (reemplaza a la celda "Hoy en tu aula" de `HoyEnTuAula.tsx`, retirado) |
+| `ClasesEnVivo.tsx` | Sección "Clases en vivo" |
+| `Grabaciones.tsx` | Sección "Grabaciones" |
+| `RecursosExternos.tsx` | Sección "Recursos" |
+| `MaterialesCurso.tsx` | Evolucionado: el botón "Abrir" pasó a "Ver aquí" (abre `ResourceViewer`) + un botón secundario de icono para abrir en pestaña nueva |
+| `HorarioSemanal.tsx`, `AnunciosCoordinador.tsx`, `EstadoPagos.tsx`, `MiGrupoWhatsapp.tsx`, `MisSimulacrosCiclo.tsx`, `AulaSectionCard.tsx` | Sin cambios de contrato — ahora se montan cada uno como el contenido único de su propia sección de `AulaShell` en vez de como celdas de `AulaMuro` |
+
+`AulaComingSoon.tsx` monta `<AulaShell preview showWelcome={false} .../>`
+en vez de `<AulaMuro preview .../>` — la vista previa ahora es navegable
+entre las 10 secciones con datos de ejemplo (ribbon "Vista previa · datos
+de ejemplo" siempre visible arriba, independiente de qué sección se esté
+viendo), para que el alumno **sienta la plataforma completa**, no solo
+una captura de pantalla del muro viejo.

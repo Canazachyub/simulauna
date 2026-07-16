@@ -6,10 +6,10 @@ interface AulaBienvenidaProps {
 
 /**
  * Bienvenida del aula con la mascota (docs/AULA_VIRTUAL_DISENO.md — la
- * mascota aparece UNA sola vez por página). `AulaMuro` la muestra por
+ * mascota aparece UNA sola vez por página). `AulaShell` la muestra por
  * defecto; cuando se embebe dentro de `AulaComingSoon` (que ya usa la
  * mascota en su propio hero) se debe pasar `showWelcome={false}` a
- * `AulaMuro` para no duplicarla en la misma pantalla.
+ * `AulaShell` para no duplicarla en la misma pantalla.
  */
 export function AulaBienvenida({ nombreCiclo }: AulaBienvenidaProps) {
   const [mascotFailed, setMascotFailed] = useState(false);

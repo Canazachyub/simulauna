@@ -22,6 +22,17 @@ export type TipoMaterial = 'pdf' | 'video' | 'enlace';
 export type DiaSemana = 'lunes' | 'martes' | 'miercoles' | 'jueves' | 'viernes' | 'sabado' | 'domingo';
 export type EstadoGrupo = 'activo' | 'lleno' | 'cerrado';
 
+/** Videollamada del proveedor — ninguno de los dos permite embebido (ver ResourceViewer.tsx). */
+export type PlataformaClase = 'meet' | 'zoom';
+/** Estado que el coordinador puede sobrescribir a mano (ej. suspender una sesión). El estado
+ * "en vivo ahora / próxima / pasada" que ve el alumno NO es este campo — se deriva en el
+ * cliente comparando `fecha`+`horaInicio`/`horaFin` con el reloj del dispositivo (ver
+ * `getEstadoClaseEnVivo`), porque pedirle al coordinador que actualice una celda de Sheets
+ * al segundo exacto en que empieza cada clase no es realista. */
+export type EstadoClaseAgenda = 'programada' | 'cancelada';
+/** Estado derivado, solo para la UI (nunca se guarda en la hoja). */
+export type EstadoClaseDerivado = 'en_vivo' | 'proxima' | 'pasada' | 'cancelada';
+
 export interface CicloMock {
   idCiclo: string;
   universidad: string;
@@ -105,6 +116,43 @@ export interface SimulacroCicloMock {
   porcentaje: number;
 }
 
+/** Fila de la hoja `clases_en_vivo` (CORE) — sesión Meet/Zoom del ciclo. Ver
+ * docs/AULA_VIRTUAL_DISENO.md §"Arquitectura de navegación del aula (v2)". */
+export interface ClaseEnVivoMock {
+  idClase: string;
+  fecha: string;
+  horaInicio: string;
+  horaFin: string;
+  curso: string;
+  docente: string;
+  plataforma: PlataformaClase;
+  enlace: string;
+  estado: EstadoClaseAgenda;
+}
+
+/** Fila de la hoja `grabaciones` (CORE) — video ya grabado (clase pasada, simulacro
+ * resuelto, etc.). `urlVideo` puede ser YouTube o Google Drive; ResourceViewer detecta
+ * cuál es y arma el iframe embebido correspondiente. */
+export interface GrabacionMock {
+  idGrabacion: string;
+  fecha: string;
+  curso: string;
+  docente: string;
+  titulo: string;
+  urlVideo: string;
+  duracionMin: number;
+}
+
+/** Fila de la hoja `recursos` (CORE) — enlace externo curado por el coordinador
+ * (calculadoras, simuladores, videos sueltos, webs de referencia). */
+export interface RecursoMock {
+  idRecurso: string;
+  titulo: string;
+  descripcion: string;
+  url: string;
+  categoria: string;
+}
+
 export interface AulaAgregadoMock {
   tieneCicloActivo: boolean;
   ciclo: CicloMock;
@@ -119,12 +167,31 @@ export interface AulaAgregadoMock {
     conceptos: ConceptoPagoMock[];
   };
   simulacrosCiclo: SimulacroCicloMock[];
+  clasesEnVivo: ClaseEnVivoMock[];
+  grabaciones: GrabacionMock[];
+  recursos: RecursoMock[];
 }
 
 const DIAS_ORDEN: DiaSemana[] = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
 
 export function ordenDia(dia: DiaSemana): number {
   return DIAS_ORDEN.indexOf(dia);
+}
+
+/** `YYYY-MM-DD` de hoy +/- `dias`. A diferencia del resto del mock (ciclo ficticio 2027), las
+ * secciones "Clases en vivo"/"Grabaciones" se generan relativas al reloj real del dispositivo,
+ * para que la demo de "en vivo ahora / próxima / pasada" y el countdown de Inicio se vean
+ * siempre coherentes el día que alguien abra la vista previa, sea cual sea esa fecha. */
+function isoDateOffset(dias: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + dias);
+  return d.toISOString().slice(0, 10);
+}
+
+function horaOffset(horas: number): string {
+  const d = new Date();
+  d.setHours(d.getHours() + horas, 0, 0, 0);
+  return `${String(d.getHours()).padStart(2, '0')}:00`;
 }
 
 /**
@@ -208,6 +275,30 @@ export function getAulaMock(universidad: string, nombreUniversidad: string): Aul
     { fecha: '2027-02-07', proceso: 'ORDINARIO', puntaje: 1890, puntajeMax: 3000, porcentaje: 63.0 },
   ];
 
+  // Relativas a "ahora" (ver isoDateOffset/horaOffset) para que "Clases en vivo" siempre
+  // muestre una sesión EN VIVO, una PRÓXIMA y una PASADA sin importar cuándo se abra la demo.
+  const clasesEnVivo: ClaseEnVivoMock[] = [
+    { idClase: 'cv1', fecha: isoDateOffset(0), horaInicio: horaOffset(-1), horaFin: horaOffset(1), curso: 'Aritmética', docente: 'Prof. Rosa Quispe', plataforma: 'meet', enlace: 'https://meet.google.com/ejemplo-aula', estado: 'programada' },
+    { idClase: 'cv2', fecha: isoDateOffset(0), horaInicio: horaOffset(3), horaFin: horaOffset(4), curso: 'Comunicación', docente: 'Prof. Luis Mamani', plataforma: 'zoom', enlace: 'https://zoom.us/j/ejemplo-aula', estado: 'programada' },
+    { idClase: 'cv3', fecha: isoDateOffset(1), horaInicio: '08:00', horaFin: '09:30', curso: 'Álgebra', docente: 'Prof. Rosa Quispe', plataforma: 'meet', enlace: 'https://meet.google.com/ejemplo-aula', estado: 'programada' },
+    { idClase: 'cv4', fecha: isoDateOffset(-1), horaInicio: '08:00', horaFin: '09:30', curso: 'Física', docente: 'Prof. Edwin Ccama', plataforma: 'zoom', enlace: 'https://zoom.us/j/ejemplo-aula', estado: 'programada' },
+    { idClase: 'cv5', fecha: isoDateOffset(2), horaInicio: '08:00', horaFin: '09:30', curso: 'Química', docente: 'Prof. Katia Apaza', plataforma: 'meet', enlace: 'https://meet.google.com/ejemplo-aula', estado: 'cancelada' },
+  ];
+
+  const grabaciones: GrabacionMock[] = [
+    { idGrabacion: 'g1', fecha: '2027-02-01', curso: 'Aritmética', docente: 'Prof. Rosa Quispe', titulo: 'Clase 8 — Razones y proporciones', urlVideo: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', duracionMin: 78 },
+    { idGrabacion: 'g2', fecha: '2027-01-28', curso: 'Comunicación', docente: 'Prof. Luis Mamani', titulo: 'Clase 7 — Comprensión lectora inferencial', urlVideo: 'https://drive.google.com/file/d/1a2b3c4d5e6f7g8h9i0j/view', duracionMin: 65 },
+    { idGrabacion: 'g3', fecha: '2027-01-25', curso: 'Física', docente: 'Prof. Edwin Ccama', titulo: 'Clase 6 — Cinemática: MRU y MRUV', urlVideo: 'https://youtu.be/oHg5SJYRHA0', duracionMin: 82 },
+    { idGrabacion: 'g4', fecha: '2027-01-21', curso: 'Química', docente: 'Prof. Katia Apaza', titulo: 'Clase 5 — Estructura atómica', urlVideo: 'https://drive.google.com/file/d/2b3c4d5e6f7g8h9i0j1k/view', duracionMin: 70 },
+  ];
+
+  const recursos: RecursoMock[] = [
+    { idRecurso: 'r1', titulo: 'Simulador de tabla periódica', descripcion: 'Tabla periódica interactiva con propiedades de cada elemento — útil para Química.', url: 'https://ptable.com/', categoria: 'Química' },
+    { idRecurso: 'r2', titulo: 'Calculadora científica online', descripcion: 'Calculadora con funciones trigonométricas y logarítmicas para practicar Aritmética/Álgebra.', url: 'https://www.desmos.com/scientific', categoria: 'Matemática' },
+    { idRecurso: 'r3', titulo: 'Videoclase — Análisis literario', descripcion: 'Complemento externo para reforzar comprensión lectora.', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', categoria: 'Comunicación' },
+    { idRecurso: 'r4', titulo: 'Guía oficial del proceso de admisión', descripcion: 'Página institucional con el cronograma y requisitos del proceso.', url: 'https://www.gob.pe/', categoria: 'General' },
+  ];
+
   return {
     tieneCicloActivo: true,
     ciclo,
@@ -219,7 +310,38 @@ export function getAulaMock(universidad: string, nombreUniversidad: string): Aul
     grupoWhatsapp,
     pagos: { estadoGeneral: 'en_revision', conceptos },
     simulacrosCiclo,
+    clasesEnVivo,
+    grabaciones,
+    recursos,
   };
+}
+
+/** Combina `fecha` (YYYY-MM-DD) + `hora` (HH:mm) de una fila del mock en un `Date` local. */
+function combinarFechaHora(fecha: string, hora: string): Date {
+  return new Date(`${fecha}T${hora}:00`);
+}
+
+/**
+ * Estado derivado de una clase en vivo respecto al reloj del dispositivo — NUNCA se guarda
+ * en la hoja `clases_en_vivo` (ver `EstadoClaseAgenda`). `cancelada` (fila del coordinador)
+ * manda siempre sobre el cálculo de fechas.
+ */
+export function getEstadoClaseEnVivo(clase: ClaseEnVivoMock, ahora: Date = new Date()): EstadoClaseDerivado {
+  if (clase.estado === 'cancelada') return 'cancelada';
+  const inicio = combinarFechaHora(clase.fecha, clase.horaInicio);
+  const fin = combinarFechaHora(clase.fecha, clase.horaFin);
+  if (ahora >= inicio && ahora <= fin) return 'en_vivo';
+  if (ahora < inicio) return 'proxima';
+  return 'pasada';
+}
+
+/** Próxima clase en vivo (no cancelada, aún no terminada), ordenada por fecha/hora — para el
+ * countdown de "Inicio". Si hay una EN VIVO ahora mismo, esa es la "próxima" (ya empezó). */
+export function getProximaClaseEnVivoMock(clases: ClaseEnVivoMock[], ahora: Date = new Date()): ClaseEnVivoMock | null {
+  const candidatas = clases
+    .filter((c) => c.estado !== 'cancelada' && combinarFechaHora(c.fecha, c.horaFin) >= ahora)
+    .sort((a, b) => combinarFechaHora(a.fecha, a.horaInicio).getTime() - combinarFechaHora(b.fecha, b.horaInicio).getTime());
+  return candidatas[0] || null;
 }
 
 /** Próximo bloque de horario respecto a un día/hora dados (mock: siempre relativo al primer bloque de la semana de ejemplo). */

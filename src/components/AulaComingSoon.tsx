@@ -5,7 +5,7 @@ import { useUniversityStore } from '../hooks/useUniversity';
 import { resolveThemeVars } from '../utils/universityTheme';
 import { whatsappUrl } from '../constants/contact';
 import { SectionCurve } from './landing/SectionCurve';
-import { AulaMuro } from './aula/AulaMuro';
+import { AulaShell } from './aula/AulaShell';
 
 /**
  * Placeholder "Aula virtual — Próximamente" (ver docs/DIRECCION_DISENO_V3.md
@@ -17,13 +17,16 @@ import { AulaMuro } from './aula/AulaMuro';
  * Estado real hoy: NINGUNA universidad tiene un ciclo activo todavía (no
  * existe la hoja `ciclos` en CORE ni la action `getAula` — ver §10 del
  * documento de diseño), así que esta pantalla es siempre la lista de
- * espera. Para vender la experiencia sin mentir, se añade debajo un
- * "vista previa" del muro curado (`AulaMuro` en modo `preview`, con datos
- * de ejemplo y las interacciones reales deshabilitadas) construido con los
- * mismos componentes que se usarán tal cual cuando el backend v2.1 exista
- * — el día que haya un ciclo real, este archivo solo necesita reemplazar
- * este bloque de vista previa por `<AulaMuro preview={false} .../>`
- * alimentado con datos reales.
+ * espera. Para vender la experiencia sin mentir, se añade debajo una
+ * "vista previa" de la plataforma completa (`AulaShell` en modo `preview`,
+ * navegable entre secciones con datos de ejemplo y las interacciones reales
+ * deshabilitadas) construida con los mismos componentes que se usarán tal
+ * cual cuando el backend v2.1 exista — el día que haya un ciclo real, este
+ * archivo solo necesita reemplazar este bloque de vista previa por
+ * `<AulaShell preview={false} .../>` alimentado con datos reales. Ver
+ * docs/AULA_VIRTUAL_DISENO.md, sección "Arquitectura de navegación del aula
+ * (v2)", para el porqué del cambio de un muro único a una plataforma con
+ * secciones.
  */
 
 // Mismo número que usa StudentForm.tsx (src/constants/contact.ts) — lista de espera del Aula virtual.
@@ -151,18 +154,19 @@ export function AulaComingSoon() {
         </div>
       </section>
 
-      {/* Vista previa del muro curado — mismos componentes de src/components/aula/
+      {/* Vista previa de la plataforma completa — mismos componentes de src/components/aula/
           que se usarán tal cual cuando exista un ciclo real (ver docs/AULA_VIRTUAL_DISENO.md).
-          Datos de ejemplo, interacciones deshabilitadas, honestamente etiquetado. */}
+          Datos de ejemplo, interacciones deshabilitadas, honestamente etiquetado. La navegación
+          entre secciones SÍ funciona, para que el alumno sienta la plataforma real. */}
       <section className="max-w-5xl mx-auto px-4 pb-14 md:pb-20">
         <h2 className="font-display text-display-section font-bold text-slate-800 mb-2 text-center">
           Así se verá tu aula
         </h2>
         <p className="text-slate-500 text-sm md:text-base text-center max-w-prose mx-auto mb-8">
-          Un muro ya organizado por nosotros: tu horario, tus materiales, los avisos del coordinador
-          y tu estado de pagos, todo en un solo lugar. Tú no armas nada, solo entras y ves.
+          Una plataforma organizada en secciones: clases en vivo, grabaciones, materiales,
+          horario, anuncios y más — cada una con su propio panel, todo dentro de SimulaUNA.
         </p>
-        <AulaMuro
+        <AulaShell
           universidad={codigo || 'una'}
           nombreUniversidad={nombreUniversidad}
           whatsappHref={whatsappHref}

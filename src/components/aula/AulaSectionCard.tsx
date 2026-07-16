@@ -2,11 +2,11 @@ import type { ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 
 /**
- * Celda base del muro bento del Aula (ver docs/AULA_VIRTUAL_DISENO.md §7).
- * Todas las secciones curadas (HoyEnTuAula, HorarioSemanal, etc.) comparten
- * este envoltorio para que el bento se vea como UN sistema, no como
- * tarjetas sueltas — mismo tratamiento visual que `.shadow-tinted` +
- * `.card-elevated` ya usado en UniversityPage/AulaComingSoon.
+ * Celda bento base del Aula (ver docs/AULA_VIRTUAL_DISENO.md, "Arquitectura de navegación
+ * del aula (v2)"). Cada sección de `AulaShell` (InicioResumen, ClasesEnVivo, HorarioSemanal,
+ * etc.) arma SU PROPIO bento con esta celda — el bento ya no es un muro único, es el
+ * lenguaje visual que se repite dentro de cada sección. Mismo tratamiento visual que
+ * `.shadow-tinted` + `.card-elevated` ya usado en UniversityPage/AulaComingSoon.
  */
 interface AulaSectionCardProps {
   icon: LucideIcon;
