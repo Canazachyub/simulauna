@@ -83,11 +83,13 @@ export function UniversityCardComingSoon({ sigla, name, logoUrl, codigo }: Comin
       className="relative flex flex-col overflow-hidden rounded-3xl bg-slate-50 border border-slate-100"
     >
       <div
-        className="h-20 md:h-24 relative shrink-0 opacity-40"
+        className="h-20 md:h-24 relative shrink-0 opacity-70"
         style={{ backgroundImage: 'linear-gradient(135deg, var(--uni-primary-safe) 0%, var(--uni-primary-deep) 100%)' }}
       />
       <div className="flex flex-col items-center flex-1 px-5 pb-5 -mt-9">
-        <div className="w-[4.5rem] h-[4.5rem] rounded-2xl bg-white shadow-elevation-1 border border-slate-100 flex items-center justify-center p-2.5 grayscale opacity-70">
+        {/* El logo SIEMPRE nítido y a color (el estado "próximamente" ya lo comunican
+            el badge y el título gris — un logo en grayscale se vuelve ilegible). */}
+        <div className="w-[4.5rem] h-[4.5rem] rounded-2xl bg-white shadow-elevation-2 border border-slate-200 flex items-center justify-center p-2">
           <img src={logoUrl} alt="" aria-hidden="true" loading="lazy" className="max-h-full max-w-full object-contain" />
         </div>
         <h3 className="mt-3 font-display text-base md:text-lg font-black text-slate-500 text-center leading-tight">
