@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, X, GraduationCap, Sparkles } from 'lucide-react';
+import { Menu, X, GraduationCap, Sparkles, Search } from 'lucide-react';
+import { useQuickSwitchStore } from '../nav/quickSwitchStore';
 
 /** Scroll suave a una sección por id, respetando prefers-reduced-motion. */
 function scrollToId(id: string) {
@@ -12,6 +13,9 @@ function scrollToId(id: string) {
 
 const GOLD_GLOW = { '--uni-primary': '#D4AF37' } as CSSProperties;
 
+/** IDs de sección observados por el scrollspy (deben existir en Landing.tsx). */
+const SPY_SECTION_IDS = ['universidades', 'como-funciona'];
+
 /**
  * Navbar sticky del Landing nacional (Dirección de Diseño v3 §Estructura,
  * punto 1). Blanca, 72-80px, sombra sutil, CTA pill con glow. <lg colapsa a
@@ -21,7 +25,11 @@ const GOLD_GLOW = { '--uni-primary': '#D4AF37' } as CSSProperties;
  */
 export function LandingNavbar() {
   const navigate = useNavigate();
+  const setQuickSwitchOpen = useQuickSwitchStore((s) => s.setOpen);
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const toggleRef = useRef<HTMLButtonElement | null>(null);
 
@@ -29,6 +37,45 @@ export function LandingNavbar() {
     setOpen(false);
     toggleRef.current?.focus();
   };
+
+  // Barra de progreso de scroll + reducción sutil de altura de la navbar al bajar.
+  useEffect(() => {
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const doc = document.documentElement;
+      const scrollTop = doc.scrollTop || document.body.scrollTop;
+      const scrollable = (doc.scrollHeight || document.body.scrollHeight) - doc.clientHeight;
+      setProgress(scrollable > 0 ? Math.min(100, (scrollTop / scrollable) * 100) : 0);
+      setScrolled(scrollTop > 24);
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Scrollspy: resalta el enlace de la sección visible (IntersectionObserver).
+  useEffect(() => {
+    const els = SPY_SECTION_IDS.map((id) => document.getElementById(id)).filter(
+      (el): el is HTMLElement => el !== null
+    );
+    if (els.length === 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   const goUniversidades = () => {
     setOpen(false);
@@ -74,7 +121,11 @@ export function LandingNavbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-white navbar-shadow-soft">
-      <div className="container mx-auto px-4 sm:px-6 h-[72px] md:h-20 flex items-center justify-between gap-4">
+      <div
+        className={`container mx-auto px-4 sm:px-6 flex items-center justify-between gap-4 motion-safe:transition-[height] motion-safe:duration-300 motion-safe:ease-out ${
+          scrolled ? 'h-16' : 'h-[72px] md:h-20'
+        }`}
+      >
         {/* Logo (texto — sin logo gráfico propio) */}
         <button
           onClick={() => {
@@ -93,10 +144,22 @@ export function LandingNavbar() {
 
         {/* Enlaces desktop */}
         <nav className="hidden lg:flex items-center gap-7 text-sm font-bold text-slate-700">
-          <button onClick={goUniversidades} className="hover:text-brand-primary-700 transition-colors">
+          <button
+            onClick={goUniversidades}
+            aria-current={activeSection === 'universidades' ? 'true' : undefined}
+            className={`transition-colors ${
+              activeSection === 'universidades' ? 'text-brand-primary-700' : 'hover:text-brand-primary-700'
+            }`}
+          >
             Universidades
           </button>
-          <button onClick={goComoFunciona} className="hover:text-brand-primary-700 transition-colors">
+          <button
+            onClick={goComoFunciona}
+            aria-current={activeSection === 'como-funciona' ? 'true' : undefined}
+            className={`transition-colors ${
+              activeSection === 'como-funciona' ? 'text-brand-primary-700' : 'hover:text-brand-primary-700'
+            }`}
+          >
             Cómo funciona
           </button>
           <button onClick={goBanqueo} className="hover:text-brand-primary-700 transition-colors">
@@ -113,6 +176,19 @@ export function LandingNavbar() {
 
         {/* CTA + hamburguesa */}
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setQuickSwitchOpen(true)}
+            aria-label="Cambiar de universidad (Ctrl K)"
+            className="hidden md:inline-flex items-center gap-2 px-3 h-10 rounded-xl border border-slate-200 text-xs font-bold text-slate-500 hover:text-brand-primary-700 hover:border-brand-primary-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary-400"
+          >
+            <Search className="w-3.5 h-3.5" aria-hidden="true" />
+            <span className="hidden lg:inline">Cambiar universidad</span>
+            <kbd className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-slate-100 text-[10px] font-black text-slate-500">
+              Ctrl K
+            </kbd>
+          </button>
+
           <button
             onClick={goUniversidades}
             style={GOLD_GLOW}
@@ -135,6 +211,13 @@ export function LandingNavbar() {
         </div>
       </div>
 
+      {/* Barra de progreso de scroll: gradiente brand→dorado, 2-3px al borde inferior */}
+      <div
+        className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-brand-primary-700 to-brand-accent-500 motion-safe:transition-[width] motion-safe:duration-150 motion-safe:ease-out"
+        style={{ width: `${progress}%` }}
+        aria-hidden="true"
+      />
+
       {/* Panel móvil */}
       {open && (
         <div
@@ -153,6 +236,17 @@ export function LandingNavbar() {
             </button>
             <button role="menuitem" onClick={goBanqueo} className="text-left px-2 py-3 rounded-lg hover:bg-slate-50">
               Banqueo
+            </button>
+            <button
+              role="menuitem"
+              onClick={() => {
+                setOpen(false);
+                setQuickSwitchOpen(true);
+              }}
+              className="flex items-center gap-2 text-left px-2 py-3 rounded-lg hover:bg-slate-50"
+            >
+              <Search className="w-4 h-4 text-slate-400" aria-hidden="true" />
+              Cambiar universidad
             </button>
             <span className="px-2 py-3 inline-flex items-center gap-2 text-slate-400 select-none">
               Aula virtual

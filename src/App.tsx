@@ -2,6 +2,9 @@ import { useEffect, Suspense, lazy, type ReactNode } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { useUniversityStore } from './hooks/useUniversity';
+import { QuickSwitch } from './components/nav/QuickSwitch';
+import { RouteTransition } from './components/nav/RouteTransition';
+import { UniversityBottomNav } from './components/nav/UniversityBottomNav';
 
 // Todas las rutas son lazy (ver docs/CONTRATO_API_V2.md §5) para no cargar el bundle completo
 // en la landing nacional.
@@ -64,7 +67,12 @@ function UniversityGate({ children }: { children: ReactNode }) {
     }
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <UniversityBottomNav />
+    </>
+  );
 }
 
 function App() {
@@ -108,35 +116,38 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter basename="/simulauna">
+        <QuickSwitch />
         <Suspense fallback={<RouteFallback />}>
-          <Routes>
-            {/* Landing nacional */}
-            <Route path="/" element={<Landing />} />
+          <RouteTransition>
+            <Routes>
+              {/* Landing nacional */}
+              <Route path="/" element={<Landing />} />
 
-            {/* Rutas por universidad */}
-            <Route path="/:universidad" element={<UniversityGate><UniversityPage /></UniversityGate>} />
-            <Route path="/:universidad/registro" element={<UniversityGate><StudentForm /></UniversityGate>} />
-            <Route path="/:universidad/confirmar" element={<UniversityGate><ExamConfirmation /></UniversityGate>} />
-            <Route path="/:universidad/examen" element={<UniversityGate><Quiz /></UniversityGate>} />
-            <Route path="/:universidad/resultados" element={<UniversityGate><Results /></UniversityGate>} />
-            <Route path="/:universidad/banqueo" element={<UniversityGate><Banqueo /></UniversityGate>} />
-            <Route path="/:universidad/banqueo-tema" element={<UniversityGate><BanqueoPorTema /></UniversityGate>} />
-            <Route path="/:universidad/cepre" element={<UniversityGate><CepreSession /></UniversityGate>} />
-            <Route path="/:universidad/aula" element={<UniversityGate><AulaComingSoon /></UniversityGate>} />
+              {/* Rutas por universidad */}
+              <Route path="/:universidad" element={<UniversityGate><UniversityPage /></UniversityGate>} />
+              <Route path="/:universidad/registro" element={<UniversityGate><StudentForm /></UniversityGate>} />
+              <Route path="/:universidad/confirmar" element={<UniversityGate><ExamConfirmation /></UniversityGate>} />
+              <Route path="/:universidad/examen" element={<UniversityGate><Quiz /></UniversityGate>} />
+              <Route path="/:universidad/resultados" element={<UniversityGate><Results /></UniversityGate>} />
+              <Route path="/:universidad/banqueo" element={<UniversityGate><Banqueo /></UniversityGate>} />
+              <Route path="/:universidad/banqueo-tema" element={<UniversityGate><BanqueoPorTema /></UniversityGate>} />
+              <Route path="/:universidad/cepre" element={<UniversityGate><CepreSession /></UniversityGate>} />
+              <Route path="/:universidad/aula" element={<UniversityGate><AulaComingSoon /></UniversityGate>} />
 
-            {/* Redirects legados EXACTOS (react-router-dom v6 prioriza rutas estáticas sobre
-                :universidad aunque estén declaradas después, así que estos paths ganan). */}
-            <Route path="/registro" element={<Navigate to="/una/registro" replace />} />
-            <Route path="/confirmar" element={<Navigate to="/una/confirmar" replace />} />
-            <Route path="/examen" element={<Navigate to="/una/examen" replace />} />
-            <Route path="/resultados" element={<Navigate to="/una/resultados" replace />} />
-            <Route path="/banqueo" element={<Navigate to="/una/banqueo" replace />} />
-            <Route path="/banqueo-cepreuna" element={<Navigate to="/una/cepre" replace />} />
-            <Route path="/banqueo-tema" element={<Navigate to="/una/banqueo-tema" replace />} />
-            <Route path="/simulacro-cepreuna" element={<Navigate to="/una/cepre" replace />} />
+              {/* Redirects legados EXACTOS (react-router-dom v6 prioriza rutas estáticas sobre
+                  :universidad aunque estén declaradas después, así que estos paths ganan). */}
+              <Route path="/registro" element={<Navigate to="/una/registro" replace />} />
+              <Route path="/confirmar" element={<Navigate to="/una/confirmar" replace />} />
+              <Route path="/examen" element={<Navigate to="/una/examen" replace />} />
+              <Route path="/resultados" element={<Navigate to="/una/resultados" replace />} />
+              <Route path="/banqueo" element={<Navigate to="/una/banqueo" replace />} />
+              <Route path="/banqueo-cepreuna" element={<Navigate to="/una/cepre" replace />} />
+              <Route path="/banqueo-tema" element={<Navigate to="/una/banqueo-tema" replace />} />
+              <Route path="/simulacro-cepreuna" element={<Navigate to="/una/cepre" replace />} />
 
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </RouteTransition>
         </Suspense>
       </BrowserRouter>
     </AuthProvider>
