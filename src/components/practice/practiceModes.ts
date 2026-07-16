@@ -5,12 +5,12 @@ import { BanqueoTemaSelect } from './selects/BanqueoTemaSelect';
 import { CepreSelect } from './selects/CepreSelect';
 import type { PracticeMode } from './types';
 
-/** Modo "Banqueo histÃ³rico": sÃ³lo filtro de curso, preguntas de exÃ¡menes anteriores. */
+/** Modo "Banqueo histórico": sólo filtro de curso, preguntas de exámenes anteriores. */
 export const banqueoMode: PracticeMode = {
   id: 'banqueo',
-  loginKicker: 'Banqueo histÃ³rico',
-  loginTitle: 'Banqueo histÃ³rico',
-  loginSubtitle: 'Practica con preguntas reales de exÃ¡menes anteriores',
+  loginKicker: 'Banqueo histórico',
+  loginTitle: 'Banqueo histórico',
+  loginSubtitle: 'Practica con preguntas reales de exámenes anteriores',
   headingGradientClass: 'text-brand-primary-800 gradient-text-brand',
   renderLoginDecoration: () => createElement('div', null,
     createElement('img', { src: '/simulauna/illustrations/books-stack.svg', alt: '', 'aria-hidden': 'true', className: 'hidden md:block absolute top-10 left-6 w-40 opacity-30 pointer-events-none' }),
@@ -24,10 +24,10 @@ export const banqueoMode: PracticeMode = {
   nextButtonClass: '',
   navigatorActiveClass: 'bg-[var(--uni-primary-safe)] text-white shadow-md ring-2 ring-[var(--uni-primary-safe)]',
   modalTimeClass: 'text-[var(--uni-primary-safe)]',
-  resultsTitle: () => 'PrÃ¡ctica completada',
+  resultsTitle: () => 'Práctica completada',
   resultsBadge: () => 'BANQUEO',
   resetLabel: 'Practicar otro curso',
-  homeLabel: 'Ver mis puntos dÃ©biles',
+  homeLabel: 'Ver mis puntos débiles',
   reviewIconClass: 'text-primary-600',
   heroBgClass: 'bg-white',
   renderResultsDecoration: () => createElement('div', null,
@@ -36,7 +36,7 @@ export const banqueoMode: PracticeMode = {
   ),
 };
 
-/** Modo "Banqueo por Tema": filtro curso â†’ tema (stepper). */
+/** Modo "Banqueo por Tema": filtro curso → tema (stepper). */
 export const banqueoTemaMode: PracticeMode = {
   id: 'banqueoTema',
   loginKicker: 'Por Tema',
@@ -60,8 +60,8 @@ export const banqueoTemaMode: PracticeMode = {
 };
 
 /**
- * Modo CEPRE: fÃ¡brica porque los textos dependen de `cepreNombre` (registro de universidades,
- * ver docs/CONTRATO_API_V2.md Â§5), sÃ³lo conocido en tiempo de render del wrapper.
+ * Modo CEPRE: fábrica porque los textos dependen de `cepreNombre` (registro de universidades,
+ * ver docs/CONTRATO_API_V2.md §5), sólo conocido en tiempo de render del wrapper.
  */
 export function createCepreMode(cepreNombre: string): PracticeMode {
   return {
@@ -87,7 +87,7 @@ export function createCepreMode(cepreNombre: string): PracticeMode {
     modalTimeClass: 'text-primary-600',
     resultsTitle: () => 'Cuadernillo completado',
     resultsBadge: () => cepreNombre,
-    resetLabel: 'Otra prÃ¡ctica',
+    resetLabel: 'Otra práctica',
     homeLabel: 'Inicio',
     reviewIconClass: 'text-teal-600',
     heroBgClass: 'bg-aurora andean-overlay',

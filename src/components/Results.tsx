@@ -8,7 +8,7 @@ import {
   Sparkles, AlertTriangle, Scale, Star, ArrowRight, ChevronDown
 } from 'lucide-react';
 // Recharts vive en su propio chunk lazy (ver src/components/results/ResultsCharts.tsx):
-// solo se descarga al abrir las tabs GrÃ¡fico/Historial.
+// solo se descarga al abrir las tabs Gráfico/Historial.
 import type { ChartDataItem } from './results/ResultsCharts';
 import { useExamStore } from '../hooks/useExam';
 import { PERFORMANCE_MESSAGES } from '../types';
@@ -26,20 +26,20 @@ const HistoryLineChart = lazy(() =>
   import('./results/ResultsCharts').then(m => ({ default: m.HistoryLineChart }))
 );
 
-/** Placeholder mientras se descarga el chunk de Recharts (respeta reduced-motion vÃ­a animate-pulse global). */
+/** Placeholder mientras se descarga el chunk de Recharts (respeta reduced-motion vía animate-pulse global). */
 function ChartSkeleton() {
   return <div className="w-full h-full rounded-xl bg-slate-100 animate-pulse" aria-hidden="true" />;
 }
 
-// Fondos "universo" propios (Tanda 2 â€” cero Unsplash), mismo tratamiento de
-// opacidad baja que las fotos que reemplazan. Ver docs/DIRECCION_DISENO_V3.md Â§Tanda 2.
+// Fondos "universo" propios (Tanda 2 — cero Unsplash), mismo tratamiento de
+// opacidad baja que las fotos que reemplazan. Ver docs/DIRECCION_DISENO_V3.md §Tanda 2.
 const UNIVERSO = {
   despegue: '/simulauna/illustrations/bg-universo-despegue.webp',
   planetaLibros: '/simulauna/illustrations/bg-universo-planeta-libros.webp',
 };
 
-// Paleta brand (solo el dorado semÃ¡ntico del nivel Excelente; el resto del
-// acento viene del tema institucional vÃ­a resolveThemeVars)
+// Paleta brand (solo el dorado semántico del nivel Excelente; el resto del
+// acento viene del tema institucional vía resolveThemeVars)
 const BRAND_ACCENT = '#D4AF37';
 
 function formatRelativeDate(iso: string): string {
@@ -48,7 +48,7 @@ function formatRelativeDate(iso: string): string {
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
   if (diffDays < 1) return 'Hoy';
   if (diffDays === 1) return 'Ayer';
-  if (diffDays < 7) return `Hace ${diffDays} dÃ­as`;
+  if (diffDays < 7) return `Hace ${diffDays} días`;
   if (diffDays < 30) return `Hace ${Math.floor(diffDays / 7)} sem`;
   return d.toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' });
 }
@@ -85,7 +85,7 @@ export function Results() {
         setLoadingHistory(true);
 
         // saveScore es @deprecated (el flujo nuevo persiste en submitExam), pero se mantiene
-        // como doble escritura mientras el backend v2 (getExam/submitExam) no estÃ© desplegado.
+        // como doble escritura mientras el backend v2 (getExam/submitExam) no esté desplegado.
         const saveResult = await saveScore({
           dni: result.student.dni,
           score: result.totalScore,
@@ -96,7 +96,7 @@ export function Results() {
           universidad: resultUniversidad
         });
 
-        console.log('âœ… Puntaje guardado:', saveResult);
+        console.log('✅ Puntaje guardado:', saveResult);
 
         await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -109,7 +109,7 @@ export function Results() {
     }
   }, [result, navigate, universidad]);
 
-  // Trigger animaciÃ³n del anillo
+  // Trigger animación del anillo
   useEffect(() => {
     if (!result) return;
     const pct = Math.max(0, Math.min(100, (result.totalScore / result.maxScore) * 100));
@@ -155,7 +155,7 @@ export function Results() {
 
   // ===== HERO helpers =====
   // Umbrales SIEMPRE desde result.umbrales (escala.umbrales de getConfig), nunca constantes
-  // fijas: cada universidad puede tener una escala totalmente distinta (ver docs/CONTRATO_API_V2.md Â§5).
+  // fijas: cada universidad puede tener una escala totalmente distinta (ver docs/CONTRATO_API_V2.md §5).
   const { excelente: umbralExcelente, bueno: umbralBueno, regular: umbralRegular } = result.umbrales;
   const score = result.totalScore;
   const isExcellent = score >= umbralExcelente;
@@ -163,15 +163,15 @@ export function Results() {
   const isRegular = score >= umbralRegular && score < umbralBueno;
 
   const heroTitle = isExcellent
-    ? 'Â¡EstÃ¡s listo!'
+    ? '¡Estás listo!'
     : isGood
       ? 'Muy bien encaminado'
       : isRegular
         ? 'Sigue practicando'
         : 'Hay mucho por mejorar';
 
-  // "Bueno" usa el gradiente institucional (--uni-primary â†’ --uni-primary-deep) en vez del
-  // gradiente fijo de marca, para que el tÃ­tulo del hero tambiÃ©n refleje la universidad activa.
+  // "Bueno" usa el gradiente institucional (--uni-primary → --uni-primary-deep) en vez del
+  // gradiente fijo de marca, para que el título del hero también refleje la universidad activa.
   const heroTitleClass = isExcellent
     ? 'inline-block text-brand-accent-600 gradient-text-gold'
     : isGood
@@ -181,11 +181,11 @@ export function Results() {
     ? { backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)' }
     : undefined;
 
-  // Acento por universidad: el anillo de resultados, tabs y grÃ¡ficos usan SIEMPRE el tema
-  // institucional resuelto vÃ­a src/theme/universityThemes.ts (Ãºnica fuente de theming) â€” los
-  // colores del registro maestro tienen precedencia, con fallback local si aÃºn no estÃ¡
-  // registrada. El resto de la escala de desempeÃ±o (excelente=dorado, regular=Ã¡mbar,
-  // bajo=rojo) es semÃ¡ntica y no cambia por universidad (ver docs/CONTRATO_API_V2.md Â§5).
+  // Acento por universidad: el anillo de resultados, tabs y gráficos usan SIEMPRE el tema
+  // institucional resuelto vía src/theme/universityThemes.ts (única fuente de theming) — los
+  // colores del registro maestro tienen precedencia, con fallback local si aún no está
+  // registrada. El resto de la escala de desempeño (excelente=dorado, regular=ámbar,
+  // bajo=rojo) es semántica y no cambia por universidad (ver docs/CONTRATO_API_V2.md §5).
   const universidadRegistrada = registroUniversidades.find(u => u.codigo === universidad);
   const themeVars = resolveThemeVars(universidad, registroUniversidades);
   const uniPrimaryAccessible = (themeVars as Record<string, string>)['--uni-primary-safe'];
@@ -206,7 +206,7 @@ export function Results() {
     const span = umbralExcelente - umbralBueno;
     percentToNext = span > 0 ? Math.max(0, Math.min(100, ((score - umbralBueno) / span) * 100)) : 100;
   } else {
-    nextThresholdLabel = 'Â¡Nivel Excelente alcanzado!';
+    nextThresholdLabel = '¡Nivel Excelente alcanzado!';
     percentToNext = 100;
   }
 
@@ -242,7 +242,7 @@ export function Results() {
     ? userHistory.history[0].puntaje - userHistory.history[1].puntaje
     : null;
 
-  // Insights para grÃ¡fico
+  // Insights para gráfico
   const sortedByPct = [...result.subjectResults].sort((a, b) => b.percentage - a.percentage);
   const bestSubject = sortedByPct[0];
   const worstSubject = sortedByPct[sortedByPct.length - 1];
@@ -320,11 +320,11 @@ export function Results() {
             {/* Greeting */}
             <div className="chip bg-white/70 backdrop-blur text-brand-primary-800 border border-brand-primary-100 mb-6 animate-fade-up">
               <Sparkles className="w-4 h-4 text-brand-accent-500" />
-              <span className="font-semibold">Â¡Hola, {firstName}!</span>
+              <span className="font-semibold">¡Hola, {firstName}!</span>
               <span aria-hidden="true">âœ¨</span>
             </div>
 
-            {/* TÃ­tulo dinÃ¡mico */}
+            {/* Título dinámico */}
             <h1
               className={clsx(
                 'font-display text-5xl md:text-7xl font-black tracking-tightest mb-2 animate-fade-up delay-100',
@@ -347,12 +347,12 @@ export function Results() {
                 />
               )}
 
-              {/* Badge nuevo rÃ©cord */}
+              {/* Badge nuevo récord */}
               {isNewRecord && (
                 <div className="absolute -top-2 -right-2 md:-top-4 md:-right-4 z-20 animate-bounce-in">
                   <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-accent-500 text-white shadow-elevation-3 font-bold text-sm">
                     <Star className="w-4 h-4 fill-white" />
-                    Â¡Nuevo rÃ©cord!
+                    ¡Nuevo récord!
                   </div>
                 </div>
               )}
@@ -397,14 +397,14 @@ export function Results() {
               </div>
             </div>
 
-            {/* MÃ©tricas inline */}
+            {/* Métricas inline */}
             <div className="grid grid-cols-3 gap-6 md:gap-12 w-full max-w-2xl mb-8 animate-fade-up delay-400">
               <div className="flex flex-col items-center overflow-hidden">
                 <span className="font-display text-3xl md:text-4xl font-black text-slate-900 tabular-nums animate-number-roll">
                   {result.percentage.toFixed(0)}%
                 </span>
                 <span className="mt-1 text-[10px] md:text-xs uppercase tracking-wider font-semibold text-slate-500">
-                  PrecisiÃ³n
+                  Precisión
                 </span>
               </div>
               <div className="flex flex-col items-center border-x border-slate-200 overflow-hidden">
@@ -444,7 +444,7 @@ export function Results() {
               {dropVsPrevious !== null && dropVsPrevious < 0 && !isNewRecord && (
                 <div className="mt-4 inline-flex items-center gap-1.5 chip bg-slate-100 text-slate-600 border border-slate-200">
                   <TrendingUp className="w-3.5 h-3.5 rotate-180" />
-                  Bajaste {formatNumber(Math.abs(dropVsPrevious), 0)} pts vs Ãºltimo intento
+                  Bajaste {formatNumber(Math.abs(dropVsPrevious), 0)} pts vs último intento
                 </div>
               )}
             </div>
@@ -468,7 +468,7 @@ export function Results() {
             </div>
             <div className="flex items-center gap-3 text-slate-600">
               <BookOpen className="w-5 h-5 text-slate-400" />
-              <span>Ãrea: <strong className="text-slate-800">{result.student.area}</strong></span>
+              <span>Írea: <strong className="text-slate-800">{result.student.area}</strong></span>
             </div>
             <div className="flex items-center gap-3 text-slate-600">
               <Calendar className="w-5 h-5 text-slate-400" />
@@ -481,8 +481,8 @@ export function Results() {
         <div className="flex justify-center animate-fade-up">
           <div className="flex gap-1 p-1.5 rounded-2xl bg-slate-100 w-fit overflow-x-auto max-w-full">
             {([
-              { id: 'review', label: 'RevisiÃ³n', Icon: Grid3X3 },
-              { id: 'chart', label: 'GrÃ¡fico', Icon: BarChart3 },
+              { id: 'review', label: 'Revisión', Icon: Grid3X3 },
+              { id: 'chart', label: 'Gráfico', Icon: BarChart3 },
               { id: 'details', label: 'Detalle', Icon: Table2 },
               { id: 'history', label: 'Historial', Icon: History }
             ] as const).map(t => {
@@ -509,13 +509,13 @@ export function Results() {
           </div>
         </div>
 
-        {/* ============ 3. TAB REVISIÃ“N ============ */}
+        {/* ============ 3. TAB REVISIÓN ============ */}
         {activeTab === 'review' && (
           <section className="card-elevated p-6 animate-fade-up">
             <div className="mb-5">
               <h2 className="font-display text-xl font-bold text-slate-800 flex items-center gap-2">
                 <Grid3X3 className="w-5 h-5 text-brand-primary-600" />
-                RevisiÃ³n de preguntas
+                Revisión de preguntas
               </h2>
               <p className="text-sm text-slate-500 mt-1">
                 Toca cualquier pregunta para ver el detalle.
@@ -538,7 +538,7 @@ export function Results() {
               </div>
             </div>
 
-            {/* Grid de preguntas â€” color + Ã­cono para que el estado sea escaneable sin depender solo del color */}
+            {/* Grid de preguntas — color + ícono para que el estado sea escaneable sin depender solo del color */}
             <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-2">
               {questions.map((q, idx) => {
                 const a = answerMap.get(q.id);
@@ -560,7 +560,7 @@ export function Results() {
                           : 'bg-red-500 text-white hover:bg-red-600'
                     )}
                     style={isActive ? { ['--tw-ring-color' as string]: 'var(--uni-primary-safe)' } : undefined}
-                    title={`${q.subject} â€” ${statusLabel}`}
+                    title={`${q.subject} — ${statusLabel}`}
                     aria-label={`Pregunta ${idx + 1}, ${statusLabel}`}
                   >
                     {idx + 1}
@@ -696,7 +696,7 @@ export function Results() {
                       <span className="font-medium">
                         {currentAnswer?.selectedOption === null
                           ? 'Sin responder'
-                          : `Incorrecta â€” La correcta es: ${indexToLetter(currentQuestion.correctAnswer)}`}
+                          : `Incorrecta — La correcta es: ${indexToLetter(currentQuestion.correctAnswer)}`}
                       </span>
                     </>
                   )}
@@ -711,12 +711,12 @@ export function Results() {
                       style={{ color: 'var(--uni-primary-safe)' }}
                     >
                       <Lightbulb className="w-4 h-4" />
-                      {showJustification ? 'Ocultar justificaciÃ³n' : 'Ver justificaciÃ³n'}
+                      {showJustification ? 'Ocultar justificación' : 'Ver justificación'}
                     </button>
 
                     {showJustification && (
                       <div className="mt-3 p-4 bg-amber-50 rounded-xl border border-amber-200 animate-fade-up">
-                        <p className="text-amber-800 text-sm font-semibold mb-1">JustificaciÃ³n:</p>
+                        <p className="text-amber-800 text-sm font-semibold mb-1">Justificación:</p>
                         <p className="text-amber-700 text-sm leading-relaxed">
                           {currentQuestion.justification}
                         </p>
@@ -761,7 +761,7 @@ export function Results() {
           </section>
         )}
 
-        {/* ============ 4. TAB GRÃFICO ============ */}
+        {/* ============ 4. TAB GRÍFICO ============ */}
         {activeTab === 'chart' && (
           <section className="space-y-6 animate-fade-up">
             {/* Insights */}
@@ -773,9 +773,9 @@ export function Results() {
                   </div>
                   <span className="text-xs uppercase tracking-wider font-semibold text-slate-500">Mejor asignatura</span>
                 </div>
-                <p className="font-display text-lg font-black text-slate-900 truncate">{bestSubject?.name ?? 'â€”'}</p>
+                <p className="font-display text-lg font-black text-slate-900 truncate">{bestSubject?.name ?? '—'}</p>
                 <p className="text-sm text-brand-accent-600 font-mono font-bold">
-                  {bestSubject ? `${bestSubject.percentage.toFixed(1)}%` : 'â€”'}
+                  {bestSubject ? `${bestSubject.percentage.toFixed(1)}%` : '—'}
                 </p>
               </div>
 
@@ -786,9 +786,9 @@ export function Results() {
                   </div>
                   <span className="text-xs uppercase tracking-wider font-semibold text-slate-500">A reforzar</span>
                 </div>
-                <p className="font-display text-lg font-black text-slate-900 truncate">{worstSubject?.name ?? 'â€”'}</p>
+                <p className="font-display text-lg font-black text-slate-900 truncate">{worstSubject?.name ?? '—'}</p>
                 <p className="text-sm text-red-600 font-mono font-bold">
-                  {worstSubject ? `${worstSubject.percentage.toFixed(1)}%` : 'â€”'}
+                  {worstSubject ? `${worstSubject.percentage.toFixed(1)}%` : '—'}
                 </p>
               </div>
 
@@ -823,7 +823,7 @@ export function Results() {
                   Rendimiento por asignatura
                 </h2>
                 <p className="text-sm text-slate-500 mt-1">
-                  {chartData.length} cursos â€” identifica fortalezas y vacÃ­os.
+                  {chartData.length} cursos — identifica fortalezas y vacíos.
                 </p>
               </div>
 
@@ -857,7 +857,7 @@ export function Results() {
                         <div className="min-w-0">
                           <div className="font-display font-bold text-slate-800 truncate">{s.name}</div>
                           <div className="text-xs text-slate-500 font-mono">
-                            {s.correctAnswers}/{s.totalQuestions} Â· {s.percentage.toFixed(1)}%
+                            {s.correctAnswers}/{s.totalQuestions} · {s.percentage.toFixed(1)}%
                           </div>
                         </div>
                         <button
@@ -891,7 +891,7 @@ export function Results() {
                 Detalle por asignatura
               </h2>
               <p className="text-sm text-slate-500 mt-1">
-                Toca cada tarjeta para ver mÃ¡s informaciÃ³n.
+                Toca cada tarjeta para ver más información.
               </p>
             </div>
 
@@ -933,7 +933,7 @@ export function Results() {
                       <div className="flex-1 min-w-0">
                         <div className="font-display font-bold text-slate-800 truncate">{subject.name}</div>
                         <div className="text-xs text-slate-500 font-mono">
-                          {subject.correctAnswers}/{subject.totalQuestions} Â· {formatNumber(subject.pointsObtained)} pts
+                          {subject.correctAnswers}/{subject.totalQuestions} · {formatNumber(subject.pointsObtained)} pts
                         </div>
                       </div>
                       <span className={clsx('chip border', chipClass)} style={chipStyle}>
@@ -1011,7 +1011,7 @@ export function Results() {
                 <div className="flex-1">
                   <div className="font-display font-black uppercase tracking-wider text-sm">Total</div>
                   <div className="text-xs text-white/90 font-mono">
-                    {totalCorrect}/{totalQuestions} Â· {formatNumber(result.totalScore, 0)} pts
+                    {totalCorrect}/{totalQuestions} · {formatNumber(result.totalScore, 0)} pts
                   </div>
                 </div>
                 <span className="chip bg-brand-accent-500 text-brand-primary-900 border-brand-accent-400 font-black">
@@ -1073,7 +1073,7 @@ export function Results() {
                       {userHistory.history.length >= 2
                         ? (userHistory.history[0].puntaje - userHistory.history[1].puntaje > 0 ? '+' : '')
                           + formatNumber(userHistory.history[0].puntaje - userHistory.history[1].puntaje, 0)
-                        : 'â€”'}
+                        : '—'}
                     </p>
                     <p className="text-[10px] uppercase tracking-wider font-semibold text-slate-500 mt-1">
                       vs anterior
@@ -1085,7 +1085,7 @@ export function Results() {
                 {userHistory.history.length >= 2 && (
                   <div className="mb-8">
                     <h3 className="font-display text-sm font-bold text-slate-700 mb-3 uppercase tracking-wider">
-                      EvoluciÃ³n de tus puntajes
+                      Evolución de tus puntajes
                     </h3>
                     <div style={{ height: 260 }} className="w-full">
                       <Suspense fallback={<ChartSkeleton />}>
@@ -1179,7 +1179,7 @@ export function Results() {
                 <History className="w-12 h-12 text-slate-300 mx-auto mb-3" />
                 <p className="text-slate-600 font-semibold">Este es tu primer simulacro</p>
                 <p className="text-sm text-slate-400 mt-1">
-                  Vuelve a practicar para ver tu progreso aquÃ­.
+                  Vuelve a practicar para ver tu progreso aquí.
                 </p>
               </div>
             )}
@@ -1205,10 +1205,10 @@ export function Results() {
             <div className="flex-1">
               <div className="chip bg-white/15 text-white border border-white/20 mb-3 backdrop-blur">
                 <Sparkles className="w-4 h-4 text-brand-accent-300" />
-                Â¿QuÃ© sigue?
+                ¿Qué sigue?
               </div>
               <h3 className="font-display text-2xl md:text-3xl font-black tracking-tighter mb-2">
-                Practica tus puntos dÃ©biles
+                Practica tus puntos débiles
               </h3>
               <p className="text-white/90 max-w-md">
                 Refuerza las asignaturas donde bajaste puntos en Banqueo por Tema.
@@ -1219,7 +1219,7 @@ export function Results() {
                 onClick={() => navigate(`/${universidad}/banqueo-tema`)}
                 className="btn-accent-gold shine-hover inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold whitespace-nowrap"
               >
-                Practicar puntos dÃ©biles
+                Practicar puntos débiles
                 <ArrowRight className="w-4 h-4" />
               </button>
               <div className="flex gap-2">
@@ -1244,7 +1244,7 @@ export function Results() {
         </section>
 
         <p className="text-center text-slate-400 text-sm font-display">
-          SimulaUNA Â· {universidadRegistrada?.nombre || 'Universidad Nacional del Altiplano'}
+          SimulaUNA · {universidadRegistrada?.nombre || 'Universidad Nacional del Altiplano'}
         </p>
       </div>
     </div>

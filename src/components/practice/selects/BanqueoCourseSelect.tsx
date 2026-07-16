@@ -37,7 +37,7 @@ const BANQUEO_TOUR_STEPS: CoachTourStep[] = [
   },
 ];
 
-/** SelecciÃ³n de filtros del banqueo histÃ³rico: sÃ³lo curso + cantidad de preguntas. */
+/** Selección de filtros del banqueo histórico: sólo curso + cantidad de preguntas. */
 export function BanqueoCourseSelect({
   universidad, isAuthenticated, userDni, isLoading, error, onBack, onLogout, onSubmit
 }: PracticeSelectStepProps) {
@@ -74,10 +74,10 @@ export function BanqueoCourseSelect({
               type="button"
               onClick={onLogout}
               className="chip bg-white/70 hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 transition-colors font-sans"
-              title="Cerrar sesiÃ³n"
+              title="Cerrar sesión"
             >
               <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Cerrar sesiÃ³n</span>
+              <span className="hidden sm:inline">Cerrar sesión</span>
             </button>
           )}
         </div>
@@ -86,7 +86,7 @@ export function BanqueoCourseSelect({
           <div className="flex items-center gap-2 mb-3">
             <span className="chip bg-white/70 text-brand-primary-700 text-[10px] font-bold uppercase tracking-[0.18em] font-mono">
               <Target className="w-3 h-3" />
-              PrÃ¡ctica enfocada
+              Práctica enfocada
             </span>
             {isAuthenticated && userDni && (
               <span className="chip bg-emerald-50 text-emerald-700 text-[10px] font-mono">
@@ -105,7 +105,7 @@ export function BanqueoCourseSelect({
             Elige tu curso
           </h1>
           <p className="font-sans text-lg text-slate-600 max-w-2xl">
-            Practica enfocado en un solo tema. Preguntas reales de exÃ¡menes anteriores UNAP.
+            Practica enfocado en un solo tema. Preguntas reales de exámenes anteriores UNAP.
           </p>
         </div>
 
@@ -120,7 +120,7 @@ export function BanqueoCourseSelect({
           </div>
           <div className="grid grid-cols-3 gap-3">
             {([
-              { count: 10 as QuestionCount, icon: Timer, label: 'RÃ¡pido' },
+              { count: 10 as QuestionCount, icon: Timer, label: 'Rápido' },
               { count: 15 as QuestionCount, icon: Target, label: 'Balanceado' },
               { count: 20 as QuestionCount, icon: Brain, label: 'Profundo' },
             ]).map(({ count, icon: Icon, label }) => {
@@ -194,7 +194,7 @@ export function BanqueoCourseSelect({
               ) : (
                 <>
                   <Sparkles className="w-5 h-5" />
-                  Comenzar prÃ¡ctica
+                  Comenzar práctica
                   <ChevronRight className="w-5 h-5" />
                 </>
               )}

@@ -14,7 +14,7 @@
  * - Las tres "guindas" (unsa, sanmarcos, unsch) están deliberadamente
  *   diferenciadas en tono para distinguirse de un vistazo.
  */
-import { ensureAccessible } from '../utils/color';
+import { ensureAccessible, contrastRatio } from '../utils/color';
 
 export interface UniversityTheme {
   /** Color institucional principal (familia oscura, sirve de fondo/acento fuerte). */
@@ -84,12 +84,18 @@ export function getUniversityTheme(
  */
 export function themeCssVars(theme: UniversityTheme): Record<string, string> {
   const safe = ensureAccessible(theme.primary, '#FFFFFF', 4.5);
+  // --uni-secondary-safe: apto como FONDO sobre superficies claras. Si el
+  // secundario institucional casi no contrasta con blanco (caso UNI: #FFFFFF),
+  // cae al primario para no producir elementos invisibles blanco-sobre-blanco.
+  // Usar SIEMPRE esta variable cuando el secundario pinte fondos/puntos/chips.
+  const secondarySafe = contrastRatio(theme.secondary, '#FFFFFF') < 1.5 ? safe : theme.secondary;
   return {
     '--uni-primary': theme.primary,
     '--uni-primary-safe': safe,
     '--uni-primary-soft': hexWithAlpha(theme.primary, 0.08),
     '--uni-primary-deep': darken(theme.primary, 0.25),
     '--uni-secondary': theme.secondary,
+    '--uni-secondary-safe': secondarySafe,
   };
 }
 

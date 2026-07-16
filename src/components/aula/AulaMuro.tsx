@@ -49,7 +49,7 @@ export function AulaMuro({ universidad, nombreUniversidad, whatsappHref, cepreHr
         <div className="flex flex-wrap items-center gap-2 mb-5">
           <span
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider border-2 bg-white"
-            style={{ borderColor: 'var(--uni-secondary)', color: 'var(--uni-primary-safe)' }}
+            style={{ borderColor: 'var(--uni-secondary-safe)', color: 'var(--uni-primary-safe)' }}
           >
             <Eye className="w-3.5 h-3.5" aria-hidden="true" />
             Vista previa · datos de ejemplo

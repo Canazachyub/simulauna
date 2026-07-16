@@ -228,7 +228,7 @@ export function UniversityPage() {
                 {/* Acento del tema — el dorado/secundario solo aparece como detalle, nunca como fondo con texto */}
                 <span
                   className="absolute top-5 right-5 w-2.5 h-2.5 rounded-full"
-                  style={{ backgroundColor: 'var(--uni-secondary)' }}
+                  style={{ backgroundColor: 'var(--uni-secondary-safe)' }}
                   aria-hidden="true"
                 />
                 <div
@@ -260,7 +260,7 @@ export function UniversityPage() {
           >
             <span
               className="absolute top-5 right-5 inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-sm"
-              style={{ backgroundColor: 'var(--uni-secondary)', color: '#1e293b' }}
+              style={{ backgroundColor: 'var(--uni-secondary-safe)', color: '#1e293b' }}
             >
               Próximamente
             </span>

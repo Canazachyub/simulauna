@@ -210,7 +210,8 @@ function HeroMascot() {
       <img
         src={ASSETS_3D.mascotaLobito}
         alt="Mascota SimulaUNA: un lobito muy estudioso"
-        loading="lazy"
+        // Above the fold en desktop (candidata a LCP): prioridad alta, nunca lazy.
+        fetchPriority="high"
         className="relative z-10 w-[280px] xl:w-[320px] max-h-full object-contain animate-float-y select-none drop-shadow-2xl pointer-events-none"
         onError={() => setBroken(true)}
       />
@@ -371,9 +372,10 @@ export function Landing() {
         <StarTwinkle className="absolute top-[55%] left-[8%] w-3 h-3 text-white/80 animate-star-twinkle delay-500" size={14} />
         <StarTwinkle className="absolute top-[28%] right-[12%] w-5 h-5 text-brand-accent-300 animate-star-twinkle delay-75" size={20} />
 
-        {/* Layer 3 — silueta de montañas en la base */}
+        {/* Layer 3 — silueta de montañas en la base (solo el estilo inline;
+            la clase bg-mountains-bottom repintaba el MISMO svg vía ::after) */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-72 md:h-96 pointer-events-none bg-mountains-bottom z-[5]"
+          className="absolute bottom-0 left-0 right-0 h-72 md:h-96 pointer-events-none z-[5]"
           style={{
             backgroundImage: "url('/simulauna/illustrations/mountains.svg')",
             backgroundSize: '100% 100%',

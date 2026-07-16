@@ -81,7 +81,7 @@ export function HoyEnTuAula({ proximaClase, materialDestacado, interactive }: Ho
             <div className="flex items-start gap-3">
               <div
                 className="w-9 h-9 shrink-0 rounded-lg flex items-center justify-center text-white"
-                style={{ backgroundColor: 'var(--uni-secondary)', color: '#1e293b' }}
+                style={{ backgroundColor: 'var(--uni-secondary-safe)', color: '#1e293b' }}
               >
                 <MaterialIcon className="w-4 h-4" aria-hidden="true" />
               </div>

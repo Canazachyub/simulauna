@@ -74,12 +74,12 @@ export function UniversityBottomNav() {
                 <span className="relative">
                   <Icon className="w-5 h-5" aria-hidden="true" />
                   {item.badge && (
+                    // Punto indicador en vez de texto: a 6px el "PRÓX" era ilegible
+                    // (el texto accesible vive en el sr-only del label).
                     <span
-                      className="absolute -top-1.5 -right-3 px-1 rounded-full bg-brand-accent-500 text-brand-primary-900 text-[6px] font-black leading-tight tracking-wide"
+                      className="absolute -top-1 -right-1.5 w-2 h-2 rounded-full bg-brand-accent-500 ring-2 ring-white"
                       aria-hidden="true"
-                    >
-                      PRÓX
-                    </span>
+                    />
                   )}
                 </span>
                 <span className="text-[10px] font-bold leading-none">

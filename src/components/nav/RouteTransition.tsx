@@ -33,7 +33,12 @@ function RouteTransitionFrame({ children }: { children: ReactNode }) {
     <div
       style={{
         opacity: entered ? 1 : 0,
-        transform: entered ? 'translateY(0)' : 'translateY(12px)',
+        // CRÍTICO: en el estado final NO debe declararse transform. Cualquier
+        // transform ≠ none (incluido translateY(0)) convierte a este div en el
+        // containing block de TODOS los position:fixed descendientes (bottom
+        // nav, barras de acción, halo del CoachTour), des-fijándolos del
+        // viewport. `undefined` elimina la propiedad al terminar la entrada.
+        transform: entered ? undefined : 'translateY(12px)',
         transition: 'opacity 200ms ease-out, transform 200ms ease-out',
       }}
     >
