@@ -4,12 +4,25 @@ import { ArrowLeft, MessageCircle, GraduationCap, TrendingUp, BookMarked, Sparkl
 import { useUniversityStore } from '../hooks/useUniversity';
 import { resolveThemeVars } from '../utils/universityTheme';
 import { SectionCurve } from './landing/SectionCurve';
+import { AulaMuro } from './aula/AulaMuro';
 
 /**
  * Placeholder "Aula virtual — Próximamente" (ver docs/DIRECCION_DISENO_V3.md
- * §Aulas virtuales). Ruta /:universidad/aula: mismo tema institucional que el
- * resto de pantallas de la universidad (resolveThemeVars) + CTA a WhatsApp
- * para lista de espera. Backend: sin cambios, es 100% presentacional.
+ * §Aulas virtuales y docs/AULA_VIRTUAL_DISENO.md). Ruta /:universidad/aula:
+ * mismo tema institucional que el resto de pantallas de la universidad
+ * (resolveThemeVars) + CTA a WhatsApp para lista de espera. Backend: sin
+ * cambios, es 100% presentacional.
+ *
+ * Estado real hoy: NINGUNA universidad tiene un ciclo activo todavía (no
+ * existe la hoja `ciclos` en CORE ni la action `getAula` — ver §10 del
+ * documento de diseño), así que esta pantalla es siempre la lista de
+ * espera. Para vender la experiencia sin mentir, se añade debajo un
+ * "vista previa" del muro curado (`AulaMuro` en modo `preview`, con datos
+ * de ejemplo y las interacciones reales deshabilitadas) construido con los
+ * mismos componentes que se usarán tal cual cuando el backend v2.1 exista
+ * — el día que haya un ciclo real, este archivo solo necesita reemplazar
+ * este bloque de vista previa por `<AulaMuro preview={false} .../>`
+ * alimentado con datos reales.
  */
 
 // Mismo número que usa StudentForm.tsx (WHATSAPP_BASE) — lista de espera del Aula virtual.
@@ -136,6 +149,27 @@ export function AulaComingSoon() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Vista previa del muro curado — mismos componentes de src/components/aula/
+          que se usarán tal cual cuando exista un ciclo real (ver docs/AULA_VIRTUAL_DISENO.md).
+          Datos de ejemplo, interacciones deshabilitadas, honestamente etiquetado. */}
+      <section className="max-w-5xl mx-auto px-4 pb-14 md:pb-20">
+        <h2 className="font-display text-display-section font-bold text-slate-800 mb-2 text-center">
+          Así se verá tu aula
+        </h2>
+        <p className="text-slate-500 text-sm md:text-base text-center max-w-prose mx-auto mb-8">
+          Un muro ya organizado por nosotros: tu horario, tus materiales, los avisos del coordinador
+          y tu estado de pagos, todo en un solo lugar. Tú no armas nada, solo entras y ves.
+        </p>
+        <AulaMuro
+          universidad={codigo || 'una'}
+          nombreUniversidad={nombreUniversidad}
+          whatsappHref={whatsappHref}
+          cepreHref={`/${codigo || 'una'}/cepre`}
+          preview
+          showWelcome={false}
+        />
       </section>
     </div>
   );
