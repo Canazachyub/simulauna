@@ -1,6 +1,8 @@
-# SimulaUNA - Plataforma de Simulacros de Examen de Admisión
+# SimulaUNA - Plataforma Nacional de Simulacros de Examen de Admisión
 
-Plataforma web para realizar simulacros del examen de admisión de la **Universidad Nacional del Altiplano (UNA) Puno, Perú**. Permite a los estudiantes practicar con preguntas reales organizadas por área académica y recibir retroalimentación detallada de su desempeño.
+Plataforma web **multi-universidad** para realizar simulacros de examen de admisión de universidades públicas del Perú. Nació como el simulador exclusivo de la **Universidad Nacional del Altiplano (UNA) Puno** — que sigue siendo la universidad fundadora y la de mayor cobertura de contenido — y desde la v2.0.0 es una plataforma nacional: el mismo frontend y el mismo backend sirven simulacros y banqueos para varias universidades, cada una con su propio proceso de admisión, escala de puntuación y colores institucionales. Los estudiantes eligen su universidad, practican con preguntas reales organizadas por curso/área y reciben retroalimentación detallada calificada exactamente como lo hace su universidad.
+
+> **Changelog:** el historial detallado de cambios por versión está en [`docs/CHANGELOG.md`](docs/CHANGELOG.md).
 
 ## Arquitectura multi-universidad (v2)
 
@@ -9,7 +11,10 @@ SimulaUNA nació como una plataforma de una sola universidad (UNA Puno) y evoluc
 - **Qué es**: un registro maestro de universidades (`getUniversidades`) es la fuente de verdad de qué universidades están disponibles, en qué estado (`activa` | `piloto` | `oculta`), qué procesos ofrecen (`ORDINARIO`, `CEPRE`, `EXTRAORDINARIO`) y sus colores de marca. El frontend consume ese registro para renderizar rutas, chips de universidad y acentos de color; el backend resuelve cada request por el código de universidad (tenant) contra sus propias hojas de Google Sheets.
 - **Cómo se agrega una universidad nueva**: sin tocar código de React. Ver la guía paso a paso en [`google-apps-script/README.md` § "Cómo agregar la universidad número 8"](google-apps-script/README.md) y el contrato completo de endpoints/datos en [`docs/CONTRATO_API_V2.md`](docs/CONTRATO_API_V2.md) (§5 detalla la arquitectura de frontend: rutas, store `useUniversity`, acentos de color).
 - **Rutas nuevas `/:universidad/*`**: cada universidad tiene su propio espacio de rutas — `/:universidad` (landing de universidad), `/:universidad/registro`, `/:universidad/confirmar`, `/:universidad/examen`, `/:universidad/resultados`, `/:universidad/banqueo`, `/:universidad/banqueo-tema`, `/:universidad/cepre`. Las rutas legadas sin prefijo (`/registro`, `/examen`, `/resultados`, etc.) siguen funcionando y redirigen a `/una/...` para no romper enlaces existentes (ver `src/App.tsx`).
-- **Acentos de marca por universidad**: `UniversityPage.tsx` expone `--uni-primary`/`--uni-secondary` como CSS vars derivadas del registro y las aplica con moderación — solo en el hero de la página de universidad, los chips/tarjetas de proceso y el anillo de progreso de resultados (`Results.tsx`). Todo lo demás permanece en la paleta neutral "Editorial Andino". Los colores se verifican contra WCAG AA con `src/utils/color.ts` (`ensureAccessible`), que oscurece automáticamente un color de marca si no alcanza 4.5:1 de contraste.
+- **Acentos de marca por universidad**: `UniversityPage.tsx` expone `--uni-primary`/`--uni-secondary` como CSS vars derivadas del registro y las aplica con moderación — solo en el hero de la página de universidad, los chips/tarjetas de proceso y el anillo de progreso de resultados (`Results.tsx`). Todo lo demás permanece en la paleta neutral "Editorial Andino". Los colores se verifican contra WCAG AA con `src/utils/color.ts` (`ensureAccessible`), que oscurece automáticamente un color de marca si no alcanza 4.5:1 de contraste. Ver la sección [Sistema de Temas Institucionales](#sistema-de-temas-institucionales-v2) para el mapa completo de colores investigados por universidad.
+- **Backend en 8 módulos**: `google-apps-script/api.gs` (2010 líneas monolíticas) fue reemplazado por 8 archivos con responsabilidad única — `main.gs`, `core.gs`, `adapter_una.gs`, `questions.gs`, `scoring.gs`, `users.gs`, `history.gs`, `setup.gs` — ver detalle en [Configuración del Backend](#configuración-del-backend-google-sheets--apps-script) y en [`google-apps-script/README.md`](google-apps-script/README.md). El código original queda como `api_legacy.gs.bak` (no se despliega) a modo de referencia histórica.
+- **Calificación en servidor**: `getExam` entrega las preguntas del simulacro **sin** las claves correctas; `submitExam` (POST) recibe las respuestas del alumno y califica del lado del servidor con un motor config-driven por universidad (`suma_ponderada`, `decimas` o `vector_canal`, definido en la hoja `config_escala` de cada tenant). Ya no existe un puntaje máximo fijo de 3000 puntos en el código — la escala, los umbrales de desempeño y el motor de cálculo llegan por configuración. Detalle en [Sistema de Puntuación](#sistema-de-puntuación).
+- **Estado desplegado**: el backend v2 ya está desplegado en producción y verificado (`action=test` responde `version: "v2"`, `getUniversidades` lista `una` + `unsa` piloto, y las acciones legadas responden byte-idénticas a antes).
 
 ## Tabla de Contenidos
 
@@ -34,11 +39,16 @@ SimulaUNA nació como una plataforma de una sola universidad (UNA Puno) y evoluc
 - [CEPREUNA - Simulacros por Semana](#cepreuna---simulacros-por-semana-nuevo)
 - [Banqueo por Tema](#banqueo-por-tema-nuevo)
 - [Auto-Formateo de Preguntas](#auto-formateo-de-preguntas-nuevo)
+- [Sistema de Temas Institucionales (v2)](#sistema-de-temas-institucionales-v2)
+- [Rendimiento y Code-Splitting](#rendimiento-y-code-splitting)
 - [Versiones](#versiones)
+- [Pendientes Reales](#pendientes-reales)
 
 ---
 
 ## Características
+
+> Las cifras de esta sección (60 preguntas, 3 áreas, 18 asignaturas, escala de 3000 pts) describen la configuración de **UNA Puno**, la universidad fundadora y con más contenido. Desde la v2.0.0 estos valores **no están hardcodeados**: cada universidad define su propio número de preguntas, divisiones/áreas, cursos y escala de puntuación vía `config_examen`/`config_escala` (ver [Sistema de Puntuación](#sistema-de-puntuación) y [`docs/CONTRATO_API_V2.md`](docs/CONTRATO_API_V2.md)).
 
 ### Examen
 - **60 preguntas** por simulacro organizadas por asignatura
@@ -118,29 +128,43 @@ SimulaUNA nació como una plataforma de una sola universidad (UNA Puno) y evoluc
 ## Arquitectura
 
 ```
-┌─────────────────┐         ┌──────────────────────┐
-│                 │   GET   │                      │
-│   React App     │◄───────►│  Google Apps Script  │
-│   (Frontend)    │  JSON   │      (API REST)      │
-│                 │         │                      │
-└─────────────────┘         └──────────┬───────────┘
-                                       │
-                                       ▼
-                            ┌──────────────────────┐
-                            │   Google Sheets      │
-                            │   (Base de datos)    │
-                            │                      │
-                            │  - Configuración x3  │
-                            │  - Banco preguntas   │
-                            │  - usuarios          │
-                            │  - historial_puntajes│
-                            │  - confirmado        │
-                            └──────────────────────┘
+┌─────────────────┐   GET/POST   ┌──────────────────────────────┐
+│                 │◄────────────►│   Google Apps Script (8 .gs)  │
+│   React App     │     JSON     │   main.gs → router ROUTES     │
+│   (Frontend)    │              │   core.gs → registro tenants  │
+│                 │              └──────────────┬────────────────┘
+└─────────────────┘                             │
+                                                 ▼
+                      ┌──────────────────────────────────────────┐
+                      │           Google Sheets (por tenant)       │
+                      │                                            │
+                      │  CORE (registro de universidades,          │
+                      │        usuarios/permisos/intentos          │
+                      │        globales, cursos_canonicos)         │
+                      │                                            │
+                      │  Por universidad: spreadsheet propio con   │
+                      │  config_examen / config_escala /           │
+                      │  Banco_<Curso> (o layout legado UNA:        │
+                      │  Configuración_* / Banco_* / CEPRE_*)      │
+                      └──────────────────────────────────────────┘
 ```
+
+Cada universidad es un *tenant*: su propio spreadsheet de preguntas y
+configuración, resuelto por el backend a partir del código de
+universidad (`codigo`) en el registro maestro `CORE.universidades`. UNA
+Puno usa un adaptador de compatibilidad (`adapter_una.gs`) que traduce su
+layout de hojas legado 1:1 al contrato v2, sin necesidad de migrar datos.
 
 ### Endpoints de la API
 
-> **Nota:** La documentación detallada de endpoints se mantiene de forma privada. Consultar el código fuente en `google-apps-script/api.gs` y `src/services/api.ts` para referencia.
+El backend está organizado en 8 módulos de responsabilidad única bajo
+`google-apps-script/` — ver el detalle de cada uno en
+[Configuración del Backend](#configuración-del-backend-google-sheets--apps-script)
+y la guía completa de deploy/agregar universidades en
+[`google-apps-script/README.md`](google-apps-script/README.md). El
+contrato formal de endpoints y payloads está congelado en
+[`docs/CONTRATO_API_V2.md`](docs/CONTRATO_API_V2.md); el cliente HTTP del
+frontend vive en `src/services/api.ts`.
 
 ---
 
@@ -149,55 +173,114 @@ SimulaUNA nació como una plataforma de una sola universidad (UNA Puno) y evoluc
 ```
 simulauna/
 ├── src/
-│   ├── components/           # Componentes React
-│   │   ├── Landing.tsx       # Página de inicio con features
-│   │   ├── StudentForm.tsx   # Formulario 2 pasos (datos + área/carrera)
-│   │   ├── AreaSelector.tsx  # Cards de selección de área
-│   │   ├── ExamConfirmation.tsx  # Confirmación antes del examen
-│   │   ├── Quiz.tsx          # Examen con navegador y cronómetro
-│   │   ├── Question.tsx      # Pregunta individual con formato HTML
-│   │   ├── Results.tsx       # Resultados con 4 tabs (Revisión, Gráfico, Detalle, Historial)
-│   │   ├── Banqueo.tsx       # Práctica por curso con login y justificaciones
-│   │   ├── BanqueoCepreuna.tsx # Banqueo específico CEPREUNA
-│   │   ├── BanqueoPorTema.tsx  # Banqueo por tema con normalización
-│   │   ├── SimulacroCepreuna.tsx # Simulacro CEPREUNA por semana
-│   │   ├── PDFGenerator.tsx  # Generador de reporte PDF
-│   │   └── index.ts          # Exports
+│   ├── components/                # Componentes React
+│   │   ├── Landing.tsx            # Landing nacional (multi-universidad)
+│   │   ├── UniversityPage.tsx     # Landing por universidad (/:universidad)
+│   │   ├── StudentForm.tsx        # Formulario 2 pasos (datos + área/carrera)
+│   │   ├── AreaSelector.tsx       # Cards de selección de área
+│   │   ├── ExamConfirmation.tsx   # Confirmación antes del examen
+│   │   ├── Quiz.tsx               # Examen con navegador y cronómetro
+│   │   ├── Question.tsx           # Pregunta individual con formato HTML
+│   │   ├── Results.tsx            # Resultados con 4 tabs (Revisión, Gráfico, Detalle, Historial)
+│   │   ├── Banqueo.tsx            # Wrapper delgado sobre practice/PracticeSession
+│   │   ├── BanqueoCepreuna.tsx    # Wrapper delgado (modo cepre)
+│   │   ├── BanqueoPorTema.tsx     # Wrapper delgado (modo banqueo-tema)
+│   │   ├── practice/              # Motor único de banqueo/CEPRE (ver más abajo)
+│   │   ├── results/
+│   │   │   └── ResultsCharts.tsx  # Recharts en chunk lazy propio (ver Rendimiento)
+│   │   ├── PDFGenerator.tsx       # Generador de reporte PDF (jsPDF con import() dinámico)
+│   │   └── index.ts               # Exports
 │   │
 │   ├── hooks/
-│   │   ├── useExam.ts        # Store Zustand: estado del examen
-│   │   └── useTimer.ts       # Hook useStopwatch para cronómetro
+│   │   ├── useExam.ts             # Store Zustand: estado del examen
+│   │   ├── useUniversity.ts       # Store Zustand+persist: registro de universidades activo
+│   │   └── useTimer.ts            # Hook useStopwatch para cronómetro
+│   │
+│   ├── context/
+│   │   └── AuthContext.tsx        # Sesión compartida (clave simulauna_auth_v2, con migración)
+│   │
+│   ├── theme/
+│   │   └── universityThemes.ts    # Mapa de colores institucionales por universidad + CSS vars --uni-*
 │   │
 │   ├── services/
-│   │   └── api.ts            # Cliente API: fetchConfig, fetchQuestions,
-│   │                         # registerUser, saveScore, getUserHistory
+│   │   └── api.ts                 # Cliente API: fetchConfig, fetchQuestions, getExam/submitExam,
+│   │                              # registerUser, saveScore, getUserHistory, getUniversidades
 │   │
 │   ├── types/
-│   │   └── index.ts          # Interfaces: Question, Answer, Student, etc.
+│   │   └── index.ts               # Interfaces: Question, Answer, Student, etc.
 │   │
 │   ├── utils/
-│   │   └── calculations.ts   # formatTime, formatNumber, indexToLetter, etc.
+│   │   ├── calculations.ts        # formatTime, formatNumber, indexToLetter, etc.
+│   │   ├── color.ts               # ensureAccessible: garantiza contraste WCAG AA
+│   │   └── universityTheme.ts     # Puente resolveTheme/resolveThemeVars (registro > mapa local)
 │   │
-│   ├── App.tsx               # Router principal (5 rutas)
-│   ├── main.tsx              # Entry point
-│   └── index.css             # Estilos globales + animaciones
+│   ├── App.tsx                    # Router: rutas /:universidad/* (lazy) + redirects legados a /una/...
+│   ├── main.tsx                   # Entry point
+│   └── index.css                  # Estilos globales + animaciones
 │
-├── google-apps-script/
-│   └── api.gs                # Backend completo (copiar a Apps Script)
+├── google-apps-script/             # Backend multi-tenant (8 módulos, ver su propio README)
+│   ├── main.gs                     # doGet/doPost + router declarativo ROUTES + token
+│   ├── core.gs                     # Registro maestro de universidades, cache namespaced
+│   ├── adapter_una.gs              # Layout legado UNA 1:1 (compatibilidad)
+│   ├── questions.gs                # Banco de preguntas layout v2 (Banco_<Curso>)
+│   ├── scoring.gs                  # getExam/submitExam + motores de calificación
+│   ├── users.gs                    # Registro, permisos, intentos, anti-fraude
+│   ├── history.gs                  # Historial por universidad + proceso
+│   ├── setup.gs                    # setupCore, seedPilotoUNSA, healthChecks
+│   ├── api_legacy.gs.bak           # Código monolítico original (NO se despliega, solo referencia)
+│   └── README.md                   # Guía de deploy y de cómo agregar una universidad nueva
+│
+├── docs/
+│   ├── CONTRATO_API_V2.md          # Contrato congelado de endpoints/payloads v2
+│   ├── FASE0_MODELO_MULTIUNIVERSIDAD.md  # Diseño de la arquitectura multi-tenant
+│   └── CHANGELOG.md                # Historial de cambios por versión
 │
 ├── public/
-│   └── favicon.svg
+│   ├── favicon.svg
+│   └── logos/                      # Logos institucionales locales (ver Sistema de Temas)
 │
-├── .env.example              # Variables de entorno ejemplo
+├── .env.example                    # Variables de entorno ejemplo
 ├── package.json
-├── tailwind.config.js        # Incluye safelist para colores dinámicos
+├── tailwind.config.js               # Incluye safelist para colores dinámicos
 ├── vite.config.ts
 └── tsconfig.json
 ```
 
+### El motor único de banqueo/CEPRE (`src/components/practice/`)
+
+Los tres modos de práctica (Banqueo histórico, Banqueo por tema, CEPRE)
+comparten un solo motor en vez de tener implementaciones duplicadas:
+
+- `PracticeSession.tsx` — máquina de estados `login → selección → quiz →
+  resultados`, parametrizada por modo.
+- `practiceModes.ts` — configuración declarativa de cada modo (`banqueo`,
+  `banqueo-tema`, `cepre`): qué selects mostrar, qué endpoint llamar, etc.
+- `PracticeLogin.tsx`, `PracticeQuiz.tsx`, `PracticeResults.tsx` — pasos
+  de la máquina de estados.
+- `selects/BanqueoCourseSelect.tsx`, `selects/BanqueoTemaSelect.tsx`,
+  `selects/CepreSelect.tsx` — selectores específicos de cada modo.
+
+Los componentes históricos (`Banqueo.tsx`, `BanqueoPorTema.tsx`,
+`BanqueoCepreuna.tsx`) quedaron como wrappers de 10-24 líneas que solo
+invocan `PracticeSession` con el modo correspondiente — antes eran
+~3,850 líneas casi duplicadas entre los tres (reducción del 44%, −1,696
+líneas). Este cambio también trajo el primer `eslint.config.js` del
+repo: `npm run lint` no funcionaba antes de esta refactorización.
+
 ---
 
 ## Configuración del Backend (Google Sheets + Apps Script)
+
+> **Esta sección describe el layout de hojas legado de UNA Puno**, que el
+> backend v2 sigue sirviendo 1:1 a través de `adapter_una.gs` (ninguna
+> acción legada cambió de forma). Para desplegar el backend completo
+> (los 8 módulos), correr `setupCore()` y **agregar una universidad
+> nueva sin tocar código**, sigue la guía paso a paso en
+> [`google-apps-script/README.md`](google-apps-script/README.md). El
+> layout de hojas para universidades nuevas (`config_examen`,
+> `config_escala`, `Banco_<Curso>` con columnas `ID_HASH`/`PROCESO`/
+> `ANIO_PERIODO`/`DIVISION`/`SEMANA`/`ESTADO`) está documentado ahí y en
+> [`docs/CONTRATO_API_V2.md`](docs/CONTRATO_API_V2.md).
 
 ### 1. Crear Google Sheets
 
@@ -257,19 +340,25 @@ Crear un spreadsheet con las siguientes hojas:
 
 ### 2. Configurar Google Apps Script
 
-1. Ir a Google Apps Script
-2. Crear nuevo proyecto
-3. Copiar el contenido de `google-apps-script/api.gs`
-4. Actualizar `SPREADSHEET_ID` con el ID de tu Google Sheets:
-   ```javascript
-   const SPREADSHEET_ID = 'TU_ID_DEL_SPREADSHEET';
-   ```
+> Pasos resumidos — la guía completa y actualizada (Script Properties,
+> `setupCore()`, `seedPilotoUNSA()`, `healthCheck()`) está en
+> [`google-apps-script/README.md`](google-apps-script/README.md).
+
+1. Ir a Google Apps Script y crear un proyecto nuevo.
+2. Copiar **los 8 archivos `.gs`** de `google-apps-script/` al proyecto
+   (`main.gs`, `core.gs`, `adapter_una.gs`, `questions.gs`, `scoring.gs`,
+   `users.gs`, `history.gs`, `setup.gs`). **No copiar** `api_legacy.gs.bak`.
+3. Configurar las Script Properties `SPREADSHEET_ID` (el spreadsheet
+   legado de UNA) y `SECRET_TOKEN`.
+4. Ejecutar `setupCore()` desde `setup.gs` para crear el spreadsheet CORE
+   y registrar `una` en el registro maestro de universidades.
 5. Desplegar como aplicación web:
    - Implementar > Nueva implementación
    - Tipo: Aplicación web
    - Ejecutar como: Yo
    - Quién tiene acceso: **Cualquier persona**
-6. Copiar la URL generada
+6. Copiar la URL generada y configurar `VITE_API_URL` + `VITE_API_TOKEN`
+   (el mismo valor que `SECRET_TOKEN`) en el frontend.
 
 ---
 
@@ -307,6 +396,11 @@ npm run build
 ---
 
 ## Áreas y Asignaturas
+
+> Todo lo de esta sección (áreas, asignaturas, cantidad de preguntas,
+> carreras) es la configuración de **UNA Puno**. Cada universidad nueva
+> define las suyas en `config_examen` de su propio spreadsheet — no hay
+> un límite de "3 áreas" ni "18 asignaturas" en el código.
 
 ### Distribución de Preguntas por Área
 
@@ -402,10 +496,14 @@ npm run build
 
 ## Flujo de la Aplicación
 
+El diagrama de abajo ilustra el flujo dentro del espacio de una
+universidad (ej. `/una/...`) — es el mismo para cualquier universidad
+del registro, solo cambia el prefijo de ruta:
+
 ```
 ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│   Landing    │───►│  Registro    │───►│  Selección   │
-│   (/)        │    │  Paso 1:     │    │  Paso 2:     │
+│ UniversityPage│───►│  Registro    │───►│  Selección   │
+│ (/:universidad)│   │  Paso 1:     │    │  Paso 2:     │
 │              │    │  DNI+Nombre  │    │  Proceso+    │
 │              │    │  Email+Tel   │    │  Área+Carrera│
 └──────────────┘    └──────────────┘    └──────────────┘
@@ -417,31 +515,86 @@ npm run build
 │              │    │              │    │              │
 │ 4 Tabs:      │    │ - Cronómetro │    │ - Info área  │
 │ - Revisión   │    │ - Navegador  │    │ - Instrucciones│
-│ - Gráfico    │    │ - 60 preguntas│   │              │
-│ - Detalle    │    │              │    │              │
+│ - Gráfico    │    │ - N preguntas │   │              │
+│ - Detalle    │    │  (getExam)   │    │              │
 │ - Historial  │    │              │    │              │
 └──────────────┘    └──────────────┘    └──────────────┘
 ```
 
+La landing nacional (`/`) es el punto de entrada previo: lista las
+universidades disponibles y enlaza a `/:universidad`.
+
 ### Componentes por Ruta
+
+Todas las rutas viven bajo el espacio `/:universidad/*` (ej. `/una/registro`,
+`/unsa/examen`). Las rutas legadas sin prefijo se conservan como redirects
+permanentes a `/una/...` para no romper enlaces existentes (ver `src/App.tsx`).
 
 | Ruta | Componente | Descripción |
 |------|------------|-------------|
-| `/` | Landing | Página de bienvenida con features, stats, áreas |
-| `/registro` | StudentForm | Formulario 2 pasos: datos personales + área/carrera |
-| `/confirmar` | ExamConfirmation | Confirmación con instrucciones del examen |
-| `/examen` | Quiz | Interfaz del examen con cronómetro y navegador |
-| `/resultados` | Results | Resultados con 4 tabs: Revisión, Gráfico, Detalle, Historial |
-| `/banqueo` | Banqueo | Práctica por curso (solo usuarios confirmados) |
-| `/banqueo-cepreuna` | BanqueoCepreuna | Banqueo específico del CEPREUNA |
-| `/banqueo-tema` | BanqueoPorTema | Práctica por curso y tema específico |
-| `/simulacro-cepreuna` | SimulacroCepreuna | Simulacro completo del CEPREUNA |
+| `/` | Landing | Landing nacional: universidades disponibles, stats, CTA "Elige tu universidad" |
+| `/:universidad` | UniversityPage | Landing de la universidad (hero con tema institucional, procesos disponibles) |
+| `/:universidad/registro` | StudentForm | Formulario 2 pasos: datos personales + área/carrera |
+| `/:universidad/confirmar` | ExamConfirmation | Confirmación con instrucciones del examen |
+| `/:universidad/examen` | Quiz | Interfaz del examen con cronómetro y navegador (`getExam`) |
+| `/:universidad/resultados` | Results | Resultados con 4 tabs: Revisión, Gráfico, Detalle, Historial |
+| `/:universidad/banqueo` | Banqueo (→ `PracticeSession`) | Práctica por curso (solo usuarios confirmados) |
+| `/:universidad/banqueo-tema` | BanqueoPorTema (→ `PracticeSession`) | Práctica por curso y tema específico |
+| `/:universidad/cepre` | CepreSession / BanqueoCepreuna (→ `PracticeSession`) | Banqueo y simulacro del CEPRE de la universidad |
+
+**Redirects legados** (rutas sin prefijo, mantenidas por compatibilidad):
+
+| Ruta legada | Redirige a |
+|-------------|------------|
+| `/registro` | `/una/registro` |
+| `/confirmar` | `/una/confirmar` |
+| `/examen` | `/una/examen` |
+| `/resultados` | `/una/resultados` |
+| `/banqueo` | `/una/banqueo` |
+| `/banqueo-cepreuna` | `/una/cepre` |
+| `/banqueo-tema` | `/una/banqueo-tema` |
+| `/simulacro-cepreuna` | `/una/cepre` |
 
 ---
 
 ## Sistema de Puntuación
 
-### Niveles de Desempeño
+> **Desde la v2.0.0 ya no existe un puntaje máximo fijo de 3000 puntos
+> en el código.** La escala, los umbrales de desempeño y el motor de
+> cálculo son **config-driven por universidad** (hoja `config_escala`
+> de cada tenant) y la calificación se hace **en el servidor**, no en el
+> navegador.
+
+### Flujo de calificación (v2)
+
+1. El frontend pide el examen con `getExam` (acción v2): el backend
+   arma el pool de preguntas y las entrega **sin las claves correctas**
+   — la respuesta correcta nunca viaja al cliente durante el examen.
+2. El estudiante responde y el frontend envía las respuestas con
+   `submitExam` (**POST**, body JSON).
+3. El servidor califica con el motor configurado en `config_escala` para
+   ese proceso/universidad:
+   - **`suma_ponderada`**: puntaje por pregunta = `puntos_correcta`
+     (definido por curso/división en `config_examen`); solo las
+     respuestas correctas suman. Es el motor que usa UNA Puno — su
+     escala de 3000 pts es un *resultado* de su configuración, no una
+     constante del código.
+   - **`decimas`**: escala 0-100 (o la que defina `escala_total`), útil
+     para universidades que califican en base 20 o en porcentaje directo.
+   - **`vector_canal`**: agrupa por `division_tipo=canal` con pesos por
+     canal (hoy implementado con la misma fórmula de suma ponderada por
+     canal; ver TODOs de `google-apps-script/README.md` si una
+     universidad necesita una agregación distinta, p.ej. máximo entre
+     canales).
+4. La sesión de examen se guarda en `CacheService` (con hoja espejo de
+   respaldo) mientras el estudiante rinde, para poder recuperarla ante un
+   refresh sin perder progreso.
+
+### Niveles de Desempeño (ejemplo: UNA Puno, motor `suma_ponderada`, 3000 pts)
+
+Los umbrales exactos (`umbral_excelente`, `umbral_bueno`, `umbral_regular`)
+y la escala total vienen de `config_escala` — la tabla de abajo es la
+configuración actual de UNA, no un valor fijo del sistema:
 
 | Nivel | Puntaje Mínimo | Porcentaje | Color |
 |-------|----------------|------------|-------|
@@ -450,16 +603,27 @@ npm run build
 | Regular | ≥ 1200 pts | 40% | Ámbar |
 | Necesita práctica | < 1200 pts | <40% | Rojo |
 
-### Cálculo de Puntaje
+### `saveScore` (legado, deprecado)
 
-1. Cada asignatura tiene un **puntaje máximo** definido en la configuración
-2. El puntaje por pregunta = `maxScore / questionCount`
-3. Solo las **respuestas correctas** suman puntos
-4. **Puntaje total máximo**: 3000 puntos
+La acción antigua `saveScore`, que calificaba en el cliente y solo
+escribía en la hoja legada `historial_puntajes` de UNA, se mantiene
+operativa por compatibilidad pero está **deprecada**: el flujo nuevo
+debe usar `getExam` + `submitExam`.
 
 ---
 
 ## Sistema de Usuarios y Historial
+
+> Las interfaces de esta sección (`RegisterData`, `ScoreData`, `maxScore:
+> 3000`) documentan el flujo **legado** de UNA (`register`/`saveScore`/
+> `getUserHistory`, servido por `adapter_una.gs` + `history.gs`), que
+> sigue funcionando byte-idéntico. Desde la v2, la cuenta de usuario es
+> **única a nivel nacional**: vive en `CORE.usuarios`/`CORE.permisos`/
+> `CORE.intentos` (spreadsheet CORE, no por universidad), el anti-fraude
+> DNI-email es global, y el historial se guarda con `universidad` +
+> `proceso` para poder distinguir intentos de distintas universidades
+> bajo el mismo DNI. El **primer simulacro gratis** se evalúa **por
+> universidad** (rendir gratis en UNA no consume el gratis de UNSA).
 
 ### Registro de Usuarios
 
@@ -651,8 +815,11 @@ Esto usa datos generados localmente en `src/services/api.ts`.
 ## Tipos TypeScript Principales
 
 ```typescript
-// Áreas disponibles
-type AreaType = 'Ingenierías' | 'Sociales' | 'Biomédicas';
+// Área/división académica. Desde la v2 ya NO es un union literal de 3 áreas:
+// pasa a ser `string` porque cada universidad define sus propias divisiones vía
+// config_examen (UNA sigue usando 'Ingenierías' | 'Sociales' | 'Biomédicas' como
+// valores en tiempo de ejecución, pero el tipo ya no los restringe en código).
+type AreaType = string;
 
 // Estados del examen
 type ExamStatus = 'idle' | 'loading' | 'ready' | 'in_progress' | 'completed' | 'error';
@@ -1147,6 +1314,83 @@ El formateo se aplica automáticamente en:
 
 ---
 
+## Sistema de Temas Institucionales (v2)
+
+Cada universidad tiene sus propios colores de marca, aplicados con
+moderación en el frontend (`src/theme/universityThemes.ts` +
+`src/utils/universityTheme.ts`). Los colores fueron **investigados**
+(manuales de marca, estatutos, heráldica oficial) para 13 universidades;
+el registro maestro (`CORE.universidades`, vía `getUniversidades`)
+**siempre tiene precedencia** sobre este mapa local cuando una
+universidad define sus propios colores.
+
+| Universidad | Primario | Secundario | Confianza de la fuente |
+|-------------|----------|------------|-------------------------|
+| UNA (Puno) | `#003D7A` | `#E67E22` | Alta |
+| UNSA (Arequipa) | `#7B1B2C` (guinda) | `#F2C230` (dorado) | Alta |
+| UNMSM (San Marcos) | `#8C1D40` (guinda) | `#EFE6D8` (perla) | Media |
+| UNI | `#003594` (Pantone 661 C, manual 2019) | `#FFFFFF` | Alta |
+| UNSAAC (Cusco) | `#A6192E` | `#C9A227` | Media |
+| UNCP (Centro) | `#1B5E3A` | `#C9A227` | Media |
+| UNT (Trujillo) | `#1B3E6F` | `#F2C230` | Media |
+| UNC (Cajamarca) | `#4A90D9` | `#F2C230` | Alta |
+| UNFV (Federico Villarreal) | `#E8792D` | `#1A1A1A` | Alta |
+| UNALM (La Molina) | `#2E7D32` | `#D4A017` | Media |
+| UNP (Piura) | `#4FA8D8` | `#C8102E` | Media |
+| UNSCH (Huamanga) | `#9E1B1B` | `#6E6E6E` | Media |
+| UNAJ (Juliaca) | `#003D7A` (neutral, sin fuente verificable) | `#D4AF37` | Baja — pendiente |
+
+Las tres "guindas" (UNSA, San Marcos, UNSCH) están deliberadamente
+diferenciadas en tono para distinguirse de un vistazo.
+
+### Reglas de uso
+
+- El color `secondary` suele ser dorado/amarillo: se usa **solo como
+  acento** (bordes, íconos, detalles) — nunca como fondo con texto blanco.
+- El color `primary` siempre pasa por `ensureAccessible()`
+  (`src/utils/color.ts`) antes de usarse como color de texto o fondo con
+  texto blanco, verificando 4.5:1 de contraste (WCAG AA). Si el color de
+  marca no alcanza el umbral, se oscurece automáticamente.
+- `themeCssVars()` deriva 4 variables CSS listas para inyectar en un
+  contenedor: `--uni-primary` (color tal cual), `--uni-primary-safe`
+  (garantizado AA), `--uni-primary-soft` (tinte ~8% para fondos suaves),
+  `--uni-primary-deep` (oscurecida para gradientes/hovers), y
+  `--uni-secondary` (acento).
+- Aplicado en: hero y tarjetas del Landing, `UniversityPage` (gradiente
+  institucional + logo + stats del banco), `Quiz` (header/barra de
+  progreso/navegador), `Results` (anillo de progreso, tabs, gráficos),
+  `StudentForm` (floating inputs, stepper), `ExamConfirmation`,
+  `PracticeSession` (feedback + racha de aciertos consecutivos).
+- Todo lo demás del sistema permanece en la paleta neutral "Editorial
+  Andino" (ver [Rediseño Visual v1.6.0](#rediseño-visual-v160--editorial-andino-2026-04-20)).
+
+### Logos institucionales
+
+Los 12 logos del carrusel del Landing se sirven localmente desde
+`public/logos/` (antes se referenciaban directo desde Wikimedia Commons).
+
+---
+
+## Rendimiento y Code-Splitting
+
+El bundle de producción se redujo agresivamente separando dependencias
+pesadas en chunks lazy que solo se descargan cuando el usuario realmente
+las necesita:
+
+- **Recharts (~385KB)**: movido a un chunk lazy propio
+  (`src/components/results/ResultsCharts.tsx`), que solo se carga al
+  abrir las tabs "Gráfico" o "Historial" de `Results` (con skeleton
+  mientras carga). Antes formaba parte del chunk principal de `Results`.
+- **jsPDF + jspdf-autotable (~397KB)**: movidos a `import()` dinámico
+  dentro de `generatePDF`, descargados únicamente al pulsar "Descargar PDF".
+- **Todas las rutas son lazy** (`React.lazy` en `src/App.tsx`), incluida
+  la landing nacional, para no cargar el árbol completo de componentes
+  de examen/banqueo en la primera visita.
+
+**Resultado**: el chunk de `Results` bajó de 825KB a 43KB (−95%).
+
+---
+
 ## Versiones
 
 | Versión | Fecha | Cambios |
@@ -1158,6 +1402,7 @@ El formateo se aplica automáticamente en:
 | v1.4.0 | Dic 2024 | CEPREUNA: Simulacro y Banqueo por semana, Auto-formateo de preguntas |
 | v1.5.0 | Dic 2024 | Banqueo por Tema: normalización de cursos, CacheService, interfaz simplificada |
 | v1.6.0 | Abr 2026 | **Rediseño "Editorial Andino"**: design system, identidad UNA Puno, carrusel de universidades, fotografías reales, AuthContext compartido, CourseSelector con vista lista + atajos teclado, posicionamiento inclusivo (todas las universidades del Perú) |
+| v2.0.0 | Jul 2026 | **Plataforma multi-universidad**: backend reescrito en 8 módulos, rutas `/:universidad/*`, calificación en servidor con motores config-driven, motor único `PracticeSession` (−1,696 líneas), temas institucionales por universidad, code-splitting agresivo, landing nacional. Detalle completo en [`docs/CHANGELOG.md`](docs/CHANGELOG.md). |
 
 ---
 
@@ -1393,22 +1638,37 @@ Invocación: `/frontend-design`, `/landing-page`, etc. Recargar con `/reload-plu
 
 1. ~~**Reemplazar URLs de Wikipedia por logos locales**~~ — **Resuelto (v1.6.1)**: los 12 PNGs se descargaron a `public/logos/` y `Landing.tsx` referencia rutas locales `/simulauna/logos/{archivo}.png`.
 2. ~~**Reducir animaciones del hero**~~ — **Resuelto (v1.6.1)**: bajadas de 8 a 4 `StarTwinkle` en el hero del Landing.
-3. **Replicar logo animado** de `BanqueoPorTema` en `Banqueo.tsx`, `BanqueoCepreuna.tsx`, `SimulacroCepreuna.tsx` para consistencia (si el usuario lo pide).
-4. **Fotos de avatares reales**: los testimonios usan `pravatar.cc` (placeholders). Si hay estudiantes UNA reales con consentimiento, sustituir.
+3. ~~**Replicar logo animado** de `BanqueoPorTema` en `Banqueo.tsx`, `BanqueoCepreuna.tsx`, `SimulacroCepreuna.tsx` para consistencia~~ — **Superado (v2.0.0)**: los tres módulos ahora comparten un único motor `PracticeSession` (ver [El motor único de banqueo/CEPRE](#el-motor-único-de-banqueocepre-srccomponentspractice)), por lo que la UI (incluido el logo animado) ya es consistente por construcción en vez de replicada manualmente.
+4. **Fotos de avatares reales**: los testimonios usan `pravatar.cc` (placeholders). Si hay estudiantes reales con consentimiento, sustituir.
 5. **Carrusel de logos**: el marquee es infinito. Considerar añadir click handlers que lleven a una página/modal con info de cada universidad y tipos de exámenes.
 6. **Dark mode**: no implementado aún. El design system está preparado con `brand.*` — requiere duplicar scales para `dark:*`.
 7. **Fotografías Unsplash**: dependencia externa CDN. Para producción robusta, considerar descargar y servir localmente desde `public/photos/`.
 8. **Tests visuales**: no hay snapshots ni e2e (Playwright) — considerar para prevenir regresiones en rediseños futuros.
-9. **Acentos por universidad**: implementados con moderación en `UniversityPage.tsx` (hero + chips de proceso) y `Results.tsx` (anillo de progreso), con verificación AA vía `src/utils/color.ts`. Falta extender a más universidades reales cuando se agreguen al registro (`getUniversidades`) y, si algún color de marca no pasa AA incluso oscurecido, definir manualmente un color derivado en el backend.
+9. ~~**Acentos por universidad**~~ — **Ampliado (v2.0.0)**: dejó de ser un acento puntual y pasó a ser un sistema completo de temas institucionales (`src/theme/universityThemes.ts`, 13 universidades investigadas) aplicado en Landing, `UniversityPage`, `Quiz`, `Results`, `StudentForm`, `ExamConfirmation` y `PracticeSession`. Ver [Sistema de Temas Institucionales](#sistema-de-temas-institucionales-v2) — el color de UNAJ sigue pendiente de fuente oficial verificable.
+
+---
+
+## Pendientes Reales
+
+Lista viva de pendientes tras la v2.0.0 (no confundir con la lista histórica de la sección anterior, que documenta el rediseño v1.6.0):
+
+1. **Pesos oficiales de UNMSM y UNI**: la plataforma soporta que cada universidad tenga su propia `config_examen`/`config_escala`, pero UNMSM y UNI todavía no tienen los pesos/ponderaciones oficiales de sus exámenes reales cargados — solo UNA (motor `suma_ponderada`, producción) y UNSA (motor `decimas`, piloto con datos dummy) están configuradas hoy.
+2. **Carreras por universidad**: la lista de carreras filtradas por área/división (ver [Carreras por Área](#carreras-por-área)) sigue siendo específica de UNA. Falta modelar carreras por universidad en el registro para que `StudentForm` las resuelva dinámicamente igual que ya hace con procesos y colores.
+3. **Color institucional de UNAJ**: sin fuente oficial verificable (manual de marca/estatuto); usa el neutral "Editorial Andino" (`#003D7A`/`#D4AF37`) como placeholder de baja confianza en `src/theme/universityThemes.ts`.
+4. ~~**Consolidar los tres módulos de banqueo/CEPRE en un solo motor**~~ — **Hecho**: `PracticeSession` (ver arriba), −1,696 líneas (−44%).
+5. **Administración de `CORE.permisos`**: no hay todavía un endpoint/UI para dar acceso a banqueo/simulacro extra por universidad — se edita la hoja a mano, igual que hoy se edita `confirmado` para UNA (ver TODOs en `google-apps-script/README.md`).
+6. **Motor `vector_canal`**: implementado con la misma fórmula de suma ponderada por canal; si una universidad (p.ej. UNI) necesita una agregación de canales distinta (máximo entre canales en vez de suma), hay que extender `scoreBySubject_` en `scoring.gs`.
+7. **Indexado/cache de `CORE.usuarios`**: las lecturas de anti-fraude global hacen `getDataRange().getValues()` completo en cada llamada, sin cache — aceptable hoy, revisar si `CORE.usuarios` crece mucho.
+8. **Purga de `CORE.sesiones`**: la hoja espejo de sesiones de examen crece indefinidamente; falta un job periódico que archive o borre sesiones viejas.
 
 ---
 
 ## Créditos
 
-Desarrollado para los **estudiantes preuniversitarios del Perú** — con foco inicial en la **Universidad Nacional del Altiplano - Puno**, escalable a San Marcos, UNI, UNSA, UNSAAC, UNCP, UNFV, UNALM, UNT, UNP, UNSCH, UNAJ y más.
+Desarrollado para los **estudiantes preuniversitarios del Perú** — con foco inicial y fundacional en la **Universidad Nacional del Altiplano - Puno**, y desde la v2.0.0 escalable como plataforma nacional a San Marcos, UNI, UNSA, UNSAAC, UNCP, UNFV, UNALM, UNT, UNP, UNSCH, UNAJ y más.
 
-Plataforma: **SimulaUNA v1.6.0** (Editorial Andino)
+Plataforma: **SimulaUNA v2.0.0**
 
 Preguntas reales de exámenes de admisión desde 1993 hasta el último proceso.
 
-Hecho con amor en Puno, Perú — para todos los estudiantes del país.
+Hecho con amor en Puno, Perú — para todos los estudiantes del país. *SimulaUNA: elige una universidad, simula su examen real.*
