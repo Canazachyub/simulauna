@@ -63,10 +63,24 @@ const ASSETS = {
 const ASSETS_3D = {
   // Mascota: un lobito muy estudioso (sin identidad andina en el personaje).
   mascotaLobito: '/simulauna/illustrations/mascota-lobito.webp',
+  // Poses adicionales del lobito para el carrusel del hero (crossfade lento).
+  lobitoSaludo: '/simulauna/illustrations/lobito-saludo.webp',
+  lobitoProfesor: '/simulauna/illustrations/lobito-profesor.webp',
+  lobitoCelebra: '/simulauna/illustrations/lobito-celebra.webp',
   cohete: '/simulauna/illustrations/cohete-despegue.webp',
   // Los íconos de pasos vuelven a ser Lucide (decisión del usuario: los PNG
   // pequeños se veían mal; solo se reemplazan ilustraciones grandes).
 };
+
+// Secuencia del carrusel del hero — crossfade lento entre las 4 poses generadas
+// de la mascota. El índice 0 (mascotaLobito) es también la pose de reposo con
+// prefers-reduced-motion (el carrusel nunca avanza en ese caso).
+const HERO_MASCOT_POSES = [
+  ASSETS_3D.mascotaLobito,
+  ASSETS_3D.lobitoSaludo,
+  ASSETS_3D.lobitoProfesor,
+  ASSETS_3D.lobitoCelebra,
+];
 
 /* -------------------------------------------------------------------------- */
 /*  Fondos "universo" propios (Tanda 2 — cero Unsplash/pravatar) y avatares    */
@@ -188,17 +202,73 @@ function AsteroidLine({ className = '', size = 20 }: { className?: string; size?
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Mascota del hero — un lobito muy estudioso flotando entre asteroides.     */
-/*  La imagen 3D aún no existe: si falla la carga, el componente entero se    */
-/*  oculta (no placeholder feo) y la columna izquierda del hero ocupa todo   */
-/*  el ancho gracias al layout flex del contenedor padre.                     */
+/*  Mascota del hero — un lobito muy estudioso flotando entre asteroides,     */
+/*  ahora en carrusel: crossfade lento (~6s, 800ms) entre las 4 poses         */
+/*  generadas (mascotaLobito, saludo, profesor, celebra). Solo se muestran 2  */
+/*  <img> superpuestas a la vez (la saliente y la entrante) para el crossfade;*/
+/*  las 4 imágenes se precargan al montar. Si TODAS fallan al cargar, el      */
+/*  componente entero se oculta (no placeholder feo) y la columna izquierda  */
+/*  del hero ocupa todo el ancho gracias al layout flex del contenedor padre. */
+/*  Con prefers-reduced-motion: el carrusel no avanza (queda fija la pose 0)  */
+/*  y también se pausa mientras el hero no está en viewport.                 */
 /* -------------------------------------------------------------------------- */
 function HeroMascot() {
-  const [broken, setBroken] = useState(false);
-  if (broken) return null;
+  const [brokenSet, setBrokenSet] = useState<Set<number>>(new Set());
+  const [pose, setPose] = useState({ current: 0, prev: -1 });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const visibleRef = useRef(true);
+  const reduceMotionRef = useRef(false);
+
+  useEffect(() => {
+    reduceMotionRef.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }, []);
+
+  // Precarga las 4 poses para que el crossfade nunca muestre un frame en blanco.
+  useEffect(() => {
+    HERO_MASCOT_POSES.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  // Pausa el carrusel mientras el hero no está en viewport (mismo criterio que
+  // `hero-anims-paused`, pero aplicado a un intervalo JS, no a una animación CSS).
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { visibleRef.current = entry.isIntersecting; },
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (reduceMotionRef.current) return;
+    const id = setInterval(() => {
+      if (!visibleRef.current) return;
+      setPose((p) => {
+        let next = (p.current + 1) % HERO_MASCOT_POSES.length;
+        // Si la siguiente pose ya falló al cargar, la saltamos (hasta un ciclo completo).
+        let guard = 0;
+        while (brokenSet.has(next) && guard < HERO_MASCOT_POSES.length) {
+          next = (next + 1) % HERO_MASCOT_POSES.length;
+          guard += 1;
+        }
+        return { current: next, prev: p.current };
+      });
+    }, 6000);
+    return () => clearInterval(id);
+  }, [brokenSet]);
+
+  if (brokenSet.size >= HERO_MASCOT_POSES.length) return null;
 
   return (
-    <div className="hidden lg:flex relative w-[380px] xl:w-[440px] h-[420px] xl:h-[460px] shrink-0 items-center justify-center">
+    <div
+      ref={containerRef}
+      className="hidden lg:flex relative w-[400px] xl:w-[460px] h-[440px] xl:h-[480px] shrink-0 items-center justify-center"
+    >
       {/* glow detrás */}
       <div className="hero-decor absolute inset-0 m-auto w-[340px] h-[340px] rounded-[45%_55%_40%_60%/55%_45%_60%_40%] bg-brand-accent/25 blur-3xl animate-blob-morph pointer-events-none" />
 
@@ -209,14 +279,27 @@ function HeroMascot() {
       <AsteroidLine className="hero-decor absolute top-20 right-0 text-white/70 animate-float-slow delay-150" size={26} />
       <AsteroidLine className="hero-decor absolute bottom-6 left-6 text-brand-accent-200/80 animate-float-y delay-500" size={20} />
 
-      <img
-        src={ASSETS_3D.mascotaLobito}
-        alt="Mascota SimulaUNA: un lobito muy estudioso"
-        // Above the fold en desktop (candidata a LCP): prioridad alta, nunca lazy.
-        fetchPriority="high"
-        className="relative z-10 w-[280px] xl:w-[320px] max-h-full object-contain animate-float-y select-none drop-shadow-2xl pointer-events-none"
-        onError={() => setBroken(true)}
-      />
+      {HERO_MASCOT_POSES.map((src, i) => {
+        if (brokenSet.has(i)) return null;
+        const isCurrent = i === pose.current;
+        const isPrev = i === pose.prev;
+        if (!isCurrent && !isPrev) return null;
+        return (
+          <img
+            key={src}
+            src={src}
+            alt={isCurrent ? 'Mascota SimulaUNA: un lobito muy estudioso' : ''}
+            aria-hidden={isCurrent ? undefined : true}
+            // Above the fold en desktop (candidata a LCP): la primera pose siempre
+            // con prioridad alta; las demás nunca lazy tampoco (ya precargadas arriba).
+            fetchPriority={i === 0 ? 'high' : undefined}
+            className={`absolute inset-0 m-auto w-[340px] xl:w-[400px] max-h-full object-contain animate-float-y select-none drop-shadow-2xl pointer-events-none transition-opacity duration-[800ms] ease-in-out ${
+              isCurrent ? 'z-10 opacity-100' : 'z-[9] opacity-0'
+            }`}
+            onError={() => setBrokenSet((prev) => new Set(prev).add(i))}
+          />
+        );
+      })}
     </div>
   );
 }
@@ -226,25 +309,82 @@ function HeroMascot() {
 /*  md) dentro de .bento-stats, no un overlay absoluto. Si la imagen aún no   */
 /*  existe, onError la retira y la celda .bento-cell-cohete queda vacía sin   */
 /*  romper el grid (las demás celdas no dependen de su presencia).           */
+/*                                                                             */
+/*  Reacciona al scroll: mientras la sección "stats" atraviesa el viewport,   */
+/*  el cohete rota (-8deg → +4deg) y "despega" (translateY +40px → -80px) de  */
+/*  forma progresiva, ligada al progreso real del scroll (no un solo         */
+/*  trigger). Se implementa con un listener de scroll pasivo + rAF, leyendo  */
+/*  getBoundingClientRect() de la sección contenedora y escribiendo el       */
+/*  transform directo por ref (sin useState) para no re-renderizar React en  */
+/*  cada frame. El transform va en el <img> (elemento interno), nunca en la  */
+/*  celda del grid `.bento-cell-cohete`, para no romper el layout bento.     */
+/*  Con prefers-reduced-motion: el cohete queda estático (no se engancha el  */
+/*  listener, no hay rotación ni despegue).                                  */
 /* -------------------------------------------------------------------------- */
 function CoheteFloat() {
   const [broken, setBroken] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const img = imgRef.current;
+    if (!img || reduceMotion) return;
+
+    const section = img.closest('section');
+    if (!section) return;
+
+    let raf = 0;
+    const apply = () => {
+      raf = 0;
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      // Progreso 0→1: 0 cuando la sección recién entra por abajo del viewport,
+      // 1 cuando su borde inferior sale por arriba — cubre todo su tránsito.
+      const total = rect.height + vh;
+      const traveled = vh - rect.top;
+      const progress = Math.min(1, Math.max(0, traveled / total));
+      const rotate = -8 + progress * 12; // -8deg → +4deg
+      const lift = 40 - progress * 120; // +40px → -80px (despega)
+      img.style.transform = `translateY(${lift}px) rotate(${rotate}deg)`;
+    };
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(apply);
+    };
+
+    apply();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   if (broken) return null;
   return (
     <img
+      ref={imgRef}
       src={ASSETS_3D.cohete}
       alt=""
       aria-hidden="true"
       loading="lazy"
-      className="w-24 lg:w-32 max-h-full object-contain opacity-90 animate-float-y pointer-events-none select-none drop-shadow-2xl"
+      className="w-24 lg:w-32 max-h-full object-contain opacity-90 pointer-events-none select-none drop-shadow-2xl will-change-transform"
       onError={() => setBroken(true)}
     />
   );
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Mascota pequeña del CTA final — acompaña el botón sin estorbar (misma     */
-/*  lógica onError que HeroMascot: si la imagen no carga, no deja hueco).     */
+/*  Mascota del CTA final — parte de la composición, no un adorno de esquina: */
+/*  en móvil va en flujo normal, centrada y pequeña, arriba del titular; en   */
+/*  md+ se posiciona absoluta sobre la esquina inferior derecha del bloque de */
+/*  texto (superposición controlada por right-0/bottom-0, nunca depende del  */
+/*  ancho del viewport) y desde lg se desplaza un poco más hacia afuera —     */
+/*  altura del bloque de texto en lg+ da de sobra espacio lateral — quedando  */
+/*  al costado, a la altura de los botones. Si la imagen no carga, no deja   */
+/*  hueco (misma lógica onError que HeroMascot).                             */
 /* -------------------------------------------------------------------------- */
 function CtaMascot() {
   const [broken, setBroken] = useState(false);
@@ -255,7 +395,9 @@ function CtaMascot() {
       alt=""
       aria-hidden="true"
       loading="lazy"
-      className="hidden sm:block absolute -bottom-2 right-2 md:right-10 w-20 md:w-28 opacity-90 animate-float-y select-none drop-shadow-2xl pointer-events-none"
+      className="relative z-20 mx-auto mb-4 w-28 opacity-95 animate-float-y select-none drop-shadow-2xl pointer-events-none
+        md:absolute md:z-20 md:mx-0 md:mb-0 md:inset-auto md:right-0 md:bottom-0 md:w-40 md:translate-y-[10%]
+        lg:w-56 lg:top-1/2 lg:bottom-auto lg:-translate-y-[35%] lg:translate-x-[30%]"
       onError={() => setBroken(true)}
     />
   );
@@ -915,7 +1057,7 @@ export function Landing() {
                 style={{ gridArea: `s${i + 1}` }}
                 className={`text-center animate-fade-up delay-${((i + 1) * 150) as 150 | 300 | 500 | 700}`}
               >
-                <div className="font-display font-black text-6xl md:text-7xl tracking-tight leading-none animate-number-roll text-brand-accent-400 [text-shadow:0_2px_12px_rgba(0,0,0,0.35)] px-1">
+                <div className="font-display font-black bento-stat-value tracking-tight leading-none animate-number-roll text-brand-accent-400 [text-shadow:0_2px_12px_rgba(0,0,0,0.35)] px-1">
                   <AnimatedNumber value={s.v} prefix={s.prefix} suffix={s.suffix || ''} />
                 </div>
                 <p className="mt-4 text-xs md:text-sm uppercase tracking-widest text-white font-bold [text-shadow:0_1px_3px_rgba(0,0,0,0.5)]">
@@ -1186,7 +1328,11 @@ export function Landing() {
         <StarTwinkle className="absolute bottom-20 left-[30%] text-brand-accent-200 animate-star-twinkle delay-500" size={14} />
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="text-center max-w-3xl mx-auto animate-fade-up">
+          <div className="relative text-center max-w-3xl mx-auto animate-fade-up">
+          {/* Mascota del CTA — parte de la composición, no un adorno de esquina
+              (Dirección v3: máx. 2 apariciones nuevas). */}
+          <CtaMascot />
+
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 backdrop-blur border border-white/40 text-white text-xs font-bold uppercase tracking-[0.2em] mb-7 shadow-xl [text-shadow:0_1px_3px_rgba(0,0,0,0.5)]">
             <Sparkles className="w-3.5 h-3.5" /> Tu primer simulacro es gratis
           </span>
@@ -1225,9 +1371,6 @@ export function Landing() {
           </p>
           </div>
         </div>
-
-        {/* Mascota pequeña acompañando el CTA (Dirección v3: máx. 2 apariciones nuevas) */}
-        <CtaMascot />
       </section>
 
       {/* ==================================================================== */}

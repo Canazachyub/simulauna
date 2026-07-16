@@ -674,7 +674,14 @@ input, textarea, [contenteditable="true"] {
       grid-template-areas: "s1 s2 s3 s4 cohete";
     }
   }
-  .bento-stats > * { min-width: 0; min-height: 0; }
+  /* Cada celda es su propio contenedor de tamaño (container queries): el
+     tamaño del contador (.bento-stat-value) se calcula contra el ancho REAL
+     de su propia celda (cqw), no contra el viewport — así nunca desborda ni
+     choca con su vecina en ningún ancho, sin importar cuántas columnas tenga
+     el grid en ese breakpoint (Hallazgo: "+2,000" y "40+" se superponían
+     porque el tamaño de fuente era fijo — text-6xl md:text-7xl — mientras el
+     grid de 5 columnas en desktop deja tracks de apenas ~150-200px). */
+  .bento-stats > * { min-width: 0; min-height: 0; container-type: inline-size; }
   .bento-cell-cohete {
     display: none;
     align-items: center;
@@ -683,6 +690,24 @@ input, textarea, [contenteditable="true"] {
   }
   @media (min-width: 768px) {
     .bento-cell-cohete { grid-area: cohete; display: flex; }
+  }
+
+  /* Contador de la franja de stats — fuente fluida ligada al ancho REAL de su
+     celda (20cqw), con piso y techo en rem. En la celda más angosta posible
+     (~150-180px, grid de 5 columnas ≥1024px) da ~2.3-2.5rem, suficiente para
+     "+2,000" (el más largo) sin tocar la celda vecina; en celdas más anchas
+     (2 columnas ≥480px, o la única columna en base) sube hasta el techo de
+     4.5rem sin nunca desbordar porque escala con la celda, no con el
+     viewport. `overflow-wrap` es un cinturón de seguridad adicional para
+     cualquier combinación extrema no prevista (p. ej. zoom de texto grande). */
+  .bento-stat-value {
+    font-size: clamp(1.75rem, 20cqw, 4.5rem);
+    overflow-wrap: anywhere;
+  }
+  /* Navegadores sin soporte de container queries (raro): degrada a un clamp
+     basado en viewport, mismo espíritu que .text-display-hero/.text-display-section. */
+  @supports not (container-type: inline-size) {
+    .bento-stat-value { font-size: clamp(1.75rem, 6vw, 4.5rem); }
   }
 
   /* ---- UniversityPage § Tarjetas de proceso — el número de tarjetas
