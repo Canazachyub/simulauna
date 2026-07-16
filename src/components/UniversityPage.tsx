@@ -202,14 +202,25 @@ export function UniversityPage() {
         <h2 className="font-display text-display-tight text-2xl font-bold text-slate-800 mb-6 text-center">
           ¿Qué quieres practicar hoy?
         </h2>
-        <div className="grid sm:grid-cols-2 gap-5">
+        {/* Bento: Simulacro (si el proceso existe) es la celda dominante
+            (2 cols desde ≥480px, 2x2 desde ≥1024px); Banqueo/Banqueo por
+            tema/CEPRE quedan medianas y Aula virtual como celda menor. El
+            número de tarjetas varía por universidad (3 a 5 según
+            `procesos`), por eso se usa grid-auto-flow: dense + spans en vez
+            de grid-template-areas fijas — ver .bento-procesos en index.css. */}
+        <div className="bento-procesos">
           {processCards.map((card) => {
             const Icon = card.icon;
+            const isDominant = card.key === 'simulacro';
             return (
               <button
                 key={card.key}
                 onClick={() => navigate(card.to)}
-                className="uni-process-card shadow-tinted shadow-tinted-hover group relative text-left card-elevated p-6 rounded-2xl border-2 border-slate-200 transition-all focus:outline-none focus-visible:ring-4"
+                className={`uni-process-card shadow-tinted shadow-tinted-hover group relative text-left card-elevated rounded-2xl border-2 border-slate-200 transition-all focus:outline-none focus-visible:ring-4 ${
+                  isDominant
+                    ? 'bento-cell-dominante p-7 md:p-9 flex flex-col justify-center'
+                    : 'p-6'
+                }`}
                 style={{ '--tw-ring-color': 'var(--uni-primary-soft)' } as CSSProperties}
               >
                 {/* Acento del tema — el dorado/secundario solo aparece como detalle, nunca como fondo con texto */}
@@ -219,15 +230,15 @@ export function UniversityPage() {
                   aria-hidden="true"
                 />
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-white shadow-md"
+                  className={`${isDominant ? 'w-16 h-16 md:w-20 md:h-20' : 'w-12 h-12'} rounded-xl flex items-center justify-center mb-4 text-white shadow-md`}
                   style={{ backgroundColor: 'var(--uni-primary-safe)' }}
                 >
-                  <Icon className="w-6 h-6" aria-hidden="true" />
+                  <Icon className={isDominant ? 'w-8 h-8 md:w-10 md:h-10' : 'w-6 h-6'} aria-hidden="true" />
                 </div>
-                <h3 className="font-display text-lg font-bold text-slate-800 mb-1">{card.title}</h3>
-                <p className="text-sm text-slate-500 mb-4">{card.description}</p>
+                <h3 className={`font-display font-bold text-slate-800 mb-1 ${isDominant ? 'text-2xl md:text-3xl' : 'text-lg'}`}>{card.title}</h3>
+                <p className={`text-slate-500 mb-4 ${isDominant ? 'text-base max-w-md' : 'text-sm'}`}>{card.description}</p>
                 <span
-                  className="btn-glow !px-4 !py-2 text-sm text-white"
+                  className={`btn-glow text-white ${isDominant ? '!px-6 !py-3 text-base' : '!px-4 !py-2 text-sm'}`}
                   style={{ backgroundColor: 'var(--uni-primary-safe)' }}
                 >
                   {card.cta}

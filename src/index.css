@@ -564,3 +564,130 @@ input, textarea, [contenteditable="true"] {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   html { scroll-behavior: auto; }
 }
+
+/* ============================================================
+   BENTO GRID — celdas asimétricas, mobile-first
+   Patrón: grid-template-areas redefinido por breakpoint
+   (1 col base → 2 cols ≥480px → 3 cols ≥768px → 4 cols ≥1024px),
+   donde las celdas cambian de posición/proporción por área nombrada.
+   Acentos derivados del sistema (--uni-* / brand, sin hardcodes de color),
+   border-radius consistente (heredado de cada tarjeta) y
+   min-width:0/min-height:0 en los hijos para que nada desborde.
+   ============================================================ */
+@layer components {
+  /* ---- Landing § Features (6 tarjetas) — celda "hero" protagonista
+     para "Puntaje como el de tu universidad", con su ilustración. ---- */
+  .bento-features {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "hero"
+      "cronometro"
+      "justificaciones"
+      "historial"
+      "pdf"
+      "gratis";
+  }
+  @media (min-width: 480px) {
+    .bento-features {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-areas:
+        "hero hero"
+        "cronometro justificaciones"
+        "historial pdf"
+        "gratis gratis";
+    }
+  }
+  @media (min-width: 768px) {
+    .bento-features {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-areas:
+        "hero hero cronometro"
+        "justificaciones historial pdf"
+        "gratis gratis gratis";
+    }
+  }
+  @media (min-width: 1024px) {
+    .bento-features {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-areas:
+        "hero hero cronometro justificaciones"
+        "hero hero historial pdf"
+        "gratis gratis gratis gratis";
+    }
+  }
+  .bento-features > * { min-width: 0; min-height: 0; }
+
+  /* ---- Landing § Franja de stats — 4 contadores + celda del cohete
+     (celda alta a la derecha desde md, ausente en base). ---- */
+  .bento-stats {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    grid-template-areas: "s1" "s2" "s3" "s4";
+  }
+  @media (min-width: 480px) {
+    .bento-stats {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-areas:
+        "s1 s2"
+        "s3 s4";
+    }
+  }
+  @media (min-width: 768px) {
+    .bento-stats {
+      grid-template-columns: repeat(2, 1fr) minmax(110px, 1fr);
+      grid-template-areas:
+        "s1 s2 cohete"
+        "s3 s4 cohete";
+    }
+  }
+  @media (min-width: 1024px) {
+    .bento-stats {
+      grid-template-columns: repeat(4, 1fr) minmax(150px, 200px);
+      grid-template-areas: "s1 s2 s3 s4 cohete";
+    }
+  }
+  .bento-stats > * { min-width: 0; min-height: 0; }
+  .bento-cell-cohete {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+  }
+  @media (min-width: 768px) {
+    .bento-cell-cohete { grid-area: cohete; display: flex; }
+  }
+
+  /* ---- UniversityPage § Tarjetas de proceso — el número de tarjetas
+     varía por universidad (3 a 5, según `procesos` del registro maestro:
+     Simulacro y CEPRE son opcionales), así que en vez de áreas fijas se
+     usa grid-auto-flow: dense + spans: la tarjeta dominante (Simulacro)
+     ocupa 2 columnas desde ≥480px y 2x2 desde ≥1024px; el resto
+     (Banqueo, Banqueo por tema, CEPRE, Aula virtual) fluye alrededor
+     sin dejar huecos, para cualquier combinación de procesos. ---- */
+  .bento-procesos {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+    grid-auto-flow: dense;
+  }
+  @media (min-width: 480px) {
+    .bento-procesos { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 768px) {
+    .bento-procesos { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  }
+  @media (min-width: 1024px) {
+    .bento-procesos { grid-template-columns: repeat(4, 1fr); }
+  }
+  .bento-procesos > * { min-width: 0; min-height: 0; }
+  .bento-cell-dominante { grid-column: span 1; }
+  @media (min-width: 480px) {
+    .bento-cell-dominante { grid-column: span 2; }
+  }
+  @media (min-width: 1024px) {
+    .bento-cell-dominante { grid-column: span 2; grid-row: span 2; }
+  }
+}

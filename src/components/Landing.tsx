@@ -221,8 +221,10 @@ function HeroMascot() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Cohete 3D despegando junto a los números de la franja "en números".      */
-/*  Oculto en móvil; si la imagen aún no existe, no deja hueco (onError).     */
+/*  Cohete 3D — ahora es una celda bento propia (alta, a la derecha desde     */
+/*  md) dentro de .bento-stats, no un overlay absoluto. Si la imagen aún no   */
+/*  existe, onError la retira y la celda .bento-cell-cohete queda vacía sin   */
+/*  romper el grid (las demás celdas no dependen de su presencia).           */
 /* -------------------------------------------------------------------------- */
 function CoheteFloat() {
   const [broken, setBroken] = useState(false);
@@ -233,7 +235,7 @@ function CoheteFloat() {
       alt=""
       aria-hidden="true"
       loading="lazy"
-      className="hidden md:block absolute right-6 lg:right-14 top-1/2 -translate-y-1/2 w-28 lg:w-36 opacity-90 animate-float-y pointer-events-none select-none drop-shadow-2xl"
+      className="w-24 lg:w-32 max-h-full object-contain opacity-90 animate-float-y pointer-events-none select-none drop-shadow-2xl"
       onError={() => setBroken(true)}
     />
   );
@@ -827,7 +829,6 @@ export function Landing() {
           className="hidden md:block absolute left-10 top-1/2 -translate-y-1/2 w-24 opacity-20 animate-float-y text-brand-accent pointer-events-none" />
         <img src="/simulauna/illustrations/compass-geometry.svg" alt="" aria-hidden="true"
           className="hidden md:block absolute right-10 bottom-10 w-32 opacity-15 animate-spin-slow pointer-events-none" />
-        <CoheteFloat />
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-16 animate-fade-up">
@@ -842,7 +843,10 @@ export function Landing() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-6 max-w-5xl mx-auto">
+          {/* Bento: 4 contadores + celda del cohete (alta, a la derecha desde
+              md; ausente en base — patrón grid-template-areas por breakpoint,
+              ver .bento-stats en index.css). */}
+          <div className="bento-stats max-w-5xl mx-auto">
             {[
               { prefix: '+', v: 2000, l: 'Postulantes reales' },
               { prefix: '', v: 40, suffix: '+', l: 'Carreras' },
@@ -851,6 +855,7 @@ export function Landing() {
             ].map((s, i) => (
               <div
                 key={s.l}
+                style={{ gridArea: `s${i + 1}` }}
                 className={`text-center animate-fade-up delay-${((i + 1) * 150) as 150 | 300 | 500 | 700}`}
               >
                 <div className="font-display font-black text-6xl md:text-7xl tracking-tight leading-none animate-number-roll text-brand-accent-400 [text-shadow:0_2px_12px_rgba(0,0,0,0.35)] px-1">
@@ -861,6 +866,9 @@ export function Landing() {
                 </p>
               </div>
             ))}
+            <div className="bento-cell-cohete">
+              <CoheteFloat />
+            </div>
           </div>
         </div>
 
@@ -898,32 +906,42 @@ export function Landing() {
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 max-w-6xl mx-auto">
+          {/* Bento asimétrico: "Puntaje como el de tu universidad" es la celda
+              hero protagonista (más espacio + ilustración grande), el resto
+              son celdas menores. Recomposición por breakpoint vía
+              grid-template-areas — ver .bento-features en index.css. */}
+          <div className="bento-features max-w-6xl mx-auto">
             {[
-              { icon: Clock, title: 'Cronómetro real', desc: 'Mismas 3 horas del examen. Entrénate bajo presión.', color: 'text-brand-primary-700 bg-brand-primary-50', deco: ASSETS.examPaper },
-              { icon: FileText, title: 'Puntaje como el de tu universidad', desc: 'La estructura real del examen: preguntas, tiempos y sistema de puntaje de cada proceso de admisión.', color: 'text-rose-700 bg-rose-50', deco: ASSETS.formulas },
-              { icon: Sparkles, title: 'Justificaciones detalladas', desc: 'No solo la respuesta: el porqué completo de cada alternativa.', color: 'text-brand-accent-700 bg-brand-accent-50', deco: ASSETS.bulb },
-              { icon: TrendingUp, title: 'Historial de progreso', desc: 'Mira tu evolución por asignatura y por área con gráficas.', color: 'text-emerald-700 bg-emerald-50', deco: ASSETS.calculator },
-              { icon: Award, title: 'PDF descargable', desc: 'Cada simulacro con reporte profesional listo para imprimir.', color: 'text-brand-secondary-700 bg-brand-secondary-50', deco: ASSETS.graduation },
-              { icon: Zap, title: 'Gratis primer intento', desc: 'Sin tarjetas, sin trampas. Regístrate y rinde ahora mismo.', color: 'text-amber-700 bg-amber-50', deco: ASSETS.studentSil },
-            ].map((f, i) => (
-              <div
-                key={f.title}
-                className={`group relative h-full rounded-3xl bg-white p-7 border border-slate-100 shadow-tinted shadow-tinted-hover transition-all duration-300 overflow-hidden animate-fade-up delay-${((i % 4 + 1) * 150) as 150 | 300 | 500 | 700}`}
-              >
-                <div className={`w-14 h-14 rounded-2xl ${f.color} flex items-center justify-center mb-5 shadow-sm group-hover:scale-110 transition-transform relative z-10`}>
-                  <f.icon className="w-7 h-7" />
+              { slot: 'cronometro', icon: Clock, title: 'Cronómetro real', desc: 'Mismas 3 horas del examen. Entrénate bajo presión.', color: 'text-brand-primary-700 bg-brand-primary-50', deco: ASSETS.examPaper },
+              { slot: 'hero', icon: FileText, title: 'Puntaje como el de tu universidad', desc: 'La estructura real del examen: preguntas, tiempos y sistema de puntaje de cada proceso de admisión.', color: 'text-rose-700 bg-rose-50', deco: ASSETS.formulas },
+              { slot: 'justificaciones', icon: Sparkles, title: 'Justificaciones detalladas', desc: 'No solo la respuesta: el porqué completo de cada alternativa.', color: 'text-brand-accent-700 bg-brand-accent-50', deco: ASSETS.bulb },
+              { slot: 'historial', icon: TrendingUp, title: 'Historial de progreso', desc: 'Mira tu evolución por asignatura y por área con gráficas.', color: 'text-emerald-700 bg-emerald-50', deco: ASSETS.calculator },
+              { slot: 'pdf', icon: Award, title: 'PDF descargable', desc: 'Cada simulacro con reporte profesional listo para imprimir.', color: 'text-brand-secondary-700 bg-brand-secondary-50', deco: ASSETS.graduation },
+              { slot: 'gratis', icon: Zap, title: 'Gratis primer intento', desc: 'Sin tarjetas, sin trampas. Regístrate y rinde ahora mismo.', color: 'text-amber-700 bg-amber-50', deco: ASSETS.studentSil },
+            ].map((f, i) => {
+              const isHero = f.slot === 'hero';
+              return (
+                <div
+                  key={f.title}
+                  style={{ gridArea: f.slot }}
+                  className={`group relative h-full rounded-3xl bg-white border border-slate-100 shadow-tinted shadow-tinted-hover transition-all duration-300 overflow-hidden animate-fade-up delay-${((i % 4 + 1) * 150) as 150 | 300 | 500 | 700} ${isHero ? 'p-8 md:p-10 flex flex-col justify-center' : 'p-7'}`}
+                >
+                  <div className={`${isHero ? 'w-16 h-16 md:w-20 md:h-20' : 'w-14 h-14'} rounded-2xl ${f.color} flex items-center justify-center mb-5 shadow-sm group-hover:scale-110 transition-transform relative z-10`}>
+                    <f.icon className={isHero ? 'w-8 h-8 md:w-10 md:h-10' : 'w-7 h-7'} />
+                  </div>
+                  <h3 className={`font-display font-black text-slate-900 mb-2 leading-tight relative z-10 ${isHero ? 'text-2xl md:text-3xl max-w-md' : 'text-xl'}`}>{f.title}</h3>
+                  <p className={`text-slate-600 leading-relaxed relative z-10 ${isHero ? 'text-sm md:text-base max-w-md' : 'text-sm'}`}>{f.desc}</p>
+                  <img
+                    src={f.deco}
+                    alt=""
+                    aria-hidden="true"
+                    className={isHero
+                      ? 'absolute bottom-2 right-2 w-28 md:w-40 opacity-25 group-hover:opacity-40 transition pointer-events-none select-none'
+                      : 'absolute bottom-3 right-3 w-16 opacity-20 group-hover:opacity-30 transition pointer-events-none select-none'}
+                  />
                 </div>
-                <h3 className="font-display font-black text-xl text-slate-900 mb-2 leading-tight relative z-10">{f.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed relative z-10">{f.desc}</p>
-                <img
-                  src={f.deco}
-                  alt=""
-                  aria-hidden="true"
-                  className="absolute bottom-3 right-3 w-16 opacity-20 group-hover:opacity-30 transition pointer-events-none select-none"
-                />
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
