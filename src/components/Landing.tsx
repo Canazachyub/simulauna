@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   ArrowRight, Sparkles, Trophy, GraduationCap, ChevronDown,
   Cog, HeartPulse, Landmark, UserPlus, Clock, TrendingUp,
-  Star, Quote, Zap, FileText, Award, BookMarked, Rocket,
+  Star, Quote, FileText, Award, BookMarked, Rocket, MonitorPlay,
 } from 'lucide-react';
 import { useUniversityStore } from '../hooks/useUniversity';
 import { getUniversityTheme, themeCssVars } from '../theme/universityThemes';
@@ -63,10 +63,8 @@ const ASSETS_3D = {
   // Mascota: un lobito muy estudioso (sin identidad andina en el personaje).
   mascotaLobito: '/simulauna/illustrations/mascota-lobito.png',
   cohete: '/simulauna/illustrations/cohete-despegue.png',
-  iconoElige: '/simulauna/illustrations/icono-elige.png',
-  iconoRegistro: '/simulauna/illustrations/icono-registro.png',
-  iconoPractica: '/simulauna/illustrations/icono-practica.png',
-  iconoPuntaje: '/simulauna/illustrations/icono-puntaje.png',
+  // Los íconos de pasos vuelven a ser Lucide (decisión del usuario: los PNG
+  // pequeños se veían mal; solo se reemplazan ilustraciones grandes).
 };
 
 /* -------------------------------------------------------------------------- */
@@ -242,24 +240,12 @@ function CoheteFloat() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Ícono 3D de un paso de "Cómo funciona" con caída elegante a Lucide.       */
-/*  Las ilustraciones 3D (icono-elige.png, etc.) aún no existen: mientras     */
-/*  no estén, onError cae al ícono Lucide que ya usábamos — cero placeholders */
-/*  rotos.                                                                    */
+/*  Ícono de paso de "Cómo funciona": Lucide siempre (los PNG pequeños se     */
+/*  veían mal — decisión del usuario; los assets 3D quedan para ilustraciones */
+/*  grandes).                                                                 */
 /* -------------------------------------------------------------------------- */
-function StepIcon({ src, fallback: Fallback }: { src: string; fallback: ComponentType<{ className?: string }> }) {
-  const [broken, setBroken] = useState(false);
-  if (broken) return <Fallback className="w-6 h-6" />;
-  return (
-    <img
-      src={src}
-      alt=""
-      aria-hidden="true"
-      loading="lazy"
-      className="w-9 h-9 object-contain"
-      onError={() => setBroken(true)}
-    />
-  );
+function StepIcon({ fallback: Fallback }: { fallback: ComponentType<{ className?: string }> }) {
+  return <Fallback className="w-6 h-6" />;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -366,14 +352,14 @@ export function Landing() {
         <div className="relative container mx-auto px-4 sm:px-6 py-20 md:py-28 flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-14 w-full z-20">
           {/* LEFT */}
           <div className="flex-1 min-w-0 animate-fade-up">
-            {/* Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs md:text-sm font-medium text-white shadow-sm">
+            {/* Pill — los 3 pilares, en una línea, antes del titular */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs md:text-sm font-bold uppercase tracking-wide text-white shadow-sm">
               <GraduationCap className="w-4 h-4 text-brand-accent-300" />
-              <span>Plataforma nacional de simulacros de admisión</span>
+              <span>Clases · Simulacros · Bancos históricos</span>
             </div>
 
-            {/* H1 gigante — display tight (patrón 4: Fraunces 700-900, -0.02em, 1.1-1.2) */}
-            <h1 className="mt-6 font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-display-tight text-white drop-shadow-2xl [text-shadow:0_4px_20px_rgba(0,0,0,0.7)]">
+            {/* H1 gigante — escala fluida clamp() (Misión B §1: .text-display-hero) */}
+            <h1 className="mt-6 font-display text-display-hero font-black text-white drop-shadow-2xl [text-shadow:0_4px_20px_rgba(0,0,0,0.7)]">
               Prepárate
               <br />
               para la <span className="gradient-text-gold" style={{ color: '#D4AF37' }}>universidad</span>
@@ -381,9 +367,9 @@ export function Landing() {
               <span className="italic font-display">de verdad.</span>
             </h1>
 
-            {/* Micro-copy — universidades */}
+            {/* Micro-copy — universidades: TODAS, no solo una */}
             <p className="mt-3 text-white/90 font-semibold text-sm md:text-base [text-shadow:0_1px_4px_rgba(0,0,0,0.6)]">
-              UNA Puno · San Marcos · UNI · UNSA · UNSAAC · UNCP · UNFV · y todas las universidades del Perú.
+              San Marcos · UNI · UNSA · UNSAAC · UNCP · UNFV · UNA Puno · y todas las universidades del Perú.
             </p>
 
             {/* Selector de universidad — solo las del registro maestro (getUniversidades) */}
@@ -405,11 +391,13 @@ export function Landing() {
               </div>
             )}
 
-            {/* Subtitle */}
-            <p className="mt-6 text-white/95 font-medium text-lg md:text-xl max-w-xl leading-relaxed drop-shadow-lg [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]">
-              Preguntas <strong className="text-white">reales</strong> de exámenes de admisión pasados
-              y un puntaje calculado exactamente como lo hace tu universidad.{' '}
-              Para todos los postulantes del Perú.{' '}
+            {/* Subtitle — los 3 pilares + el diferenciador (exámenes históricos reales
+                de TU universidad, no solo de una). Medida de lectura: max-w-prose (~65ch). */}
+            <p className="mt-6 text-white/95 font-medium text-lg md:text-xl max-w-prose leading-relaxed drop-shadow-lg [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]">
+              Simulacros con las condiciones reales de tu examen y bancos de preguntas de años pasados,
+              construidos con <strong className="text-white">los exámenes de admisión reales de tu universidad</strong>.
+              El puntaje se calcula exactamente como lo hace ella. Muy pronto, también clases de calidad
+              en tu Aula Virtual.{' '}
               <strong className="text-white">Gratis. Serio. Tuyo.</strong>
             </p>
 
@@ -517,7 +505,7 @@ export function Landing() {
             >
               <GraduationCap className="w-3.5 h-3.5" /> Para todos los postulantes del Perú
             </span>
-            <h2 className="font-display text-3xl md:text-4xl font-black text-slate-900 text-display-tight">
+            <h2 className="font-display text-display-section font-black text-slate-900">
               Universidades disponibles
             </h2>
             <p className="mt-2 text-slate-600 text-sm md:text-base">
@@ -589,11 +577,12 @@ export function Landing() {
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-accent-500/15 border border-brand-accent-400/40 text-brand-accent-300 text-xs font-bold uppercase tracking-[0.2em] mb-5">
               <Sparkles className="w-3.5 h-3.5" /> Proceso simple
             </span>
-            <h2 className="font-display text-5xl md:text-6xl font-black gradient-text-gold text-display-tight">
+            <h2 className="font-display text-display-section font-black gradient-text-gold">
               4 pasos y listo
             </h2>
-            <p className="mt-5 text-white/70 text-lg">
-              Elige tu universidad, regístrate gratis, rinde el simulacro y mira tu puntaje real.
+            <p className="mt-5 text-white/70 text-lg max-w-prose mx-auto leading-relaxed">
+              Elige tu universidad, regístrate gratis, practica con los exámenes pasados de tu
+              universidad y mira tu puntaje real.
             </p>
           </div>
 
@@ -606,10 +595,10 @@ export function Landing() {
 
             <div className="grid md:grid-cols-4 gap-8 md:gap-6 relative">
               {[
-                { n: '01', icon: GraduationCap, img: ASSETS_3D.iconoElige, t: 'Elige tu universidad', d: 'Selecciona tu universidad objetivo entre las disponibles hoy — más se suman pronto.' },
-                { n: '02', icon: UserPlus, img: ASSETS_3D.iconoRegistro, t: 'Regístrate gratis', d: 'DNI, nombre y correo. Sin tarjetas ni compromisos.' },
-                { n: '03', icon: Clock, img: ASSETS_3D.iconoPractica, t: 'Practica con preguntas reales', d: 'Simulacro cronometrado con las mismas condiciones que tu examen.' },
-                { n: '04', icon: TrendingUp, img: ASSETS_3D.iconoPuntaje, t: 'Mira tu puntaje real', d: 'Calculado igual que tu universidad, con justificaciones y PDF descargable.' },
+                { n: '01', icon: GraduationCap, t: 'Elige tu universidad', d: 'Selecciona tu universidad objetivo entre las disponibles hoy — más se suman pronto.' },
+                { n: '02', icon: UserPlus, t: 'Regístrate gratis', d: 'DNI, nombre y correo. Sin tarjetas ni compromisos.' },
+                { n: '03', icon: Clock, t: 'Practica con exámenes pasados', d: 'Simulacro cronometrado y banqueo con preguntas de exámenes de admisión pasados de tu universidad.' },
+                { n: '04', icon: TrendingUp, t: 'Mira tu puntaje real', d: 'Calculado exactamente como lo hace tu universidad, con justificaciones y PDF descargable.' },
               ].map((s, i) => {
                 const delayClass = (['delay-75', 'delay-150', 'delay-300', 'delay-500'] as const)[i];
                 // Ruptura del grid (patrón 5): offset vertical alterno en desktop,
@@ -659,7 +648,7 @@ export function Landing() {
                             color: '#F4CF5F',
                           }}
                         >
-                          <StepIcon src={s.img} fallback={s.icon} />
+                          <StepIcon fallback={s.icon} />
                         </div>
                       </div>
 
@@ -703,7 +692,7 @@ export function Landing() {
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary-50 border border-brand-primary-200 text-brand-primary-700 text-xs font-bold uppercase tracking-[0.2em] mb-5">
               Áreas académicas
             </span>
-            <h2 className="font-display text-5xl md:text-6xl font-black text-slate-900 text-display-tight">
+            <h2 className="font-display text-display-section font-black text-slate-900">
               Tres áreas, <span className="gradient-text-brand italic">una meta</span>
             </h2>
           </div>
@@ -835,7 +824,7 @@ export function Landing() {
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-accent-500/15 border border-brand-accent-400/40 text-brand-accent-300 text-xs font-bold uppercase tracking-[0.2em] mb-5">
               <Rocket className="w-3.5 h-3.5" aria-hidden="true" /> La plataforma en números
             </span>
-            <h2 className="font-display text-4xl md:text-5xl font-black text-display-tight">
+            <h2 className="font-display text-display-section font-black">
               Hecho con <span className="italic text-brand-accent-400 gradient-text-gold">amor</span> para estudiantes preuniversitarios del Perú
             </h2>
             <p className="mt-5 text-white/80 text-base md:text-lg font-medium leading-relaxed">
@@ -885,9 +874,13 @@ export function Landing() {
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-primary-50 border border-brand-primary-200 text-brand-primary-700 text-xs font-bold uppercase tracking-[0.2em] mb-5">
               Por qué SimulaUNA
             </span>
-            <h2 className="font-display text-5xl md:text-6xl font-black text-slate-900 text-display-tight">
+            <h2 className="font-display text-display-section font-black text-slate-900">
               Todo lo que necesitas <span className="gradient-text-brand italic">para destacar</span>
             </h2>
+            <p className="mt-4 text-slate-600 text-base md:text-lg leading-relaxed max-w-prose mx-auto">
+              Clases, simulacros y bancos históricos — los tres, construidos con los exámenes de
+              admisión reales de tu universidad.
+            </p>
           </div>
 
           {/* Hero fotográfico de sección */}
@@ -912,12 +905,16 @@ export function Landing() {
               grid-template-areas — ver .bento-features en index.css. */}
           <div className="bento-features max-w-6xl mx-auto">
             {[
-              { slot: 'cronometro', icon: Clock, title: 'Cronómetro real', desc: 'Mismas 3 horas del examen. Entrénate bajo presión.', color: 'text-brand-primary-700 bg-brand-primary-50', deco: ASSETS.examPaper },
-              { slot: 'hero', icon: FileText, title: 'Puntaje como el de tu universidad', desc: 'La estructura real del examen: preguntas, tiempos y sistema de puntaje de cada proceso de admisión.', color: 'text-rose-700 bg-rose-50', deco: ASSETS.formulas },
-              { slot: 'justificaciones', icon: Sparkles, title: 'Justificaciones detalladas', desc: 'No solo la respuesta: el porqué completo de cada alternativa.', color: 'text-brand-accent-700 bg-brand-accent-50', deco: ASSETS.bulb },
-              { slot: 'historial', icon: TrendingUp, title: 'Historial de progreso', desc: 'Mira tu evolución por asignatura y por área con gráficas.', color: 'text-emerald-700 bg-emerald-50', deco: ASSETS.calculator },
-              { slot: 'pdf', icon: Award, title: 'PDF descargable', desc: 'Cada simulacro con reporte profesional listo para imprimir.', color: 'text-brand-secondary-700 bg-brand-secondary-50', deco: ASSETS.graduation },
-              { slot: 'gratis', icon: Zap, title: 'Gratis primer intento', desc: 'Sin tarjetas, sin trampas. Regístrate y rinde ahora mismo.', color: 'text-amber-700 bg-amber-50', deco: ASSETS.studentSil },
+              // Pilar Simulacros — cronómetro real, mismas condiciones de tu universidad.
+              { slot: 'cronometro', icon: Clock, title: 'Cronómetro real', desc: 'Las mismas horas de tu examen de admisión. Entrénate bajo presión real.', color: 'text-brand-primary-700 bg-brand-primary-50', deco: ASSETS.examPaper },
+              // Celda hero: el diferenciador — exámenes históricos reales + puntaje calculado igual que tu universidad.
+              { slot: 'hero', icon: FileText, title: 'Puntaje como el de tu universidad', desc: 'Simulacros construidos con los exámenes de admisión reales de años pasados: mismas preguntas, mismos tiempos y el sistema de puntaje exacto de tu proceso.', color: 'text-rose-700 bg-rose-50', deco: ASSETS.formulas },
+              // Pilar Bancos históricos — banqueo por curso y tema.
+              { slot: 'justificaciones', icon: BookMarked, title: 'Banqueo por curso y tema', desc: 'Preguntas reales de exámenes pasados, organizadas por curso, tema y subtema, con la justificación completa de cada respuesta.', color: 'text-brand-accent-700 bg-brand-accent-50', deco: ASSETS.bulb },
+              { slot: 'historial', icon: TrendingUp, title: 'Historial de progreso', desc: 'Mira tu evolución por asignatura, en tus simulacros y en tu práctica de banqueo.', color: 'text-emerald-700 bg-emerald-50', deco: ASSETS.calculator },
+              { slot: 'pdf', icon: Award, title: 'PDF descargable', desc: 'Cada simulacro con reporte profesional y puntaje detallado, listo para imprimir.', color: 'text-brand-secondary-700 bg-brand-secondary-50', deco: ASSETS.graduation },
+              // Pilar Clases — Aula Virtual, próximamente (sin prometer clases en vivo ya).
+              { slot: 'gratis', icon: MonitorPlay, title: 'Aula virtual — Próximamente', desc: 'Clases de calidad por universidad, en camino. Únete a la lista de espera y entra entre los primeros.', color: 'text-slate-600 bg-slate-100', deco: ASSETS.studentSil },
             ].map((f, i) => {
               const isHero = f.slot === 'hero';
               return (
@@ -959,7 +956,7 @@ export function Landing() {
             >
               <Award className="w-3.5 h-3.5" /> Universidades del Perú
             </span>
-            <h2 className="font-display text-3xl md:text-4xl font-black text-slate-900 text-display-tight">
+            <h2 className="font-display text-display-section font-black text-slate-900">
               Te preparamos para <span className="gradient-text-brand" style={{ color: '#003D7A' }}>todas</span>
             </h2>
             <p className="mt-2 text-slate-600 text-sm md:text-base">
@@ -1024,7 +1021,7 @@ export function Landing() {
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/70 backdrop-blur border border-brand-primary-200 text-brand-primary-700 text-xs font-bold uppercase tracking-[0.2em] mb-5">
               <Star className="w-3.5 h-3.5 fill-current" /> Voces de ingresantes
             </span>
-            <h2 className="font-display text-5xl md:text-6xl font-black gradient-text-brand text-display-tight">
+            <h2 className="font-display text-display-section font-black gradient-text-brand">
               Historias que inspiran
             </h2>
           </div>
@@ -1034,7 +1031,7 @@ export function Landing() {
               {
                 name: 'María Q.',
                 career: 'Ingeniería de Sistemas · UNA Puno',
-                text: 'Practiqué varios meses con SimulaUNA y entré en primer puesto. Las preguntas reales hicieron toda la diferencia en mi preparación.',
+                text: 'Practiqué varios meses con SimulaUNA y entré en primer puesto. Los exámenes pasados de mi universidad hicieron toda la diferencia en mi preparación.',
                 photo: 'https://i.pravatar.cc/150?img=47',
               },
               {
@@ -1124,14 +1121,15 @@ export function Landing() {
             <Sparkles className="w-3.5 h-3.5" /> Tu primer simulacro es gratis
           </span>
 
-          <h2 className="font-display text-5xl md:text-7xl font-black text-display-tight text-white [text-shadow:0_4px_16px_rgba(0,0,0,0.45)]">
+          <h2 className="font-display text-display-hero font-black text-white [text-shadow:0_4px_16px_rgba(0,0,0,0.45)]">
             Tu universidad te espera a
             <br />
             <span className="italic text-brand-accent-400 gradient-text-gold">60 preguntas</span>
           </h2>
 
-          <p className="mt-6 text-white/90 font-medium text-lg md:text-xl max-w-xl mx-auto leading-relaxed [text-shadow:0_1px_4px_rgba(0,0,0,0.4)]">
-            Elige <span className="italic text-brand-accent-300">una</span> universidad. Simula su examen real.{' '}
+          <p className="mt-6 text-white/90 font-medium text-lg md:text-xl max-w-prose mx-auto leading-relaxed [text-shadow:0_1px_4px_rgba(0,0,0,0.4)]">
+            Elige <span className="italic text-brand-accent-300">tu</span> universidad. Practica con sus exámenes
+            históricos reales.{' '}
             La plataforma es tuya.
           </p>
 
@@ -1178,7 +1176,7 @@ export function Landing() {
                 </div>
               </div>
               <p className="text-sm leading-relaxed max-w-xs">
-                Plataforma gratuita de simulacros preuniversitarios del Perú. Preguntas reales, cronómetro real, preparación real. Por y para postulantes.
+                Clases, simulacros y bancos históricos para postulantes de todas las universidades del Perú, construidos con los exámenes de admisión reales de cada una. Por y para postulantes.
               </p>
             </div>
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, MessageCircle, Radio, TrendingUp, BookMarked, Sparkles } from 'lucide-react';
+import { ArrowLeft, MessageCircle, GraduationCap, TrendingUp, BookMarked, Sparkles } from 'lucide-react';
 import { useUniversityStore } from '../hooks/useUniversity';
 import { resolveThemeVars } from '../utils/universityTheme';
 import { SectionCurve } from './landing/SectionCurve';
@@ -17,7 +17,7 @@ const WHATSAPP_BASE = 'https://wa.me/51900266810';
 const WHATSAPP_MESSAGE = 'Hola, quiero unirme a la lista de espera del Aula Virtual de SimulaUNA';
 
 const BULLETS = [
-  { icon: Radio, text: 'Clases en vivo por universidad' },
+  { icon: GraduationCap, text: 'Clases de calidad por universidad' },
   { icon: TrendingUp, text: 'Seguimiento de tu avance' },
   { icon: BookMarked, text: 'Material por curso' },
 ];
@@ -72,12 +72,12 @@ export function AulaComingSoon() {
                 Próximamente
               </span>
 
-              <h1 className="font-display text-display-tight text-4xl sm:text-5xl md:text-6xl font-black [text-shadow:0_4px_20px_rgba(0,0,0,0.35)]">
+              <h1 className="font-display text-display-hero font-black [text-shadow:0_4px_20px_rgba(0,0,0,0.35)]">
                 El Aula Virtual está en construcción
               </h1>
 
-              <p className="mt-5 text-white/90 max-w-xl mx-auto md:mx-0 text-base md:text-lg leading-relaxed">
-                Estamos preparando clases en vivo, seguimiento de tu avance y material por curso
+              <p className="mt-5 text-white/90 max-w-prose mx-auto md:mx-0 text-base md:text-lg leading-relaxed">
+                Estamos preparando clases de calidad, seguimiento de tu avance y material por curso
                 para {nombreUniversidad}. Únete a la lista de espera y entra entre los primeros.
               </p>
 
@@ -120,7 +120,7 @@ export function AulaComingSoon() {
 
       {/* Qué vas a encontrar */}
       <section className="max-w-4xl mx-auto px-4 pt-10 pb-14 md:pt-14 md:pb-20">
-        <h2 className="font-display text-display-tight text-2xl font-bold text-slate-800 mb-8 text-center">
+        <h2 className="font-display text-display-section font-bold text-slate-800 mb-8 text-center">
           Qué vas a encontrar
         </h2>
         <div className="grid sm:grid-cols-3 gap-5">

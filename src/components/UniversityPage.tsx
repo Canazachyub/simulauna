@@ -90,7 +90,7 @@ export function UniversityPage() {
     hasOrdinario && {
       key: 'simulacro',
       title: 'Simulacro completo',
-      description: 'Examen cronometrado con preguntas reales y calificación al instante.',
+      description: 'Examen cronometrado con preguntas de exámenes de admisión pasados y calificación al instante, como lo hace tu universidad.',
       icon: FileText,
       cta: 'Empezar simulacro',
       to: `/${universidad.codigo}/registro`
@@ -98,7 +98,7 @@ export function UniversityPage() {
     {
       key: 'banqueo',
       title: 'Banqueo histórico',
-      description: 'Practica por curso con feedback inmediato, a tu ritmo.',
+      description: 'Practica con preguntas de exámenes pasados, organizadas por curso, con feedback inmediato a tu ritmo.',
       icon: BookOpen,
       cta: 'Practicar banqueo',
       to: `/${universidad.codigo}/banqueo`
@@ -106,7 +106,7 @@ export function UniversityPage() {
     {
       key: 'banqueo-tema',
       title: 'Banqueo por tema',
-      description: 'Filtra por curso, tema y subtema para reforzar puntos débiles.',
+      description: 'Filtra por curso, tema y subtema para reforzar puntos débiles con preguntas reales de años anteriores.',
       icon: Clock,
       cta: 'Practicar por tema',
       to: `/${universidad.codigo}/banqueo-tema`
@@ -114,7 +114,7 @@ export function UniversityPage() {
     hasCepre && {
       key: 'cepre',
       title: universidad.cepreNombre || 'CEPRE',
-      description: `Cuadernillos y simulacro del ciclo ${universidad.cepreNombre || 'CEPRE'}.`,
+      description: `Cuadernillos y simulacro del ciclo ${universidad.cepreNombre || 'CEPRE'}, con los exámenes históricos propios del ciclo.`,
       icon: Trophy,
       cta: `Ir a ${universidad.cepreNombre || 'CEPRE'}`,
       to: `/${universidad.codigo}/cepre`
@@ -173,13 +173,15 @@ export function UniversityPage() {
                 )}
               </div>
 
-              <h1 className="font-display text-display-tight text-4xl sm:text-5xl md:text-7xl font-black [text-shadow:0_4px_20px_rgba(0,0,0,0.35)]">
+              <h1 className="font-display text-display-hero font-black [text-shadow:0_4px_20px_rgba(0,0,0,0.35)]">
                 {universidad.nombreCorto}
               </h1>
 
-              <p className="mt-4 text-white/90 max-w-xl mx-auto md:mx-0 text-base md:text-lg leading-relaxed">
-                Simulacros con preguntas reales, banqueo por curso y preparación
-                {hasCepre ? ` para ${universidad.cepreNombre}` : ''}. Gratis. Serio. Tuyo.
+              <p className="mt-4 text-white/90 max-w-prose mx-auto md:mx-0 text-base md:text-lg leading-relaxed">
+                Simulacros y banqueo por curso y tema, construidos con los exámenes históricos de{' '}
+                {universidad.nombreCorto}
+                {hasCepre ? ` y su ${universidad.cepreNombre}` : ''}. El puntaje se calcula exactamente
+                como lo hace tu universidad. Gratis. Serio. Tuyo.
               </p>
 
               <div className="mt-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold">
@@ -199,7 +201,7 @@ export function UniversityPage() {
 
       {/* Tarjetas de procesos disponibles */}
       <section className="max-w-5xl mx-auto px-4 pt-10 pb-12 md:pt-14 md:pb-16">
-        <h2 className="font-display text-display-tight text-2xl font-bold text-slate-800 mb-6 text-center">
+        <h2 className="font-display text-display-section font-bold text-slate-800 mb-6 text-center">
           ¿Qué quieres practicar hoy?
         </h2>
         {/* Bento: Simulacro (si el proceso existe) es la celda dominante
@@ -236,7 +238,7 @@ export function UniversityPage() {
                   <Icon className={isDominant ? 'w-8 h-8 md:w-10 md:h-10' : 'w-6 h-6'} aria-hidden="true" />
                 </div>
                 <h3 className={`font-display font-bold text-slate-800 mb-1 ${isDominant ? 'text-2xl md:text-3xl' : 'text-lg'}`}>{card.title}</h3>
-                <p className={`text-slate-500 mb-4 ${isDominant ? 'text-base max-w-md' : 'text-sm'}`}>{card.description}</p>
+                <p className={`text-slate-500 mb-4 leading-relaxed ${isDominant ? 'text-base max-w-md' : 'text-sm'}`}>{card.description}</p>
                 <span
                   className={`btn-glow text-white ${isDominant ? '!px-6 !py-3 text-base' : '!px-4 !py-2 text-sm'}`}
                   style={{ backgroundColor: 'var(--uni-primary-safe)' }}
@@ -279,7 +281,7 @@ export function UniversityPage() {
               )}
             </div>
             <h3 className="font-display text-lg font-bold text-slate-800 mb-1">Aula virtual</h3>
-            <p className="text-sm text-slate-500 mb-4">Clases en vivo, seguimiento de tu avance y material por curso — muy pronto.</p>
+            <p className="text-sm text-slate-500 mb-4 leading-relaxed">Clases de calidad por universidad, seguimiento de tu avance y material por curso — muy pronto.</p>
             <span className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-400">
               Ver más
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />

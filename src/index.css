@@ -329,6 +329,22 @@ input, textarea, [contenteditable="true"] {
     line-height: 1.15;
   }
 
+  /* Escala tipográfica fluida (Misión B §1) — sustituye los tamaños fijos
+     text-5xl/text-6xl/text-7xl/text-8xl de titulares H1/H2 por un clamp()
+     que respira con el viewport en vez de saltar por breakpoints. Incluyen
+     ya el letter-spacing/line-height de .text-display-tight, así que se
+     usan solas (no hace falta combinarlas con esa clase). */
+  .text-display-hero {
+    font-size: clamp(2.5rem, 6vw, 5.5rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .text-display-section {
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
   /* Navbar sticky del Landing */
   .navbar-shadow-soft {
     box-shadow: 0 2px 10px rgba(0,0,0,.08);
