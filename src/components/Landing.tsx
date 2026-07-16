@@ -762,39 +762,37 @@ export function Landing() {
 
           <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {[
+              // Ilustraciones 3D propias por área (bodegones flotantes con alfa,
+              // generadas con image_gen) — reemplazan los SVG genéricos.
               {
                 name: 'Ingenierías',
                 icon: Cog,
                 gradient: 'from-blue-600 to-blue-900',
+                tagline: 'Cálculo y ciencias exactas',
                 subjects: ['Matemática', 'Física', 'Química'],
                 decor: (
-                  <>
-                    <img
-                      src={ASSETS.calculator}
-                      alt=""
-                      aria-hidden="true"
-                      className="absolute right-4 bottom-4 w-56 opacity-25 group-hover:opacity-40 transition pointer-events-none select-none z-[1]"
-                    />
-                    <img
-                      src={ASSETS.compass}
-                      alt=""
-                      aria-hidden="true"
-                      className="absolute left-4 bottom-4 w-32 opacity-20 group-hover:opacity-35 transition pointer-events-none select-none z-[1]"
-                    />
-                  </>
+                  <img
+                    src="/simulauna/illustrations/area-ingenierias.webp"
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    className="absolute -right-6 -bottom-6 w-64 opacity-90 drop-shadow-2xl group-hover:scale-105 group-hover:-rotate-2 transition-transform duration-500 pointer-events-none select-none z-[1]"
+                  />
                 ),
               },
               {
                 name: 'Biomédicas',
                 icon: HeartPulse,
                 gradient: 'from-rose-500 to-rose-900',
+                tagline: 'Ciencias de la vida',
                 subjects: ['Biología', 'Química', 'Anatomía'],
                 decor: (
                   <img
-                    src={ASSETS.atom}
+                    src="/simulauna/illustrations/area-biomedicas.webp"
                     alt=""
                     aria-hidden="true"
-                    className="absolute right-4 bottom-4 w-56 opacity-25 group-hover:opacity-40 transition pointer-events-none select-none z-[1]"
+                    loading="lazy"
+                    className="absolute -right-6 -bottom-6 w-64 opacity-90 drop-shadow-2xl group-hover:scale-105 group-hover:-rotate-2 transition-transform duration-500 pointer-events-none select-none z-[1]"
                   />
                 ),
               },
@@ -802,22 +800,16 @@ export function Landing() {
                 name: 'Sociales',
                 icon: Landmark,
                 gradient: 'from-amber-500 to-orange-700',
+                tagline: 'Humanidades y gestión',
                 subjects: ['Historia', 'Economía', 'Comunicación'],
                 decor: (
-                  <>
-                    <img
-                      src={ASSETS.books}
-                      alt=""
-                      aria-hidden="true"
-                      className="absolute right-4 bottom-4 w-56 opacity-25 group-hover:opacity-40 transition pointer-events-none select-none z-[1]"
-                    />
-                    <img
-                      src={ASSETS.examPaper}
-                      alt=""
-                      aria-hidden="true"
-                      className="absolute left-4 bottom-6 w-28 opacity-20 group-hover:opacity-35 transition pointer-events-none select-none z-[1]"
-                    />
-                  </>
+                  <img
+                    src="/simulauna/illustrations/area-sociales.webp"
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    className="absolute -right-6 -bottom-6 w-64 opacity-90 drop-shadow-2xl group-hover:scale-105 group-hover:-rotate-2 transition-transform duration-500 pointer-events-none select-none z-[1]"
+                  />
                 ),
               },
             ].map((a, i) => (
@@ -834,8 +826,11 @@ export function Landing() {
                 <a.icon className="absolute top-6 right-6 w-20 h-20 text-white/20" />
 
                 <div className="relative z-10 flex flex-col h-full">
+                  {/* Tagline por área (el viejo "17 carreras · 60 preguntas" era dato
+                      de UNA e incorrecto para Biomédicas — cada universidad define
+                      sus carreras y preguntas en su config). */}
                   <span className="inline-flex self-start items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/20 backdrop-blur border border-white/30 text-[11px] font-bold uppercase tracking-wider">
-                    17 carreras · 60 preguntas
+                    {a.tagline}
                   </span>
 
                   <h3 className="mt-6 font-display text-4xl font-black leading-tight">{a.name}</h3>
