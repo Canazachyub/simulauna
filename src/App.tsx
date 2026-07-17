@@ -21,6 +21,11 @@ const BanqueoPorTema = lazy(() => import('./components/BanqueoPorTema').then(m =
 const CepreSession = lazy(() => import('./components/BanqueoCepreuna').then(m => ({ default: m.BanqueoCepreuna })));
 // Placeholder del Aula virtual (LMS aún no construido, ver docs/DIRECCION_DISENO_V3.md §Aulas virtuales).
 const AulaComingSoon = lazy(() => import('./components/AulaComingSoon').then(m => ({ default: m.AulaComingSoon })));
+// Páginas nacionales (fuera de UniversityGate: no dependen de :universidad).
+const Nosotros = lazy(() => import('./components/pages/Nosotros').then(m => ({ default: m.Nosotros })));
+const FAQ = lazy(() => import('./components/pages/FAQ').then(m => ({ default: m.FAQ })));
+const Terminos = lazy(() => import('./components/pages/Terminos').then(m => ({ default: m.Terminos })));
+const NotFound = lazy(() => import('./components/pages/NotFound').then(m => ({ default: m.NotFound })));
 
 function RouteFallback() {
   return (
@@ -135,6 +140,11 @@ function App() {
               {/* Landing nacional */}
               <Route path="/" element={<Landing />} />
 
+              {/* Páginas nacionales — no dependen de :universidad, viven fuera de UniversityGate. */}
+              <Route path="/nosotros" element={<Nosotros />} />
+              <Route path="/preguntas-frecuentes" element={<FAQ />} />
+              <Route path="/terminos" element={<Terminos />} />
+
               {/* Rutas por universidad */}
               <Route path="/:universidad" element={<UniversityGate><UniversityPage /></UniversityGate>} />
               <Route path="/:universidad/registro" element={<UniversityGate><StudentForm /></UniversityGate>} />
@@ -157,7 +167,7 @@ function App() {
               <Route path="/banqueo-tema" element={<Navigate to="/una/banqueo-tema" replace />} />
               <Route path="/simulacro-cepreuna" element={<Navigate to="/una/cepre" replace />} />
 
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </RouteTransition>
         </Suspense>

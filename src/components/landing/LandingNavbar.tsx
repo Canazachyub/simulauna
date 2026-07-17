@@ -172,6 +172,12 @@ export function LandingNavbar() {
               Próximamente
             </span>
           </span>
+          <button
+            onClick={() => { setOpen(false); navigate('/nosotros'); }}
+            className="hover:text-brand-primary-700 transition-colors"
+          >
+            Nosotros
+          </button>
         </nav>
 
         {/* CTA + hamburguesa */}
@@ -236,6 +242,13 @@ export function LandingNavbar() {
             </button>
             <button role="menuitem" onClick={goBanqueo} className="text-left px-2 py-3 rounded-lg hover:bg-slate-50">
               Banqueo
+            </button>
+            <button
+              role="menuitem"
+              onClick={() => { setOpen(false); navigate('/nosotros'); }}
+              className="text-left px-2 py-3 rounded-lg hover:bg-slate-50"
+            >
+              Nosotros
             </button>
             <button
               role="menuitem"

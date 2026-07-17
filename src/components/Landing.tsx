@@ -1476,6 +1476,23 @@ export function Landing() {
               <p className="text-xs mt-3 text-white/40">
                 No afiliado oficialmente a ninguna universidad. Preguntas de exámenes públicos.
               </p>
+              <ul className="space-y-2.5 text-sm mt-4">
+                <li>
+                  <button onClick={() => navigate('/nosotros')} className="hover:text-white transition-colors">
+                    Nosotros
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => navigate('/preguntas-frecuentes')} className="hover:text-white transition-colors">
+                    Preguntas frecuentes
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => navigate('/terminos')} className="hover:text-white transition-colors">
+                    Términos y privacidad
+                  </button>
+                </li>
+              </ul>
             </div>
           </div>
 
