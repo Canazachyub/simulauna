@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useUniversityStore } from '../hooks/useUniversity';
 import { getUniversityTheme, themeCssVars } from '../theme/universityThemes';
+import { resolveLogoUrl } from '../utils/logos';
 import { UniversityStats } from './landing/UniversityStats';
 import { SectionCurve } from './landing/SectionCurve';
 
@@ -84,7 +85,9 @@ export function UniversityPage() {
   const hasOrdinario = procesos.includes('ORDINARIO') || procesos.includes('EXTRAORDINARIO');
   const hasCepre = procesos.includes('CEPRE');
   const statsProceso = procesos.includes('ORDINARIO') ? 'ORDINARIO' : (procesos[0] || 'ORDINARIO');
-  const logoUrl = universidad.logo || `/simulauna/logos/${universidad.codigo}.png`;
+  // resolveLogoUrl prefiere SIEMPRE el asset local (el campo logo del registro
+  // puede traer rutas desactualizadas tipo /logos/una.svg → 404).
+  const logoUrl = resolveLogoUrl(universidad.codigo, universidad.logo);
 
   const processCards = [
     hasOrdinario && {

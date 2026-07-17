@@ -8,6 +8,7 @@ import {
 import { useUniversityStore } from '../hooks/useUniversity';
 import { getUniversityTheme, themeCssVars } from '../theme/universityThemes';
 import { whatsappUrl } from '../constants/contact';
+import { resolveLogoUrl } from '../utils/logos';
 import {
   UniversityCardRegistered,
   UniversityCardComingSoon,
@@ -290,9 +291,11 @@ function HeroMascot() {
             src={src}
             alt={isCurrent ? 'Mascota SimulaUNA: un lobito muy estudioso' : ''}
             aria-hidden={isCurrent ? undefined : true}
-            // Above the fold en desktop (candidata a LCP): la primera pose siempre
-            // con prioridad alta; las demás nunca lazy tampoco (ya precargadas arriba).
-            fetchPriority={i === 0 ? 'high' : undefined}
+            // Above the fold en desktop (candidata a LCP): la primera pose con
+            // prioridad alta. React 18 no tipa fetchPriority (es de React 19):
+            // se pasa como atributo DOM en minúsculas vía spread para evitar
+            // el warning "React does not recognize the fetchPriority prop".
+            {...(i === 0 ? ({ fetchpriority: 'high' } as Record<string, string>) : {})}
             className={`absolute inset-0 m-auto w-[340px] xl:w-[400px] max-h-full object-contain animate-float-y select-none drop-shadow-2xl pointer-events-none transition-opacity duration-[800ms] ease-in-out ${
               isCurrent ? 'z-10 opacity-100' : 'z-[9] opacity-0'
             }`}
@@ -751,7 +754,7 @@ export function Landing() {
                   <UniversityCardRegistered
                     key={u.codigo}
                     universidad={u}
-                    logoUrl={logoEntry?.url || u.logo}
+                    logoUrl={logoEntry?.url || resolveLogoUrl(u.codigo, u.logo)}
                     onClick={() => navigate(`/${u.codigo}`)}
                   />
                 );

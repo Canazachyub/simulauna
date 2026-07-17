@@ -132,7 +132,9 @@ function App() {
 
   return (
     <AuthProvider>
-      <BrowserRouter basename="/simulauna">
+      {/* future flags: opt-in temprano a los comportamientos de React Router v7
+          (silencia los Future Flag Warnings de consola sin cambiar UX). */}
+      <BrowserRouter basename="/simulauna" future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <QuickSwitch />
         <Suspense fallback={<RouteFallback />}>
           <RouteTransition>
