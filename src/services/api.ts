@@ -12,6 +12,15 @@ import type {
   PerformanceLevel
 } from '../types';
 import { calculateSubjectResults, getPerformanceLevel } from '../utils/calculations';
+import type {
+  AulaApiData,
+  CicloMock,
+  EstadoCiclo,
+  EstadoMatricula,
+  PagosResumenMock,
+} from '../components/aula/aulaTypes';
+import { getAulaMock } from '../components/aula/aulaMock';
+import { WHATSAPP_NUMBER } from '../constants/contact';
 
 // Re-exportar tipos que son usados por otros componentes
 export type { AreaType } from '../types';
@@ -1183,6 +1192,299 @@ export async function testConnection(): Promise<boolean> {
     return result.success === true;
   } catch {
     return false;
+  }
+}
+
+// ============================================
+// AULA VIRTUAL v2.1 (docs/CONTRATO_AULA_V21.md) — backend escrito, pendiente de despliegue
+// ============================================
+//
+// Degradación elegante: hasta que el usuario copie `aula.gs` al editor de Apps Script, las
+// actions de esta sección existen en `main.gs`/ROUTES del repo pero NO en el backend YA
+// desplegado, así que el servidor responde `{success:false, error:"Acción no válida. Use: ..."}`
+// (mismo mensaje que cualquier action inexistente, ver `main.gs` `handleRequest_`). `getAula`
+// traduce ese caso puntual — y cualquier error de red — a un resultado explícito para que
+// `AulaComingSoon` pueda caer a la vista previa con datos de ejemplo sin romper nada mientras
+// tanto. El día que el usuario despliegue `aula.gs`, estas mismas funciones empiezan a devolver
+// datos reales sin tocar código del frontend (la forma de los datos ya es idéntica, ver
+// `aulaTypes.ts`).
+
+const AULA_ACCION_NO_VALIDA_RE = /acci[oó]n no v[aá]lida/i;
+
+function isAulaAccionNoValida(mensaje?: string): boolean {
+  return !!mensaje && AULA_ACCION_NO_VALIDA_RE.test(mensaje);
+}
+
+/** Traduce el error crudo del backend a un mensaje amable para acciones del Aula que SÍ lanzan
+ * (`inscribirCiclo`, `getMisPagos`) — a diferencia de `getAula`, que nunca lanza (ver más abajo). */
+function friendlyAulaErrorMessage(mensaje?: string): string {
+  if (isAulaAccionNoValida(mensaje)) {
+    return 'El Aula Virtual todavía no está habilitada. Intenta más tarde.';
+  }
+  return mensaje || 'No se pudo completar la operación.';
+}
+
+function nombreUniversidadMock(universidad: string): string {
+  const registrada = MOCK_UNIVERSIDADES.find((u) => u.codigo === universidad);
+  return registrada?.nombreCorto || registrada?.nombre || universidad.toUpperCase();
+}
+
+/** Ciclo de ejemplo para `getCiclos`/`inscribirCiclo` en modo mock. A propósito NO es el mismo
+ * objeto que genera `getAulaMock` (ese ya viene `matriculado`/`en_curso`): este simula un ciclo
+ * con inscripciones abiertas, para poder probar en desarrollo la pantalla de inscripción de
+ * `AulaComingSoon` sin backend real. */
+function buildMockCiclo(universidad: string): CicloMock {
+  return {
+    idCiclo: `${universidad}-demo-2026-1`,
+    universidad,
+    nombre: `Ciclo Demo ${nombreUniversidadMock(universidad)} 2026-I`,
+    proceso: 'ORDINARIO',
+    fechaInicio: '2026-06-01',
+    fechaFin: '2026-09-30',
+    turno: 'Mañana',
+    aforo: 40,
+    precioMatricula: 80,
+    precioMensualidad: 150,
+    nMensualidades: 4,
+    estado: 'inscripciones_abiertas',
+    // Bare (sin `?text=`), igual que el ejemplo del contrato — el mensaje pre-llenado lo arma
+    // el componente según el contexto (preinscripción, reporte de pago, etc.), nunca aquí.
+    whatsappCoordinador: `https://wa.me/${WHATSAPP_NUMBER}`,
+  };
+}
+
+/** Estado en memoria de las preinscripciones mock, por `dni:cicloId` — simula la idempotencia
+ * de `inscribirCiclo` (reintentar devuelve `yaExistia:true`) sin backend real. */
+const mockInscripciones = new Map<string, InscribirCicloResult>();
+
+/**
+ * Ciclos disponibles de una universidad (docs/CONTRATO_AULA_V21.md §4 `getCiclos`).
+ */
+export async function getCiclos(universidad: string = DEFAULT_UNIVERSIDAD, estado?: EstadoCiclo): Promise<CicloMock[]> {
+  if (USE_MOCK) {
+    await delay(300);
+    const ciclo = buildMockCiclo(universidad);
+    return estado && ciclo.estado !== estado ? [] : [ciclo];
+  }
+
+  try {
+    const url = buildApiUrl('getCiclos', { universidad, estado });
+    const response = await fetchWithTimeout(url, 15000);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result: ApiResponse<{ ciclos: CicloMock[] }> = await response.json();
+
+    if (!result.success) {
+      throw new Error(friendlyAulaErrorMessage(result.error));
+    }
+
+    return result.data!.ciclos;
+  } catch (error) {
+    console.error('Error al obtener ciclos:', error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : 'No se pudo cargar la lista de ciclos. Por favor, intenta de nuevo.'
+    );
+  }
+}
+
+export interface InscribirCicloPayload {
+  universidad: string;
+  dni: string;
+  email: string;
+  cicloId: string;
+  turno?: string;
+}
+
+export interface InscribirCicloResult {
+  inscrito: boolean;
+  yaExistia: boolean;
+  idMatricula: string;
+  estado: EstadoMatricula;
+  cicloId: string;
+  universidad: string;
+  instruccionesPago?: {
+    mensaje: string;
+    precioMatricula: number;
+    precioMensualidad: number;
+    whatsappCoordinador: string;
+  };
+}
+
+/**
+ * Preinscribe a un alumno en un ciclo (docs/CONTRATO_AULA_V21.md §4 `inscribirCiclo`) — POST
+ * con body JSON, mismo patrón `text/plain` que `submitExam` para evitar el preflight CORS que
+ * Apps Script no maneja bien. Idempotente: si el alumno ya tiene una fila en `matriculas` para
+ * ese ciclo, el backend NO crea una nueva, devuelve `yaExistia:true` con el estado actual (que
+ * puede ser `preinscrito`, `matriculado` o `retirado` — lo que el coordinador haya dejado).
+ *
+ * Nunca crea matrícula activa ni cobra nada: el flujo real es preinscrito → el alumno paga por
+ * fuera (Yape/Plin/transferencia) → el coordinador verifica el voucher a mano → recién ahí pasa
+ * a `matriculado`. Por eso la UI de `AulaComingSoon` habla de "preinscripción", nunca de "pago
+ * online".
+ */
+export async function inscribirCiclo(payload: InscribirCicloPayload): Promise<InscribirCicloResult> {
+  if (USE_MOCK) {
+    await delay(500);
+    const ciclo = buildMockCiclo(payload.universidad);
+    if (payload.cicloId !== ciclo.idCiclo) {
+      throw new Error('Ciclo no válido para esta universidad');
+    }
+    const clave = `${payload.dni}:${payload.cicloId}`;
+    const yaInscrito = mockInscripciones.get(clave);
+    if (yaInscrito) {
+      return { ...yaInscrito, yaExistia: true };
+    }
+    const resultado: InscribirCicloResult = {
+      inscrito: true,
+      yaExistia: false,
+      idMatricula: `mat-mock-${Date.now()}`,
+      estado: 'preinscrito',
+      cicloId: payload.cicloId,
+      universidad: payload.universidad,
+      instruccionesPago: {
+        mensaje: `Realiza el pago de matrícula (S/ ${ciclo.precioMatricula}) por Yape/Plin/transferencia. Envía la captura de tu voucher por WhatsApp al coordinador. Cuando el coordinador verifique tu pago, tu matrícula pasará de "preinscrito" a "matriculado" y tendrás acceso completo al Aula.`,
+        precioMatricula: ciclo.precioMatricula,
+        precioMensualidad: ciclo.precioMensualidad,
+        whatsappCoordinador: ciclo.whatsappCoordinador || `https://wa.me/${WHATSAPP_NUMBER}`,
+      },
+    };
+    mockInscripciones.set(clave, resultado);
+    return resultado;
+  }
+
+  try {
+    const params = new URLSearchParams({ action: 'inscribirCiclo' });
+    if (API_TOKEN) params.set('token', API_TOKEN);
+    const url = `${API_BASE_URL}?${params.toString()}`;
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      signal: controller.signal,
+      // text/plain evita el preflight OPTIONS que Apps Script no maneja bien
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload),
+    });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result: ApiResponse<InscribirCicloResult> = await response.json();
+
+    if (!result.success) {
+      throw new Error(friendlyAulaErrorMessage(result.error));
+    }
+
+    return result.data!;
+  } catch (error) {
+    console.error('Error al inscribir en el ciclo:', error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : 'No se pudo procesar tu inscripción. Por favor, intenta de nuevo.'
+    );
+  }
+}
+
+/** Resultado de `getAula` — a diferencia del resto de funciones de este archivo, NUNCA lanza:
+ * devuelve un resultado explícito (`ok:false` con `reason`) para que el llamador distinga "el
+ * backend v2.1 aún no está desplegado" (`'backend_no_desplegado'`) de un error de red
+ * (`'red'`) o un error real de negocio (`'error'`, ej. conflicto DNI/email) — las primeras dos
+ * son degradación elegante a la vista previa; la última es un mensaje que sí vale la pena
+ * mostrarle al alumno. */
+export type GetAulaOutcome =
+  | { ok: true; data: AulaApiData }
+  | { ok: false; reason: 'backend_no_desplegado' | 'red' | 'error'; message: string };
+
+/**
+ * Agregado completo del Aula para un alumno (docs/CONTRATO_AULA_V21.md §4 `getAula`): un solo
+ * round-trip con ciclo, horario, docentes, materiales, anuncios, grupo de WhatsApp, pagos,
+ * simulacros del ciclo, clases en vivo, grabaciones y recursos si está matriculado — o la lista
+ * de ciclos con inscripciones abiertas (`ciclosDisponibles`) si no lo está.
+ */
+export async function getAula(
+  dni: string,
+  email: string,
+  universidad: string = DEFAULT_UNIVERSIDAD,
+  cicloId?: string
+): Promise<GetAulaOutcome> {
+  if (USE_MOCK) {
+    await delay(500);
+    const data: AulaApiData = { ...getAulaMock(universidad, nombreUniversidadMock(universidad)), matriculado: true };
+    return { ok: true, data };
+  }
+
+  try {
+    const url = buildApiUrl('getAula', { universidad, dni, email, cicloId });
+    const response = await fetchWithTimeout(url, 20000);
+
+    if (!response.ok) {
+      return { ok: false, reason: 'red', message: `Error HTTP: ${response.status}` };
+    }
+
+    const result: ApiResponse<AulaApiData> = await response.json();
+
+    if (!result.success) {
+      if (isAulaAccionNoValida(result.error)) {
+        return { ok: false, reason: 'backend_no_desplegado', message: result.error || '' };
+      }
+      return { ok: false, reason: 'error', message: result.error || 'No se pudo cargar el Aula.' };
+    }
+
+    return { ok: true, data: result.data! };
+  } catch (error) {
+    console.error('Error al obtener el Aula:', error);
+    return {
+      ok: false,
+      reason: 'red',
+      message: error instanceof Error ? error.message : 'No se pudo conectar con el servidor.',
+    };
+  }
+}
+
+/**
+ * Estado de cuenta de un alumno en un ciclo (docs/CONTRATO_AULA_V21.md §4 `getMisPagos`) — sin
+ * cache (dato financiero, siempre fresco). `getAula` ya trae este mismo dato embebido en
+ * `.pagos`; esta función queda disponible para refrescarlo puntualmente (ej. después de
+ * reportar un pago por WhatsApp) sin recargar todo el agregado.
+ */
+export async function getMisPagos(dni: string, universidad: string, cicloId: string): Promise<PagosResumenMock> {
+  if (USE_MOCK) {
+    await delay(300);
+    return getAulaMock(universidad, nombreUniversidadMock(universidad)).pagos;
+  }
+
+  try {
+    const url = buildApiUrl('getMisPagos', { universidad, dni, cicloId });
+    const response = await fetchWithTimeout(url, 15000);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const result: ApiResponse<PagosResumenMock> = await response.json();
+
+    if (!result.success) {
+      throw new Error(friendlyAulaErrorMessage(result.error));
+    }
+
+    return result.data!;
+  } catch (error) {
+    console.error('Error al obtener mis pagos:', error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : 'No se pudo cargar tu estado de pagos. Por favor, intenta de nuevo.'
+    );
   }
 }
 

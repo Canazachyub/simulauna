@@ -1,182 +1,34 @@
 /**
  * Mock local del Aula Virtual — espejo EXACTO del modelo de datos propuesto en
- * docs/AULA_VIRTUAL_DISENO.md (§1-§7 y §12). Cada tipo aquí corresponde a una
- * fila de una hoja del spreadsheet CORE que aún no existe (`ciclos`,
- * `matriculas`, `pagos`, `horario`, `docentes`, `materiales`,
- * `grupos_whatsapp`, `anuncios`). El día que el backend v2.1 exponga la
- * action `getAula` (ver §10 del documento de diseño), el único cambio en
- * los componentes de `src/components/aula/` es reemplazar el import de
- * este archivo por una llamada a `services/api.ts` — la forma de los datos
- * no cambia.
+ * docs/AULA_VIRTUAL_DISENO.md (§1-§7 y §12) y del contrato de backend
+ * docs/CONTRATO_AULA_V21.md. Los tipos viven en `./aulaTypes` (reexportados
+ * íntegros abajo para no romper los imports existentes de
+ * `src/components/aula/*.tsx`); este archivo solo aporta el GENERADOR de
+ * datos de ejemplo (`getAulaMock`) que usa la vista previa de
+ * `AulaComingSoon` cuando todavía no hay sesión, hay un error de red, o el
+ * backend v2.1 aún no está desplegado (`services/api.ts` hace ese fallback).
  *
- * Todo lo que aparece aquí es DATO DE EJEMPLO para vender la experiencia en
- * la vista previa de AulaComingSoon (ver ese componente): ninguna acción
- * real ocurre al interactuar con estos datos.
+ * Todo lo que genera `getAulaMock` es DATO DE EJEMPLO: ninguna acción real
+ * ocurre al interactuar con estos datos.
  */
 
-export type EstadoCiclo = 'inscripciones_abiertas' | 'en_curso' | 'cerrado';
-export type EstadoMatricula = 'preinscrito' | 'matriculado' | 'retirado';
-export type MedioPago = 'yape' | 'plin' | 'transferencia' | 'efectivo';
-export type EstadoPago = 'pendiente' | 'verificado' | 'rechazado';
-export type TipoMaterial = 'pdf' | 'video' | 'enlace';
-export type DiaSemana = 'lunes' | 'martes' | 'miercoles' | 'jueves' | 'viernes' | 'sabado' | 'domingo';
-export type EstadoGrupo = 'activo' | 'lleno' | 'cerrado';
+import type {
+  AulaAgregadoMock,
+  AnuncioMock,
+  CicloMock,
+  ClaseEnVivoMock,
+  DocenteMock,
+  GrabacionMock,
+  GrupoWhatsappMock,
+  HorarioItemMock,
+  MaterialMock,
+  MatriculaMock,
+  ConceptoPagoMock,
+  RecursoMock,
+  SimulacroCicloMock,
+} from './aulaTypes';
 
-/** Videollamada del proveedor — ninguno de los dos permite embebido (ver ResourceViewer.tsx). */
-export type PlataformaClase = 'meet' | 'zoom';
-/** Estado que el coordinador puede sobrescribir a mano (ej. suspender una sesión). El estado
- * "en vivo ahora / próxima / pasada" que ve el alumno NO es este campo — se deriva en el
- * cliente comparando `fecha`+`horaInicio`/`horaFin` con el reloj del dispositivo (ver
- * `getEstadoClaseEnVivo`), porque pedirle al coordinador que actualice una celda de Sheets
- * al segundo exacto en que empieza cada clase no es realista. */
-export type EstadoClaseAgenda = 'programada' | 'cancelada';
-/** Estado derivado, solo para la UI (nunca se guarda en la hoja). */
-export type EstadoClaseDerivado = 'en_vivo' | 'proxima' | 'pasada' | 'cancelada';
-
-export interface CicloMock {
-  idCiclo: string;
-  universidad: string;
-  nombre: string;
-  proceso: 'ORDINARIO' | 'CEPRE' | 'EXTRAORDINARIO';
-  fechaInicio: string;
-  fechaFin: string;
-  turno: string;
-  aforo: number;
-  precioMatricula: number;
-  precioMensualidad: number;
-  nMensualidades: number;
-  estado: EstadoCiclo;
-}
-
-export interface MatriculaMock {
-  dni: string;
-  idCiclo: string;
-  estado: EstadoMatricula;
-  turnoElegido: string;
-  fechaInscripcion: string;
-}
-
-export interface ConceptoPagoMock {
-  concepto: string;
-  etiqueta: string;
-  monto: number;
-  estado: EstadoPago;
-  fechaVencimiento?: string;
-  fechaVerificacion?: string;
-}
-
-export interface HorarioItemMock {
-  dia: DiaSemana;
-  horaInicio: string;
-  horaFin: string;
-  curso: string;
-  docente: string;
-  modalidad: 'presencial' | 'virtual';
-  enlaceMeet?: string;
-  aulaFisica?: string;
-}
-
-export interface DocenteMock {
-  idDocente: string;
-  nombre: string;
-  curso: string;
-  bioCorta?: string;
-}
-
-export interface MaterialMock {
-  idMaterial: string;
-  semana: number;
-  curso: string;
-  titulo: string;
-  tipo: TipoMaterial;
-  urlDrive: string;
-  fechaPublicacion: string;
-  destacado: boolean;
-}
-
-export interface AnuncioMock {
-  idAnuncio: string;
-  fecha: string;
-  titulo: string;
-  cuerpo: string;
-  fijado: boolean;
-}
-
-export interface GrupoWhatsappMock {
-  nombreGrupo: string;
-  enlaceInvitacion: string;
-  estado: EstadoGrupo;
-}
-
-export interface SimulacroCicloMock {
-  fecha: string;
-  proceso: string;
-  puntaje: number;
-  puntajeMax: number;
-  porcentaje: number;
-}
-
-/** Fila de la hoja `clases_en_vivo` (CORE) — sesión Meet/Zoom del ciclo. Ver
- * docs/AULA_VIRTUAL_DISENO.md §"Arquitectura de navegación del aula (v2)". */
-export interface ClaseEnVivoMock {
-  idClase: string;
-  fecha: string;
-  horaInicio: string;
-  horaFin: string;
-  curso: string;
-  docente: string;
-  plataforma: PlataformaClase;
-  enlace: string;
-  estado: EstadoClaseAgenda;
-}
-
-/** Fila de la hoja `grabaciones` (CORE) — video ya grabado (clase pasada, simulacro
- * resuelto, etc.). `urlVideo` puede ser YouTube o Google Drive; ResourceViewer detecta
- * cuál es y arma el iframe embebido correspondiente. */
-export interface GrabacionMock {
-  idGrabacion: string;
-  fecha: string;
-  curso: string;
-  docente: string;
-  titulo: string;
-  urlVideo: string;
-  duracionMin: number;
-}
-
-/** Fila de la hoja `recursos` (CORE) — enlace externo curado por el coordinador
- * (calculadoras, simuladores, videos sueltos, webs de referencia). */
-export interface RecursoMock {
-  idRecurso: string;
-  titulo: string;
-  descripcion: string;
-  url: string;
-  categoria: string;
-}
-
-export interface AulaAgregadoMock {
-  tieneCicloActivo: boolean;
-  ciclo: CicloMock;
-  matricula: MatriculaMock;
-  horario: HorarioItemMock[];
-  docentes: DocenteMock[];
-  materiales: MaterialMock[];
-  anuncios: AnuncioMock[];
-  grupoWhatsapp: GrupoWhatsappMock;
-  pagos: {
-    estadoGeneral: 'al_dia' | 'en_revision' | 'vencido';
-    conceptos: ConceptoPagoMock[];
-  };
-  simulacrosCiclo: SimulacroCicloMock[];
-  clasesEnVivo: ClaseEnVivoMock[];
-  grabaciones: GrabacionMock[];
-  recursos: RecursoMock[];
-}
-
-const DIAS_ORDEN: DiaSemana[] = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
-
-export function ordenDia(dia: DiaSemana): number {
-  return DIAS_ORDEN.indexOf(dia);
-}
+export * from './aulaTypes';
 
 /** `YYYY-MM-DD` de hoy +/- `dias`. A diferencia del resto del mock (ciclo ficticio 2027), las
  * secciones "Clases en vivo"/"Grabaciones" se generan relativas al reloj real del dispositivo,
@@ -314,42 +166,4 @@ export function getAulaMock(universidad: string, nombreUniversidad: string): Aul
     grabaciones,
     recursos,
   };
-}
-
-/** Combina `fecha` (YYYY-MM-DD) + `hora` (HH:mm) de una fila del mock en un `Date` local. */
-function combinarFechaHora(fecha: string, hora: string): Date {
-  return new Date(`${fecha}T${hora}:00`);
-}
-
-/**
- * Estado derivado de una clase en vivo respecto al reloj del dispositivo — NUNCA se guarda
- * en la hoja `clases_en_vivo` (ver `EstadoClaseAgenda`). `cancelada` (fila del coordinador)
- * manda siempre sobre el cálculo de fechas.
- */
-export function getEstadoClaseEnVivo(clase: ClaseEnVivoMock, ahora: Date = new Date()): EstadoClaseDerivado {
-  if (clase.estado === 'cancelada') return 'cancelada';
-  const inicio = combinarFechaHora(clase.fecha, clase.horaInicio);
-  const fin = combinarFechaHora(clase.fecha, clase.horaFin);
-  if (ahora >= inicio && ahora <= fin) return 'en_vivo';
-  if (ahora < inicio) return 'proxima';
-  return 'pasada';
-}
-
-/** Próxima clase en vivo (no cancelada, aún no terminada), ordenada por fecha/hora — para el
- * countdown de "Inicio". Si hay una EN VIVO ahora mismo, esa es la "próxima" (ya empezó). */
-export function getProximaClaseEnVivoMock(clases: ClaseEnVivoMock[], ahora: Date = new Date()): ClaseEnVivoMock | null {
-  const candidatas = clases
-    .filter((c) => c.estado !== 'cancelada' && combinarFechaHora(c.fecha, c.horaFin) >= ahora)
-    .sort((a, b) => combinarFechaHora(a.fecha, a.horaInicio).getTime() - combinarFechaHora(b.fecha, b.horaInicio).getTime());
-  return candidatas[0] || null;
-}
-
-/** Próximo bloque de horario respecto a un día/hora dados (mock: siempre relativo al primer bloque de la semana de ejemplo). */
-export function getProximaClaseMock(horario: HorarioItemMock[]): HorarioItemMock | null {
-  if (horario.length === 0) return null;
-  return [...horario].sort((a, b) => ordenDia(a.dia) - ordenDia(b.dia) || a.horaInicio.localeCompare(b.horaInicio))[0];
-}
-
-export function getMaterialDestacadoMock(materiales: MaterialMock[]): MaterialMock | null {
-  return materiales.find((m) => m.destacado) || materiales[0] || null;
 }

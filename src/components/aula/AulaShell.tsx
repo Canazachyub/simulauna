@@ -25,6 +25,7 @@ import { EstadoPagos } from './EstadoPagos';
 import { MiGrupoWhatsapp } from './MiGrupoWhatsapp';
 import { RecursosExternos } from './RecursosExternos';
 import { getAulaMock } from './aulaMock';
+import type { AulaAgregadoMock } from './aulaTypes';
 
 export type SectionId =
   | 'inicio'
@@ -78,6 +79,15 @@ interface AulaShellProps {
    * patrón que ya usaba `AulaMuro` en v1).
    */
   showWelcome?: boolean;
+  /**
+   * Agregado REAL del Aula (`services/api.ts` → `getAula`), pasado por `AulaComingSoon` cuando
+   * el alumno está matriculado. Si se omite, el shell genera datos de ejemplo con
+   * `getAulaMock` — es el modo que usa la vista previa (`preview`) y el fallback cuando el
+   * backend v2.1 todavía no está desplegado o hay un error de red. La forma de `data` es
+   * espejo 1:1 de lo que devuelve la API real (docs/CONTRATO_AULA_V21.md), así que este mismo
+   * componente sirve para ambos casos sin ramas de código distintas.
+   */
+  data?: AulaAgregadoMock;
 }
 
 /**
@@ -87,8 +97,8 @@ interface AulaShellProps {
  * sección activa es interno (useState), con un hash opcional (`#seccion`) solo para
  * deep-linking — NO se registran rutas nuevas en el router (ver App.tsx, fuera de alcance).
  */
-export function AulaShell({ universidad, nombreUniversidad, whatsappHref, cepreHref, preview = false, showWelcome = true }: AulaShellProps) {
-  const aula = getAulaMock(universidad, nombreUniversidad);
+export function AulaShell({ universidad, nombreUniversidad, whatsappHref, cepreHref, preview = false, showWelcome = true, data }: AulaShellProps) {
+  const aula = data ?? getAulaMock(universidad, nombreUniversidad);
   const interactive = !preview;
   const [seccion, setSeccion] = useState<SectionId>(seccionInicialDesdeHash);
 
