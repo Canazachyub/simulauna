@@ -359,6 +359,30 @@ function handleGetBanqueoByTema_(ctx) {
 }
 
 // ============================================
+// HANDLERS - AULA VIRTUAL (v2.1, ver docs/CONTRATO_AULA_V21.md)
+// ============================================
+
+function handleGetCiclos_(ctx) {
+  const tenant = resolveTenantOrThrow_(ctx.params.universidad);
+  return getCiclosForTenant(tenant, ctx.params.estado);
+}
+
+function handleInscribirCiclo_(ctx) {
+  const tenant = resolveTenantOrThrow_(ctx.body.universidad);
+  return inscribirCicloForTenant(tenant, ctx.body.dni, ctx.body.email, ctx.body.cicloId, ctx.body.turno);
+}
+
+function handleGetAula_(ctx) {
+  const tenant = resolveTenantOrThrow_(ctx.params.universidad);
+  return getAulaForTenant(tenant, ctx.params.dni, ctx.params.email, ctx.params.cicloId);
+}
+
+function handleGetMisPagos_(ctx) {
+  const tenant = resolveTenantOrThrow_(ctx.params.universidad);
+  return getMisPagosForTenant(tenant, ctx.params.dni, ctx.params.cicloId);
+}
+
+// ============================================
 // ROUTER DECLARATIVO
 // ============================================
 //
@@ -396,5 +420,11 @@ const ROUTES = {
   getCursosConTemas: { handler: handleGetCursosConTemas_, required: [] },
   getTemasPorCurso: { handler: handleGetTemasPorCurso_, required: ['curso'] },
   getSubtemasPorTema: { handler: handleGetSubtemasPorTema_, required: ['curso', 'tema'] },
-  getBanqueoByTema: { handler: handleGetBanqueoByTema_, required: ['curso'] }
+  getBanqueoByTema: { handler: handleGetBanqueoByTema_, required: ['curso'] },
+
+  // ---- Aula Virtual (v2.1, ver docs/CONTRATO_AULA_V21.md) ----
+  getCiclos: { handler: handleGetCiclos_, required: ['universidad'], method: 'GET' },
+  getAula: { handler: handleGetAula_, required: ['universidad', 'dni', 'email'], method: 'GET' },
+  getMisPagos: { handler: handleGetMisPagos_, required: ['universidad', 'dni', 'cicloId'], method: 'GET' },
+  inscribirCiclo: { handler: handleInscribirCiclo_, required: ['universidad', 'dni', 'email', 'cicloId'], method: 'POST' }
 };
