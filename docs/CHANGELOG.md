@@ -13,6 +13,122 @@ semántico (`MAYOR.MENOR.PARCHE`).
 > del `README.md` principal — no se repite aquí para no duplicar
 > documentación.
 
+## [2.1.0] — 2026-07-17
+
+Rediseño premium del Landing y la navegación (Dirección de Diseño v3),
+identidad visual propia con mascota (el lobito estudioso, generada con
+Codex `image_gen`), y el **Aula Virtual real** (contrato v2.1): backend
+desplegado en producción con ciclo demo verificado, frontend cableado al
+API real con degradación elegante. Dos pasadas de auditoría crítica
+(13+6 hallazgos) corrigieron accesibilidad, contraste y bugs de consola.
+
+### Añadido
+
+- **Rediseño premium del Landing** (Dirección de Diseño v3,
+  [`docs/DIRECCION_DISENO_V3.md`](DIRECCION_DISENO_V3.md)): navbar sticky
+  con scrollspy y barra de progreso de scroll, hero con carrusel de la
+  mascota, cohete ligado al scroll, patrones `.btn-glow` (CTAs pill con
+  glow del propio color), `.shadow-tinted` (sombras tintadas de marca,
+  nunca negro puro), `.display-tight` (titulares Fraunces ajustados) y
+  `SectionCurve` (divisores SVG curvos entre secciones). Bento grids
+  asimétricos mobile-first (patrón del usuario) y tipografía fluida con
+  `clamp()`.
+- **Identidad visual propia — el lobito estudioso**
+  (`src/components/pages/Mascot.tsx`, `public/illustrations/`): mascota
+  generada con el CLI de Codex (`image_gen`, skill `codex-imagenes` a
+  nivel usuario) en **9 poses** — astronauta, celebra, ánimo, profesor,
+  saludo, perdido, pensando, corazón, estudiando — con transparencia real
+  verificada por chroma key. Set completo en WebP optimizado (~20MB →
+  ~1.5MB): 5 fondos de universo, 3 bodegones ilustrados por área
+  (ingenierías/biomédicas/sociales), 3 avatares de estudiante y una
+  ilustración de aula. Reemplaza el 100% de las fotos de Unsplash y los
+  avatares de `pravatar.cc` en las secciones de alto impacto — cero
+  imágenes genéricas de stock.
+- **Copy alineado a los 3 pilares** (clases · simulacros · bancos de
+  exámenes históricos de cada universidad), reescrito para audiencia
+  nacional (ya no UNA-céntrico).
+- **Navegación premium para estudiantes**: `QuickSwitch` (`Ctrl+K`,
+  `src/components/nav/QuickSwitch.tsx`) para saltar entre universidades y
+  secciones, `RouteTransition` (`src/components/nav/RouteTransition.tsx`)
+  para transiciones entre rutas, `UniversityBottomNav` (barra inferior
+  fija en móvil dentro de `/:universidad/*`).
+- **Onboarding**: `CoachTour` (`src/components/onboarding/CoachTour.tsx`)
+  con tours guiados de primera vez para simulacro y banqueo, más
+  reacciones del lobito en el feedback del banqueo con racha de aciertos
+  consecutivos.
+- **Páginas clásicas nuevas**: 404 real (`NotFound.tsx`), `/nosotros`
+  (`Nosotros.tsx`), `/preguntas-frecuentes` (`FAQ.tsx`) y `/terminos`
+  (`Terminos.tsx`), todas con `PageHeader` y la mascota.
+- **Aula Virtual real (v2.1) — backend desplegado en producción**:
+  contrato congelado en [`docs/CONTRATO_AULA_V21.md`](CONTRATO_AULA_V21.md)
+  con 4 actions nuevas (`getCiclos`, `inscribirCiclo`, `getAula`,
+  `getMisPagos`) sobre **11 hojas nuevas** en el spreadsheet CORE
+  (`ciclos`, `matriculas`, `pagos`, `horario`, `docentes`, `materiales`,
+  `grupos_whatsapp`, `anuncios`, `clases_en_vivo`, `grabaciones`,
+  `recursos`), implementadas en `google-apps-script/aula.gs`.
+  `setupCore()` las crea de forma idempotente. `seedAulaDemo()` sembró un
+  ciclo demo completo para `una` (docentes, horario, clases en vivo,
+  grabaciones, materiales, anuncio, grupo de WhatsApp, alumno demo
+  matriculado con pagos) y `healthCheckAula()` corrió **5/5 casos PASS**
+  contra ese ciclo demo en producción — ver
+  [`google-apps-script/README.md`](../google-apps-script/README.md) §5.
+- **`AulaShell` — frontend del Aula cableado al API real**
+  (`src/components/aula/AulaShell.tsx`): plataforma con navegación entre
+  **10 secciones** (Inicio, Clases en vivo, Grabaciones, Materiales,
+  Horario, Anuncios, Simulacros, Pagos, Grupo, Recursos), reemplazando el
+  diseño de "muro único" (`AulaMuro`, retirado) tras feedback explícito
+  del usuario. `ResourceViewer.tsx`: visor modal embebido para
+  YouTube/Drive/enlaces externos con detección de bloqueo por iframe y
+  fallback a "Abrir en pestaña nueva" siempre visible. Flujo real de
+  matrícula: estudiante preinscrito → reporta pago por WhatsApp →
+  coordinador verifica el voucher y lo pasa a `matriculado` → acceso
+  completo al Aula. `AulaComingSoon` ahora muestra una vista previa
+  navegable de las 10 secciones con datos de ejemplo en vez de una
+  captura estática, con degradación elegante si el API no responde.
+- **Diseño integral documentado**: `docs/AULA_VIRTUAL_DISENO.md` — modelo
+  de datos completo, filosofía "coordinador decide, alumno solo consume",
+  política de embebido de recursos externos y arquitectura de navegación
+  v2.
+
+### Cambiado
+
+- **`Landing.tsx`**: ilustraciones 3D propias en las tarjetas de áreas
+  (reemplazando SVGs genéricos), logos de universidades siempre nítidos y
+  a color, con `resolveLogoUrl` y `fetchPriority` para el LCP del hero.
+- **`package.json`**: versión `2.0.0` → `2.1.0`.
+
+### Corregido
+
+- **Primera pasada de auditoría crítica** (6 hallazgos críticos/altos,
+  commit `09667ab`): stacking/z-index de los logos de universidades sobre
+  la franja del carrusel, mojibake en textos con tildes, contraste
+  insuficiente en varios componentes, barras fijas mal posicionadas en
+  móvil.
+- **Segunda pasada de auditoría crítica** (5 hallazgos, "fix pack final",
+  commit `659d5eb`): a11y de modales (focus trap, `aria-modal`, Escape),
+  container queries en tarjetas de estadísticas.
+- **Consola limpia** (commit `cf357c8`): logos que devolvían 404 al
+  resolver mal la ruta, warning de `fetchPriority` como prop de React en
+  vez de atributo DOM, y adopción explícita de los *future flags* de
+  React Router v7 (`v7_startTransition`, `v7_relativeSplatPath`) para
+  eliminar los warnings de deprecación en consola.
+- El lobito del CTA del Landing ya no tapa el contenido en pantallas
+  angostas (commit `058e8c2`).
+
+### Estado de despliegue
+
+**Backend v2 + Aula Virtual v2.1 ya están en producción**: `action=test`
+sigue respondiendo `version: "v2"`, y las 4 actions nuevas del Aula
+(`getCiclos`, `inscribirCiclo`, `getAula`, `getMisPagos`) están
+desplegadas y verificadas contra un ciclo demo real (`healthCheckAula()`
+5/5 PASS). El acceso de estudiantes al Aula se habilita universidad por
+universidad al abrir un ciclo real en la hoja `ciclos` — hoy solo existe
+el ciclo demo de `una`. El frontend de esta versión (rediseño de Landing,
+mascota, páginas nuevas y `AulaShell`) se publica a GitHub Pages con este
+release.
+
+---
+
 ## [2.0.0] — 2026-07-16
 
 Transformación de SimulaUNA de simulador exclusivo de UNA Puno a

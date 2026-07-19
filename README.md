@@ -39,6 +39,8 @@ SimulaUNA nació como una plataforma de una sola universidad (UNA Puno) y evoluc
 - [CEPREUNA - Simulacros por Semana](#cepreuna---simulacros-por-semana-nuevo)
 - [Banqueo por Tema](#banqueo-por-tema-nuevo)
 - [Auto-Formateo de Preguntas](#auto-formateo-de-preguntas-nuevo)
+- [Aula Virtual (v2.1)](#aula-virtual-v21)
+- [Identidad Visual y Mascota](#identidad-visual-y-mascota)
 - [Sistema de Temas Institucionales (v2)](#sistema-de-temas-institucionales-v2)
 - [Rendimiento y Code-Splitting](#rendimiento-y-code-splitting)
 - [Versiones](#versiones)
@@ -541,6 +543,16 @@ permanentes a `/una/...` para no romper enlaces existentes (ver `src/App.tsx`).
 | `/:universidad/banqueo` | Banqueo (→ `PracticeSession`) | Práctica por curso (solo usuarios confirmados) |
 | `/:universidad/banqueo-tema` | BanqueoPorTema (→ `PracticeSession`) | Práctica por curso y tema específico |
 | `/:universidad/cepre` | CepreSession / BanqueoCepreuna (→ `PracticeSession`) | Banqueo y simulacro del CEPRE de la universidad |
+| `/:universidad/aula` | AulaComingSoon (→ `AulaShell`) | Aula Virtual: si el alumno está matriculado en un ciclo real, `AulaShell` con las 10 secciones y datos reales; si no, vista previa navegable con datos de ejemplo + CTA de matrícula/lista de espera por WhatsApp. Ver [Aula Virtual (v2.1)](#aula-virtual-v21) |
+
+Páginas informativas de nivel raíz (sin prefijo de universidad):
+
+| Ruta | Componente | Descripción |
+|------|------------|-------------|
+| `/nosotros` | Nosotros | Página institucional: quiénes somos, con el lobito |
+| `/preguntas-frecuentes` | FAQ | Preguntas frecuentes |
+| `/terminos` | Terminos | Términos y condiciones |
+| `*` (cualquier ruta no reconocida) | NotFound | 404 real con el lobito perdido, en vez del blanco en producción de antes |
 
 **Redirects legados** (rutas sin prefijo, mantenidas por compatibilidad):
 
@@ -1314,6 +1326,130 @@ El formateo se aplica automáticamente en:
 
 ---
 
+## Aula Virtual (v2.1)
+
+> El Aula Virtual **ya no es "próximamente" a nivel backend**: el
+> contrato v2.1 está implementado y desplegado en producción, con un
+> ciclo demo verificado de punta a punta. Lo que falta para que
+> estudiantes reales entren es que cada universidad **abra su primer
+> ciclo real** en la hoja `ciclos` — hasta entonces, el acceso sigue
+> mostrando la vista previa (ver tabla de rutas arriba).
+
+Contrato congelado en [`docs/CONTRATO_AULA_V21.md`](docs/CONTRATO_AULA_V21.md)
+(diseño completo en [`docs/AULA_VIRTUAL_DISENO.md`](docs/AULA_VIRTUAL_DISENO.md)),
+implementado en `google-apps-script/aula.gs` con 4 actions nuevas y
+aditivas (no tocan el contrato v2 congelado ni ninguna hoja existente):
+
+| Action | Método | Qué hace |
+|--------|--------|----------|
+| `getCiclos` | GET | Lista los ciclos de una universidad, filtrable por estado (`inscripciones_abiertas`\|`en_curso`\|`cerrado`) |
+| `inscribirCiclo` | POST | Preinscribe a un alumno a un ciclo (`estado=preinscrito`); idempotente por DNI+ciclo |
+| `getAula` | GET | Payload agregado de todo el Aula del alumno en un solo round-trip (ciclo, horario, docentes, materiales, anuncios, grupo de WhatsApp, pagos, simulacros del ciclo, clases en vivo, grabaciones, recursos) |
+| `getMisPagos` | GET | Estado de cuenta del alumno (matrícula + mensualidades), sin cache (dato financiero siempre fresco) |
+
+### Modelo de datos: 11 hojas nuevas, todas en CORE
+
+Ninguna hoja nueva por universidad — todo vive en el spreadsheet **CORE**
+existente, junto a `usuarios`/`permisos`/`intentos`/`historial`, para que
+el equipo de operaciones administre la matrícula y los pagos de todas las
+universidades desde un solo lugar: `ciclos`, `matriculas`, `pagos`,
+`horario`, `docentes`, `materiales`, `grupos_whatsapp`, `anuncios`,
+`clases_en_vivo`, `grabaciones`, `recursos`. `setupCore()` las crea de
+forma idempotente.
+
+### Gestión 100% desde Google Sheets — cero deploy para operar el día a día
+
+Igual que el resto de la plataforma, el coordinador de cada ciclo opera
+todo editando filas a mano, sin tocar código:
+
+- **Abrir un ciclo**: fila nueva en `ciclos` con `estado=inscripciones_abiertas`.
+- **Matricular a un alumno**: el alumno se preinscribe solo
+  (`inscribirCiclo` → `matriculas.estado=preinscrito`); el coordinador,
+  al verificar el voucher de pago por WhatsApp, cambia esa fila a
+  `estado=matriculado` — eso es lo que da acceso real al Aula.
+- **Registrar un pago**: fila nueva en `pagos` (`pendiente` → `verificado`/`rechazado`).
+- **Publicar material, anuncios, clases en vivo, grabaciones o recursos
+  externos**: fila nueva en la hoja correspondiente (`materiales`/
+  `anuncios` requieren `estado=publicado`; `clases_en_vivo` se marca
+  `cancelada` solo si de verdad se suspende una sesión — el estado
+  "en vivo ahora/próxima/pasada" que ve el alumno se calcula en el
+  cliente comparando la hora con el reloj del dispositivo).
+
+Detalle completo de cada flujo en [`google-apps-script/README.md` §5](google-apps-script/README.md).
+
+### Verificación en producción
+
+`seedAulaDemo()` sembró un ciclo demo completo para `una`
+(`una-demo-2026-1`): 2 docentes, horario de una semana, 2 clases en vivo
+próximas, 2 grabaciones, 3 materiales publicados, 1 anuncio fijado, 1
+grupo de WhatsApp, 1 recurso externo, y un alumno demo matriculado con 2
+pagos (matrícula verificada + una mensualidad pendiente).
+`healthCheckAula()` corrió **5/5 casos PASS** contra ese ciclo real en
+producción: forma de `getCiclos`, `getAula` sin matrícula, `inscribirCiclo`
+detectando duplicados, `getAula` con acceso completo, y `getMisPagos`.
+
+### Frontend: `AulaShell`, 10 secciones navegables
+
+`src/components/aula/AulaShell.tsx` reemplaza el diseño original de
+"muro único" (`AulaMuro`, retirado) tras feedback explícito del usuario:
+ya no es un solo grid con todo, sino una plataforma con navegación entre
+secciones (tabs horizontales en móvil, barra lateral sticky en
+escritorio), cada una con su propio bento curado por el coordinador.
+
+| Sección | Componente |
+|---|---|
+| Inicio | `InicioResumen.tsx` |
+| Clases en vivo | `ClasesEnVivo.tsx` |
+| Grabaciones | `Grabaciones.tsx` |
+| Materiales | `MaterialesCurso.tsx` |
+| Horario | `HorarioSemanal.tsx` |
+| Anuncios | `AnunciosCoordinador.tsx` |
+| Simulacros del ciclo | `MisSimulacrosCiclo.tsx` |
+| Mi estado de pagos | `EstadoPagos.tsx` |
+| Mi grupo de WhatsApp | `MiGrupoWhatsapp.tsx` |
+| Recursos | `RecursosExternos.tsx` |
+
+`ResourceViewer.tsx` es un visor modal embebido reutilizable (mismo
+patrón de accesibilidad que `QuickSwitch`/`CoachTour`: focus trap,
+`aria-modal`, Escape cierra) para ver PDFs/videos de Drive o YouTube sin
+salir de SimulaUNA, con detección heurística de bloqueo por iframe
+(`X-Frame-Options`) y un botón "Abrir en pestaña nueva" siempre visible.
+Las videollamadas de Meet/Zoom nunca se embeben (los proveedores lo
+rechazan por diseño) — la tarjeta con toda la info de la sesión sí vive
+dentro de la plataforma, y el botón "Unirme" abre en pestaña nueva.
+
+El frontend está cableado al API real (`services/api.ts`) con
+degradación elegante: si el API no responde o el alumno no tiene acceso,
+`AulaComingSoon` muestra la vista previa navegable de las 10 secciones
+con datos de ejemplo (ribbon "Vista previa · datos de ejemplo") en vez de
+un error o una pantalla en blanco.
+
+---
+
+## Identidad Visual y Mascota
+
+SimulaUNA tiene mascota propia: **un lobito muy estudioso** (decisión
+explícita del usuario — memorable y neutral, deliberadamente **sin**
+identidad andina forzada en la marca). Vive en `src/components/pages/Mascot.tsx`
+y en `public/illustrations/` como una familia de **9 poses** en WebP con
+transparencia real (verificada por chroma key): astronauta, celebra,
+ánimo, profesor, saludo, perdido, pensando, corazón y estudiando —
+distintas poses se usan en el hero, el CTA final, el 404, el onboarding
+(`CoachTour`) y el feedback de racha del banqueo.
+
+El set completo de imágenes propias (mascota + 5 fondos de universo + 3
+bodegones ilustrados por área + 3 avatares de estudiante + aula
+ilustrada) se generó con el CLI de Codex (tool nativo `image_gen`, sin
+API key), usando la skill de usuario `codex-imagenes`. Reemplaza el
+100% de las fotografías de Unsplash y los avatares de `pravatar.cc` que
+usaba el rediseño v1.6.0 en las secciones de alto impacto — cero
+imágenes genéricas de stock hoy en Landing, StudentForm, Results y las
+páginas nuevas. Todo el set se optimizó a WebP (~20MB → ~1.5MB
+combinados). Dirección de arte completa (paleta, prompts, reglas de
+consistencia del set) en [`docs/DIRECCION_DISENO_V3.md`](docs/DIRECCION_DISENO_V3.md).
+
+---
+
 ## Sistema de Temas Institucionales (v2)
 
 Cada universidad tiene sus propios colores de marca, aplicados con
@@ -1403,6 +1539,7 @@ las necesita:
 | v1.5.0 | Dic 2024 | Banqueo por Tema: normalización de cursos, CacheService, interfaz simplificada |
 | v1.6.0 | Abr 2026 | **Rediseño "Editorial Andino"**: design system, identidad UNA Puno, carrusel de universidades, fotografías reales, AuthContext compartido, CourseSelector con vista lista + atajos teclado, posicionamiento inclusivo (todas las universidades del Perú) |
 | v2.0.0 | Jul 2026 | **Plataforma multi-universidad**: backend reescrito en 8 módulos, rutas `/:universidad/*`, calificación en servidor con motores config-driven, motor único `PracticeSession` (−1,696 líneas), temas institucionales por universidad, code-splitting agresivo, landing nacional. Detalle completo en [`docs/CHANGELOG.md`](docs/CHANGELOG.md). |
+| v2.1.0 | Jul 2026 | **Rediseño premium + Aula Virtual real**: Landing rediseñado (Dirección de Diseño v3, navbar sticky, cohete con scroll), mascota propia el lobito (9 poses, generadas con Codex `image_gen`) reemplazando el 100% de fotos de stock, navegación premium (`QuickSwitch`, tours de onboarding), páginas 404/Nosotros/FAQ/Términos, y el **Aula Virtual v2.1 desplegada en producción** (contrato `getCiclos`/`inscribirCiclo`/`getAula`/`getMisPagos`, 11 hojas nuevas en CORE, `AulaShell` con 10 secciones). Detalle completo en [`docs/CHANGELOG.md`](docs/CHANGELOG.md). |
 
 ---
 
@@ -1650,7 +1787,7 @@ Invocación: `/frontend-design`, `/landing-page`, etc. Recargar con `/reload-plu
 
 ## Pendientes Reales
 
-Lista viva de pendientes tras la v2.0.0 (no confundir con la lista histórica de la sección anterior, que documenta el rediseño v1.6.0):
+Lista viva de pendientes tras la v2.1.0 (no confundir con la lista histórica de la sección anterior, que documenta el rediseño v1.6.0):
 
 1. **Pesos oficiales de UNMSM y UNI**: la plataforma soporta que cada universidad tenga su propia `config_examen`/`config_escala`, pero UNMSM y UNI todavía no tienen los pesos/ponderaciones oficiales de sus exámenes reales cargados — solo UNA (motor `suma_ponderada`, producción) y UNSA (motor `decimas`, piloto con datos dummy) están configuradas hoy.
 2. **Carreras por universidad**: la lista de carreras filtradas por área/división (ver [Carreras por Área](#carreras-por-área)) sigue siendo específica de UNA. Falta modelar carreras por universidad en el registro para que `StudentForm` las resuelva dinámicamente igual que ya hace con procesos y colores.
@@ -1660,6 +1797,10 @@ Lista viva de pendientes tras la v2.0.0 (no confundir con la lista histórica de
 6. **Motor `vector_canal`**: implementado con la misma fórmula de suma ponderada por canal; si una universidad (p.ej. UNI) necesita una agregación de canales distinta (máximo entre canales en vez de suma), hay que extender `scoreBySubject_` en `scoring.gs`.
 7. **Indexado/cache de `CORE.usuarios`**: las lecturas de anti-fraude global hacen `getDataRange().getValues()` completo en cada llamada, sin cache — aceptable hoy, revisar si `CORE.usuarios` crece mucho.
 8. **Purga de `CORE.sesiones`**: la hoja espejo de sesiones de examen crece indefinidamente; falta un job periódico que archive o borre sesiones viejas.
+9. ~~**Aula Virtual sin backend**~~ — **Hecho (v2.1.0)**: contrato `getCiclos`/`inscribirCiclo`/`getAula`/`getMisPagos` implementado en `aula.gs`, 11 hojas nuevas en CORE, desplegado en producción y verificado con `healthCheckAula()` (5/5 PASS) contra un ciclo demo real. Ver [Aula Virtual (v2.1)](#aula-virtual-v21).
+10. **Abrir el primer ciclo real del Aula Virtual**: hoy solo existe el ciclo demo (`una-demo-2026-1`, sembrado por `seedAulaDemo()`). Ninguna universidad tiene todavía una fila real en `ciclos` con `estado=inscripciones_abiertas` — hasta que el coordinador de una universidad la cree a mano, todos los alumnos siguen viendo la vista previa de `AulaComingSoon` en vez de un Aula matriculable de verdad.
+11. **Celdas de colores/logos del CORE pendientes de edición manual**: `CORE.universidades` tiene columnas `color_primario`/`color_secundario`/`logo` por fila (ver `google-apps-script/README.md` §2), pero solo `una` y `unsa` (piloto) están cargadas hoy — el resto de las 13 universidades mapeadas en `src/theme/universityThemes.ts` necesita que alguien complete esas celdas a mano en el spreadsheet CORE antes de poder pasarlas de `oculta` a `activa`/`piloto`.
+12. **Health checks del Aula Virtual no corridos aún contra un proyecto de Apps Script propio nuevo**: `aula.gs` se validó con `node --check` y se verificó `healthCheckAula()` en el proyecto de producción existente, pero cualquier fork/nuevo deploy debe correr `seedAulaDemo()` + `healthCheckAula()` de nuevo antes de confiar en el flujo (ver `google-apps-script/README.md` "Riesgos y TODOs pendientes").
 
 ---
 
@@ -1667,7 +1808,7 @@ Lista viva de pendientes tras la v2.0.0 (no confundir con la lista histórica de
 
 Desarrollado para los **estudiantes preuniversitarios del Perú** — con foco inicial y fundacional en la **Universidad Nacional del Altiplano - Puno**, y desde la v2.0.0 escalable como plataforma nacional a San Marcos, UNI, UNSA, UNSAAC, UNCP, UNFV, UNALM, UNT, UNP, UNSCH, UNAJ y más.
 
-Plataforma: **SimulaUNA v2.0.0**
+Plataforma: **SimulaUNA v2.1.0**
 
 Preguntas reales de exámenes de admisión desde 1993 hasta el último proceso.
 
