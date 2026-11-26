@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SimulaUNA - CORE
  * ============================================
  * Resolucion de tenant (universidad), registro maestro, cache namespaced
