@@ -486,7 +486,7 @@ export function AulaComingSoon() {
             {!mascotFailed && (
               <div className="shrink-0 w-40 sm:w-52 md:w-64">
                 <img
-                  src="/simulauna/illustrations/mascota-lobito.webp"
+                  src="/illustrations/mascota-lobito.webp"
                   alt="Mascota SimulaUNA: un lobito muy estudioso"
                   onError={() => setMascotFailed(true)}
                   className="w-full h-auto drop-shadow-2xl animate-float-y"

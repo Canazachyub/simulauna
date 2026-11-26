@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>SimulaUNA</title>
+    <!--
+      SPA en GitHub Pages (patrón rafgraph/spa-github-pages, licencia MIT).
+      GitHub Pages responde este 404.html para cualquier ruta que no exista como archivo
+      (p.ej. al recargar /una/examen). Aquí convertimos la ruta en query string
+      (/?/una/examen) y redirigimos a index.html; el script de index.html la
+      restaura con history.replaceState antes de que arranque la app.
+
+      pathSegmentsToKeep = 1 porque el sitio vive bajo el basename "/simulauna" (project
+      site: usuario.github.io/simulauna). Si algún día se usa dominio propio en la raíz,
+      cambiar a 0.
+    -->
+    <script type="text/javascript">
+      var pathSegmentsToKeep = 0;
+
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

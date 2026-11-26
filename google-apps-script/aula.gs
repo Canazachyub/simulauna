@@ -270,20 +270,16 @@ function formatConceptoEtiqueta_(concepto) {
  * (cambia más seguido que la config de examen del contrato v2).
  */
 function getCiclosForTenant(tenant, estadoFilter) {
-  const estadoNorm = estadoFilter ? String(estadoFilter).trim().toLowerCase() : '';
+  const estadoNorm = estadoFilter ? String(estadoFilter).trim().toLowerCase().substring(0, 40) : '';
   const key = aulaCacheKey_(tenant.codigo, 'ciclos' + (estadoNorm ? ':' + estadoNorm : ''));
-  const cached = getCachedJson(key);
-  if (cached) return cached;
-
-  const rows = coreReadRowsAsObjects_('ciclos').rows;
-  const ciclos = rows
-    .filter(function (r) { return String(r['universidad'] || '').trim().toLowerCase() === tenant.codigo; })
-    .filter(function (r) { return !estadoNorm || String(r['estado'] || '').trim().toLowerCase() === estadoNorm; })
-    .map(mapCicloRow_);
-
-  const result = { ciclos: ciclos };
-  setCachedJson(key, result, 300);
-  return result;
+  return getOrBuildCachedJson_(key, 300, function () {
+    const rows = coreReadRowsAsObjects_('ciclos').rows;
+    const ciclos = rows
+      .filter(function (r) { return String(r['universidad'] || '').trim().toLowerCase() === tenant.codigo; })
+      .filter(function (r) { return !estadoNorm || String(r['estado'] || '').trim().toLowerCase() === estadoNorm; })
+      .map(mapCicloRow_);
+    return { ciclos: ciclos };
+  });
 }
 
 // ============================================
@@ -302,10 +298,11 @@ function inscribirCicloForTenant(tenant, dni, email, cicloId, turno) {
 
   if (!dniStr) throw 'DNI requerido';
   if (!cicloIdStr) throw 'cicloId requerido';
+  if (!emailLower) throw 'Email requerido';
 
-  if (emailLower && checkGlobalFraud_(dniStr, emailLower)) {
-    throw 'DNI y email no coinciden con el usuario registrado';
-  }
+  const titularidad = dniEmailOwnership_(tenant.codigo, dniStr, emailLower);
+  if (titularidad === 'error') throw publicError_(MSG_VERIFICACION_NO_DISPONIBLE_);
+  if (titularidad === 'mismatch') throw 'DNI y email no coinciden con el usuario registrado';
 
   const cicloRow = coreReadRowsAsObjects_('ciclos').rows.filter(function (r) {
     return String(r['id_ciclo'] || '').trim() === cicloIdStr &&
@@ -314,6 +311,38 @@ function inscribirCicloForTenant(tenant, dni, email, cicloId, turno) {
   if (!cicloRow) throw 'Ciclo no válido para esta universidad';
   const ciclo = mapCicloRow_(cicloRow);
 
+  // Sección leer-decidir-escribir bajo ScriptLock: dos clics simultáneos
+  // no pueden crear dos matrículas para el mismo dni+ciclo.
+  return withScriptLock_(10000, function () {
+    // DNI sin email registrado: se vincula este email al DNI (CORE.usuarios)
+    // para que getAula pueda verificar titularidad después.
+    if (titularidad === 'sin_registro') {
+      vincularEmailADni_(tenant, dniStr, emailLower);
+    }
+    return inscribirCicloLocked_(tenant, dniStr, cicloIdStr, ciclo, turno);
+  });
+}
+
+/**
+ * Agrega la fila dni+email a CORE.usuarios si el DNI todavía no tiene
+ * email registrado (re-verifica bajo lock). Llamar BAJO LOCK.
+ */
+function vincularEmailADni_(tenant, dniStr, emailLower) {
+  const st = globalFraudStatus_(dniStr, emailLower);
+  if (st.error) throw publicError_(MSG_VERIFICACION_NO_DISPONIBLE_);
+  if (st.fraud) throw 'DNI y email no coinciden con el usuario registrado';
+  if (st.dniEmail) return; // alguien lo vinculó en paralelo (y coincide)
+  const ss = SpreadsheetApp.openById(CORE_SPREADSHEET_ID);
+  let sheet = ss.getSheetByName('usuarios');
+  if (!sheet) {
+    sheet = ss.insertSheet('usuarios');
+    sheet.appendRow(['fecha', 'dni', 'nombre', 'email', 'celular', 'universidades_interes']);
+    sheet.getRange(1, 1, 1, 6).setFontWeight('bold');
+  }
+  sheet.appendRow([new Date(), dniStr, '', safeCell_(emailLower, EMAIL_MAX_LEN_), '', tenant.codigo]);
+}
+
+function inscribirCicloLocked_(tenant, dniStr, cicloIdStr, ciclo, turno) {
   const sheet = coreOpenOrCreateSheet_('matriculas');
   const data = sheet.getDataRange().getValues();
   const headers = data[0].map(function (h) { return String(h).trim(); });
@@ -355,7 +384,7 @@ function inscribirCicloForTenant(tenant, dni, email, cicloId, turno) {
   nuevaFila[idx.idCiclo] = cicloIdStr;
   nuevaFila[idx.fechaInscripcion] = new Date();
   nuevaFila[idx.estado] = 'preinscrito';
-  nuevaFila[idx.turnoElegido] = turno || '';
+  nuevaFila[idx.turnoElegido] = safeCell_(turno || '', 50);
   nuevaFila[idx.observaciones] = '';
   sheet.appendRow(nuevaFila);
 
@@ -407,9 +436,13 @@ function buildInstruccionesPago_(ciclo) {
  */
 function getAulaCicloAgregado_(tenant, idCiclo) {
   const key = aulaCacheKey_(tenant.codigo, idCiclo);
-  const cached = getCachedJson(key);
-  if (cached) return cached;
+  // Anti-estampida: 9 hojas del CORE; solo una ejecución las relee al vencer la cache.
+  return getOrBuildCachedJson_(key, 1800, function () {
+    return buildAulaCicloAgregado_(tenant, idCiclo);
+  });
+}
 
+function buildAulaCicloAgregado_(tenant, idCiclo) {
   const cicloRow = coreReadRowsAsObjects_('ciclos').rows.filter(function (r) {
     return String(r['id_ciclo'] || '').trim() === idCiclo &&
       String(r['universidad'] || '').trim().toLowerCase() === tenant.codigo;
@@ -456,13 +489,11 @@ function getAulaCicloAgregado_(tenant, idCiclo) {
     .filter(function (r) { return String(r['id_ciclo'] || '').trim() === idCiclo; })
     .map(mapRecursoRow_);
 
-  const result = {
+  return {
     ciclo: ciclo, horario: horario, clasesEnVivo: clasesEnVivo, grabaciones: grabaciones,
     materiales: materiales, anuncios: anuncios, docentes: docentes, grupoWhatsapp: grupoWhatsapp,
     recursos: recursos
   };
-  setCachedJson(key, result, 1800);
-  return result;
 }
 
 /** "Mis simulacros del ciclo": reusa CORE.historial (sin hoja nueva), filtrado por dni+universidad+rango de fechas del ciclo. Autocontenido: si falla, devuelve []. */
@@ -517,10 +548,13 @@ function getAulaForTenant(tenant, dni, email, cicloIdParam) {
   const dniStr = String(dni || '').trim();
   const emailLower = String(email || '').toLowerCase().trim();
   if (!dniStr) throw 'DNI requerido';
+  if (!emailLower) throw 'Email requerido';
 
-  if (emailLower && checkGlobalFraud_(dniStr, emailLower)) {
-    throw 'DNI y email no coinciden con el usuario registrado';
-  }
+  // Titularidad dni<->email (falla cerrado). Antes, si el DNI no tenía
+  // email en CORE, cualquier email entraba al Aula de ese DNI.
+  const titularidad = dniEmailOwnership_(tenant.codigo, dniStr, emailLower);
+  if (titularidad === 'error') throw publicError_(MSG_VERIFICACION_NO_DISPONIBLE_);
+  if (titularidad === 'mismatch') throw 'DNI y email no coinciden con el usuario registrado';
 
   const cicloIdNorm = cicloIdParam ? String(cicloIdParam).trim() : '';
   const permisoAulaOverride = checkPermiso_(tenant.codigo, dniStr, 'aula');
@@ -529,6 +563,18 @@ function getAulaForTenant(tenant, dni, email, cicloIdParam) {
     return String(r['dni'] || '').trim() === dniStr &&
       String(r['universidad'] || '').trim().toLowerCase() === tenant.codigo;
   });
+
+  if (titularidad === 'sin_registro') {
+    // El DNI no tiene email registrado: no se puede probar que este email
+    // sea del titular. Si el DNI tiene matrícula/permiso, se rechaza (no
+    // se exponen sus pagos/materiales); si no, solo se muestran los ciclos
+    // abiertos (información pública).
+    if (matriculasRows.length > 0 || permisoAulaOverride) {
+      console.warn('[SECURITY] getAula: DNI ' + dniStr + ' con matrícula/permiso pero sin email registrado');
+      throw publicError_('Tu DNI todavía no tiene un correo vinculado. Escríbenos por WhatsApp para vincularlo y entrar al Aula.');
+    }
+    return { matriculado: false, tieneCicloActivo: false, ciclosDisponibles: getCiclosForTenant(tenant, 'inscripciones_abiertas').ciclos };
+  }
 
   const ciclosTenant = getCiclosForTenant(tenant).ciclos;
   const estadoPorCiclo = {};

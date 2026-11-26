@@ -199,11 +199,29 @@ export function validateDNI(dni: string): boolean {
   return /^\d{8}$/.test(dni);
 }
 
+/** Motivo por el que un nombre no es válido (null = válido). */
+export type NameError = 'requerido' | 'corto' | 'largo' | 'caracteres';
+
 /**
- * Valida un nombre (al menos 3 caracteres, solo letras y espacios)
+ * Diagnostica un nombre completo. Acepta letras con tildes o diéresis (á, ü, ñ…),
+ * apóstrofo (O'Brien, D´Angelo), guion (Pérez-Albela) y espacios. Distingue "muy corto"
+ * de "tiene símbolos" para que el mensaje al postulante sea el correcto.
+ */
+export function getNameError(name: string): NameError | null {
+  const limpio = name.trim().replace(/\s+/g, ' ');
+  if (!limpio) return 'requerido';
+  if (!/^[\p{L}\p{M}' ’´`-]+$/u.test(limpio)) return 'caracteres';
+  const letras = limpio.replace(/[^\p{L}]/gu, '').length;
+  if (letras < 3) return 'corto';
+  if (limpio.length > 100) return 'largo';
+  return null;
+}
+
+/**
+ * Valida un nombre (al menos 3 letras; letras, tildes, ñ, apóstrofo, guion y espacios)
  */
 export function validateName(name: string): boolean {
-  return /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{3,100}$/.test(name.trim());
+  return getNameError(name) === null;
 }
 
 /**

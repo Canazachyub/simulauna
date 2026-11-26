@@ -18,7 +18,7 @@ export function AulaBienvenida({ nombreCiclo }: AulaBienvenidaProps) {
     <div className="flex items-center gap-4 mb-6">
       {!mascotFailed && (
         <img
-          src="/simulauna/illustrations/mascota-lobito.webp"
+          src="/illustrations/mascota-lobito.webp"
           alt=""
           aria-hidden="true"
           onError={() => setMascotFailed(true)}

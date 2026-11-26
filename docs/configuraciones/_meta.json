@@ -1,0 +1,79 @@
+{
+ "unmsm": {
+  "faltas": [],
+  "fuente": "https://cdn.www.gob.pe/uploads/document/file/5781116/1889987-r-r-n-009458-2023-reglamento-de-admision-2026-i-unmsm.pdf ; distribución: https://cdn.www.gob.pe/uploads/document/file/7469691/6358821-reglamento-admision-2025-ii-con-correc-ogal-com-asesor-07-01-25-f-f.pdf",
+  "notas": "Correcta 20, incorrecta -1.125, blanco 0 (Art. 28). Sección Actitudinal sin negativo. Distribución por curso del Anexo 5 Reg. 2025-II (el PDF 2026-I salió con celdas vacías)."
+ },
+ "uni": {
+  "faltas": [
+   "Penalidad por incorrecta: no publicada en fuente oficial (Art. 52 la remite a la carátula). Fuente no oficial: -1/5 del valor (P1 -1.2; P2 y P3 -3). Se dejó en 0.",
+   "Duración por prueba: no publicada en fuente oficial (no oficial: 180 min por prueba)."
+  ],
+  "fuente": "https://cdnuni.uni.edu.pe/dn/laravel/storage/app/archivos_dn/R.R.%20N%C2%B01993-2025-UNI-DN.pdf",
+  "notas": "3 pruebas en 3 días: P1 Aptitud Académica y Humanidades (600), P2 Matemática (600), P3 Física y Química (600). Arquitectura rinde P4 (no incluida)."
+ },
+ "unfv": {
+  "faltas": [],
+  "fuente": "https://www.unfv.edu.pe/oca/images/pregrado/2026/ProspectoAdmision2026a.pdf",
+  "notas": "Correcta 10, incorrecta -0.25219265, blanco 0 (Anexo 9). Áreas D y E comparten examen."
+ },
+ "unalm": {
+  "faltas": [],
+  "fuente": "https://cdn2.lamolina.edu.pe/lamolina-admision/website/2024/REGLAMENTO_DE_ADMISION_NOVIEMBRE_2023.pdf",
+  "notas": "Correcta 1, incorrecta -0.17, blanco 0 (Art. 51). Examen único. Bonificaciones por ley (20%/5%) no modeladas."
+ },
+ "unsa": {
+  "faltas": [
+   "Penalidad por incorrecta y valor del blanco: no publicados en fuente oficial. Se dejaron en 0."
+  ],
+  "fuente": "https://transparencia.unsa.edu.pe/bitstream/handle/123456789/1505/RCU-0116-2025.pdf ; reglamento: https://admision.unsa.edu.pe/wp-content/uploads/2026/03/RESOLUCION-DE-CONSEJO-UNIVERSITARIO-N%C2%B0-0085-2026.pdf",
+  "notas": "Valor por pregunta según Matriz de Evaluación 2026; cada área suma 100. Arquitectura/Artes: evaluación previa 50% (no modelada)."
+ },
+ "unsaac": {
+  "faltas": [],
+  "fuente": "https://transparencia.unsaac.edu.pe/links/disposiciones/documentos/resCU/CU198-2022%20APRUEBA%20REGLAMENTO%20DE%20ADMISIONUNSAAC.pdf",
+  "notas": "Art. 72: correcta 5, en blanco 1, incorrecta 0; puntaje final = bruto (máx 400) × 2.5. Reglamento 2022 vigente."
+ },
+ "unaj": {
+  "faltas": [
+   "Reglamento 2026 (RCU-042-2026-CU-UNAJ) aprobado sin tablas públicas: se usan los valores 2025."
+  ],
+  "fuente": "https://portal.unaj.edu.pe/sites/default/files/Res-Consejo-comision-2025/Resolucion_Consejo_CO-0115-2025.pdf",
+  "notas": "Correcta = 10 × ponderación (Art. 26); en blanco 0.5, incorrecta 0 (Art. 75). Mismo esquema que la UNA."
+ },
+ "unsch": {
+  "faltas": [
+   "Duración del examen: no publicada en el prospecto."
+  ],
+  "fuente": "https://admision.unsch.edu.pe/documentos/pdf/prospecto.pdf",
+  "notas": "Art. 28: incorrecta no resta. Art. 29/Tabla 5: valor = criterio 1-3; conocimientos 230 brutos × 900/230 = 900; cada test 10 × 1 × 5 = 50."
+ },
+ "unt": {
+  "faltas": [
+   "Mínimo aprobatorio: el reglamento habla de 'puntaje aprobatorio aritmético' sin cifra fija.",
+   "Tres bloques (Historia/Geografía/Economía, Literatura/Análisis del Discurso/Comunicología, Biología/Química/Física) se publican sin reparto por asignatura: quedan como cursos agrupados."
+  ],
+  "fuente": "https://www.admisionunt.info/docs/GUIA2026----II.pdf",
+  "notas": "Proceso 2026-II. Arts. 55 y 57: correcta 4.079, incorrecta -1.021, blanco 0. 100 preguntas → máximo 407.9."
+ },
+ "unc": {
+  "faltas": [],
+  "fuente": "https://transparencia.unc.edu.pe/Documentos/ObtenerArchivo?codigo=0000000453",
+  "notas": "Proceso 2026-II. Arts. 61-65: 30 de aptitud (8 c/u) + 60 de conocimientos (6 c/u) = 600; incorrecta -0.51; blanco 0; 180 min. Art. 68: mínimo 100."
+ },
+ "unp": {
+  "faltas": [
+   "Duración del examen: no publicada (se usa 180 min por defecto).",
+   "Mínimo aprobatorio: el reglamento actualizado no lo fija."
+  ],
+  "fuente": "https://preinscripcion.unp.edu.pe/Content/doc/reglamento.pdf",
+  "notas": "Último ordinario localizado 2026-I. Arts. 50-51 y 65: 100 preguntas; correcta 4; incorrecta -0.25; BLANCO -0.10 (resta). Ciencias y Ciencias de la Salud comparten estructura."
+ },
+ "uncp": {
+  "faltas": [
+   "El factor 18.75 (= 1500/80) es una conversión matemática: el prospecto da la escala 0-1500 y el Anexo 7 suma 80 puntos ponderados por área, pero no escribe el factor."
+  ],
+  "fuente": "https://uncpadmision.edu.pe/admision-pregrado/",
+  "notas": "Proceso 2026-II, Res. 5205-CU-2026. 80 preguntas, 180 min, sin penalidad, sin mínimo. puntos_correcta = ponderación oficial del Anexo 7 (bruta) × factor_escala 18.75."
+ }
+}

@@ -1,0 +1,86 @@
+proceso,division,division_tipo,curso,n_preguntas,puntos_correcta,puntos_incorrecta,puntos_blanco,factor_escala,peso,orden
+ORDINARIO,Área I: Ciencias de la Salud,area,Aritmética (P.A.),5,0.785,0,0,,0.785,1
+ORDINARIO,Área I: Ciencias de la Salud,area,Álgebra (P.A.),5,0.763,0,0,,0.763,2
+ORDINARIO,Área I: Ciencias de la Salud,area,Estadística y Probabilidades (P.A.),3,0.805,0,0,,0.805,3
+ORDINARIO,Área I: Ciencias de la Salud,area,Comunicación (P.I.),6,0.653,0,0,,0.653,4
+ORDINARIO,Área I: Ciencias de la Salud,area,Biología (P.A.),5,1.532,0,0,,1.532,5
+ORDINARIO,Área I: Ciencias de la Salud,area,Biología (P.I.),4,1.246,0,0,,1.246,6
+ORDINARIO,Área I: Ciencias de la Salud,area,Biología (P.B.),2,1.056,0,0,,1.056,7
+ORDINARIO,Área I: Ciencias de la Salud,area,Química (P.A.),6,1.212,0,0,,1.212,8
+ORDINARIO,Área I: Ciencias de la Salud,area,Física (P.A.),5,1.185,0,0,,1.185,9
+ORDINARIO,Área I: Ciencias de la Salud,area,Ecología (P.A.),3,1.248,0,0,,1.248,10
+ORDINARIO,Área I: Ciencias de la Salud,area,Psicología (P.A.),6,0.804,0,0,,0.804,11
+ORDINARIO,Área I: Ciencias de la Salud,area,Aptitud Lógico Matemático (P.A.),6,1.202,0,0,,1.202,12
+ORDINARIO,Área I: Ciencias de la Salud,area,Aptitud Lógico Matemático (P.I.),6,1.101,0,0,,1.101,13
+ORDINARIO,Área I: Ciencias de la Salud,area,Aptitud Lógico Matemático (P.B.),6,1.006,0,0,,1.006,14
+ORDINARIO,Área I: Ciencias de la Salud,area,Aptitud Comunicativa (P.A.),6,0.805,0,0,,0.805,15
+ORDINARIO,Área I: Ciencias de la Salud,area,Aptitud Comunicativa (P.I.),6,0.787,0,0,,0.787,16
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Aritmética (P.A.),6,1.126,0,0,,1.126,1
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Aritmética (P.I.),2,1.048,0,0,,1.048,2
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Álgebra (P.A.),5,1.168,0,0,,1.168,3
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Álgebra (P.I.),3,1.034,0,0,,1.034,4
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Geometría (P.A.),5,1.112,0,0,,1.112,5
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Trigonometría (P.A.),5,1.113,0,0,,1.113,6
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Estadística y Probabilidades (P.I.),5,0.981,0,0,,0.981,7
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Comunicación (P.I.),5,0.838,0,0,,0.838,8
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Química (P.I.),5,0.978,0,0,,0.978,9
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Física (P.I.),6,1.115,0,0,,1.115,10
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Ecología (P.I.),3,0.673,0,0,,0.673,11
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Aptitud Lógico Matemático (P.A.),7,1.103,0,0,,1.103,12
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Aptitud Lógico Matemático (P.I.),6,0.991,0,0,,0.991,13
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Aptitud Lógico Matemático (P.B.),6,0.922,0,0,,0.922,14
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Aptitud Comunicativa (P.A.),6,0.863,0,0,,0.863,15
+ORDINARIO,Área II: Arquitectura e Ingenierías,area,Aptitud Comunicativa (P.I.),5,0.802,0,0,,0.802,16
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Aritmética (P.I.),7,1.161,0,0,,1.161,1
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Álgebra (P.I.),5,1.159,0,0,,1.159,2
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Álgebra (P.B.),3,0.927,0,0,,0.927,3
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Estadística y Probabilidades (P.I.),6,1.125,0,0,,1.125,4
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Comunicación (P.I.),6,0.975,0,0,,0.975,5
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Ecología (P.I.),3,0.605,0,0,,0.605,6
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Historia (P.I.),3,0.648,0,0,,0.648,7
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Geografía (P.I.),3,0.749,0,0,,0.749,8
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Economía (P.I.),6,1.268,0,0,,1.268,9
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Psicología (P.I.),3,0.873,0,0,,0.873,10
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Cívica (P.I.),5,0.746,0,0,,0.746,11
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Aptitud Lógico Matemático (P.A.),6,1.103,0,0,,1.103,12
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Aptitud Lógico Matemático (P.I.),6,1.021,0,0,,1.021,13
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Aptitud Lógico Matemático (P.B.),4,0.959,0,0,,0.959,14
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Aptitud Comunicativa (P.A.),6,1.075,0,0,,1.075,15
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Aptitud Comunicativa (P.I.),6,0.991,0,0,,0.991,16
+ORDINARIO,"Área III: Ciencias Administrativas, Contables y Económicas",area,Aptitud Comunicativa (P.B.),2,0.879,0,0,,0.879,17
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Aritmética (P.B.),5,0.815,0,0,,0.815,1
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Álgebra (P.B.),4,0.807,0,0,,0.807,2
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Estadística y Probabilidades (P.B.),3,0.925,0,0,,0.925,3
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Comunicación (P.I.),5,1.178,0,0,,1.178,4
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Comunicación (P.B.),5,1.036,0,0,,1.036,5
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Biología (P.B.),3,0.996,0,0,,0.996,6
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Ecología (P.B.),3,0.978,0,0,,0.978,7
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Historia (P.B.),5,1.098,0,0,,1.098,8
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Geografía (P.B.),3,1.085,0,0,,1.085,9
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Economía (P.B.),3,1.003,0,0,,1.003,10
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Psicología (P.I.),5,1.046,0,0,,1.046,11
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Filosofía (P.I.),3,1.015,0,0,,1.015,12
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Cívica (P.I.),3,1.015,0,0,,1.015,13
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Aptitud Lógico Matemático (P.I.),6,1.119,0,0,,1.119,14
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Aptitud Lógico Matemático (P.B.),6,0.872,0,0,,0.872,15
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Aptitud Comunicativa (P.A.),6,1.101,0,0,,1.101,16
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Aptitud Comunicativa (P.I.),6,0.988,0,0,,0.988,17
+ORDINARIO,Área IV: Educación y Ciencias Sociales,area,Aptitud Comunicativa (P.B.),6,0.896,0,0,,0.896,18
+ORDINARIO,Área V: Ciencias Agrarias,area,Aritmética (P.B.),5,1.114,0,0,,1.114,1
+ORDINARIO,Área V: Ciencias Agrarias,area,Álgebra (P.B.),5,1.113,0,0,,1.113,2
+ORDINARIO,Área V: Ciencias Agrarias,area,Geometría (P.B.),3,1.111,0,0,,1.111,3
+ORDINARIO,Área V: Ciencias Agrarias,area,Trigonometría (P.B.),3,1.118,0,0,,1.118,4
+ORDINARIO,Área V: Ciencias Agrarias,area,Estadística y Probabilidades (P.B.),3,1.066,0,0,,1.066,5
+ORDINARIO,Área V: Ciencias Agrarias,area,Comunicación (P.B.),6,0.872,0,0,,0.872,6
+ORDINARIO,Área V: Ciencias Agrarias,area,Biología (P.I.),6,1.015,0,0,,1.015,7
+ORDINARIO,Área V: Ciencias Agrarias,area,Química (P.B.),5,0.965,0,0,,0.965,8
+ORDINARIO,Área V: Ciencias Agrarias,area,Física (P.B.),3,0.981,0,0,,0.981,9
+ORDINARIO,Área V: Ciencias Agrarias,area,Ecología (P.I.),5,1.151,0,0,,1.151,10
+ORDINARIO,Área V: Ciencias Agrarias,area,Geografía (P.B.),3,0.842,0,0,,0.842,11
+ORDINARIO,Área V: Ciencias Agrarias,area,Psicología (P.B.),3,0.599,0,0,,0.599,12
+ORDINARIO,Área V: Ciencias Agrarias,area,Aptitud Lógico Matemático (P.A.),4,1.215,0,0,,1.215,13
+ORDINARIO,Área V: Ciencias Agrarias,area,Aptitud Lógico Matemático (P.I.),6,1.096,0,0,,1.096,14
+ORDINARIO,Área V: Ciencias Agrarias,area,Aptitud Lógico Matemático (P.B.),6,0.988,0,0,,0.988,15
+ORDINARIO,Área V: Ciencias Agrarias,area,Aptitud Comunicativa (P.A.),2,1.094,0,0,,1.094,16
+ORDINARIO,Área V: Ciencias Agrarias,area,Aptitud Comunicativa (P.I.),6,0.871,0,0,,0.871,17
+ORDINARIO,Área V: Ciencias Agrarias,area,Aptitud Comunicativa (P.B.),6,0.839,0,0,,0.839,18

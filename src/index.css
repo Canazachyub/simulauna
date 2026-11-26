@@ -228,7 +228,7 @@ input, textarea, [contenteditable="true"] {
   .aurora-bg { background-image: radial-gradient(at 20% 20%, rgba(0,61,122,0.18), transparent 50%), radial-gradient(at 85% 10%, rgba(212,175,55,0.15), transparent 50%), radial-gradient(at 10% 85%, rgba(230,126,34,0.15), transparent 50%); }
   .andean-overlay::before {
     content: ''; position: absolute; inset: 0;
-    background-image: url('/simulauna/patterns/andean.svg');
+    background-image: url('/patterns/andean.svg');
     background-size: 120px 120px;
     opacity: 0.06;
     pointer-events: none; mix-blend-mode: multiply;
@@ -395,7 +395,7 @@ input, textarea, [contenteditable="true"] {
     position: absolute;
     bottom: 0; left: 0; right: 0;
     height: 300px;
-    background-image: url('/simulauna/illustrations/mountains.svg');
+    background-image: url('/illustrations/mountains.svg');
     background-size: 100% 100%;
     background-position: bottom;
     background-repeat: no-repeat;
@@ -410,7 +410,7 @@ input, textarea, [contenteditable="true"] {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('/simulauna/illustrations/andean-bold.svg');
+    background-image: url('/illustrations/andean-bold.svg');
     background-size: 80px 80px;
     opacity: 0.10;
     pointer-events: none;
@@ -429,7 +429,7 @@ input, textarea, [contenteditable="true"] {
   }
 
   .paper-bg {
-    background-image: url('/simulauna/illustrations/paper-texture.svg');
+    background-image: url('/illustrations/paper-texture.svg');
     background-size: 400px 400px;
     background-repeat: repeat;
   }
@@ -506,7 +506,7 @@ input, textarea, [contenteditable="true"] {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('/simulauna/illustrations/andean-bold.svg');
+    background-image: url('/illustrations/andean-bold.svg');
     background-size: 90px 90px;
     opacity: 0.10;
     pointer-events: none;
@@ -522,7 +522,7 @@ input, textarea, [contenteditable="true"] {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('/simulauna/illustrations/andean-bold.svg');
+    background-image: url('/illustrations/andean-bold.svg');
     background-size: 90px 90px;
     opacity: 0.12;
     pointer-events: none;
@@ -538,7 +538,7 @@ input, textarea, [contenteditable="true"] {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('/simulauna/illustrations/andean-bold.svg');
+    background-image: url('/illustrations/andean-bold.svg');
     background-size: 90px 90px;
     opacity: 0.08;
     pointer-events: none;
@@ -740,4 +740,72 @@ input, textarea, [contenteditable="true"] {
   @media (min-width: 1024px) {
     .bento-cell-dominante { grid-column: span 2; grid-row: span 2; }
   }
+}
+
+/* ============================================================
+   KIT DE MOVIMIENTO (src/components/motion/motion.tsx)
+   Reveal al hacer scroll, tarjetas con inclinación 3D, parallax
+   por variable --sp y flotación suave para ilustraciones 3D.
+   Solo transform/opacity (GPU) para que vaya fluido en gama baja.
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transition: opacity 700ms cubic-bezier(.2,.7,.2,1), transform 700ms cubic-bezier(.2,.7,.2,1);
+  will-change: opacity, transform;
+}
+.reveal--up    { transform: translate3d(0, 28px, 0); }
+.reveal--down  { transform: translate3d(0, -28px, 0); }
+.reveal--left  { transform: translate3d(-36px, 0, 0); }
+.reveal--right { transform: translate3d(36px, 0, 0); }
+.reveal--zoom  { transform: scale(.92); }
+.reveal--flip  { transform: perspective(900px) rotateX(14deg) translate3d(0, 24px, 0); transform-origin: 50% 100%; }
+.reveal.is-visible { opacity: 1; transform: none; will-change: auto; }
+
+.tilt {
+  --rx: 0deg; --ry: 0deg; --gx: 50%; --gy: 50%;
+  transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition: transform 450ms cubic-bezier(.2,.7,.2,1), box-shadow 300ms ease;
+  position: relative;
+}
+.tilt.is-tilting { transition: transform 80ms linear, box-shadow 300ms ease; }
+/* Capa que "sale" de la tarjeta en 3D (p.ej. la ilustración) */
+.tilt-pop { transform: translateZ(40px); transition: transform 450ms cubic-bezier(.2,.7,.2,1); }
+.tilt--glare::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--gx) var(--gy), rgba(255,255,255,.35), transparent 55%);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.tilt--glare.is-tilting::after { opacity: 1; }
+
+/* Parallax: el elemento con useScrollProgress expone --sp (0→1) */
+.parallax-slow { transform: translate3d(0, calc((var(--sp, .5) - .5) * -40px), 0); }
+.parallax-fast { transform: translate3d(0, calc((var(--sp, .5) - .5) * -90px), 0); }
+.parallax-rotate { transform: rotate(calc((var(--sp, .5) - .5) * 16deg)); }
+
+/* Flotación de ilustraciones 3D */
+@keyframes float-3d {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
+  50%      { transform: translate3d(0, -10px, 0) rotate(2deg); }
+}
+.float-3d { animation: float-3d 6s ease-in-out infinite; }
+.illus-3d { filter: drop-shadow(0 18px 24px rgba(15, 23, 42, .22)); user-select: none; pointer-events: none; }
+
+/* Burbuja de ficha óptica: "relleno de lápiz" al marcar */
+@keyframes bubble-fill {
+  0%   { transform: scale(.6); }
+  60%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.bubble-fill { animation: bubble-fill 260ms cubic-bezier(.2,.7,.2,1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .tilt, .tilt-pop { transform: none !important; }
+  .parallax-slow, .parallax-fast, .parallax-rotate { transform: none !important; }
+  .float-3d { animation: none !important; }
 }

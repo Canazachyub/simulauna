@@ -5,22 +5,36 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#003D7A" />
-    <meta name="description" content="SimulaUNA — Simulacros UNA Puno. Plataforma de exámenes simulacro para la Universidad Nacional del Altiplano con analítica, ranking y preparación integral." />
-    <meta property="og:title" content="SimulaUNA — Simulacros UNA Puno" />
-    <meta property="og:description" content="Prepárate para el examen de admisión de la UNA Puno con simulacros cronometrados, analítica detallada y ranking por carrera." />
+    <meta name="description" content="SimulaUNA — Simulacros de admisión para universidades del Perú. Exámenes cronometrados con puntaje según la escala de cada universidad, revisión pregunta por pregunta y banqueo de preguntas." />
+    <meta property="og:title" content="SimulaUNA — Simulacros de admisión para universidades del Perú" />
+    <meta property="og:description" content="Prepárate para el examen de admisión de tu universidad con simulacros cronometrados, puntaje real y revisión detallada." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content="https://canazachyub.github.io/" />
+    <meta property="og:image" content="https://canazachyub.github.io/illustrations/mascota-lobito.webp" />
     <meta property="og:locale" content="es_PE" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="SimulaUNA — Simulacros UNA Puno" />
-    <meta name="twitter:description" content="Simulacros UNA Puno con analítica y ranking." />
-    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="SimulaUNA — Simulacros de admisión para universidades del Perú" />
+    <meta name="twitter:description" content="Simulacros de admisión con puntaje real para universidades del Perú." />
+    <meta name="twitter:image" content="https://canazachyub.github.io/illustrations/mascota-lobito.webp" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,600;1,9..144,700;1,9..144,900&display=swap" rel="stylesheet">
-    <title>SimulaUNA — Simulacros UNA Puno</title>
+    <title>SimulaUNA — Simulacros de admisión para universidades del Perú</title>
+    <!-- SPA en GitHub Pages (patrón rafgraph/spa-github-pages): public/404.html redirige una
+         ruta profunda (p.ej. /una/examen) a /?/una/examen; este script
+         restaura la URL real con history.replaceState ANTES de que cargue React Router. -->
+    <script type="text/javascript">
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+      }(window.location));
+    </script>
   </head>
   <body>
     <div id="root"></div>

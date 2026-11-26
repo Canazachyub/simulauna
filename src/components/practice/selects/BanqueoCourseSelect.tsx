@@ -56,7 +56,7 @@ export function BanqueoCourseSelect({
     <div className="min-h-screen bg-andean-white relative overflow-hidden py-8 px-4 pb-32">
       <CoachTour name="banqueo" steps={BANQUEO_TOUR_STEPS} active />
       <img
-        src="/simulauna/illustrations/study-hero.svg"
+        src="/illustrations/study-hero.svg"
         alt=""
         aria-hidden="true"
         className="hidden lg:block absolute top-24 right-8 w-48 opacity-40 pointer-events-none"
@@ -97,7 +97,7 @@ export function BanqueoCourseSelect({
           </div>
           <h1 className="inline-flex items-center gap-3 font-display text-4xl md:text-5xl font-black text-brand-primary-800 gradient-text-brand leading-tight mb-3">
             <img
-              src="/simulauna/illustrations/exam-paper.svg"
+              src="/illustrations/exam-paper.svg"
               alt=""
               aria-hidden="true"
               className="w-12 h-12 opacity-80 pointer-events-none hidden sm:inline-block"

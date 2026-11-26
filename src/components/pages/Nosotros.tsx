@@ -67,7 +67,7 @@ export function Nosotros() {
           </div>
 
           <Mascot
-            src="/simulauna/illustrations/lobito-corazon.webp"
+            src="/illustrations/lobito-corazon.webp"
             alt="Mascota SimulaUNA: un lobito con un corazón"
             className="w-40 sm:w-52 md:w-60 shrink-0 animate-float-y drop-shadow-2xl select-none"
           />

@@ -4,6 +4,8 @@ import {
   CheckCircle, Sparkles, Layers, BookOpen, Target, Lightbulb, Zap
 } from 'lucide-react';
 import type { PracticeMode } from './types';
+import { normalizeEmail, suggestEmailCorrection } from '../../utils/emailTypos';
+import { readRememberedIdentity } from '../../utils/rememberedIdentity';
 
 const ROTATING_ICONS = [Layers, BookOpen, Target, Lightbulb, Zap];
 
@@ -26,8 +28,13 @@ interface Props {
 export function PracticeLogin({
   mode, isAuthenticated, userDni, loginError, isLoading, onSubmit, onLogout, onBack
 }: Props) {
-  const [dni, setDni] = useState('');
-  const [email, setEmail] = useState('');
+  // Pre-llenado con la identidad recordada en este celular (p. ej. tras registrarse para el
+  // simulacro). Solo rellena: el acceso al banqueo se sigue verificando al enviar.
+  const [remembered] = useState(() => readRememberedIdentity());
+  const [dni, setDni] = useState(remembered?.dni ?? '');
+  const [email, setEmail] = useState(remembered?.email ?? '');
+  const [emailTouched, setEmailTouched] = useState(false);
+  const emailSuggestion = emailTouched ? suggestEmailCorrection(email) : null;
   const [iconIdx, setIconIdx] = useState(0);
 
   useEffect(() => {
@@ -36,7 +43,8 @@ export function PracticeLogin({
   }, []);
 
   const handleVerify = () => {
-    onSubmit(dni.trim(), email.trim());
+    if (isLoading) return;
+    onSubmit(dni.trim(), normalizeEmail(email));
   };
 
   return (
@@ -94,7 +102,7 @@ export function PracticeLogin({
 
             <span className={
               mode.kickerChipClass ??
-              'chip bg-white/70 text-brand-primary-700 text-[10px] font-bold uppercase tracking-[0.18em] font-mono mb-3'
+              'chip bg-white/70 text-brand-primary-700 text-xs font-bold uppercase tracking-[0.18em] font-mono mb-3'
             }>
               {mode.kickerExtra}
               <Sparkles className="w-3 h-3" />
@@ -115,7 +123,7 @@ export function PracticeLogin({
               <button
                 type="button"
                 onClick={onLogout}
-                className="text-xs font-semibold text-emerald-700 hover:text-red-600 underline"
+                className="min-h-[44px] px-2 -mr-2 text-sm font-semibold text-emerald-700 hover:text-red-600 underline"
               >
                 Cambiar
               </button>
@@ -131,34 +139,64 @@ export function PracticeLogin({
             </div>
           </div>
 
+          {/* <form> para que "Ir"/Enter del teclado del celular envíe la verificación */}
+          <form
+            noValidate
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleVerify();
+            }}
+          >
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-[0.12em] text-slate-600 mb-2 font-display">
+              <label htmlFor="practice-dni" className="block text-xs font-bold uppercase tracking-[0.12em] text-slate-600 mb-2 font-display">
                 <CreditCard className="w-3.5 h-3.5 inline mr-1.5" />
                 DNI
               </label>
+              {/* Sin maxLength: un DNI pegado con espacios no se corta; el filtro deja 8 dígitos.
+                  text-base (16px) evita el zoom automático de iOS al enfocar. */}
               <input
+                id="practice-dni"
+                name="dni"
                 type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                autoComplete="off"
+                enterKeyHint="next"
                 value={dni}
                 onChange={(e) => setDni(e.target.value.replace(/\D/g, '').slice(0, 8))}
                 placeholder="Ingresa tu DNI"
-                className="w-full rounded-2xl py-3 px-4 bg-white/80 border border-slate-200 font-sans text-slate-800 placeholder:text-slate-400 shadow-elevation-1 focus:outline-none focus:border-brand-primary-500 focus:ring-4 focus:ring-brand-primary-100 transition-all"
-                maxLength={8}
+                className="w-full rounded-2xl py-3 px-4 bg-white/80 border border-slate-200 font-sans text-base text-slate-800 placeholder:text-slate-400 shadow-elevation-1 focus:outline-none focus:border-brand-primary-500 focus:ring-4 focus:ring-brand-primary-100 transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-[0.12em] text-slate-600 mb-2 font-display">
+              <label htmlFor="practice-email" className="block text-xs font-bold uppercase tracking-[0.12em] text-slate-600 mb-2 font-display">
                 <Mail className="w-3.5 h-3.5 inline mr-1.5" />
                 Correo electrónico
               </label>
               <input
+                id="practice-email"
+                name="email"
                 type="email"
+                inputMode="email"
+                autoComplete="email"
+                enterKeyHint="go"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(normalizeEmail(e.target.value))}
+                onBlur={() => setEmailTouched(true)}
                 placeholder="ejemplo@correo.com"
-                className="w-full rounded-2xl py-3 px-4 bg-white/80 border border-slate-200 font-sans text-slate-800 placeholder:text-slate-400 shadow-elevation-1 focus:outline-none focus:border-brand-primary-500 focus:ring-4 focus:ring-brand-primary-100 transition-all"
+                className="w-full rounded-2xl py-3 px-4 bg-white/80 border border-slate-200 font-sans text-base text-slate-800 placeholder:text-slate-400 shadow-elevation-1 focus:outline-none focus:border-brand-primary-500 focus:ring-4 focus:ring-brand-primary-100 transition-all"
               />
+              {emailSuggestion && (
+                <button
+                  type="button"
+                  onClick={() => setEmail(emailSuggestion)}
+                  className="mt-2 w-full min-h-[44px] text-left px-3 py-2 rounded-xl bg-amber-50 border border-amber-300 text-sm text-amber-900 hover:bg-amber-100 transition"
+                >
+                  ¿Quisiste decir <strong className="font-bold break-all">{emailSuggestion}</strong>? Toca para corregir.
+                </button>
+              )}
             </div>
 
             {loginError && (
@@ -170,13 +208,13 @@ export function PracticeLogin({
           </div>
 
           <div className="flex gap-3 mt-8">
-            <button onClick={onBack} className="btn-secondary flex-1">
+            <button type="button" onClick={onBack} className="btn-secondary flex-1 min-h-[48px]">
               <ChevronLeft className="w-5 h-5" />
               Volver
             </button>
             <button
-              onClick={handleVerify}
-              className="btn-primary-brand flex-1 shine-hover"
+              type="submit"
+              className="btn-primary-brand flex-1 min-h-[48px] shine-hover"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -189,6 +227,7 @@ export function PracticeLogin({
               )}
             </button>
           </div>
+          </form>
         </div>
       </div>
     </div>

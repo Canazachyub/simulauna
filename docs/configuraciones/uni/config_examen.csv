@@ -1,0 +1,13 @@
+proceso,division,division_tipo,curso,n_preguntas,puntos_correcta,puntos_incorrecta,puntos_blanco,factor_escala,peso,orden
+ORDINARIO,Única (todas las especialidades),area,P1 Razonamiento Lógico-Matemático,30,6,0,0,,,1
+ORDINARIO,Única (todas las especialidades),area,P1 Razonamiento Verbal,30,6,0,0,,,2
+ORDINARIO,Única (todas las especialidades),area,P1 Razonamiento Lógico-Algorítmico,4,6,0,0,,,3
+ORDINARIO,Única (todas las especialidades),area,P1 Humanidades,30,6,0,0,,,4
+ORDINARIO,Única (todas las especialidades),area,P1 Actualidad,6,6,0,0,,,5
+ORDINARIO,Única (todas las especialidades),area,P2 Aritmética,8,15,0,0,,,6
+ORDINARIO,Única (todas las especialidades),area,P2 Álgebra,8,15,0,0,,,7
+ORDINARIO,Única (todas las especialidades),area,P2 Geometría,8,15,0,0,,,8
+ORDINARIO,Única (todas las especialidades),area,P2 Trigonometría,8,15,0,0,,,9
+ORDINARIO,Única (todas las especialidades),area,P2 Nociones de Cálculo Diferencial,8,15,0,0,,,10
+ORDINARIO,Única (todas las especialidades),area,P3 Física,20,15,0,0,,,11
+ORDINARIO,Única (todas las especialidades),area,P3 Química,20,15,0,0,,,12

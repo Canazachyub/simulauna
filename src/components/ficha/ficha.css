@@ -1,0 +1,438 @@
+/* ==========================================================================
+   Ficha óptica (hoja de respuestas tipo examen de admisión)
+   Inspirada en la ficha de Academia Guyton (patrón HyperLine), pero:
+   - Responsiva REAL: nada de escalar la hoja con transform. Las filas fluyen
+     en columnas (CSS multi-column, orden vertical como la hoja de papel) y el
+     número de columnas depende del ANCHO DEL CONTENEDOR (container queries):
+     la misma hoja se ve bien en el drawer del celular, en el panel lateral del
+     examen y a todo lo ancho en Resultados.
+   - Color de la universidad activa (--uni-primary-safe, AA contra blanco).
+   - Burbujas de 36 px en pantallas táctiles (fila >= 44 px); con mouse se
+     compactan a 30 px para que entren más columnas.
+   Solo se animan transform/opacity (bubble-fill del kit de movimiento).
+   ========================================================================== */
+
+.ficha {
+  /* Tokens de la hoja */
+  --ficha-papel: #FBF8EF;
+  --ficha-tinta: #1F2937;
+  --ficha-linea: #CBD5E1;
+  --ficha-marca: var(--uni-primary-safe, #003D7A);
+  /* Medidas táctiles (por defecto) */
+  --ficha-b: 36px;      /* diámetro de la burbuja (= área de toque) */
+  --ficha-num: 30px;    /* columna del número */
+  --ficha-gap: 4px;     /* separación entre burbujas */
+  --ficha-fila: 44px;   /* alto mínimo de fila */
+  --ficha-letra: 14px;  /* letra dentro de la burbuja */
+
+  position: relative;
+  background: var(--ficha-papel);
+  border: 1.5px solid #94A3B8;
+  border-radius: 14px;
+  color: var(--ficha-tinta);
+  /* El padding lateral deja sitio a las marcas de tiempo del borde */
+  padding: 14px 22px 16px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 24px -12px rgba(15, 23, 42, 0.18);
+  min-width: 0;
+}
+
+/* Marcas de tiempo (lector óptico) en ambos bordes: puramente decorativas */
+.ficha::before,
+.ficha::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  bottom: 18px;
+  width: 7px;
+  background: repeating-linear-gradient(to bottom, #111827 0 6px, transparent 6px 18px);
+  pointer-events: none;
+}
+.ficha::before { left: 6px; }
+.ficha::after { right: 6px; }
+
+/* ---- Cabecera institucional --------------------------------------------- */
+
+.ficha-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--ficha-tinta);
+}
+
+.ficha-logo {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.ficha-cabecera-textos { min-width: 0; line-height: 1.2; }
+
+.ficha-universidad {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #334155;
+  overflow-wrap: anywhere;
+}
+
+.ficha-titulo {
+  margin: 2px 0 0;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: var(--ficha-tinta);
+}
+
+.ficha-subtitulo {
+  display: block;
+  font-size: 12px;
+  color: #475569;
+  margin-top: 1px;
+}
+
+/* Datos del postulante (solo lectura) */
+.ficha-datos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.ficha-dato {
+  border: 1.5px solid #64748B;
+  border-radius: 8px;
+  background: #fff;
+  padding: 4px 8px 5px;
+  min-width: 0;
+}
+
+.ficha-dato-etiqueta {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #475569;
+}
+
+.ficha-dato-valor {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ficha-tinta);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ficha-dato-valor--mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  letter-spacing: 0.08em;
+}
+
+/* Instrucciones (modo marcar) y leyenda (modo corregida) */
+.ficha-instrucciones,
+.ficha-leyenda {
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 1px dashed #94A3B8;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #334155;
+}
+
+.ficha-instrucciones strong { color: var(--ficha-tinta); }
+
+.ficha-instrucciones-ejemplo {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  vertical-align: middle;
+}
+
+.ficha-muestra {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ficha-marca);
+  background: #fff;
+  color: var(--ficha-marca);
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.ficha-muestra--llena { background: var(--ficha-marca); color: #fff; }
+.ficha-muestra--ok { background: #047857; border-color: #047857; color: #fff; }
+.ficha-muestra--mal { background: #DC2626; border-color: #DC2626; color: #fff; }
+.ficha-muestra--clave { border-color: #059669; box-shadow: 0 0 0 2px #059669; color: #065F46; }
+.ficha-muestra--blanco { border-color: #94A3B8; color: #475569; }
+
+.ficha-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+
+.ficha-leyenda-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ---- Cuerpo: columnas de filas ------------------------------------------- */
+
+.ficha-zona {
+  container-type: inline-size;
+  container-name: ficha;
+  margin-top: 6px;
+}
+
+.ficha-columnas {
+  column-count: 1;
+  column-gap: 14px;
+  column-rule: 1px dashed var(--ficha-linea);
+}
+
+/* Separador de curso: siempre pegado a su primera fila */
+.ficha-curso-inicio,
+.ficha-fila {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+}
+
+.ficha-curso {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 10px 0 2px;
+  padding: 0 4px 3px;
+  border-bottom: 1.5px solid var(--ficha-marca);
+  color: var(--ficha-marca);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.25;
+}
+
+.ficha-curso-nombre { min-width: 0; overflow-wrap: anywhere; }
+
+.ficha-curso-conteo {
+  flex-shrink: 0;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: 0;
+}
+
+.ficha-fila {
+  display: grid;
+  grid-template-columns: var(--ficha-num) repeat(5, var(--ficha-b));
+  column-gap: var(--ficha-gap);
+  align-items: center;
+  /* Las pistas son de ancho fijo: el sobrante de la columna se reparte a los lados */
+  justify-content: center;
+  min-height: var(--ficha-fila);
+  padding: 0 4px;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.ficha-fila--par { background: rgba(148, 163, 184, 0.10); }
+
+/* Fila de la pregunta actual (modo marcar) */
+.ficha-fila--actual {
+  background: var(--uni-primary-soft, rgba(0, 61, 122, 0.08));
+  box-shadow: inset 0 0 0 2px var(--ficha-marca);
+}
+
+.ficha-num {
+  height: var(--ficha-fila);
+  padding: 0 4px 0 0;
+  border: 0;
+  background: transparent;
+  border-radius: 6px;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--ficha-tinta);
+  cursor: pointer;
+}
+
+.ficha-num:focus-visible,
+.ficha-burbuja:focus-visible,
+.ficha-fila--boton:focus-visible {
+  outline: 3px solid var(--ficha-marca);
+  outline-offset: 2px;
+}
+
+.ficha-fila--actual .ficha-num { color: var(--ficha-marca); }
+
+.ficha-burbuja {
+  appearance: none;
+  width: var(--ficha-b);
+  height: var(--ficha-b);
+  padding: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--ficha-marca);
+  background: #fff;
+  color: var(--ficha-marca);
+  display: inline-grid;
+  place-items: center;
+  font-size: var(--ficha-letra);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.ficha-burbuja.is-marcada {
+  background: var(--ficha-marca);
+  color: #fff;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+}
+
+/* Con mouse: burbujas más compactas y hover visible */
+@media (hover: hover) and (pointer: fine) {
+  .ficha {
+    --ficha-b: 30px;
+    --ficha-num: 26px;
+    --ficha-gap: 3px;
+    --ficha-fila: 36px;
+    --ficha-letra: 13px;
+  }
+  .ficha-burbuja:not(.is-marcada):hover { background: var(--uni-primary-soft, rgba(0, 61, 122, 0.08)); }
+  .ficha-num:hover { background: rgba(148, 163, 184, 0.18); }
+}
+
+/* Columnas según el ancho del contenedor (táctil: fila ≈ 238 px) */
+@container ficha (min-width: 500px) { .ficha-columnas { column-count: 2; } }
+@container ficha (min-width: 750px) { .ficha-columnas { column-count: 3; } }
+@container ficha (min-width: 1000px) { .ficha-columnas { column-count: 4; } }
+
+/* Con mouse (fila ≈ 199 px) caben más columnas */
+@media (hover: hover) and (pointer: fine) {
+  @container ficha (min-width: 410px) { .ficha-columnas { column-count: 2; } }
+  @container ficha (min-width: 625px) { .ficha-columnas { column-count: 3; } }
+  @container ficha (min-width: 840px) { .ficha-columnas { column-count: 4; } }
+}
+
+/* ---- Modo corregida -------------------------------------------------------- */
+/* Las burbujas ya no se tocan: la FILA entera es el botón (toque >= 40 px) y las
+   burbujas se achican para que entren más columnas. */
+
+.ficha--corregida {
+  --ficha-b: 26px;
+  --ficha-num: 30px;
+  --ficha-gap: 4px;
+  --ficha-fila: 40px;
+  --ficha-letra: 12px;
+}
+
+@container ficha (min-width: 400px) { .ficha--corregida .ficha-columnas { column-count: 2; } }
+@container ficha (min-width: 600px) { .ficha--corregida .ficha-columnas { column-count: 3; } }
+@container ficha (min-width: 800px) { .ficha--corregida .ficha-columnas { column-count: 4; } }
+
+.ficha--corregida .ficha-burbuja {
+  cursor: default;
+  border-color: #94A3B8;
+  color: #475569;
+}
+
+.ficha--corregida .ficha-num { cursor: inherit; height: auto; }
+
+.ficha-fila--boton {
+  appearance: none;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+}
+
+.ficha-fila--boton.ficha-fila--par { background: rgba(148, 163, 184, 0.10); }
+.ficha-fila--boton:hover { background: rgba(148, 163, 184, 0.22); }
+
+.ficha-fila--revisando {
+  box-shadow: inset 0 0 0 2px var(--ficha-marca);
+  background: var(--uni-primary-soft, rgba(0, 61, 122, 0.08));
+}
+
+.ficha--corregida .ficha-burbuja.ficha-burbuja--ok {
+  background: #047857;
+  border-color: #047857;
+  color: #fff;
+}
+
+.ficha--corregida .ficha-burbuja.ficha-burbuja--mal {
+  background: #DC2626;
+  border-color: #DC2626;
+  color: #fff;
+}
+
+/* Respuesta correcta que el postulante NO marcó: anillo verde */
+.ficha--corregida .ficha-burbuja.ficha-burbuja--clave {
+  border-color: #059669;
+  box-shadow: 0 0 0 2.5px #059669;
+  color: #065F46;
+  font-weight: 800;
+}
+
+/* Marcada pero sin clave disponible: neutra */
+.ficha--corregida .ficha-burbuja.ficha-burbuja--neutra {
+  background: #475569;
+  border-color: #475569;
+  color: #fff;
+}
+
+.ficha-fila--blanco .ficha-num { color: #64748B; }
+
+/* ---- Pantallas muy angostas (< 360 px): recortar márgenes ---------------- */
+@media (max-width: 359px) {
+  .ficha { padding-left: 18px; padding-right: 18px; }
+  .ficha::before { left: 4px; }
+  .ficha::after { right: 4px; }
+  .ficha { --ficha-gap: 3px; --ficha-num: 28px; }
+}
+
+/* ---- Navegadores sin container queries: aproximar por viewport ----------- */
+@supports not (container-type: inline-size) {
+  @media (min-width: 640px) { .ficha-columnas { column-count: 2; } }
+  @media (min-width: 1024px) { .ficha-columnas { column-count: 3; } }
+}
+
+/* ---- Transición entre preguntas del examen (Quiz) ----------------------- */
+/* Corta y discreta: durante el examen nada de animaciones llamativas. */
+@keyframes examen-cambio-sig {
+  from { opacity: 0; transform: translate3d(12px, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes examen-cambio-ant {
+  from { opacity: 0; transform: translate3d(-12px, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+.examen-cambio--sig { animation: examen-cambio-sig 220ms ease-out both; }
+.examen-cambio--ant { animation: examen-cambio-ant 220ms ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble-fill,
+  .examen-cambio--sig,
+  .examen-cambio--ant { animation: none !important; }
+  .ficha-burbuja { transition: none; }
+}

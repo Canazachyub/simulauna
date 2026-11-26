@@ -1,0 +1,2 @@
+proceso,motor,escala_total,umbral_excelente,umbral_bueno,umbral_regular,duracion_min,n_preguntas_total,factor_escala,minimo_aprobatorio,fuente,notas
+ORDINARIO,decimas,1800,1440.0,1080.0,720.0,,180,,Relativo: >= 50% del puntaje del 1er puesto de la especialidad (Art. 22),https://cdnuni.uni.edu.pe/dn/laravel/storage/app/archivos_dn/R.R.%20N%C2%B01993-2025-UNI-DN.pdf,"3 pruebas en 3 días: P1 Aptitud Académica y Humanidades (600), P2 Matemática (600), P3 Física y Química (600). Arquitectura rinde P4 (no incluida)."

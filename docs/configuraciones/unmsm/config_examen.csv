@@ -1,0 +1,96 @@
+proceso,division,division_tipo,curso,n_preguntas,puntos_correcta,puntos_incorrecta,puntos_blanco,factor_escala,peso,orden
+ORDINARIO,A - Ciencias de la Salud,area,Sección Actitudinal,10,20,0,0,,,1
+ORDINARIO,A - Ciencias de la Salud,area,Habilidad Verbal,10,20,-1.125,0,,,2
+ORDINARIO,A - Ciencias de la Salud,area,Habilidad Lógico-Matemática,10,20,-1.125,0,,,3
+ORDINARIO,A - Ciencias de la Salud,area,Aritmética,4,20,-1.125,0,,,4
+ORDINARIO,A - Ciencias de la Salud,area,Geometría,3,20,-1.125,0,,,5
+ORDINARIO,A - Ciencias de la Salud,area,Álgebra,3,20,-1.125,0,,,6
+ORDINARIO,A - Ciencias de la Salud,area,Trigonometría,2,20,-1.125,0,,,7
+ORDINARIO,A - Ciencias de la Salud,area,Lenguaje,7,20,-1.125,0,,,8
+ORDINARIO,A - Ciencias de la Salud,area,Literatura,4,20,-1.125,0,,,9
+ORDINARIO,A - Ciencias de la Salud,area,Psicología,6,20,-1.125,0,,,10
+ORDINARIO,A - Ciencias de la Salud,area,Educación Cívica,4,20,-1.125,0,,,11
+ORDINARIO,A - Ciencias de la Salud,area,Historia del Perú,3,20,-1.125,0,,,12
+ORDINARIO,A - Ciencias de la Salud,area,Historia Universal,2,20,-1.125,0,,,13
+ORDINARIO,A - Ciencias de la Salud,area,Geografía,4,20,-1.125,0,,,14
+ORDINARIO,A - Ciencias de la Salud,area,Economía,4,20,-1.125,0,,,15
+ORDINARIO,A - Ciencias de la Salud,area,Filosofía,4,20,-1.125,0,,,16
+ORDINARIO,A - Ciencias de la Salud,area,Física,5,20,-1.125,0,,,17
+ORDINARIO,A - Ciencias de la Salud,area,Química,7,20,-1.125,0,,,18
+ORDINARIO,A - Ciencias de la Salud,area,Biología,8,20,-1.125,0,,,19
+ORDINARIO,B - Ciencias Básicas,area,Sección Actitudinal,10,20,0,0,,,1
+ORDINARIO,B - Ciencias Básicas,area,Habilidad Verbal,10,20,-1.125,0,,,2
+ORDINARIO,B - Ciencias Básicas,area,Habilidad Lógico-Matemática,10,20,-1.125,0,,,3
+ORDINARIO,B - Ciencias Básicas,area,Aritmética,4,20,-1.125,0,,,4
+ORDINARIO,B - Ciencias Básicas,area,Geometría,4,20,-1.125,0,,,5
+ORDINARIO,B - Ciencias Básicas,area,Álgebra,4,20,-1.125,0,,,6
+ORDINARIO,B - Ciencias Básicas,area,Trigonometría,3,20,-1.125,0,,,7
+ORDINARIO,B - Ciencias Básicas,area,Lenguaje,6,20,-1.125,0,,,8
+ORDINARIO,B - Ciencias Básicas,area,Literatura,4,20,-1.125,0,,,9
+ORDINARIO,B - Ciencias Básicas,area,Psicología,4,20,-1.125,0,,,10
+ORDINARIO,B - Ciencias Básicas,area,Educación Cívica,4,20,-1.125,0,,,11
+ORDINARIO,B - Ciencias Básicas,area,Historia del Perú,2,20,-1.125,0,,,12
+ORDINARIO,B - Ciencias Básicas,area,Historia Universal,2,20,-1.125,0,,,13
+ORDINARIO,B - Ciencias Básicas,area,Geografía,4,20,-1.125,0,,,14
+ORDINARIO,B - Ciencias Básicas,area,Economía,4,20,-1.125,0,,,15
+ORDINARIO,B - Ciencias Básicas,area,Filosofía,4,20,-1.125,0,,,16
+ORDINARIO,B - Ciencias Básicas,area,Física,7,20,-1.125,0,,,17
+ORDINARIO,B - Ciencias Básicas,area,Química,7,20,-1.125,0,,,18
+ORDINARIO,B - Ciencias Básicas,area,Biología,7,20,-1.125,0,,,19
+ORDINARIO,C - Ingeniería,area,Sección Actitudinal,10,20,0,0,,,1
+ORDINARIO,C - Ingeniería,area,Habilidad Verbal,10,20,-1.125,0,,,2
+ORDINARIO,C - Ingeniería,area,Habilidad Lógico-Matemática,10,20,-1.125,0,,,3
+ORDINARIO,C - Ingeniería,area,Aritmética,4,20,-1.125,0,,,4
+ORDINARIO,C - Ingeniería,area,Geometría,4,20,-1.125,0,,,5
+ORDINARIO,C - Ingeniería,area,Álgebra,4,20,-1.125,0,,,6
+ORDINARIO,C - Ingeniería,area,Trigonometría,3,20,-1.125,0,,,7
+ORDINARIO,C - Ingeniería,area,Lenguaje,7,20,-1.125,0,,,8
+ORDINARIO,C - Ingeniería,area,Literatura,4,20,-1.125,0,,,9
+ORDINARIO,C - Ingeniería,area,Psicología,4,20,-1.125,0,,,10
+ORDINARIO,C - Ingeniería,area,Educación Cívica,4,20,-1.125,0,,,11
+ORDINARIO,C - Ingeniería,area,Historia del Perú,3,20,-1.125,0,,,12
+ORDINARIO,C - Ingeniería,area,Historia Universal,2,20,-1.125,0,,,13
+ORDINARIO,C - Ingeniería,area,Geografía,4,20,-1.125,0,,,14
+ORDINARIO,C - Ingeniería,area,Economía,4,20,-1.125,0,,,15
+ORDINARIO,C - Ingeniería,area,Filosofía,4,20,-1.125,0,,,16
+ORDINARIO,C - Ingeniería,area,Física,7,20,-1.125,0,,,17
+ORDINARIO,C - Ingeniería,area,Química,6,20,-1.125,0,,,18
+ORDINARIO,C - Ingeniería,area,Biología,6,20,-1.125,0,,,19
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Sección Actitudinal,10,20,0,0,,,1
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Habilidad Verbal,10,20,-1.125,0,,,2
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Habilidad Lógico-Matemática,10,20,-1.125,0,,,3
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Aritmética,4,20,-1.125,0,,,4
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Geometría,4,20,-1.125,0,,,5
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Álgebra,4,20,-1.125,0,,,6
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Trigonometría,2,20,-1.125,0,,,7
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Lenguaje,8,20,-1.125,0,,,8
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Literatura,4,20,-1.125,0,,,9
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Psicología,6,20,-1.125,0,,,10
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Educación Cívica,4,20,-1.125,0,,,11
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Historia del Perú,3,20,-1.125,0,,,12
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Historia Universal,3,20,-1.125,0,,,13
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Geografía,4,20,-1.125,0,,,14
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Economía,8,20,-1.125,0,,,15
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Filosofía,4,20,-1.125,0,,,16
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Física,4,20,-1.125,0,,,17
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Química,4,20,-1.125,0,,,18
+ORDINARIO,D - Ciencias Económicas y de la Gestión,area,Biología,4,20,-1.125,0,,,19
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Sección Actitudinal,10,20,0,0,,,1
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Habilidad Verbal,10,20,-1.125,0,,,2
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Habilidad Lógico-Matemática,10,20,-1.125,0,,,3
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Aritmética,2,20,-1.125,0,,,4
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Geometría,2,20,-1.125,0,,,5
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Álgebra,2,20,-1.125,0,,,6
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Trigonometría,2,20,-1.125,0,,,7
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Lenguaje,8,20,-1.125,0,,,8
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Literatura,6,20,-1.125,0,,,9
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Psicología,6,20,-1.125,0,,,10
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Educación Cívica,4,20,-1.125,0,,,11
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Historia del Perú,5,20,-1.125,0,,,12
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Historia Universal,5,20,-1.125,0,,,13
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Geografía,5,20,-1.125,0,,,14
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Economía,5,20,-1.125,0,,,15
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Filosofía,6,20,-1.125,0,,,16
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Física,4,20,-1.125,0,,,17
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Química,4,20,-1.125,0,,,18
+ORDINARIO,E - Humanidades y Ciencias Jurídicas y Sociales,area,Biología,4,20,-1.125,0,,,19

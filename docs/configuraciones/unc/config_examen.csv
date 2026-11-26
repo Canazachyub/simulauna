@@ -1,0 +1,25 @@
+proceso,division,division_tipo,curso,n_preguntas,puntos_correcta,puntos_incorrecta,puntos_blanco,factor_escala,peso,orden
+ORDINARIO,MÓDULO A,area,Razonamiento Verbal,15,8,-0.51,0,,,1
+ORDINARIO,MÓDULO A,area,Razonamiento Matemático,15,8,-0.51,0,,,2
+ORDINARIO,MÓDULO A,area,Matemáticas,30,6,-0.51,0,,,3
+ORDINARIO,MÓDULO A,area,Comunicación,10,6,-0.51,0,,,4
+ORDINARIO,MÓDULO A,area,"Ciencia, Tecnología y Ambiente",12,6,-0.51,0,,,5
+ORDINARIO,MÓDULO A,area,Sociales y Cívicos,8,6,-0.51,0,,,6
+ORDINARIO,MÓDULO B,area,Razonamiento Verbal,15,8,-0.51,0,,,1
+ORDINARIO,MÓDULO B,area,Razonamiento Matemático,15,8,-0.51,0,,,2
+ORDINARIO,MÓDULO B,area,Matemáticas,10,6,-0.51,0,,,3
+ORDINARIO,MÓDULO B,area,Comunicación,12,6,-0.51,0,,,4
+ORDINARIO,MÓDULO B,area,"Ciencia, Tecnología y Ambiente",28,6,-0.51,0,,,5
+ORDINARIO,MÓDULO B,area,Sociales y Cívicos,10,6,-0.51,0,,,6
+ORDINARIO,MÓDULO C,area,Razonamiento Verbal,15,8,-0.51,0,,,1
+ORDINARIO,MÓDULO C,area,Razonamiento Matemático,15,8,-0.51,0,,,2
+ORDINARIO,MÓDULO C,area,Matemáticas,12,6,-0.51,0,,,3
+ORDINARIO,MÓDULO C,area,Comunicación,20,6,-0.51,0,,,4
+ORDINARIO,MÓDULO C,area,"Ciencia, Tecnología y Ambiente",12,6,-0.51,0,,,5
+ORDINARIO,MÓDULO C,area,Sociales y Cívicos,16,6,-0.51,0,,,6
+ORDINARIO,MÓDULO D,area,Razonamiento Verbal,15,8,-0.51,0,,,1
+ORDINARIO,MÓDULO D,area,Razonamiento Matemático,15,8,-0.51,0,,,2
+ORDINARIO,MÓDULO D,area,Matemáticas,16,6,-0.51,0,,,3
+ORDINARIO,MÓDULO D,area,Comunicación,12,6,-0.51,0,,,4
+ORDINARIO,MÓDULO D,area,"Ciencia, Tecnología y Ambiente",24,6,-0.51,0,,,5
+ORDINARIO,MÓDULO D,area,Sociales y Cívicos,8,6,-0.51,0,,,6

@@ -73,8 +73,8 @@ interface CoachTourProps {
   active: boolean;
 }
 
-const MASCOT_WELCOME = '/simulauna/illustrations/lobito-saludo.webp';
-const MASCOT_GUIDE = '/simulauna/illustrations/lobito-profesor.webp';
+const MASCOT_WELCOME = '/illustrations/lobito-saludo.webp';
+const MASCOT_GUIDE = '/illustrations/lobito-profesor.webp';
 
 const CARD_WIDTH = 336;
 const CARD_MARGIN = 12;

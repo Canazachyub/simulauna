@@ -8,8 +8,11 @@
 /** Número de WhatsApp de soporte/contacto (formato E.164 sin '+', el que espera wa.me). */
 export const WHATSAPP_NUMBER = '51900266810';
 
+/** WhatsApp de INSCRIPCIONES (alumnos nuevos que quieren acceso completo). */
+export const WHATSAPP_INSCRIPCION = '51989855026';
+
 /** Arma la URL de wa.me con el mensaje pre-rellenado (encodeURIComponent se aplica aquí,
  * así que los llamadores pasan el texto plano, sin %20 ni encodeURIComponent manual). */
-export function whatsappUrl(mensaje: string): string {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+export function whatsappUrl(mensaje: string, numero: string = WHATSAPP_NUMBER): string {
+  return `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
 }

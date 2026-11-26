@@ -221,65 +221,21 @@ const UNA_AREA_CODES_ = {
 // CONFIGURACION (accion legada `config`)
 // ============================================
 
+/** Tenant mínimo de UNA para leer su configuración (no depende del CORE). */
+function unaTenantMin_() {
+  return { codigo: 'una', layout: 'legacy', spreadsheetId: SPREADSHEET_ID };
+}
+
 /**
- * OBTENER CONFIGURACION DE TODAS LAS AREAS (forma legada, sin cambios).
+ * OBTENER CONFIGURACION DE TODAS LAS AREAS (forma legada).
+ * Blindada (config_guard.gs): las hojas Configuración_* se validan; si una
+ * edición las dejó inválidas se sirve la última configuración buena (o la
+ * de fábrica). Nunca devuelve puntajes inválidos. Misma forma que antes:
+ * {<área>: {name, subjects:[{code,name,pointsPerQuestion,questionCount,weight,maxScore}],
+ * totalQuestions, totalMaxScore}}.
  */
 function unaGetConfig() {
-  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-  const config = {};
-
-  for (const [areaName, sheetName] of Object.entries(CONFIG_SHEETS)) {
-    const sheet = ss.getSheetByName(sheetName);
-    if (!sheet) {
-      throw new Error(`Hoja "${sheetName}" no encontrada`);
-    }
-
-    const data = sheet.getDataRange().getValues();
-    const headers = data[0];
-    const subjects = [];
-    let totalQuestions = 0;
-    let totalMaxScore = 0;
-
-    const colIndices = {
-      cod: headers.indexOf('COD.'),
-      asignatura: headers.indexOf('ASIGNATURA'),
-      puntajePregunta: headers.indexOf('PREGUNTA BIEN CONTESTADA'),
-      cantidad: headers.indexOf('CANTIDAD DE PREGUNTAS'),
-      ponderacion: headers.indexOf('PONDERACIÓN'),
-      puntaje: headers.indexOf('PUNTAJE')
-    };
-
-    for (let i = 1; i < data.length; i++) {
-      const row = data[i];
-      const asignatura = row[colIndices.asignatura];
-
-      if (!asignatura || asignatura === 'TOTAL' || asignatura === '') continue;
-
-      const cantidad = parseInt(row[colIndices.cantidad]) || 0;
-      const puntaje = parseFloat(row[colIndices.puntaje]) || 0;
-
-      subjects.push({
-        code: row[colIndices.cod],
-        name: asignatura,
-        pointsPerQuestion: parseFloat(row[colIndices.puntajePregunta]) || 0,
-        questionCount: cantidad,
-        weight: parseFloat(row[colIndices.ponderacion]) || 0,
-        maxScore: puntaje
-      });
-
-      totalQuestions += cantidad;
-      totalMaxScore += puntaje;
-    }
-
-    config[areaName] = {
-      name: areaName,
-      subjects: subjects,
-      totalQuestions: totalQuestions,
-      totalMaxScore: totalMaxScore
-    };
-  }
-
-  return config;
+  return cfgCargarConfig_(unaTenantMin_(), 'ORDINARIO').config.areas;
 }
 
 /**
@@ -289,42 +245,7 @@ function unaGetConfig() {
  * de asignaturas via CEPRE_SUBJECT_SHEETS).
  */
 function unaGetConfigV2(proceso) {
-  const legacyConfig = unaGetConfig();
-  const divisiones = UNA_AREAS_.map(function (areaName, index) {
-    const area = legacyConfig[areaName];
-    const subjects = area.subjects.map(function (s, i) {
-      return {
-        name: s.name,
-        questionCount: s.questionCount,
-        pointsPerQuestion: s.pointsPerQuestion,
-        weight: s.weight,
-        maxScore: s.maxScore,
-        orden: i + 1
-      };
-    });
-    return {
-      codigo: areaName,
-      nombre: areaName,
-      tipo: 'area',
-      subjects: subjects,
-      totalQuestions: area.totalQuestions,
-      totalMaxScore: area.totalMaxScore,
-      orden: index + 1
-    };
-  });
-
-  return {
-    universidad: 'una',
-    proceso: proceso || 'ORDINARIO',
-    divisiones: divisiones,
-    escala: {
-      motor: UNA_ESCALA_ORDINARIO_.motor,
-      escalaTotal: UNA_ESCALA_ORDINARIO_.escalaTotal,
-      umbrales: UNA_ESCALA_ORDINARIO_.umbrales,
-      duracionMin: UNA_ESCALA_ORDINARIO_.duracionMin,
-      nPreguntasTotal: UNA_ESCALA_ORDINARIO_.nPreguntasTotal
-    }
-  };
+  return unaConfigToV2Response_(unaGetConfig(), proceso, UNA_AREAS_, UNA_ESCALA_ORDINARIO_);
 }
 
 // ============================================
@@ -340,38 +261,20 @@ function unaGetQuestions(areaName) {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
 
   if (!CONFIG_SHEETS[areaName]) {
-    throw new Error(`Área "${areaName}" no válida. Use: Ingenierías, Sociales, o Biomédicas`);
+    throw publicError_(`Área "${areaName}" no válida. Use: Ingenierías, Sociales, o Biomédicas`);
   }
 
-  const configSheet = ss.getSheetByName(CONFIG_SHEETS[areaName]);
-  if (!configSheet) {
-    throw new Error(`Hoja de configuración para "${areaName}" no encontrada`);
-  }
-
-  const configData = configSheet.getDataRange().getValues();
-  const headers = configData[0];
-
-  const colIndices = {
-    asignatura: headers.indexOf('ASIGNATURA'),
-    cantidad: headers.indexOf('CANTIDAD DE PREGUNTAS'),
-    puntaje: headers.indexOf('PUNTAJE')
-  };
-
+  // Plan de asignaturas desde la configuración VALIDADA (config_guard.gs).
+  const area = unaGetConfig()[areaName];
   const questions = [];
   let questionNumber = 1;
 
-  for (let i = 1; i < configData.length; i++) {
-    const row = configData[i];
-    const subjectName = row[colIndices.asignatura];
-    const questionCount = parseInt(row[colIndices.cantidad]) || 0;
-    const maxScore = parseFloat(row[colIndices.puntaje]) || 0;
-
-    if (!subjectName || subjectName === 'TOTAL' || subjectName === '' || questionCount === 0) continue;
-
-    const subjectQuestions = unaGetRandomQuestionsFromSubject_(ss, subjectName, questionCount, maxScore, questionNumber);
+  area.subjects.forEach(function (s) {
+    if (!s.questionCount) return;
+    const subjectQuestions = unaGetRandomQuestionsFromSubject_(ss, s.name, s.questionCount, s.maxScore, questionNumber);
     questions.push(...subjectQuestions);
     questionNumber += subjectQuestions.length;
-  }
+  });
 
   return questions;
 }
@@ -426,18 +329,13 @@ function unaGetRandomQuestionsFromSubject_(ss, subjectName, count, maxScore, sta
   const selectedQuestions = selectRandomItems(allQuestions, count);
   const pointsPerQuestion = count > 0 ? maxScore / count : 0;
 
-  return selectedQuestions.map((q, index) => {
+  return renumberQuestions_(selectedQuestions.map((q, index) => {
     const row = q.data;
 
-    const options = [
-      formatCellValue(row[colIndices.option1]),
-      formatCellValue(row[colIndices.option2]),
-      formatCellValue(row[colIndices.option3]),
-      formatCellValue(row[colIndices.option4]),
-      formatCellValue(row[colIndices.option5])
-    ].filter(opt => opt && opt !== '');
-
-    const correctAnswerIndex = (parseInt(row[colIndices.correctAnswer]) || 1) - 1;
+    const built = unaBuildOptions_(row, colIndices, sheetName, q.rowIndex);
+    if (!built) return null;
+    const options = built.options;
+    const correctAnswerIndex = built.correctAnswer;
 
     return {
       id: `${subjectName}-${q.rowIndex}`,
@@ -458,7 +356,30 @@ function unaGetRandomQuestionsFromSubject_(ss, subjectName, count, maxScore, sta
         subtema: row[colIndices.subtema]
       }
     };
-  });
+  }).filter(Boolean), startingNumber);
+}
+
+/**
+ * Opciones de una fila legada con el índice correcto REMAPEADO tras
+ * filtrar opciones vacías (ver buildOptionsWithAnswer_ en core.gs). Si la
+ * opción marcada como correcta está vacía, loguea y devuelve null (el
+ * llamador omite la pregunta). Correct Answer vacío/no numérico conserva
+ * el comportamiento legado (índice 0).
+ */
+function unaBuildOptions_(row, ci, sheetName, rowIndex) {
+  const built = buildOptionsWithAnswer_([
+    formatCellValue(row[ci.option1]),
+    formatCellValue(row[ci.option2]),
+    formatCellValue(row[ci.option3]),
+    formatCellValue(row[ci.option4]),
+    formatCellValue(row[ci.option5])
+  ], row[ci.correctAnswer]);
+  if (!built.valid) {
+    console.error('[BANCO] Pregunta omitida: la opción correcta (' + row[ci.correctAnswer] + ') está vacía. hoja=' +
+      sheetName + ' fila=' + (rowIndex + 1));
+    return null;
+  }
+  return built;
 }
 
 // ============================================
@@ -468,12 +389,24 @@ function unaGetRandomQuestionsFromSubject_(ss, subjectName, count, maxScore, sta
 /**
  * Registra un usuario en la hoja "usuarios" (forma y comportamiento legados).
  * Columnas: Fecha | DNI | Nombre | Email | Celular | Proceso | Área | Carrera
+ *
+ * Endurecido: corre bajo ScriptLock, sanea cada celda (safeCell_) y NUNCA
+ * sobrescribe el email de un DNI existente: si el email difiere (o el
+ * email ya es de otro DNI) responde la misma discrepancia que checkAccess.
  */
 function unaRegisterUser(dni, fullName, email, phone, processType, area, career) {
   if (!dni) {
     return { registered: false, message: 'DNI requerido' };
   }
+  return withScriptLock_(10000, function () {
+    return unaRegisterUserLocked_(dni, fullName, email, phone, processType, area, career);
+  });
+}
 
+// Mismo texto que checkAccess (v2 y legado) para cualquier discrepancia DNI<->email.
+const UNA_MSG_DISCREPANCIA_ = 'DNI o email ya registrados con datos distintos';
+
+function unaRegisterUserLocked_(dni, fullName, email, phone, processType, area, career) {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   let sheet = ss.getSheetByName('usuarios');
 
@@ -490,35 +423,61 @@ function unaRegisterUser(dni, fullName, email, phone, processType, area, career)
   const data = sheet.getDataRange().getValues();
   let existingRow = -1;
   const dniStr = String(dni).trim();
+  const emailLower = String(email || '').toLowerCase().trim();
+  let emailDeOtroDni = false;
 
   for (let i = 1; i < data.length; i++) {
-    if (String(data[i][1]).trim() === dniStr) {
+    const rowDni = String(data[i][1]).trim();
+    if (existingRow === -1 && rowDni === dniStr) {
       existingRow = i + 1;
-      break;
+    }
+    const rowEmail = String(data[i][3] || '').toLowerCase().trim();
+    if (emailLower && rowEmail === emailLower && rowDni !== dniStr) {
+      emailDeOtroDni = true;
     }
   }
 
   const timestamp = new Date();
+  const seguro = {
+    fullName: safeCell_(fullName || '', 120),
+    email: safeCell_(email || '', EMAIL_MAX_LEN_),
+    phone: safeCell_(phone || '', 20),
+    processType: safeCell_(processType || '', 30),
+    area: safeCell_(area || '', 60),
+    career: safeCell_(career || '', 150)
+  };
+
+  if (emailDeOtroDni) {
+    console.warn('[SECURITY] unaRegisterUser: email ya registrado con otro DNI (dni=' + dniStr + ')');
+    return { registered: false, message: UNA_MSG_DISCREPANCIA_, existing: true, isFraudAttempt: true };
+  }
 
   if (existingRow > 0) {
     const oldEmail = data[existingRow - 1][3];
+    const oldEmailLower = String(oldEmail || '').toLowerCase().trim();
     const oldPhone = data[existingRow - 1][4];
     const oldCareer = data[existingRow - 1][7];
 
+    // NUNCA sobrescribir el email de un DNI existente.
+    if (oldEmailLower && emailLower && oldEmailLower !== emailLower) {
+      console.warn('[SECURITY] unaRegisterUser: intento de cambiar el email del DNI ' + dniStr);
+      return { registered: false, message: UNA_MSG_DISCREPANCIA_, existing: true, isFraudAttempt: true };
+    }
+
     if (email !== oldEmail || phone !== oldPhone || career !== oldCareer) {
       sheet.getRange(existingRow, 1).setValue(timestamp);
-      sheet.getRange(existingRow, 4).setValue(email);
-      sheet.getRange(existingRow, 5).setValue(phone);
-      sheet.getRange(existingRow, 6).setValue(processType);
-      sheet.getRange(existingRow, 7).setValue(area);
-      sheet.getRange(existingRow, 8).setValue(career);
+      if (!oldEmailLower && email) sheet.getRange(existingRow, 4).setValue(seguro.email);
+      sheet.getRange(existingRow, 5).setValue(seguro.phone);
+      sheet.getRange(existingRow, 6).setValue(seguro.processType);
+      sheet.getRange(existingRow, 7).setValue(seguro.area);
+      sheet.getRange(existingRow, 8).setValue(seguro.career);
       return { registered: true, message: 'Datos de usuario actualizados', updated: true };
     }
 
     return { registered: true, message: 'Usuario ya registrado', existing: true };
   }
 
-  sheet.appendRow([timestamp, dni, fullName, email, phone, processType, area, career]);
+  sheet.appendRow([timestamp, dniStr, seguro.fullName, seguro.email, seguro.phone, seguro.processType, seguro.area, seguro.career]);
 
   return { registered: true, message: 'Usuario registrado correctamente', new: true };
 }
@@ -549,7 +508,7 @@ function unaSaveUserScore(dni, score, maxScore, area, correct, total) {
 
   const percentage = maxScore > 0 ? ((score / maxScore) * 100).toFixed(2) : 0;
   const timestamp = new Date();
-  sheet.appendRow([dni, timestamp, area, score.toFixed(2), maxScore.toFixed(2), correct, total, percentage + '%']);
+  sheet.appendRow([String(dni).trim(), timestamp, safeCell_(area, 80), score.toFixed(2), maxScore.toFixed(2), correct, total, percentage + '%']);
 
   return { saved: true, message: 'Puntaje guardado correctamente' };
 }
@@ -634,16 +593,20 @@ function unaCheckUserAccess(dni, email) {
         existsInUsuarios = true;
         attemptCount++;
 
+        // Mensaje GENÉRICO (igual que checkAccessV2): antes distinguía
+        // "DNI con otro email" vs "email con otro DNI", lo que permitía
+        // enumerar cuentas. El frontend solo usa isFraudAttempt (StudentForm
+        // muestra su propio texto), no depende de distinguirlos.
         if (rowEmail !== '' && emailLower !== '' && rowEmail !== emailLower) {
           fraudAttempt = true;
-          fraudReason = 'Este DNI ya está registrado con otro email';
+          fraudReason = UNA_MSG_DISCREPANCIA_;
         }
       }
 
       if (rowEmail !== '' && emailLower !== '' && rowEmail === emailLower) {
         if (rowDni !== dniStr) {
           fraudAttempt = true;
-          fraudReason = 'Este email ya está registrado con otro DNI';
+          fraudReason = UNA_MSG_DISCREPANCIA_;
         }
       }
     }
@@ -834,18 +797,13 @@ function unaGetBanqueoQuestions(courseName, count) {
 
   const selectedQuestions = selectRandomItems(allQuestions, count);
 
-  const questions = selectedQuestions.map((q, index) => {
+  const questions = renumberQuestions_(selectedQuestions.map((q, index) => {
     const row = q.data;
 
-    const options = [
-      formatCellValue(row[colIndices.option1]),
-      formatCellValue(row[colIndices.option2]),
-      formatCellValue(row[colIndices.option3]),
-      formatCellValue(row[colIndices.option4]),
-      formatCellValue(row[colIndices.option5])
-    ].filter(opt => opt && opt !== '');
-
-    const correctAnswerIndex = (parseInt(row[colIndices.correctAnswer]) || 1) - 1;
+    const built = unaBuildOptions_(row, colIndices, sheetName, q.rowIndex);
+    if (!built) return null;
+    const options = built.options;
+    const correctAnswerIndex = built.correctAnswer;
 
     return {
       id: `banqueo-${courseName}-${q.rowIndex}`,
@@ -864,7 +822,7 @@ function unaGetBanqueoQuestions(courseName, count) {
         subtema: row[colIndices.subtema]
       }
     };
-  });
+  }).filter(Boolean), 1);
 
   return {
     course: courseName,
@@ -936,15 +894,16 @@ function unaGetCepreQuestions(course, area, semana, count) {
 
   let selectedQuestions;
   if (count === null || count === undefined) {
-    selectedQuestions = filteredQuestions;
+    // Modo cuadernillo: en orden de hoja, con tope (antes: el banco entero).
+    selectedQuestions = filteredQuestions.slice(0, QUESTIONS_MAX_COUNT_);
   } else {
-    const validCount = Math.min(count, filteredQuestions.length);
+    const validCount = Math.min(clampCount_(count, QUESTIONS_DEFAULT_COUNT_, QUESTIONS_MAX_COUNT_), filteredQuestions.length);
     selectedQuestions = selectRandomItems(filteredQuestions, validCount);
   }
 
-  const questions = selectedQuestions.map((q, index) => {
+  const questions = renumberQuestions_(selectedQuestions.map((q, index) => {
     return unaFormatCepreQuestion_(q.data, colIndices, course, index + 1, q.rowIndex);
-  });
+  }).filter(Boolean), 1);
 
   return {
     course: course,
@@ -969,37 +928,19 @@ function unaGetCepreSimulacro(area, semana) {
   const areaCodes = { 'Ingenierías': 'ING', 'Biomédicas': 'BIO', 'Sociales': 'SOC' };
   const areaCode = areaCodes[area];
 
-  const configSheet = ss.getSheetByName(CONFIG_SHEETS[area]);
-  if (!configSheet) {
-    return { error: `Hoja de configuración para "${area}" no encontrada` };
-  }
-
-  const configData = configSheet.getDataRange().getValues();
-  const headers = configData[0];
-  const colIndices = {
-    asignatura: headers.indexOf('ASIGNATURA'),
-    cantidad: headers.indexOf('CANTIDAD DE PREGUNTAS'),
-    puntaje: headers.indexOf('PUNTAJE')
-  };
-
+  // Plan de asignaturas desde la configuración VALIDADA (config_guard.gs).
+  const areaConfig = unaGetConfig()[area];
   const questions = [];
   let questionNumber = 1;
 
-  for (let i = 1; i < configData.length; i++) {
-    const row = configData[i];
-    const subjectName = row[colIndices.asignatura];
-    const questionCount = parseInt(row[colIndices.cantidad]) || 0;
-    const maxScore = parseFloat(row[colIndices.puntaje]) || 0;
-
-    if (!subjectName || subjectName === 'TOTAL' || questionCount === 0) continue;
-
+  areaConfig.subjects.forEach(function (s) {
+    if (!s.questionCount) return;
     const subjectQuestions = unaGetCepreQuestionsForSimulacro_(
-      ss, subjectName, areaCode, semana, questionCount, maxScore, questionNumber
+      ss, s.name, areaCode, semana, s.questionCount, s.maxScore, questionNumber
     );
-
     questions.push(...subjectQuestions);
     questionNumber += subjectQuestions.length;
-  }
+  });
 
   return {
     area: area,
@@ -1054,11 +995,12 @@ function unaGetCepreQuestionsForSimulacro_(ss, subjectName, areaCode, semana, co
   const selectedQuestions = selectRandomItems(filteredQuestions, count);
   const pointsPerQuestion = count > 0 ? maxScore / count : 0;
 
-  return selectedQuestions.map((q, index) => {
+  return renumberQuestions_(selectedQuestions.map((q, index) => {
     const formatted = unaFormatCepreQuestion_(q.data, colIndices, subjectName, startingNumber + index, q.rowIndex);
+    if (!formatted) return null;
     formatted.points = pointsPerQuestion;
     return formatted;
-  });
+  }).filter(Boolean), startingNumber);
 }
 
 /**
@@ -1124,15 +1066,11 @@ function unaGetCepreColumnIndices_(headers) {
  * Formatea una pregunta CEPRE.
  */
 function unaFormatCepreQuestion_(row, colIndices, course, number, rowIndex) {
-  const options = [
-    formatCellValue(row[colIndices.option1]),
-    formatCellValue(row[colIndices.option2]),
-    formatCellValue(row[colIndices.option3]),
-    formatCellValue(row[colIndices.option4]),
-    formatCellValue(row[colIndices.option5])
-  ].filter(opt => opt && opt !== '');
-
-  const correctAnswerIndex = (parseInt(row[colIndices.correctAnswer]) || 1) - 1;
+  // Devuelve null si la opción correcta está vacía (los llamadores la omiten).
+  const built = unaBuildOptions_(row, colIndices, 'CEPRE/' + course, rowIndex);
+  if (!built) return null;
+  const options = built.options;
+  const correctAnswerIndex = built.correctAnswer;
 
   return {
     id: `cepre-${course}-${rowIndex}`,
@@ -1240,14 +1178,12 @@ function unaGetCepreSemanas(course, area) {
  * Cache 30 min (misma clave que la version legada).
  */
 function unaGetCursosConTemas() {
-  const cache = CacheService.getScriptCache();
-  const cacheKeyLegacy = 'cursos_con_temas_v2';
-  const cached = cache.get(cacheKeyLegacy);
+  // Anti-estampida (misma clave de cache que antes): recorre ~36 hojas y
+  // puede tardar minutos con cache fría; solo una ejecución reconstruye.
+  return getOrBuildCachedJson_('cursos_con_temas_v2', 1800, unaBuildCursosConTemas_);
+}
 
-  if (cached) {
-    return JSON.parse(cached);
-  }
-
+function unaBuildCursosConTemas_() {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const cursosMap = {};
 
@@ -1285,29 +1221,24 @@ function unaGetCursosConTemas() {
     .map(([nombre, count]) => ({ nombre, count }))
     .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
 
-  const result = {
+  return {
     totalCursos: cursos.length,
     cursos: cursos
   };
-
-  cache.put(cacheKeyLegacy, JSON.stringify(result), 1800);
-
-  return result;
 }
 
 /**
  * Obtiene los temas disponibles para un curso especifico.
  */
 function unaGetTemasPorCurso(curso) {
-  const cache = CacheService.getScriptCache();
   const cursoCanonicalBuscado = getCursoCanonical(curso) || curso;
   const cacheKeyLegacy = 'temas_' + cursoCanonicalBuscado.replace(/\s/g, '_');
-  const cached = cache.get(cacheKeyLegacy);
+  return getOrBuildCachedJson_(cacheKeyLegacy, 1800, function () {
+    return unaBuildTemasPorCurso_(cursoCanonicalBuscado);
+  });
+}
 
-  if (cached) {
-    return JSON.parse(cached);
-  }
-
+function unaBuildTemasPorCurso_(cursoCanonicalBuscado) {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const temasMap = {};
 
@@ -1354,16 +1285,12 @@ function unaGetTemasPorCurso(curso) {
 
   const totalPreguntas = temas.reduce((sum, t) => sum + t.count, 0);
 
-  const result = {
+  return {
     curso: cursoCanonicalBuscado,
     totalPreguntas: totalPreguntas,
     totalTemas: temas.length,
     temas: temas
   };
-
-  cache.put(cacheKeyLegacy, JSON.stringify(result), 1800);
-
-  return result;
 }
 
 /**
@@ -1485,26 +1412,18 @@ function unaGetBanqueoByTema(curso, tema, subtema, count) {
     }
   }
 
-  let selectedQuestions;
-  if (count === null || count === undefined || count >= allQuestions.length) {
-    selectedQuestions = shuffleArray(allQuestions);
-  } else {
-    selectedQuestions = selectRandomItems(allQuestions, count);
-  }
+  // Tope: nunca el banco entero (antes, sin `count` se devolvían TODAS).
+  const n = clampCount_(count, QUESTIONS_DEFAULT_COUNT_, QUESTIONS_MAX_COUNT_);
+  const selectedQuestions = selectRandomItems(allQuestions, Math.min(n, allQuestions.length));
 
-  const questions = selectedQuestions.map((q, index) => {
+  const questions = renumberQuestions_(selectedQuestions.map((q, index) => {
     const row = q.data;
     const ci = q.colIndices;
 
-    const options = [
-      formatCellValue(row[ci.option1]),
-      formatCellValue(row[ci.option2]),
-      formatCellValue(row[ci.option3]),
-      formatCellValue(row[ci.option4]),
-      formatCellValue(row[ci.option5])
-    ].filter(opt => opt && opt !== '');
-
-    const correctAnswerIndex = (parseInt(row[ci.correctAnswer]) || 1) - 1;
+    const built = unaBuildOptions_(row, ci, q.sheetName, q.rowIndex);
+    if (!built) return null;
+    const options = built.options;
+    const correctAnswerIndex = built.correctAnswer;
 
     return {
       id: `tema-${q.sheetName}-${q.rowIndex}`,
@@ -1520,7 +1439,7 @@ function unaGetBanqueoByTema(curso, tema, subtema, count) {
       sourceFile: row[ci.sourceFile] || null,
       justification: formatCellValue(row[ci.justification]) || null
     };
-  });
+  }).filter(Boolean), 1);
 
   return {
     curso: cursoCanonicalBuscado,

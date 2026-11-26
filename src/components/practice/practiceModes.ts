@@ -13,8 +13,8 @@ export const banqueoMode: PracticeMode = {
   loginSubtitle: 'Practica con preguntas reales de exámenes anteriores',
   headingGradientClass: 'text-brand-primary-800 gradient-text-brand',
   renderLoginDecoration: () => createElement('div', null,
-    createElement('img', { src: '/simulauna/illustrations/books-stack.svg', alt: '', 'aria-hidden': 'true', className: 'hidden md:block absolute top-10 left-6 w-40 opacity-30 pointer-events-none' }),
-    createElement('img', { src: '/simulauna/illustrations/lightbulb-idea.svg', alt: '', 'aria-hidden': 'true', className: 'hidden md:block absolute bottom-10 right-6 w-32 opacity-25 pointer-events-none' })
+    createElement('img', { src: '/illustrations/books-stack.svg', alt: '', 'aria-hidden': 'true', className: 'hidden md:block absolute top-10 left-6 w-40 opacity-30 pointer-events-none' }),
+    createElement('img', { src: '/illustrations/lightbulb-idea.svg', alt: '', 'aria-hidden': 'true', className: 'hidden md:block absolute bottom-10 right-6 w-32 opacity-25 pointer-events-none' })
   ),
   SelectStep: BanqueoCourseSelect,
   quizBadge: () => 'MODO BANQUEO',
@@ -31,8 +31,8 @@ export const banqueoMode: PracticeMode = {
   reviewIconClass: 'text-primary-600',
   heroBgClass: 'bg-white',
   renderResultsDecoration: () => createElement('div', null,
-    createElement('img', { src: '/simulauna/illustrations/formulas.svg', alt: '', 'aria-hidden': 'true', className: 'hidden md:block absolute inset-0 m-auto w-64 opacity-10 pointer-events-none' }),
-    createElement('img', { src: '/simulauna/illustrations/graduation-cap.svg', alt: '', 'aria-hidden': 'true', className: 'hidden md:block absolute bottom-6 right-8 w-24 opacity-40 animate-float-y pointer-events-none' })
+    createElement('img', { src: '/illustrations/formulas.svg', alt: '', 'aria-hidden': 'true', className: 'hidden md:block absolute inset-0 m-auto w-64 opacity-10 pointer-events-none' }),
+    createElement('img', { src: '/illustrations/graduation-cap.svg', alt: '', 'aria-hidden': 'true', className: 'hidden md:block absolute bottom-6 right-8 w-24 opacity-40 animate-float-y pointer-events-none' })
   ),
 };
 
@@ -71,11 +71,11 @@ export function createCepreMode(cepreNombre: string): PracticeMode {
     loginSubtitle: `Practica con preguntas de los cuadernillos ${cepreNombre} por semana`,
     headingGradientClass: 'text-brand-accent-600 gradient-text-gold',
     kickerChipClass: 'chip bg-brand-accent text-slate-900 text-[11px] font-bold uppercase tracking-[0.22em] font-mono border-2 border-brand-accent-400 shadow-elevation-1 mb-3 px-3 py-1',
-    kickerExtra: createElement('img', { src: '/simulauna/illustrations/graduation-cap.svg', alt: '', 'aria-hidden': 'true', className: 'w-6 h-6 inline-block pointer-events-none' }),
+    kickerExtra: createElement('img', { src: '/illustrations/graduation-cap.svg', alt: '', 'aria-hidden': 'true', className: 'w-6 h-6 inline-block pointer-events-none' }),
     renderLoginDecoration: () => createElement('div', null,
       createElement('div', { className: 'absolute -top-20 -left-20 w-72 h-72 bg-mesh-gold opacity-40 rounded-full blur-3xl animate-blob-morph pointer-events-none hidden md:block', 'aria-hidden': true }),
-      createElement('img', { src: '/simulauna/illustrations/books-stack.svg', alt: '', 'aria-hidden': 'true', className: 'hidden md:block absolute top-12 left-6 w-36 opacity-25 animate-float-slow pointer-events-none' }),
-      createElement('img', { src: '/simulauna/illustrations/atom.svg', alt: '', 'aria-hidden': 'true', className: 'hidden md:block absolute bottom-16 right-8 w-28 opacity-20 animate-spin-slow pointer-events-none' })
+      createElement('img', { src: '/illustrations/books-stack.svg', alt: '', 'aria-hidden': 'true', className: 'hidden md:block absolute top-12 left-6 w-36 opacity-25 animate-float-slow pointer-events-none' }),
+      createElement('img', { src: '/illustrations/atom.svg', alt: '', 'aria-hidden': 'true', className: 'hidden md:block absolute bottom-16 right-8 w-28 opacity-20 animate-spin-slow pointer-events-none' })
     ),
     SelectStep: CepreSelect,
     quizBadge: () => cepreNombre,

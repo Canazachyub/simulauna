@@ -1,4 +1,5 @@
-import { CheckCircle, XCircle, Check, Flag, ZoomIn } from 'lucide-react';
+import { CheckCircle, XCircle, Check, ZoomIn } from 'lucide-react';
+import { ReportarErrorPregunta } from './ReportarErrorPregunta';
 import type { Question as QuestionType } from '../types';
 import { indexToLetter } from '../utils/calculations';
 import clsx from 'clsx';
@@ -205,11 +206,12 @@ interface QuestionProps {
 
 // Paleta suavizada Editorial Andino para círculos A-E
 const LETTER_BG_IDLE = [
-  'bg-blue-500/50 text-white',    // A
-  'bg-rose-400/50 text-white',    // B
-  'bg-amber-500/50 text-white',   // C
-  'bg-emerald-500/50 text-white', // D
-  'bg-purple-500/50 text-white',  // E
+  // Fondo claro + letra oscura: el blanco sobre pastel no se leía (contraste < 2:1)
+  'bg-blue-100 text-blue-800 ring-1 ring-blue-200',          // A
+  'bg-rose-100 text-rose-800 ring-1 ring-rose-200',          // B
+  'bg-amber-100 text-amber-800 ring-1 ring-amber-200',       // C
+  'bg-emerald-100 text-emerald-800 ring-1 ring-emerald-200', // D
+  'bg-purple-100 text-purple-800 ring-1 ring-purple-200',    // E
 ];
 
 export function Question({
@@ -238,8 +240,9 @@ export function Question({
 
         {/* Contenido (z-10 para quedar sobre las decoraciones) */}
         <div className="relative z-10">
-          {/* Cabecera editorial */}
-          <div className="mb-6 md:mb-8 animate-fade-up">
+          {/* Cabecera editorial. Sin animaciones propias: durante el examen solo hay una
+              transición corta entre preguntas (la aplica Quiz.tsx en el contenedor). */}
+          <div className="mb-6 md:mb-8">
             <div className="flex items-end gap-4">
               {/* Número con halo dorado + círculo animado */}
               <div className="relative flex-shrink-0">
@@ -248,9 +251,9 @@ export function Question({
                   className="absolute inset-0 -m-3 rounded-full bg-brand-accent/20 blur-2xl pointer-events-none"
                   aria-hidden="true"
                 />
-                {/* Círculo acento decorativo */}
+                {/* Círculo acento decorativo (estático: nada llamativo durante el examen) */}
                 <div
-                  className="absolute -inset-2 rounded-full border-2 border-brand-accent/30 animate-pulse-ring pointer-events-none"
+                  className="absolute -inset-2 rounded-full border-2 border-brand-accent/30 pointer-events-none"
                   aria-hidden="true"
                 />
                 <span
@@ -281,7 +284,7 @@ export function Question({
           </div>
 
           {/* Texto de la pregunta */}
-          <div className="mb-6 md:mb-8 animate-fade-up delay-75">
+          <div className="mb-6 md:mb-8">
             <h2 className="font-sans text-xl md:text-2xl leading-relaxed text-slate-900 font-medium">
               <FormattedText text={question.questionText} />
             </h2>
@@ -289,7 +292,7 @@ export function Question({
 
           {/* Imagen con marco decorativo */}
           {question.imageLink && (
-            <div className="mb-6 md:mb-8 animate-fade-up delay-100">
+            <div className="mb-6 md:mb-8">
               <div className="rounded-2xl border-4 border-brand-accent/20 p-2 bg-gradient-to-br from-white to-slate-50 shadow-elevation-1">
                 <div className="rounded-xl bg-white p-2 md:p-3">
                   <img
@@ -310,7 +313,7 @@ export function Question({
           )}
 
           {/* Opciones tipo flashcard */}
-          <div className="space-y-3 animate-fade-up delay-150">
+          <div className="space-y-3">
             {question.options.map((option, index) => {
               const letter = indexToLetter(index);
               const isSelected = selectedAnswer === index;
@@ -330,13 +333,13 @@ export function Question({
 
               // Clases para el círculo de letra
               const letterCircleClass = clsx(
-                'relative flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-semibold text-base transition-all duration-150',
+                'relative flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-base transition-all duration-150',
                 {
                   // Idle: color suavizado por índice
-                  [LETTER_BG_IDLE[index] || 'bg-slate-400/50 text-white']:
+                  [LETTER_BG_IDLE[index] || 'bg-slate-100 text-slate-800 ring-1 ring-slate-200']:
                     optionState === 'default',
-                  // Selected: pulso dorado decorativo (independiente del color institucional)
-                  'text-white animate-pulse-ring': optionState === 'selected',
+                  // Selected: relleno institucional (sin pulso: nada llamativo durante el examen)
+                  'text-white': optionState === 'selected',
                   // Correct
                   'bg-emerald-500 text-white': optionState === 'correct',
                   // Incorrect
@@ -405,13 +408,13 @@ export function Question({
                   {optionState === 'selected' && (
                     <>
                       <Check
-                        className="flex-shrink-0 w-5 h-5 animate-bounce-in"
+                        className="flex-shrink-0 w-5 h-5"
                         style={{ color: 'var(--uni-primary-safe, #003D7A)' }}
                         aria-hidden="true"
                       />
                       {/* Check dorado en esquina sup. derecha */}
                       <span
-                        className="absolute top-2 right-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-accent text-white shadow-elevation-1 animate-bounce-in"
+                        className="absolute top-2 right-2 inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-accent text-white shadow-elevation-1"
                         aria-hidden="true"
                       >
                         <Check className="w-3.5 h-3.5" strokeWidth={3} />
@@ -455,22 +458,9 @@ export function Question({
             </div>
           )}
 
-          {/* Reportar error (ghost discreto) con tooltip */}
+          {/* Reportar error en la pregunta (WhatsApp con la pregunta identificada) */}
           <div className="mt-8 flex justify-end">
-            <a
-              href="https://wa.link/40zqta"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative inline-flex items-center gap-1.5 px-2 py-1 text-xs text-slate-400 hover:text-slate-600 transition-colors"
-              aria-label="Reportar error en esta pregunta"
-            >
-              <Flag className="w-3.5 h-3.5" />
-              <span>Reportar error</span>
-              {/* Tooltip */}
-              <span className="pointer-events-none absolute right-0 bottom-full mb-2 px-2.5 py-1.5 rounded-md bg-slate-900 text-white text-[11px] font-sans whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-elevation-2 z-30">
-                ¿Error en la pregunta?
-              </span>
-            </a>
+            <ReportarErrorPregunta question={question} numero={question.number} />
           </div>
         </div>
       </div>

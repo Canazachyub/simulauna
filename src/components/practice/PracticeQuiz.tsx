@@ -4,6 +4,7 @@ import {
   FileText, Tag, Send, Flame
 } from 'lucide-react';
 import { renderFormattedText, parseJustification } from '../../utils/formatText';
+import { ReportarErrorPregunta } from '../ReportarErrorPregunta';
 import clsx from 'clsx';
 import type { PracticeAnswer, PracticeMode, PracticeQuestion, PracticeQuestionMeta } from './types';
 
@@ -279,7 +280,7 @@ export function PracticeQuiz({
                     animate-bounce-in y aparece estático. */}
                 <div className="flex-shrink-0 flex flex-col items-center gap-1">
                   <img
-                    src={currentAnswer.isCorrect ? '/simulauna/illustrations/lobito-celebra.webp' : '/simulauna/illustrations/lobito-animo.webp'}
+                    src={currentAnswer.isCorrect ? '/illustrations/lobito-celebra.webp' : '/illustrations/lobito-animo.webp'}
                     alt=""
                     aria-hidden="true"
                     className="w-16 h-16 sm:w-20 sm:h-20 object-contain animate-bounce-in"
@@ -353,6 +354,9 @@ export function PracticeQuiz({
               </div>
             </div>
           )}
+          <div className="mt-4 flex justify-end">
+            <ReportarErrorPregunta question={currentQuestion} numero={currentIndex + 1} />
+          </div>
         </div>
 
         {/* Navigation */}

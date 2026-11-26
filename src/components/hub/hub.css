@@ -1,0 +1,123 @@
+/* ============================================================
+   HUB DEL POSTULANTE — UniversityPage, StudentForm, ExamConfirmation
+   y AreaSelector. Complementa el KIT DE MOVIMIENTO de index.css
+   (.reveal, .tilt, .tilt-pop, .parallax-*, .float-3d, .illus-3d).
+   Solo transform/opacity en animaciones; todo respeta reduced-motion.
+   ============================================================ */
+
+/* Recorte horizontal sin crear contenedor de scroll: con overflow:hidden
+   un `position: sticky` interno deja de funcionar; overflow:clip no. */
+.hub-clip { overflow: hidden; }
+@supports (overflow: clip) {
+  .hub-clip { overflow: clip; }
+}
+
+/* ---- Grid de modos (UniversityPage) ----------------------------------
+   1 columna <640 · 2 columnas en tablet · 4 columnas asimétricas ≥1024
+   (Simulacro 2x2 a la izquierda, el resto alrededor). El número de
+   tarjetas varía (3 a 5 según `procesos`): el componente decide qué celda
+   se estira para no dejar huecos (hub-span-sm / hub-span-lg). El row-gap
+   grande deja sitio a la ilustración 3D que sale por el borde superior. */
+.hub-modes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 1.25rem;
+  row-gap: 3.25rem;
+  padding-top: 2.5rem;
+}
+@media (min-width: 640px) {
+  .hub-modes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hub-modes > .hub-span-sm { grid-column: 1 / -1; }
+}
+@media (min-width: 1024px) {
+  .hub-modes {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-flow: dense;
+    column-gap: 1.5rem;
+    row-gap: 3.5rem;
+    padding-top: 4rem;
+  }
+  .hub-modes--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hub-modes > .hub-span-sm { grid-column: auto; }
+  .hub-modes > .hub-cell-main { grid-column: span 2; grid-row: span 2; }
+  .hub-modes > .hub-span-lg { grid-column: span 2; }
+}
+.hub-modes > * { min-width: 0; }
+
+/* Tarjeta de modo: sin overflow:hidden para que la ilustración salga del
+   borde (el recorte de las decoraciones vive en .hub-card-clip). */
+.hub-mode-card {
+  border: 2px solid rgb(226 232 240);
+  box-shadow: 0 14px 30px -12px rgba(15, 23, 42, .18), 0 3px 10px rgba(15, 23, 42, .06);
+  box-shadow:
+    0 14px 30px -12px rgb(from var(--uni-primary, #003D7A) r g b / 0.22),
+    0 3px 10px rgb(from var(--uni-primary, #003D7A) r g b / 0.08);
+}
+.hub-mode-card:hover {
+  border-color: var(--uni-secondary-safe, #D4AF37);
+  box-shadow: 0 22px 44px -14px rgba(15, 23, 42, .28), 0 6px 16px rgba(15, 23, 42, .10);
+  box-shadow:
+    0 22px 44px -14px rgb(from var(--uni-primary, #003D7A) r g b / 0.32),
+    0 6px 16px rgb(from var(--uni-primary, #003D7A) r g b / 0.12);
+}
+.hub-mode-card--main { border-color: transparent; }
+.hub-mode-card:focus-visible {
+  outline: 3px solid var(--uni-primary-safe, #003D7A);
+  outline-offset: 4px;
+}
+.hub-card-clip {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+/* La flecha del CTA avanza al pasar el mouse (no en táctil). */
+.hub-mode-card .hub-cta-arrow { transition: transform 250ms ease; }
+@media (hover: hover) {
+  .hub-mode-card:hover .hub-cta-arrow { transform: translateX(4px); }
+}
+
+/* ---- Pasos del registro (StudentForm) -------------------------------- */
+@keyframes hub-step-forward {
+  from { opacity: 0; transform: translate3d(40px, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hub-step-back {
+  from { opacity: 0; transform: translate3d(-40px, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hub-step-in {
+  from { opacity: 0; transform: translate3d(0, 16px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+.hub-step--forward { animation: hub-step-forward 420ms cubic-bezier(.2,.7,.2,1) both; }
+.hub-step--back    { animation: hub-step-back 420ms cubic-bezier(.2,.7,.2,1) both; }
+.hub-step--in      { animation: hub-step-in 500ms cubic-bezier(.2,.7,.2,1) both; }
+
+/* ---- CTA fijo abajo en móvil (ExamConfirmation) -----------------------
+   Sticky (no fixed): queda en su sitio cuando ya se ve y se pega abajo
+   solo mientras está fuera de pantalla. En <768 la barra inferior de la
+   universidad (UniversityBottomNav, ~57px + safe-area) ocupa el borde,
+   así que el CTA se apoya justo encima de ella. */
+.hub-sticky-cta {
+  position: sticky;
+  bottom: calc(57px + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  margin-inline: -1rem;
+  padding: 1.25rem 1rem .75rem;
+  background: linear-gradient(to top, rgba(11, 19, 36, .96) 62%, rgba(11, 19, 36, 0));
+}
+@media (min-width: 640px) {
+  .hub-sticky-cta {
+    position: static;
+    margin-inline: 0;
+    padding: 0;
+    background: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub-step--forward, .hub-step--back, .hub-step--in { animation: none !important; }
+  .hub-mode-card .hub-cta-arrow { transition: none; }
+}
