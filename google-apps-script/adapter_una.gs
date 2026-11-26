@@ -289,13 +289,12 @@ function unaGetRandomQuestionsFromSubject_(ss, subjectName, count, maxScore, sta
     return [];
   }
 
-  const sheet = ss.getSheetByName(sheetName);
-  if (!sheet) {
+  // Banco desde cache (6 h): leer las 18 hojas en cada examen tardaba 8–11 s.
+  const data = leerHojaBancoCacheada_(ss, sheetName);
+  if (!data) {
     console.log(`Advertencia: Hoja "${sheetName}" no encontrada`);
     return [];
   }
-
-  const data = sheet.getDataRange().getValues();
   if (data.length <= 1) return [];
 
   const headers = data[0];
@@ -760,7 +759,7 @@ function unaGetBanqueoQuestions(courseName, count) {
     return { error: 'Banco de preguntas no encontrado', questions: [] };
   }
 
-  const data = sheet.getDataRange().getValues();
+  const data = leerHojaBancoCacheada_(ss, sheetName);
   if (data.length <= 1) {
     return { error: 'No hay preguntas disponibles', questions: [] };
   }
@@ -869,7 +868,7 @@ function unaGetCepreQuestions(course, area, semana, count) {
     return { error: `Hoja "${sheetName}" no encontrada`, questions: [] };
   }
 
-  const data = sheet.getDataRange().getValues();
+  const data = leerHojaBancoCacheada_(ss, sheetName);
   if (data.length <= 1) {
     return { error: 'No hay preguntas disponibles', questions: [] };
   }
@@ -967,7 +966,7 @@ function unaGetCepreQuestionsForSimulacro_(ss, subjectName, areaCode, semana, co
     return [];
   }
 
-  const data = sheet.getDataRange().getValues();
+  const data = leerHojaBancoCacheada_(ss, cepreSheetName);
   if (data.length <= 1) return [];
 
   const headers = data[0];
@@ -1191,7 +1190,7 @@ function unaBuildCursosConTemas_() {
     const sheet = ss.getSheetByName(sheetName);
     if (!sheet) continue;
 
-    const data = sheet.getDataRange().getValues();
+    const data = leerHojaBancoCacheada_(ss, sheetName);
     if (data.length <= 1) continue;
 
     const headers = data[0];
@@ -1246,7 +1245,7 @@ function unaBuildTemasPorCurso_(cursoCanonicalBuscado) {
     const sheet = ss.getSheetByName(sheetName);
     if (!sheet) continue;
 
-    const data = sheet.getDataRange().getValues();
+    const data = leerHojaBancoCacheada_(ss, sheetName);
     if (data.length <= 1) continue;
 
     const headers = data[0];
@@ -1306,7 +1305,7 @@ function unaGetSubtemasPorTema(curso, tema) {
     const sheet = ss.getSheetByName(sheetName);
     if (!sheet) continue;
 
-    const data = sheet.getDataRange().getValues();
+    const data = leerHojaBancoCacheada_(ss, sheetName);
     if (data.length <= 1) continue;
 
     const headers = data[0];
@@ -1370,7 +1369,7 @@ function unaGetBanqueoByTema(curso, tema, subtema, count) {
     const sheet = ss.getSheetByName(sheetName);
     if (!sheet) continue;
 
-    const data = sheet.getDataRange().getValues();
+    const data = leerHojaBancoCacheada_(ss, sheetName);
     if (data.length <= 1) continue;
 
     const headers = data[0];

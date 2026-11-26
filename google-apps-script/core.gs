@@ -239,6 +239,101 @@ function setCachedJson(key, value, ttlSeconds) {
   }
 }
 
+// ============================================
+// CACHE GRANDE (bancos de preguntas): JSON gzip + base64 repartido en trozos
+// ============================================
+// CacheService limita cada valor a 100 KB; una hoja Banco_* pesa varios cientos de KB.
+// Se guarda comprimida y partida en trozos de 90 000 caracteres bajo <key>#0..n y el número de
+// trozos en <key>#n. Rendimiento (2026-11-26): getExam pasaba de 8–11 s leyendo 18 hojas a ~1–2 s
+// con la cache caliente. Tras editar/importar bancos: ejecutar limpiarCacheBancos() (setup.gs).
+
+const BIG_CACHE_CHUNK_ = 90000;
+const BANCO_CACHE_TTL_ = 21600; // 6 h (máximo de CacheService)
+
+/** Versión de la cache de bancos (Script Property BANCO_CACHE_VER): cambiarla invalida todo de golpe. */
+function bancoCacheVer_() {
+  try {
+    return PropertiesService.getScriptProperties().getProperty('BANCO_CACHE_VER') || 'v1';
+  } catch (err) {
+    return 'v1';
+  }
+}
+
+/**
+ * Ejecutar en el editor DESPUÉS de importar o editar preguntas en Banco_* / CEPRE_*: invalida la
+ * cache de bancos (si no, los cambios tardan hasta 6 h en verse) y la vuelve a llenar.
+ */
+function limpiarCacheBancos() {
+  PropertiesService.getScriptProperties().setProperty('BANCO_CACHE_VER', 'v' + Date.now());
+  const ss = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID'));
+  let n = 0;
+  ss.getSheets().forEach(function (sh) {
+    const nombre = sh.getName();
+    if (nombre.indexOf('Banco_') === 0 || nombre.indexOf('CEPRE_') === 0) {
+      leerHojaBancoCacheada_(ss, nombre);
+      n++;
+    }
+  });
+  console.log('Cache de bancos renovada: ' + n + ' hojas precargadas.');
+}
+
+function setCachedBig_(key, value, ttlSeconds) {
+  try {
+    const gz = Utilities.gzip(Utilities.newBlob(JSON.stringify(value), 'application/json'));
+    const b64 = Utilities.base64Encode(gz.getBytes());
+    const partes = {};
+    let n = 0;
+    for (let i = 0; i < b64.length; i += BIG_CACHE_CHUNK_) {
+      partes[key + '#' + n] = b64.slice(i, i + BIG_CACHE_CHUNK_);
+      n++;
+    }
+    partes[key + '#n'] = String(n);
+    CacheService.getScriptCache().putAll(partes, ttlSeconds || BANCO_CACHE_TTL_);
+  } catch (err) {
+    console.error('setCachedBig_(' + key + ') no se pudo cachear: ' + err);
+  }
+}
+
+function getCachedBig_(key) {
+  try {
+    const cache = CacheService.getScriptCache();
+    const n = parseInt(cache.get(key + '#n'), 10);
+    if (!n) return null;
+    const claves = [];
+    for (let i = 0; i < n; i++) claves.push(key + '#' + i);
+    const got = cache.getAll(claves);
+    let b64 = '';
+    for (let i = 0; i < n; i++) {
+      const parte = got[key + '#' + i];
+      if (parte == null) return null; // un trozo expiró: tratar como miss
+      b64 += parte;
+    }
+    const blob = Utilities.newBlob(Utilities.base64Decode(b64), 'application/x-gzip');
+    return JSON.parse(Utilities.ungzip(blob).getDataAsString('UTF-8'));
+  } catch (err) {
+    console.error('getCachedBig_(' + key + ') falló: ' + err);
+    return null;
+  }
+}
+
+/**
+ * Valores de una hoja del banco (incluida la fila de títulos), desde cache si está caliente.
+ * Solo para hojas de SOLO LECTURA en tiempo de petición (Banco_*, CEPRE_*).
+ */
+function leerHojaBancoCacheada_(ss, sheetName) {
+  const key = 'banco:' + bancoCacheVer_() + ':' + ss.getId().slice(-8) + ':' + sheetName;
+  const cached = getCachedBig_(key);
+  if (cached) return cached;
+  const sheet = ss.getSheetByName(sheetName);
+  if (!sheet) return null;
+  // Las fechas no sobreviven a JSON: se guardan ya como las formatea formatCellValue ("d-m").
+  const data = sheet.getDataRange().getValues().map(function (fila) {
+    return fila.map(function (c) { return c instanceof Date ? formatCellValue(c) : c; });
+  });
+  setCachedBig_(key, data, BANCO_CACHE_TTL_);
+  return data;
+}
+
 /**
  * Anti-estampida de cache: si `key` no está en cache, SOLO UNA ejecución
  * reconstruye el valor (marca 'rebuild:<key>' puesta bajo un ScriptLock
