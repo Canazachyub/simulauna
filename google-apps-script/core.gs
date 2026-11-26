@@ -1,4 +1,4 @@
-/**
+﻿/**
  * SimulaUNA - CORE
  * ============================================
  * Resolucion de tenant (universidad), registro maestro, cache namespaced
@@ -245,7 +245,7 @@ function setCachedJson(key, value, ttlSeconds) {
 // CacheService limita cada valor a 100 KB; una hoja Banco_* pesa varios cientos de KB.
 // Se guarda comprimida y partida en trozos de 90 000 caracteres bajo <key>#0..n y el número de
 // trozos en <key>#n. Rendimiento (2026-11-26): getExam pasaba de 8–11 s leyendo 18 hojas a ~1–2 s
-// con la cache caliente. Tras editar/importar bancos: ejecutar limpiarCacheBancos() (setup.gs).
+// con la cache caliente. Tras editar/importar bancos: ejecutar limpiarCacheBancos() (este archivo).
 
 const BIG_CACHE_CHUNK_ = 90000;
 const BANCO_CACHE_TTL_ = 21600; // 6 h (máximo de CacheService)
@@ -320,8 +320,48 @@ function getCachedBig_(key) {
  * Valores de una hoja del banco (incluida la fila de títulos), desde cache si está caliente.
  * Solo para hojas de SOLO LECTURA en tiempo de petición (Banco_*, CEPRE_*).
  */
+// Memoria de la ejecución actual (se llena con precargarBancosCache_).
+const BANCOS_MEMO_ = {};
+
+function bancoCacheKey_(ss, sheetName) {
+  return 'banco:' + bancoCacheVer_() + ':' + ss.getId().slice(-8) + ':' + sheetName;
+}
+
+/** Trae de CacheService varias hojas de banco en DOS llamadas getAll y las deja en BANCOS_MEMO_. */
+function precargarBancosCache_(ss, sheetNames) {
+  try {
+    const cache = CacheService.getScriptCache();
+    const keys = sheetNames.map(function (n) { return bancoCacheKey_(ss, n); });
+    const nums = cache.getAll(keys.map(function (k) { return k + '#n'; }));
+    const partes = [];
+    keys.forEach(function (k) {
+      const n = parseInt(nums[k + '#n'], 10);
+      for (let i = 0; i < (n || 0); i++) partes.push(k + '#' + i);
+    });
+    if (!partes.length) return;
+    const got = cache.getAll(partes);
+    keys.forEach(function (k) {
+      const n = parseInt(nums[k + '#n'], 10);
+      if (!n) return;
+      let b64 = '';
+      for (let i = 0; i < n; i++) {
+        const p = got[k + '#' + i];
+        if (p == null) return; // trozo expirado: esa hoja se leerá normal
+        b64 += p;
+      }
+      try {
+        const blob = Utilities.newBlob(Utilities.base64Decode(b64), 'application/x-gzip');
+        BANCOS_MEMO_[k] = JSON.parse(Utilities.ungzip(blob).getDataAsString('UTF-8'));
+      } catch (err) { /* se leerá normal */ }
+    });
+  } catch (err) {
+    console.error('precargarBancosCache_ falló: ' + err);
+  }
+}
+
 function leerHojaBancoCacheada_(ss, sheetName) {
-  const key = 'banco:' + bancoCacheVer_() + ':' + ss.getId().slice(-8) + ':' + sheetName;
+  const key = bancoCacheKey_(ss, sheetName);
+  if (BANCOS_MEMO_[key]) return BANCOS_MEMO_[key];
   const cached = getCachedBig_(key);
   if (cached) return cached;
   const sheet = ss.getSheetByName(sheetName);

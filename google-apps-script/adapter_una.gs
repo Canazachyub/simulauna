@@ -235,7 +235,12 @@ function unaTenantMin_() {
  * totalQuestions, totalMaxScore}}.
  */
 function unaGetConfig() {
-  return cfgCargarConfig_(unaTenantMin_(), 'ORDINARIO').config.areas;
+  // Config validada en cache 10 min (antes se releía y validaba en cada examen: ~0,9 s).
+  const cached = getCachedJson('una:config_areas_ordinario');
+  if (cached) return cached;
+  const areas = cfgCargarConfig_(unaTenantMin_(), 'ORDINARIO').config.areas;
+  setCachedJson('una:config_areas_ordinario', areas, 600);
+  return areas;
 }
 
 /**
@@ -268,6 +273,9 @@ function unaGetQuestions(areaName) {
   const area = unaGetConfig()[areaName];
   const questions = [];
   let questionNumber = 1;
+
+  // Precarga de los bancos del área en 2 llamadas a CacheService (antes 2 por hoja).
+  precargarBancosCache_(ss, area.subjects.map(function (s) { return SUBJECT_SHEETS[s.name]; }).filter(Boolean));
 
   area.subjects.forEach(function (s) {
     if (!s.questionCount) return;

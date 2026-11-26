@@ -28,3 +28,6 @@ npm-debug.log*
 
 # Testing
 coverage/
+
+# Documentación PRIVADA de operación (IDs, cuentas, infraestructura): nunca al repo público ni a Pages
+docs-privado/
