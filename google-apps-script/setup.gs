@@ -765,3 +765,20 @@ function hcReport_(title, results) {
 function assertHC_(condition, message) {
   if (!condition) throw new Error(message);
 }
+
+// ============================================
+// ROTAR EL TOKEN (2026-11-26)
+// ============================================
+/**
+ * Genera un SECRET_TOKEN nuevo y aleatorio (64 hex) y lo guarda en las Script Properties.
+ * Desde ese momento el token anterior deja de funcionar. DESPUÉS hay que poner el mismo valor en el
+ * Worker de Cloudflare: `npx wrangler@4 secret put APPS_SCRIPT_TOKEN` (ver docs-privado/OPERACION_BACKEND.md).
+ * Solo registra una huella (primeros 16 hex del SHA-256), nunca el token.
+ */
+function rotarSecretToken() {
+  const nuevo = (Utilities.getUuid() + Utilities.getUuid()).replace(/-/g, '');
+  PropertiesService.getScriptProperties().setProperty('SECRET_TOKEN', nuevo);
+  const huella = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, nuevo, Utilities.Charset.UTF_8)
+    .map(function (b) { return ('0' + (b & 0xff).toString(16)).slice(-2); }).join('').slice(0, 16);
+  console.log('SECRET_TOKEN rotado. Huella SHA-256: ' + huella + ' (' + nuevo.length + ' caracteres).');
+}
