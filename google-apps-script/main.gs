@@ -31,6 +31,7 @@ const SECRET_TOKEN = (function () {
   return String(raw);
 })();
 const ALLOWED_ORIGINS = [
+  'https://simulacros.sinapsispreu.com',
   'https://canazachyub.github.io',
   'http://localhost:5173',
   'http://localhost:5174',

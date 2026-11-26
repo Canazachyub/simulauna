@@ -235,7 +235,12 @@ function unaTenantMin_() {
  * totalQuestions, totalMaxScore}}.
  */
 function unaGetConfig() {
-  return cfgCargarConfig_(unaTenantMin_(), 'ORDINARIO').config.areas;
+  // Config validada en cache 10 min (antes se releía y validaba en cada examen: ~0,9 s).
+  const cached = getCachedJson('una:config_areas_ordinario');
+  if (cached) return cached;
+  const areas = cfgCargarConfig_(unaTenantMin_(), 'ORDINARIO').config.areas;
+  setCachedJson('una:config_areas_ordinario', areas, 600);
+  return areas;
 }
 
 /**
@@ -269,6 +274,9 @@ function unaGetQuestions(areaName) {
   const questions = [];
   let questionNumber = 1;
 
+  // Precarga de los bancos del área en 2 llamadas a CacheService (antes 2 por hoja).
+  precargarBancosCache_(ss, area.subjects.map(function (s) { return SUBJECT_SHEETS[s.name]; }).filter(Boolean));
+
   area.subjects.forEach(function (s) {
     if (!s.questionCount) return;
     const subjectQuestions = unaGetRandomQuestionsFromSubject_(ss, s.name, s.questionCount, s.maxScore, questionNumber);
@@ -289,13 +297,12 @@ function unaGetRandomQuestionsFromSubject_(ss, subjectName, count, maxScore, sta
     return [];
   }
 
-  const sheet = ss.getSheetByName(sheetName);
-  if (!sheet) {
+  // Banco desde cache (6 h): leer las 18 hojas en cada examen tardaba 8–11 s.
+  const data = leerHojaBancoCacheada_(ss, sheetName);
+  if (!data) {
     console.log(`Advertencia: Hoja "${sheetName}" no encontrada`);
     return [];
   }
-
-  const data = sheet.getDataRange().getValues();
   if (data.length <= 1) return [];
 
   const headers = data[0];
@@ -760,7 +767,7 @@ function unaGetBanqueoQuestions(courseName, count) {
     return { error: 'Banco de preguntas no encontrado', questions: [] };
   }
 
-  const data = sheet.getDataRange().getValues();
+  const data = leerHojaBancoCacheada_(ss, sheetName);
   if (data.length <= 1) {
     return { error: 'No hay preguntas disponibles', questions: [] };
   }
@@ -869,7 +876,7 @@ function unaGetCepreQuestions(course, area, semana, count) {
     return { error: `Hoja "${sheetName}" no encontrada`, questions: [] };
   }
 
-  const data = sheet.getDataRange().getValues();
+  const data = leerHojaBancoCacheada_(ss, sheetName);
   if (data.length <= 1) {
     return { error: 'No hay preguntas disponibles', questions: [] };
   }
@@ -967,7 +974,7 @@ function unaGetCepreQuestionsForSimulacro_(ss, subjectName, areaCode, semana, co
     return [];
   }
 
-  const data = sheet.getDataRange().getValues();
+  const data = leerHojaBancoCacheada_(ss, cepreSheetName);
   if (data.length <= 1) return [];
 
   const headers = data[0];
@@ -1191,7 +1198,7 @@ function unaBuildCursosConTemas_() {
     const sheet = ss.getSheetByName(sheetName);
     if (!sheet) continue;
 
-    const data = sheet.getDataRange().getValues();
+    const data = leerHojaBancoCacheada_(ss, sheetName);
     if (data.length <= 1) continue;
 
     const headers = data[0];
@@ -1246,7 +1253,7 @@ function unaBuildTemasPorCurso_(cursoCanonicalBuscado) {
     const sheet = ss.getSheetByName(sheetName);
     if (!sheet) continue;
 
-    const data = sheet.getDataRange().getValues();
+    const data = leerHojaBancoCacheada_(ss, sheetName);
     if (data.length <= 1) continue;
 
     const headers = data[0];
@@ -1306,7 +1313,7 @@ function unaGetSubtemasPorTema(curso, tema) {
     const sheet = ss.getSheetByName(sheetName);
     if (!sheet) continue;
 
-    const data = sheet.getDataRange().getValues();
+    const data = leerHojaBancoCacheada_(ss, sheetName);
     if (data.length <= 1) continue;
 
     const headers = data[0];
@@ -1370,7 +1377,7 @@ function unaGetBanqueoByTema(curso, tema, subtema, count) {
     const sheet = ss.getSheetByName(sheetName);
     if (!sheet) continue;
 
-    const data = sheet.getDataRange().getValues();
+    const data = leerHojaBancoCacheada_(ss, sheetName);
     if (data.length <= 1) continue;
 
     const headers = data[0];

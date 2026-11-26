@@ -56,7 +56,7 @@ function v2ReadActiveQuestions_(spreadsheetId, cursoCanonico, filtros) {
   const sheet = ss.getSheetByName(sheetName);
   if (!sheet) return { sheetName: sheetName, rows: [], colIndices: null };
 
-  const data = sheet.getDataRange().getValues();
+  const data = leerHojaBancoCacheada_(ss, sheetName);
   if (data.length <= 1) return { sheetName: sheetName, rows: [], colIndices: null };
 
   const headers = data[0];
@@ -331,7 +331,7 @@ function buildCursosConTemasV2_(tenant) {
 
   v2ListBancoSheetNames_(ss).forEach(function (sheetName) {
     const sheet = ss.getSheetByName(sheetName);
-    const data = sheet.getDataRange().getValues();
+    const data = leerHojaBancoCacheada_(ss, sheetName);
     if (data.length <= 1) return;
 
     const headers = data[0];
@@ -381,7 +381,7 @@ function buildTemasPorCursoV2_(tenant, cursoCanonicalBuscado) {
 
   v2ListBancoSheetNames_(ss).forEach(function (sheetName) {
     const sheet = ss.getSheetByName(sheetName);
-    const data = sheet.getDataRange().getValues();
+    const data = leerHojaBancoCacheada_(ss, sheetName);
     if (data.length <= 1) return;
 
     const headers = data[0];
@@ -437,7 +437,7 @@ function getSubtemasPorTemaForTenant(tenant, curso, tema) {
 
   v2ListBancoSheetNames_(ss).forEach(function (sheetName) {
     const sheet = ss.getSheetByName(sheetName);
-    const data = sheet.getDataRange().getValues();
+    const data = leerHojaBancoCacheada_(ss, sheetName);
     if (data.length <= 1) return;
 
     const headers = data[0];
@@ -496,7 +496,7 @@ function getBanqueoByTemaForTenant(tenant, curso, tema, subtema, count) {
 
   v2ListBancoSheetNames_(ss).forEach(function (sheetName) {
     const sheet = ss.getSheetByName(sheetName);
-    const data = sheet.getDataRange().getValues();
+    const data = leerHojaBancoCacheada_(ss, sheetName);
     if (data.length <= 1) return;
 
     const headers = data[0];
