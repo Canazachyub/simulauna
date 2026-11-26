@@ -74,6 +74,8 @@ export interface Division {
   subjects: SubjectV2[];
   totalQuestions: number;
   totalMaxScore: number;
+  /** Carreras a las que se postula con esta división (hoja config_carreras). Opcional: sin ella, texto libre. */
+  carreras?: string[];
 }
 
 export type ScoringEngine = 'suma_ponderada' | 'decimas' | 'vector_canal';

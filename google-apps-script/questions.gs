@@ -96,18 +96,31 @@ function v2ReadActiveQuestions_(spreadsheetId, cursoCanonico, filtros) {
   return { sheetName: sheetName, rows: rows, colIndices: ci };
 }
 
-/** Formatea una fila de Banco_ (v2) al formato de pregunta del contrato. */
+/**
+ * Formatea una fila de Banco_ (v2) al formato de pregunta del contrato.
+ * Filtra opciones vacías REMAPEANDO el índice de la correcta; si la
+ * opción correcta está vacía, la pregunta es inválida: se loguea y se
+ * devuelve null (los llamadores la omiten con .filter(Boolean)).
+ */
 function v2FormatQuestion_(row, ci, curso, number, pointsPerQuestion) {
-  const options = [
+  const built = buildOptionsWithAnswer_([
     formatCellValue(row[ci.option1]),
     formatCellValue(row[ci.option2]),
     formatCellValue(row[ci.option3]),
     formatCellValue(row[ci.option4]),
     formatCellValue(row[ci.option5])
-  ].filter(function (opt) { return opt && opt !== ''; });
+  ], row[ci.correctAnswer]);
 
-  const correctAnswerIndex = (parseInt(row[ci.correctAnswer], 10) || 1) - 1;
   const idHash = ci.idHash !== -1 ? row[ci.idHash] : null;
+
+  if (!built.valid) {
+    console.error('[BANCO] Pregunta omitida: la opción correcta (' + row[ci.correctAnswer] + ') está vacía. curso=' + curso +
+      ' id=' + (idHash || '') + ' numero=' + (ci.numero !== -1 ? row[ci.numero] : ''));
+    return null;
+  }
+
+  const options = built.options;
+  const correctAnswerIndex = built.correctAnswer;
 
   return {
     id: idHash ? String(idHash) : (curso + '-' + number),
@@ -141,153 +154,29 @@ function v2ListBancoSheetNames_(ss) {
 // CONFIG (v2): config_examen + config_escala
 // ============================================
 
-function v2ReadConfigExamen_(spreadsheetId, proceso) {
-  const ss = SpreadsheetApp.openById(spreadsheetId);
-  const sheet = ss.getSheetByName('config_examen');
-  if (!sheet) throw new Error('Hoja "config_examen" no encontrada');
+// Lectura BLINDADA (config_guard.gs): las hojas se validan celda por celda;
+// si una edición las deja inválidas se sirve la última configuración buena
+// y nunca se califica con una inválida. Ver cfgCargarConfig_.
 
-  const data = sheet.getDataRange().getValues();
-  if (data.length <= 1) return [];
-
-  const headers = data[0].map(function (h) { return String(h).trim(); });
-  const idx = {
-    proceso: headers.indexOf('proceso'),
-    division: headers.indexOf('division'),
-    divisionTipo: headers.indexOf('division_tipo'),
-    curso: headers.indexOf('curso'),
-    nPreguntas: headers.indexOf('n_preguntas'),
-    puntosCorrecta: headers.indexOf('puntos_correcta'),
-    puntosIncorrecta: headers.indexOf('puntos_incorrecta'),
-    peso: headers.indexOf('peso'),
-    orden: headers.indexOf('orden')
-  };
-
-  const procesoUpper = (proceso || 'ORDINARIO').toUpperCase();
-  const rows = [];
-  for (let i = 1; i < data.length; i++) {
-    const row = data[i];
-    const cursoName = row[idx.curso];
-    if (!cursoName) continue;
-
-    const rowProceso = String(row[idx.proceso] || '').trim().toUpperCase() || 'ORDINARIO';
-    if (rowProceso !== procesoUpper) continue;
-
-    rows.push({
-      proceso: rowProceso,
-      division: String(row[idx.division] || '').trim(),
-      divisionTipo: String(row[idx.divisionTipo] || '').trim() || 'area',
-      curso: String(cursoName).trim(),
-      nPreguntas: parseInt(row[idx.nPreguntas], 10) || 0,
-      puntosCorrecta: parseFloat(row[idx.puntosCorrecta]) || 0,
-      puntosIncorrecta: parseFloat(row[idx.puntosIncorrecta]) || 0,
-      peso: parseFloat(row[idx.peso]) || 0,
-      orden: Number(row[idx.orden]) || 0
-    });
-  }
-  return rows;
+/** Filas validadas de config_examen del proceso (forma {proceso, division, divisionTipo, curso, nPreguntas, puntosCorrecta, puntosIncorrecta, peso, orden}). */
+function v2ReadConfigExamen_(tenant, proceso) {
+  return cfgCargarConfig_(tenant, proceso).config.rows;
 }
 
-function v2ReadConfigEscala_(spreadsheetId, proceso) {
-  const ss = SpreadsheetApp.openById(spreadsheetId);
-  const sheet = ss.getSheetByName('config_escala');
-  if (!sheet) throw new Error('Hoja "config_escala" no encontrada');
-
-  const data = sheet.getDataRange().getValues();
-  if (data.length <= 1) throw new Error('Hoja "config_escala" está vacía');
-
-  const headers = data[0].map(function (h) { return String(h).trim(); });
-  const idx = {
-    proceso: headers.indexOf('proceso'),
-    motor: headers.indexOf('motor'),
-    escalaTotal: headers.indexOf('escala_total'),
-    umbralExcelente: headers.indexOf('umbral_excelente'),
-    umbralBueno: headers.indexOf('umbral_bueno'),
-    umbralRegular: headers.indexOf('umbral_regular'),
-    duracionMin: headers.indexOf('duracion_min'),
-    nPreguntasTotal: headers.indexOf('n_preguntas_total')
-  };
-
-  function toEscala(row) {
-    return {
-      motor: String(row[idx.motor] || 'suma_ponderada').trim(),
-      escalaTotal: parseFloat(row[idx.escalaTotal]) || 0,
-      umbrales: {
-        excelente: parseFloat(row[idx.umbralExcelente]) || 0,
-        bueno: parseFloat(row[idx.umbralBueno]) || 0,
-        regular: parseFloat(row[idx.umbralRegular]) || 0
-      },
-      duracionMin: parseInt(row[idx.duracionMin], 10) || 0,
-      nPreguntasTotal: parseInt(row[idx.nPreguntasTotal], 10) || 0
-    };
-  }
-
-  const procesoUpper = (proceso || 'ORDINARIO').toUpperCase();
-  for (let i = 1; i < data.length; i++) {
-    const row = data[i];
-    const rowProceso = String(row[idx.proceso] || '').trim().toUpperCase();
-    if (rowProceso === procesoUpper) return toEscala(row);
-  }
-
-  // Si no hay fila para el proceso pedido, usar la primera disponible.
-  return toEscala(data[1]);
+/** Escala validada de config_escala del proceso (nunca la de otro proceso). */
+function v2ReadConfigEscala_(tenant, proceso) {
+  return cfgCargarConfig_(tenant, proceso).config.escala;
 }
 
 /**
  * Action `getConfig` (v2). Para 'una' delega en el adaptador.
  */
 function getConfigForTenant(tenant, proceso) {
-  if (tenant.layout === 'legacy') {
-    return unaGetConfigV2(proceso);
-  }
-
-  const rows = v2ReadConfigExamen_(tenant.spreadsheetId, proceso);
-  const escala = v2ReadConfigEscala_(tenant.spreadsheetId, proceso);
-
-  const divisionesMap = {};
-  const divisionOrder = [];
-
-  rows.forEach(function (r) {
-    if (!divisionesMap[r.division]) {
-      divisionesMap[r.division] = {
-        codigo: r.division,
-        nombre: r.division,
-        tipo: r.divisionTipo,
-        subjects: [],
-        totalQuestions: 0,
-        totalMaxScore: 0,
-        orden: r.orden
-      };
-      divisionOrder.push(r.division);
-    }
-    const d = divisionesMap[r.division];
-    const maxScore = r.puntosCorrecta * r.nPreguntas;
-    d.subjects.push({
-      name: r.curso,
-      questionCount: r.nPreguntas,
-      pointsPerQuestion: r.puntosCorrecta,
-      weight: r.peso,
-      maxScore: maxScore,
-      orden: r.orden
-    });
-    d.totalQuestions += r.nPreguntas;
-    d.totalMaxScore += maxScore;
-    if (r.orden && r.orden < d.orden) d.orden = r.orden;
-  });
-
-  const divisiones = divisionOrder
-    .map(function (code) { return divisionesMap[code]; })
-    .sort(function (a, b) { return (a.orden || 0) - (b.orden || 0); });
-
-  divisiones.forEach(function (d) {
-    d.subjects.sort(function (a, b) { return (a.orden || 0) - (b.orden || 0); });
-  });
-
-  return {
-    universidad: tenant.codigo,
-    proceso: proceso || 'ORDINARIO',
-    divisiones: divisiones,
-    escala: escala
-  };
+  const resp = tenant.layout === 'legacy'
+    ? unaGetConfigV2(proceso)
+    : buildConfigV2Response_(tenant.codigo, proceso || 'ORDINARIO', cfgCargarConfig_(tenant, proceso).config);
+  // Carreras del registro (hoja opcional config_carreras). Nunca lanza: sin hoja = sin carreras.
+  return cfgAdjuntarCarreras_(tenant, resp);
 }
 
 // ============================================
@@ -297,7 +186,9 @@ function getConfigForTenant(tenant, proceso) {
 /**
  * Arma el pool de preguntas COMPLETAS (con correctAnswer/justification) de
  * un examen para `division` + `proceso` (+ `semana` opcional). Devuelve
- * {subjectsPlan:[{name,questionCount,pointsPerQuestion,maxScore}], questions:[]}.
+ * {subjectsPlan:[{name,questionCount,pointsPerQuestion,puntosIncorrecta,puntosBlanco,factor,weight,maxScore}], questions:[]}.
+ * pointsPerQuestion/puntosIncorrecta/puntosBlanco van en puntos BRUTOS; `factor`
+ * (factor_escala, default 1) los lleva a la escala oficial al calificar.
  * scoring.gs se encarga de esconder correctAnswer/justification antes de
  * enviar las preguntas al cliente y de guardar la clave en la sesion.
  */
@@ -306,12 +197,12 @@ function buildExamPoolForTenant(tenant, division, proceso, semana) {
     return unaBuildExamPool_(division, proceso, semana);
   }
 
-  const rows = v2ReadConfigExamen_(tenant.spreadsheetId, proceso).filter(function (r) {
+  const rows = v2ReadConfigExamen_(tenant, proceso).filter(function (r) {
     return r.division === division;
   });
 
   if (rows.length === 0) {
-    throw new Error(`No hay configuración de examen para la división "${division}" (proceso ${proceso || 'ORDINARIO'})`);
+    throw publicError_(`No hay configuración de examen para la división "${division}" (proceso ${proceso || 'ORDINARIO'})`);
   }
 
   const questions = [];
@@ -323,9 +214,10 @@ function buildExamPoolForTenant(tenant, division, proceso, semana) {
     const pool = v2ReadActiveQuestions_(tenant.spreadsheetId, cursoCanonico, { proceso: proceso, division: division, semana: semana });
     const selected = selectRandomItems(pool.rows, Math.min(r.nPreguntas, pool.rows.length));
 
-    const subjectQuestions = selected.map(function (q, index) {
-      return v2FormatQuestion_(q.data, pool.colIndices, r.curso, questionNumber + index, r.puntosCorrecta);
-    });
+    const factor = r.factor || 1;
+    const subjectQuestions = renumberQuestions_(selected.map(function (q, index) {
+      return v2FormatQuestion_(q.data, pool.colIndices, r.curso, questionNumber + index, r.puntosCorrecta * factor);
+    }).filter(Boolean), questionNumber);
 
     questions.push.apply(questions, subjectQuestions);
     questionNumber += subjectQuestions.length;
@@ -335,8 +227,10 @@ function buildExamPoolForTenant(tenant, division, proceso, semana) {
       questionCount: subjectQuestions.length,
       pointsPerQuestion: r.puntosCorrecta,
       puntosIncorrecta: r.puntosIncorrecta,
+      puntosBlanco: r.puntosBlanco || 0,
+      factor: factor,
       weight: r.peso,
-      maxScore: r.puntosCorrecta * subjectQuestions.length
+      maxScore: r.puntosCorrecta * subjectQuestions.length * factor
     });
   });
 
@@ -354,7 +248,7 @@ function unaBuildExamPool_(division, proceso, semana) {
 
   if (procesoUpper === 'CEPRE') {
     const simulacro = unaGetCepreSimulacro(division, semana);
-    if (simulacro.error) throw new Error(simulacro.error);
+    if (simulacro.error) throw publicError_(simulacro.error);
     questions = simulacro.questions;
   } else {
     questions = unaGetQuestions(division);
@@ -400,9 +294,9 @@ function getBanqueoQuestionsForTenant(tenant, curso, count) {
   if (n > pool.rows.length) n = pool.rows.length;
 
   const selected = selectRandomItems(pool.rows, n);
-  const questions = selected.map(function (q, index) {
+  const questions = renumberQuestions_(selected.map(function (q, index) {
     return v2FormatQuestion_(q.data, pool.colIndices, cursoCanonico, index + 1, 0);
-  });
+  }).filter(Boolean), 1);
 
   return {
     course: cursoCanonico,
@@ -425,9 +319,13 @@ function getCursosConTemasForTenant(tenant) {
   }
 
   const key = cacheKey(tenant.codigo, 'cursos_con_temas');
-  const cached = getCachedJson(key);
-  if (cached) return cached;
+  // Anti-estampida: solo una ejecución recorre todas las hojas Banco_.
+  return getOrBuildCachedJson_(key, 1800, function () {
+    return buildCursosConTemasV2_(tenant);
+  });
+}
 
+function buildCursosConTemasV2_(tenant) {
   const ss = SpreadsheetApp.openById(tenant.spreadsheetId);
   const cursosMap = {};
 
@@ -460,9 +358,7 @@ function getCursosConTemasForTenant(tenant) {
     .map(function ([nombre, count]) { return { nombre: nombre, count: count }; })
     .sort(function (a, b) { return a.nombre.localeCompare(b.nombre, 'es'); });
 
-  const result = { totalCursos: cursos.length, cursos: cursos, universidad: tenant.codigo };
-  setCachedJson(key, result, 1800);
-  return result;
+  return { totalCursos: cursos.length, cursos: cursos, universidad: tenant.codigo };
 }
 
 function getTemasPorCursoForTenant(tenant, curso) {
@@ -474,9 +370,12 @@ function getTemasPorCursoForTenant(tenant, curso) {
 
   const cursoCanonicalBuscado = getCursoCanonical(curso) || curso;
   const key = cacheKey(tenant.codigo, 'temas_' + cursoCanonicalBuscado.replace(/\s/g, '_'));
-  const cached = getCachedJson(key);
-  if (cached) return cached;
+  return getOrBuildCachedJson_(key, 1800, function () {
+    return buildTemasPorCursoV2_(tenant, cursoCanonicalBuscado);
+  });
+}
 
+function buildTemasPorCursoV2_(tenant, cursoCanonicalBuscado) {
   const ss = SpreadsheetApp.openById(tenant.spreadsheetId);
   const temasMap = {};
 
@@ -516,15 +415,13 @@ function getTemasPorCursoForTenant(tenant, curso) {
     });
 
   const totalPreguntas = temas.reduce(function (sum, t) { return sum + t.count; }, 0);
-  const result = {
+  return {
     curso: cursoCanonicalBuscado,
     totalPreguntas: totalPreguntas,
     totalTemas: temas.length,
     temas: temas,
     universidad: tenant.codigo
   };
-  setCachedJson(key, result, 1800);
-  return result;
 }
 
 function getSubtemasPorTemaForTenant(tenant, curso, tema) {
@@ -629,19 +526,17 @@ function getBanqueoByTemaForTenant(tenant, curso, tema, subtema, count) {
     }
   });
 
-  let selected;
-  if (count === null || count === undefined || count >= allQuestions.length) {
-    selected = shuffleArray(allQuestions);
-  } else {
-    selected = selectRandomItems(allQuestions, count);
-  }
+  // Tope: nunca todo el banco (antes, sin `count` se devolvía todo).
+  const n = clampCount_(count, QUESTIONS_DEFAULT_COUNT_, QUESTIONS_MAX_COUNT_);
+  const selected = selectRandomItems(allQuestions, Math.min(n, allQuestions.length));
 
-  const questions = selected.map(function (q, index) {
+  const questions = renumberQuestions_(selected.map(function (q, index) {
     const formatted = v2FormatQuestion_(q.data, q.colIndices, q.curso, index + 1, 0);
+    if (!formatted) return null;
     formatted.tema = String(q.data[q.colIndices.tema] || '').trim();
     formatted.subtema = String(q.data[q.colIndices.subtema] || '').trim();
     return formatted;
-  });
+  }).filter(Boolean), 1);
 
   return {
     curso: cursoCanonicalBuscado,
@@ -675,14 +570,16 @@ function getCepreQuestionsForTenant(tenant, curso, division, semana, count) {
 
   let selected;
   if (count === null || count === undefined) {
-    selected = pool.rows;
+    // Modo cuadernillo: en orden, pero con tope (antes devolvía todo el banco).
+    selected = pool.rows.slice(0, QUESTIONS_MAX_COUNT_);
   } else {
-    selected = selectRandomItems(pool.rows, Math.min(count, pool.rows.length));
+    const n = clampCount_(count, QUESTIONS_DEFAULT_COUNT_, QUESTIONS_MAX_COUNT_);
+    selected = selectRandomItems(pool.rows, Math.min(n, pool.rows.length));
   }
 
-  const questions = selected.map(function (q, index) {
+  const questions = renumberQuestions_(selected.map(function (q, index) {
     return v2FormatQuestion_(q.data, pool.colIndices, cursoCanonico, index + 1, 0);
-  });
+  }).filter(Boolean), 1);
 
   return {
     course: cursoCanonico,

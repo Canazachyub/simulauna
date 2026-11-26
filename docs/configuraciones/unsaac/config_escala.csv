@@ -1,0 +1,2 @@
+proceso,motor,escala_total,umbral_excelente,umbral_bueno,umbral_regular,duracion_min,n_preguntas_total,factor_escala,minimo_aprobatorio,fuente,notas
+ORDINARIO,otro,1000,800.0,600.0,400.0,150,80,2.5,450 (Art. 8),https://transparencia.unsaac.edu.pe/links/disposiciones/documentos/resCU/CU198-2022%20APRUEBA%20REGLAMENTO%20DE%20ADMISIONUNSAAC.pdf,"Art. 72: correcta 5, en blanco 1, incorrecta 0; puntaje final = bruto (máx 400) × 2.5. Reglamento 2022 vigente."

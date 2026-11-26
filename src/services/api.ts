@@ -21,6 +21,16 @@ import type {
 } from '../components/aula/aulaTypes';
 import { getAulaMock } from '../components/aula/aulaMock';
 import { WHATSAPP_NUMBER } from '../constants/contact';
+import {
+  FriendlyError,
+  HttpError,
+  TimeoutError,
+  MSG_CONFIGURACION,
+  friendlyError,
+  friendlyMessage,
+  isRetriableError,
+  toFriendlyError,
+} from '../utils/friendlyError';
 
 // Re-exportar tipos que son usados por otros componentes
 export type { AreaType } from '../types';
@@ -36,13 +46,30 @@ const API_BASE_URL = (import.meta.env.VITE_API_URL as string) || '';
 const API_TOKEN = import.meta.env.VITE_API_TOKEN as string;
 
 /**
- * Modo mock: activo si VITE_USE_MOCK=true o si no hay VITE_API_URL configurada.
+ * Modo mock: activo si VITE_USE_MOCK=true, o en DESARROLLO si no hay VITE_API_URL configurada.
  * Permite desarrollar y demostrar el multi-tenant (una + unsa) sin backend real.
+ *
+ * En el build de PRODUCCIÓN nunca se cae a mock en silencio: si falta VITE_API_URL (p.ej. el
+ * secret no llegó al workflow de deploy) los alumnos estarían rindiendo simulacros falsos sin
+ * enterarse. En ese caso API_MISCONFIGURED queda en true, se loguea un error visible en
+ * consola y cada llamada lanza un FriendlyError con MSG_CONFIGURACION que la UI muestra.
  */
-export const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true' || !API_BASE_URL;
+export const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true' || (!API_BASE_URL && !import.meta.env.PROD);
 
-if (!API_BASE_URL && !USE_MOCK) {
-  throw new Error('VITE_API_URL environment variable is not set. The application cannot connect to the API.');
+export const API_MISCONFIGURED = !API_BASE_URL && !USE_MOCK;
+
+if (API_MISCONFIGURED) {
+  console.error(
+    '[SimulaUNA] VITE_API_URL no está configurada en este build de producción. ' +
+    'La aplicación NO puede conectarse al backend (no se usa modo mock en producción).'
+  );
+}
+
+/** Lanza el error amable de configuración si el build salió sin VITE_API_URL. */
+function assertApiConfigured(): void {
+  if (API_MISCONFIGURED) {
+    throw new FriendlyError(MSG_CONFIGURACION);
+  }
 }
 
 const DEFAULT_UNIVERSIDAD = 'una';
@@ -76,7 +103,14 @@ const REQUEST_TIMEOUT = 30000;
 // FUNCIONES DE FETCH CON MANEJO DE ERRORES
 // ============================================
 
-async function fetchWithTimeout(url: string, timeout: number = REQUEST_TIMEOUT): Promise<Response> {
+// Reintentos automáticos SOLO para lecturas GET idempotentes (getConfig, getExam, banqueos…).
+// Las escrituras (registerUser, saveScore, inscribirCiclo) NO se reintentan aquí: un reintento
+// ciego podría duplicar filas. submitExam tiene su propio reintento en useExam.finishExam
+// (seguro porque va con el mismo examSessionId, ver docs del punto de idempotencia allí).
+const READ_RETRIES = 2;
+const READ_RETRY_BACKOFF_MS = [1000, 3000];
+
+async function fetchOnce(url: string, timeout: number): Promise<Response> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);
 
@@ -93,9 +127,33 @@ async function fetchWithTimeout(url: string, timeout: number = REQUEST_TIMEOUT):
   } catch (error) {
     clearTimeout(timeoutId);
     if (error instanceof Error && error.name === 'AbortError') {
-      throw new Error('La solicitud tardó demasiado tiempo. Por favor, intenta de nuevo.');
+      throw new TimeoutError();
     }
     throw error;
+  }
+}
+
+/**
+ * GET con timeout y, opcionalmente, reintentos con backoff ante fallas transitorias (red,
+ * timeout, HTTP 5xx/429). Un 4xx o una respuesta `success:false` NO se reintentan: el servidor
+ * ya contestó y repetir no cambia nada.
+ */
+async function fetchWithTimeout(url: string, timeout: number = REQUEST_TIMEOUT, retries: number = 0): Promise<Response> {
+  assertApiConfigured();
+
+  for (let attempt = 0; ; attempt++) {
+    const isLastAttempt = attempt >= retries;
+    try {
+      const response = await fetchOnce(url, timeout);
+      if (!isLastAttempt && (response.status >= 500 || response.status === 429)) {
+        await delay(READ_RETRY_BACKOFF_MS[attempt] ?? 3000);
+        continue;
+      }
+      return response;
+    } catch (error) {
+      if (isLastAttempt || !isRetriableError(error)) throw error;
+      await delay(READ_RETRY_BACKOFF_MS[attempt] ?? 3000);
+    }
   }
 }
 
@@ -114,10 +172,10 @@ export async function getUniversidades(): Promise<Universidad[]> {
 
   try {
     const url = buildApiUrl('getUniversidades');
-    const response = await fetchWithTimeout(url, 15000);
+    const response = await fetchWithTimeout(url, 15000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result: ApiResponse<Universidad[]> = await response.json();
@@ -129,11 +187,7 @@ export async function getUniversidades(): Promise<Universidad[]> {
     return result.data!;
   } catch (error) {
     console.error('Error al obtener universidades:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo cargar el listado de universidades.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -153,10 +207,10 @@ export async function getConfig(universidad: string = DEFAULT_UNIVERSIDAD, proce
 
   try {
     const url = buildApiUrl('getConfig', { universidad, proceso });
-    const response = await fetchWithTimeout(url);
+    const response = await fetchWithTimeout(url, REQUEST_TIMEOUT, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result: ApiResponse<ConfigV2> = await response.json();
@@ -168,11 +222,7 @@ export async function getConfig(universidad: string = DEFAULT_UNIVERSIDAD, proce
     return result.data!;
   } catch (error) {
     console.error('Error al obtener configuración:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo conectar con el servidor. Verifica tu conexión a internet.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -199,7 +249,10 @@ export async function getExam(
   universidad: string,
   division: string,
   proceso: string = 'ORDINARIO',
-  semana?: string
+  semana?: string,
+  /** Opcional: si se envía, el backend liga la sesión a este DNI (submitExam rechaza otro) y,
+   * con ENFORCE_ACCESS_SERVER activo, valida acceso en servidor. No cambia el contrato. */
+  identity?: { dni?: string; email?: string }
 ): Promise<GetExamResult> {
   if (USE_MOCK) {
     await delay(700);
@@ -215,7 +268,7 @@ export async function getExam(
 
     const fullQuestions = generateMockQuestionsV2(config, divisionConfig);
     const examSessionId = `mock-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    mockExamSessions.set(examSessionId, {
+    saveMockExamSession(examSessionId, {
       universidad,
       division: divisionConfig.codigo,
       proceso,
@@ -239,11 +292,11 @@ export async function getExam(
   }
 
   try {
-    const url = buildApiUrl('getExam', { universidad, division, proceso, semana });
-    const response = await fetchWithTimeout(url, 30000);
+    const url = buildApiUrl('getExam', { universidad, division, proceso, semana, dni: identity?.dni, email: identity?.email });
+    const response = await fetchWithTimeout(url, 30000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result: ApiResponse<GetExamResult> = await response.json();
@@ -255,11 +308,7 @@ export async function getExam(
     return result.data!;
   } catch (error) {
     console.error('Error al obtener examen:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo cargar el examen. Por favor, intenta de nuevo.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -282,11 +331,52 @@ export interface SubmitExamResult {
 /**
  * Envía las respuestas del simulacro para calificación EN SERVIDOR (POST, body JSON,
  * content-type text/plain para evitar preflight CORS contra Apps Script).
+ *
+ * IDEMPOTENCIA: el payload SIEMPRE lleva el `examSessionId` que entregó getExam, y
+ * useExam.finishExam reintenta (backoff 1s/3s/6s) con EXACTAMENTE el mismo id y las mismas
+ * respuestas. El backend debe tratar un segundo submit del mismo examSessionId como el mismo
+ * envío (devolver el resultado ya calculado sin volver a escribir el historial) — eso lo
+ * endurece google-apps-script/scoring.gs. El contrato no cambia: no hay parámetros nuevos.
+ *
+ * Errores: lanza FriendlyError; `retriable` = true solo ante red/timeout/5xx (vale reintentar).
  */
+/**
+ * El backend (scoring.gs) devuelve cada curso como {subject, correct, incorrect, unanswered, total,
+ * points, maxScore}; la UI (Results.tsx) espera SubjectResult {name, correctAnswers, totalQuestions,
+ * percentage, pointsObtained, maxPoints}. Se aceptan ambas formas para no romper si alguna cambia.
+ */
+/** scoring.gs devuelve el nivel en español (excelente/bueno/regular/bajo/sin_clasificar);
+ * la UI (PERFORMANCE_MESSAGES) usa excellent/good/regular/needs_practice. */
+export function normalizarNivel(nivel: unknown): PerformanceLevel {
+  const n = String(nivel ?? '').toLowerCase();
+  if (n === 'excellent' || n === 'excelente') return 'excellent';
+  if (n === 'good' || n === 'bueno') return 'good';
+  if (n === 'regular') return 'regular';
+  return 'needs_practice';
+}
+
+export function normalizarSubjectResults(lista: unknown): SubjectResult[] {
+  return Array.isArray(lista) ? lista.map(s => normalizarSubjectResult((s || {}) as Record<string, unknown>)) : [];
+}
+
+function normalizarSubjectResult(s: Record<string, unknown>): SubjectResult {
+  const num = (v: unknown) => (typeof v === 'number' && isFinite(v) ? v : Number(v) || 0);
+  const total = num(s.totalQuestions ?? s.total);
+  const correct = num(s.correctAnswers ?? s.correct);
+  return {
+    name: String(s.name ?? s.subject ?? ''),
+    correctAnswers: correct,
+    totalQuestions: total,
+    percentage: typeof s.percentage === 'number' ? s.percentage : (total > 0 ? Math.round((correct / total) * 10000) / 100 : 0),
+    pointsObtained: num(s.pointsObtained ?? s.points),
+    maxPoints: num(s.maxPoints ?? s.maxScore),
+  };
+}
+
 export async function submitExam(payload: SubmitExamPayload): Promise<SubmitExamResult> {
   if (USE_MOCK) {
     await delay(600);
-    const session = mockExamSessions.get(payload.examSessionId);
+    const session = getMockExamSession(payload.examSessionId);
     if (!session) {
       throw new Error('La sesión de examen expiró o no existe. Vuelve a iniciar el simulacro.');
     }
@@ -322,6 +412,7 @@ export async function submitExam(payload: SubmitExamPayload): Promise<SubmitExam
   }
 
   try {
+    assertApiConfigured();
     const params = new URLSearchParams({ action: 'submitExam' });
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
@@ -329,17 +420,24 @@ export async function submitExam(payload: SubmitExamPayload): Promise<SubmitExam
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-    const response = await fetch(url, {
-      method: 'POST',
-      signal: controller.signal,
-      // text/plain evita el preflight OPTIONS que Apps Script no maneja bien
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    });
-    clearTimeout(timeoutId);
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method: 'POST',
+        signal: controller.signal,
+        // text/plain evita el preflight OPTIONS que Apps Script no maneja bien
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+      });
+    } catch (fetchError) {
+      if (fetchError instanceof Error && fetchError.name === 'AbortError') throw new TimeoutError();
+      throw fetchError;
+    } finally {
+      clearTimeout(timeoutId);
+    }
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result: ApiResponse<SubmitExamResult> = await response.json();
@@ -348,14 +446,15 @@ export async function submitExam(payload: SubmitExamPayload): Promise<SubmitExam
       throw new Error(result.error || 'Error al calificar el examen');
     }
 
-    return result.data!;
+    const data = result.data!;
+    return {
+      ...data,
+      subjectResults: normalizarSubjectResults(data.subjectResults),
+      performanceLevel: normalizarNivel(data.performanceLevel),
+    };
   } catch (error) {
     console.error('Error al calificar examen:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo calificar el examen. Por favor, intenta de nuevo.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -392,7 +491,7 @@ export async function registerUser(user: UserRegistration): Promise<void> {
     const response = await fetchWithTimeout(url, 15000);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result = await response.json();
@@ -402,7 +501,7 @@ export async function registerUser(user: UserRegistration): Promise<void> {
     }
   } catch (error) {
     console.error('Error al registrar usuario:', error);
-    throw error;
+    throw toFriendlyError(error);
   }
 }
 
@@ -463,7 +562,7 @@ export async function saveScore(data: ScoreData): Promise<void> {
     const response = await fetchWithTimeout(url, 15000);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result = await response.json();
@@ -480,6 +579,28 @@ export async function saveScore(data: ScoreData): Promise<void> {
 /**
  * Obtiene el historial de puntajes de un usuario por DNI
  */
+/**
+ * El backend escribe cada intento DOS veces (CORE.historial + historial_puntajes legado, «doble
+ * escritura durante la transición») y getHistory une ambas: el mismo intento sale repetido, con
+ * el porcentaje una vez como fracción (0.2281) y otra como % (22.81). Aquí se normaliza el % y se
+ * funden los intentos con el mismo puntaje/área/proceso separados por menos de 5 minutos.
+ */
+function normalizarHistorial(h: UserHistory | null): UserHistory | null {
+  if (!h || !Array.isArray(h.history)) return h;
+  const pct = (e: HistoryEntry) => {
+    const p = Number(e.porcentaje) || 0;
+    return p > 0 && p <= 1 && e.puntaje > 1 ? Math.round(p * 10000) / 100 : p;
+  };
+  const vistos: HistoryEntry[] = [];
+  for (const e of h.history) {
+    const t = new Date(e.fecha).getTime();
+    const dup = vistos.some(v => Math.abs(new Date(v.fecha).getTime() - t) < 5 * 60 * 1000
+      && Math.abs(v.puntaje - e.puntaje) < 0.01 && v.area === e.area && (v.proceso || '') === (e.proceso || ''));
+    if (!dup) vistos.push({ ...e, porcentaje: pct(e), puntajeMax: Math.round(Number(e.puntajeMax) * 100) / 100 });
+  }
+  return { ...h, history: vistos, totalIntentos: vistos.length };
+}
+
 export async function getUserHistory(dni: string, universidad: string = DEFAULT_UNIVERSIDAD, proceso?: string): Promise<UserHistory | null> {
   try {
     const params = new URLSearchParams({
@@ -491,7 +612,7 @@ export async function getUserHistory(dni: string, universidad: string = DEFAULT_
 
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
-    const response = await fetchWithTimeout(url, 15000);
+    const response = await fetchWithTimeout(url, 15000, READ_RETRIES);
 
     if (!response.ok) {
       return null;
@@ -503,7 +624,7 @@ export async function getUserHistory(dni: string, universidad: string = DEFAULT_
       return null;
     }
 
-    return result.data as UserHistory;
+    return normalizarHistorial(result.data as UserHistory);
   } catch (error) {
     console.error('Error al obtener historial:', error);
     return null;
@@ -540,10 +661,10 @@ export async function checkAccess(dni: string, email: string, universidad: strin
 
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
-    const response = await fetchWithTimeout(url, 15000);
+    const response = await fetchWithTimeout(url, 15000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result = await response.json();
@@ -622,10 +743,10 @@ export async function checkBanqueoAccess(
 
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
-    const response = await fetchWithTimeout(url, 15000);
+    const response = await fetchWithTimeout(url, 15000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result = await response.json();
@@ -665,10 +786,10 @@ export async function getBanqueoQuestions(
 
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
-    const response = await fetchWithTimeout(url, 30000);
+    const response = await fetchWithTimeout(url, 30000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result = await response.json();
@@ -680,11 +801,7 @@ export async function getBanqueoQuestions(
     return result.data as BanqueoQuestionsResult;
   } catch (error) {
     console.error('Error al obtener preguntas de banqueo:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo cargar el banqueo. Por favor, intenta de nuevo.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -823,10 +940,10 @@ export async function getCepreQuestions(
 
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
-    const response = await fetchWithTimeout(url, 30000);
+    const response = await fetchWithTimeout(url, 30000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result = await response.json();
@@ -838,11 +955,7 @@ export async function getCepreQuestions(
     return result.data as CepreQuestionsResult;
   } catch (error) {
     console.error('Error al obtener preguntas CEPREUNA:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo cargar el banqueo CEPREUNA. Por favor, intenta de nuevo.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -865,10 +978,10 @@ export async function getCepreSimulacro(
 
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
-    const response = await fetchWithTimeout(url, 45000);
+    const response = await fetchWithTimeout(url, 45000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result = await response.json();
@@ -880,11 +993,7 @@ export async function getCepreSimulacro(
     return result.data as CepreSimulacroResult;
   } catch (error) {
     console.error('Error al obtener simulacro CEPREUNA:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo cargar el simulacro CEPREUNA. Por favor, intenta de nuevo.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -902,10 +1011,10 @@ export async function getCepreCourses(area?: CepreAreaCode, universidad: string 
 
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
-    const response = await fetchWithTimeout(url, 15000);
+    const response = await fetchWithTimeout(url, 15000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result = await response.json();
@@ -951,10 +1060,10 @@ export async function getCepreSemanas(
 
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
-    const response = await fetchWithTimeout(url, 15000);
+    const response = await fetchWithTimeout(url, 15000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result = await response.json();
@@ -1003,10 +1112,10 @@ export async function getCursosConTemas(universidad: string = DEFAULT_UNIVERSIDA
 
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
-    const response = await fetchWithTimeout(url, 30000);
+    const response = await fetchWithTimeout(url, 30000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result = await response.json();
@@ -1024,11 +1133,7 @@ export async function getCursosConTemas(universidad: string = DEFAULT_UNIVERSIDA
     }));
   } catch (error) {
     console.error('Error al obtener cursos con temas:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo cargar la lista de cursos. Por favor, intenta de nuevo.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -1045,10 +1150,10 @@ export async function getTemasPorCurso(curso: string, universidad: string = DEFA
 
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
-    const response = await fetchWithTimeout(url, 30000);
+    const response = await fetchWithTimeout(url, 30000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result = await response.json();
@@ -1065,11 +1170,7 @@ export async function getTemasPorCurso(curso: string, universidad: string = DEFA
     }));
   } catch (error) {
     console.error('Error al obtener temas del curso:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo cargar los temas. Por favor, intenta de nuevo.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -1087,10 +1188,10 @@ export async function getSubtemasPorTema(curso: string, tema: string, universida
 
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
-    const response = await fetchWithTimeout(url, 30000);
+    const response = await fetchWithTimeout(url, 30000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result = await response.json();
@@ -1107,11 +1208,7 @@ export async function getSubtemasPorTema(curso: string, tema: string, universida
     }));
   } catch (error) {
     console.error('Error al obtener subtemas:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo cargar los subtemas. Por favor, intenta de nuevo.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -1152,10 +1249,10 @@ export async function getBanqueoByTema(
 
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
-    const response = await fetchWithTimeout(url, 30000);
+    const response = await fetchWithTimeout(url, 30000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result = await response.json();
@@ -1167,11 +1264,7 @@ export async function getBanqueoByTema(
     return result.data as BanqueoByTemaResult;
   } catch (error) {
     console.error('Error al obtener preguntas por tema:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo cargar las preguntas. Por favor, intenta de nuevo.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -1269,10 +1362,10 @@ export async function getCiclos(universidad: string = DEFAULT_UNIVERSIDAD, estad
 
   try {
     const url = buildApiUrl('getCiclos', { universidad, estado });
-    const response = await fetchWithTimeout(url, 15000);
+    const response = await fetchWithTimeout(url, 15000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result: ApiResponse<{ ciclos: CicloMock[] }> = await response.json();
@@ -1284,11 +1377,7 @@ export async function getCiclos(universidad: string = DEFAULT_UNIVERSIDAD, estad
     return result.data!.ciclos;
   } catch (error) {
     console.error('Error al obtener ciclos:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo cargar la lista de ciclos. Por favor, intenta de nuevo.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -1358,6 +1447,7 @@ export async function inscribirCiclo(payload: InscribirCicloPayload): Promise<In
   }
 
   try {
+    assertApiConfigured();
     const params = new URLSearchParams({ action: 'inscribirCiclo' });
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
@@ -1365,17 +1455,24 @@ export async function inscribirCiclo(payload: InscribirCicloPayload): Promise<In
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 20000);
 
-    const response = await fetch(url, {
-      method: 'POST',
-      signal: controller.signal,
-      // text/plain evita el preflight OPTIONS que Apps Script no maneja bien
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload),
-    });
-    clearTimeout(timeoutId);
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method: 'POST',
+        signal: controller.signal,
+        // text/plain evita el preflight OPTIONS que Apps Script no maneja bien
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload),
+      });
+    } catch (fetchError) {
+      if (fetchError instanceof Error && fetchError.name === 'AbortError') throw new TimeoutError();
+      throw fetchError;
+    } finally {
+      clearTimeout(timeoutId);
+    }
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result: ApiResponse<InscribirCicloResult> = await response.json();
@@ -1387,11 +1484,7 @@ export async function inscribirCiclo(payload: InscribirCicloPayload): Promise<In
     return result.data!;
   } catch (error) {
     console.error('Error al inscribir en el ciclo:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo procesar tu inscripción. Por favor, intenta de nuevo.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -1425,10 +1518,10 @@ export async function getAula(
 
   try {
     const url = buildApiUrl('getAula', { universidad, dni, email, cicloId });
-    const response = await fetchWithTimeout(url, 20000);
+    const response = await fetchWithTimeout(url, 20000, READ_RETRIES);
 
     if (!response.ok) {
-      return { ok: false, reason: 'red', message: `Error HTTP: ${response.status}` };
+      return { ok: false, reason: 'red', message: friendlyError(new HttpError(response.status)) };
     }
 
     const result: ApiResponse<AulaApiData> = await response.json();
@@ -1437,7 +1530,7 @@ export async function getAula(
       if (isAulaAccionNoValida(result.error)) {
         return { ok: false, reason: 'backend_no_desplegado', message: result.error || '' };
       }
-      return { ok: false, reason: 'error', message: result.error || 'No se pudo cargar el Aula.' };
+      return { ok: false, reason: 'error', message: friendlyMessage(result.error) };
     }
 
     return { ok: true, data: result.data! };
@@ -1446,7 +1539,7 @@ export async function getAula(
     return {
       ok: false,
       reason: 'red',
-      message: error instanceof Error ? error.message : 'No se pudo conectar con el servidor.',
+      message: friendlyError(error),
     };
   }
 }
@@ -1465,10 +1558,10 @@ export async function getMisPagos(dni: string, universidad: string, cicloId: str
 
   try {
     const url = buildApiUrl('getMisPagos', { universidad, dni, cicloId });
-    const response = await fetchWithTimeout(url, 15000);
+    const response = await fetchWithTimeout(url, 15000, READ_RETRIES);
 
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new HttpError(response.status);
     }
 
     const result: ApiResponse<PagosResumenMock> = await response.json();
@@ -1480,11 +1573,7 @@ export async function getMisPagos(dni: string, universidad: string, cicloId: str
     return result.data!;
   } catch (error) {
     console.error('Error al obtener mis pagos:', error);
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : 'No se pudo cargar tu estado de pagos. Por favor, intenta de nuevo.'
-    );
+    throw toFriendlyError(error);
   }
 }
 
@@ -1505,7 +1594,7 @@ export const MOCK_UNIVERSIDADES: Universidad[] = [
     procesos: ['ORDINARIO', 'CEPRE', 'EXTRAORDINARIO'],
     cepreNombre: 'CEPREUNA',
     colores: { primario: '#003D7A', secundario: '#D4AF37' },
-    logo: '/simulauna/logos/una.png',
+    logo: '/logos/una.png',
     orden: 1
   },
   {
@@ -1517,7 +1606,7 @@ export const MOCK_UNIVERSIDADES: Universidad[] = [
     cepreNombre: 'CEPRUNSA',
     // Guinda de la bandera de Arequipa + amarillo dorado (ver src/theme/universityThemes.ts)
     colores: { primario: '#7B1B2C', secundario: '#F2C230' },
-    logo: '/simulauna/logos/unsa.png',
+    logo: '/logos/unsa.png',
     orden: 2
   }
 ];
@@ -1614,6 +1703,75 @@ const UNSA_ESCALA: Escala = {
   nPreguntasTotal: 20
 };
 
+// Carreras reales (docs/configuraciones/unsa/config_carreras.csv) para ver el desplegable en modo mock.
+const UNSA_CARRERAS_MOCK: Record<string, string[]> = {
+  'Biomédicas': [
+    'Ingeniería Agronómica',
+    'Biología',
+    'Ciencias de la Nutrición',
+    'Ingeniería Pesquera',
+    'Enfermería',
+    'Medicina'
+  ],
+  'Ingenierías': [
+    'Arquitectura',
+    'Física',
+    'Matemáticas',
+    'Química',
+    'Ingeniería Civil',
+    'Ingeniería Sanitaria',
+    'Ingeniería Metalúrgica',
+    'Ingeniería Química',
+    'Ingeniería de Industrias Alimentarias',
+    'Ingeniería de Materiales',
+    'Ingeniería Ambiental',
+    'Ingeniería Electrónica',
+    'Ingeniería Industrial',
+    'Ingeniería de Sistemas',
+    'Ingeniería Eléctrica',
+    'Ingeniería Mecánica',
+    'Ciencia de la Computación',
+    'Ingeniería de Telecomunicaciones',
+    'Ingeniería Geofísica',
+    'Ingeniería Geológica',
+    'Ingeniería de Minas'
+  ],
+  'Sociales': [
+    'Administración',
+    'Marketing',
+    'Banca y Seguros',
+    'Gestión con Mención en Gestión Pública',
+    'Gestión con Mención en Gestión de Empresas',
+    'Gestión con Mención en Gestión de Proyectos',
+    'Contabilidad',
+    'Finanzas',
+    'Educación con Especialidad de Físico Matemática',
+    'Educación con Especialidad de Educación Primaria',
+    'Educación con Especialidad de Ciencias Sociales',
+    'Educación con Especialidad de Educación Física',
+    'Educación con Especialidad de Lengua, Literatura, Filosofía y Psicología',
+    'Educación con Especialidad de Educación Inicial',
+    'Educación con Especialidad de Idiomas (Inglés-Francés)',
+    'Educación con Especialidad de Ciencias Naturales',
+    'Educación con Especialidad de Informática Educativa',
+    'Historia',
+    'Sociología',
+    'Trabajo Social',
+    'Antropología',
+    'Turismo y Hotelería',
+    'Derecho',
+    'Economía',
+    'Artes con Especialidad de Plásticas',
+    'Artes con Especialidad de Música',
+    'Filosofía',
+    'Literatura y Lingüística',
+    'Psicología',
+    'Relaciones Industriales',
+    'Ciencias de la Comunicación con Especialidad en Periodismo',
+    'Ciencias de la Comunicación con Especialidad en Relaciones Públicas'
+  ]
+};
+
 function buildUnsaDivision(codigo: string, nombre: string, cienciaExtra: string): Division {
   const subjects: Division['subjects'] = [
     { name: 'Matemática', questionCount: 5, pointsPerQuestion: 5, weight: 25, maxScore: 25, orden: 1 },
@@ -1624,7 +1782,7 @@ function buildUnsaDivision(codigo: string, nombre: string, cienciaExtra: string)
   ];
   const totalQuestions = subjects.reduce((sum, s) => sum + s.questionCount, 0);
   const totalMaxScore = subjects.reduce((sum, s) => sum + s.maxScore, 0);
-  return { codigo, nombre, tipo: 'canal', subjects, totalQuestions, totalMaxScore };
+  return { codigo, nombre, tipo: 'canal', subjects, totalQuestions, totalMaxScore, carreras: UNSA_CARRERAS_MOCK[nombre]?.slice().sort((a, b) => a.localeCompare(b, 'es')) };
 }
 
 const UNSA_CONFIG_ORDINARIO: ConfigV2 = {
@@ -1704,3 +1862,32 @@ interface MockExamSession {
 }
 
 const mockExamSessions = new Map<string, MockExamSession>();
+
+// Espejo en sessionStorage de las sesiones mock: el examen en curso ahora se persiste en
+// localStorage (useExam), así que al recargar la pestaña en desarrollo el submitExam mock
+// tiene que poder encontrar la clave de respuestas igual que el backend real (que la guarda
+// en CacheService + hoja CORE.sesiones). Solo afecta al modo mock.
+const MOCK_SESSIONS_STORAGE_KEY = 'simulauna_mock_exam_sessions';
+
+function readMockSessionsStorage(): Record<string, MockExamSession> {
+  try {
+    const raw = sessionStorage.getItem(MOCK_SESSIONS_STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as Record<string, MockExamSession>) : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveMockExamSession(examSessionId: string, session: MockExamSession): void {
+  mockExamSessions.set(examSessionId, session);
+  try {
+    // Solo guardamos la última sesión para no crecer sin límite
+    sessionStorage.setItem(MOCK_SESSIONS_STORAGE_KEY, JSON.stringify({ [examSessionId]: session }));
+  } catch {
+    // storage lleno o bloqueado: la sesión sigue viva en memoria
+  }
+}
+
+function getMockExamSession(examSessionId: string): MockExamSession | undefined {
+  return mockExamSessions.get(examSessionId) ?? readMockSessionsStorage()[examSessionId];
+}

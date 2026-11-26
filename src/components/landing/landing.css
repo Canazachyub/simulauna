@@ -1,0 +1,159 @@
+/* ==========================================================================
+   Landing (src/components/landing/*)
+   Mobile-first. Solo se animan transform/opacity (excepto el trazo del anillo
+   de puntaje, un SVG de ~120 px). Los efectos ligados al scroll leen la
+   variable --sp (0→1) que escribe useScrollProgress; con reduced-motion el
+   kit la deja fija en 0.5 y aquí se anulan las transformaciones.
+   ========================================================================== */
+
+/* ---- Fondos de sección (CSS puro: nada de imágenes pesadas arriba) ------- */
+.lp-hero {
+  background-color: #001a35;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 85% 10%, rgba(212, 175, 55, 0.22), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 0% 100%, rgba(0, 80, 163, 0.55), transparent 65%),
+    linear-gradient(160deg, #002551 0%, #001a35 55%, #00112a 100%);
+}
+.lp-navy {
+  background-color: #001f3f;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 100% 0%, rgba(212, 175, 55, 0.14), transparent 60%),
+    radial-gradient(ellipse 60% 60% at 0% 100%, rgba(0, 80, 163, 0.45), transparent 65%);
+}
+.lp-cream { background-color: #fdfbf5; }
+
+/* ---- Selector de universidad (chips tipo radio) --------------------------- */
+.lp-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 56px;
+  min-width: 0;
+  padding: 0.4rem 0.85rem 0.4rem 0.4rem;
+  border-radius: 1rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  text-align: left;
+  transition: background-color 200ms ease, border-color 200ms ease, transform 200ms ease;
+}
+.lp-chip:hover { background: rgba(255, 255, 255, 0.16); border-color: rgba(255, 255, 255, 0.5); }
+.lp-chip:focus-visible { outline: 3px solid #e6c960; outline-offset: 2px; }
+.lp-chip[aria-checked='true'] {
+  background: #fff;
+  border-color: #d4af37;
+  color: #00193d;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.45);
+}
+.lp-chip-logo {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 0.75rem;
+  background: #fff;
+  padding: 4px;
+  object-fit: contain;
+}
+
+/* ---- Escena 3D del hero (solo desktop) ------------------------------------ */
+.lp-scene { position: relative; aspect-ratio: 1 / 1; }
+.lp-scene-glow {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.35), transparent 70%);
+  filter: blur(30px);
+}
+
+/* ---- Burbujas de la demo (mismo lenguaje visual que la ficha óptica) ------ */
+.lp-opcion {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  min-height: 52px;
+  padding: 0.5rem 0.85rem 0.5rem 0.5rem;
+  border-radius: 0.9rem;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: left;
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+.lp-opcion:not([aria-disabled='true']):hover { border-color: #6696d1; background: #f5f8fc; }
+.lp-opcion:focus-visible { outline: 3px solid #003d7a; outline-offset: 2px; }
+.lp-opcion[aria-disabled='true'] { cursor: default; }
+.lp-opcion--ok { border-color: #059669; background: #ecfdf5; }
+.lp-opcion--mal { border-color: #dc2626; background: #fef2f2; }
+
+.lp-burbuja {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1.5px solid #003d7a;
+  background: #fff;
+  color: #003d7a;
+  font-size: 14px;
+  font-weight: 800;
+}
+.lp-burbuja.is-marcada { background: #003d7a; color: #fff; }
+.lp-burbuja.lp-burbuja--ok { background: #059669; border-color: #059669; color: #fff; }
+.lp-burbuja.lp-burbuja--mal { background: #dc2626; border-color: #dc2626; color: #fff; }
+.lp-burbuja.lp-burbuja--clave { border-color: #059669; color: #047857; box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.25); }
+/* Versión mini (filas de ficha dentro del celular de ejemplo) */
+.lp-burbuja--mini { width: 22px; height: 22px; font-size: 11px; border-width: 1.5px; }
+
+/* ---- Anillo de puntaje ----------------------------------------------------- */
+.lp-ring-arc { transition: stroke-dashoffset 1200ms cubic-bezier(.2, .7, .2, 1); }
+.lp-bar-fill {
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 1000ms cubic-bezier(.2, .7, .2, 1);
+}
+.lp-bars-on .lp-bar-fill { transform: scaleX(var(--w, 1)); }
+
+/* ---- Línea de progreso de "Cómo funciona" (se dibuja con el scroll) ------- */
+.lp-steps { --lp-p: clamp(0, calc((var(--sp, .5) - .15) * 2.4), 1); }
+.lp-line-fill {
+  transform-origin: top center;
+  transform: scaleY(var(--lp-p));
+  will-change: transform;
+}
+@media (min-width: 768px) {
+  .lp-line-fill { transform-origin: left center; transform: scaleX(var(--lp-p)); }
+}
+
+/* ---- Celular de ejemplo: gira de inclinado a frontal con el scroll -------- */
+.lp-phone-stage { perspective: 1400px; }
+.lp-phone {
+  --lp-t: calc(1 - clamp(0, calc((var(--sp, .5) - .12) * 2.6), 1));
+  transform: rotateX(calc(var(--lp-t) * 8deg)) rotateY(calc(var(--lp-t) * -8deg));
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+@media (min-width: 1024px) {
+  .lp-phone {
+    transform:
+      rotateX(calc(var(--lp-t) * 20deg))
+      rotateY(calc(var(--lp-t) * -22deg))
+      rotateZ(calc(var(--lp-t) * 4deg));
+  }
+}
+
+/* ---- FAQ ------------------------------------------------------------------ */
+.lp-faq summary { list-style: none; cursor: pointer; }
+.lp-faq summary::-webkit-details-marker { display: none; }
+.lp-faq summary:focus-visible { outline: 3px solid #003d7a; outline-offset: 2px; border-radius: 1rem; }
+.lp-faq-icon { transition: transform 250ms ease; }
+.lp-faq[open] .lp-faq-icon { transform: rotate(180deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-line-fill, .lp-phone { transform: none !important; }
+  .lp-ring-arc, .lp-bar-fill { transition: none !important; }
+  .lp-chip, .lp-opcion, .lp-faq-icon { transition: none !important; }
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "uni": "una",
+    "total": 51,
+    "divisiones": {
+      "Biomédicas": 8,
+      "Sociales": 20,
+      "Ingenierías": 23
+    }
+  },
+  {
+    "uni": "unaj",
+    "total": 10,
+    "divisiones": {
+      "Ingenierías": 7,
+      "Sociales": 3
+    }
+  },
+  {
+    "uni": "unalm",
+    "total": 12,
+    "divisiones": {
+      "Única": 12
+    }
+  },
+  {
+    "uni": "unc",
+    "total": 34,
+    "divisiones": {
+      "MÓDULO A": 11,
+      "MÓDULO B": 7,
+      "MÓDULO C": 8,
+      "MÓDULO D": 8
+    }
+  },
+  {
+    "uni": "uncp",
+    "total": 39,
+    "divisiones": {
+      "Área I: Ciencias de la Salud": 2,
+      "Área II: Arquitectura e Ingenierías": 10,
+      "Área III: Ciencias Administrativas, Contables y Económicas": 5,
+      "Área IV: Educación y Ciencias Sociales": 12,
+      "Área V: Ciencias Agrarias": 10
+    }
+  },
+  {
+    "uni": "unfv",
+    "total": 60,
+    "divisiones": {
+      "A - Ciencias Económicas, Financieras y Empresariales": 7,
+      "B - Humanidades, Ciencias Jurídicas y Sociales": 21,
+      "C - Ingenierías y Arquitectura": 16,
+      "D y E - Ciencias de la Salud, Formales y Naturales": 16
+    }
+  },
+  {
+    "uni": "uni",
+    "total": 34,
+    "divisiones": {
+      "Única (todas las especialidades)": 34
+    }
+  },
+  {
+    "uni": "unmsm",
+    "total": 88,
+    "divisiones": {
+      "A - Ciencias de la Salud": 17,
+      "B - Ciencias Básicas": 10,
+      "C - Ingeniería": 26,
+      "D - Ciencias Económicas y de la Gestión": 14,
+      "E - Humanidades y Ciencias Jurídicas y Sociales": 21
+    }
+  },
+  {
+    "uni": "unp",
+    "total": 36,
+    "divisiones": {
+      "Ciencias": 21,
+      "Ciencias de la Salud": 5,
+      "Letras": 10
+    }
+  },
+  {
+    "uni": "unsa",
+    "total": 59,
+    "divisiones": {
+      "Biomédicas": 6,
+      "Ingenierías": 21,
+      "Sociales": 32
+    }
+  },
+  {
+    "uni": "unsaac",
+    "total": 48,
+    "divisiones": {
+      "A - Ingeniería y Ciencias Básicas": 16,
+      "B - Ciencias de la Salud y de la Vida": 13,
+      "C - Ciencias Empresariales": 4,
+      "D - Ciencias Sociales": 15
+    }
+  },
+  {
+    "uni": "unsch",
+    "total": 36,
+    "divisiones": {
+      "I - Ciencias": 15,
+      "II - Letras": 13,
+      "III - Biomédicas": 8
+    }
+  },
+  {
+    "uni": "unt",
+    "total": 45,
+    "divisiones": {
+      "Área A: Ciencias de la Vida y de la Salud": 7,
+      "Área B: Ciencias Básicas y Tecnológicas": 19,
+      "Área C: Ciencias de la Persona": 16,
+      "Área D: Ciencias Económicas": 3
+    }
+  }
+]

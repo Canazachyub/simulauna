@@ -1,0 +1,68 @@
+proceso,division,division_tipo,curso,n_preguntas,puntos_correcta,puntos_incorrecta,puntos_blanco,factor_escala,peso,orden
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Habilidad Verbal,7,10,-0.25219265,0,,,1
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Habilidad Lógico-Matemática,7,10,-0.25219265,0,,,2
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Aritmética,2,10,-0.25219265,0,,,3
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Geometría,2,10,-0.25219265,0,,,4
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Álgebra,2,10,-0.25219265,0,,,5
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Trigonometría,1,10,-0.25219265,0,,,6
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Física,2,10,-0.25219265,0,,,7
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Química,2,10,-0.25219265,0,,,8
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Biología,2,10,-0.25219265,0,,,9
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Lenguaje,4,10,-0.25219265,0,,,10
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Literatura,2,10,-0.25219265,0,,,11
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Psicología,3,10,-0.25219265,0,,,12
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Educación Cívica,2,10,-0.25219265,0,,,13
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Historia del Perú y Universal,3,10,-0.25219265,0,,,14
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Geografía,2,10,-0.25219265,0,,,15
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Economía,5,10,-0.25219265,0,,,16
+ORDINARIO,"A - Ciencias Económicas, Financieras y Empresariales",area,Filosofía,2,10,-0.25219265,0,,,17
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Habilidad Verbal,7,10,-0.25219265,0,,,1
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Habilidad Lógico-Matemática,7,10,-0.25219265,0,,,2
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Aritmética,1,10,-0.25219265,0,,,3
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Geometría,1,10,-0.25219265,0,,,4
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Álgebra,1,10,-0.25219265,0,,,5
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Física,2,10,-0.25219265,0,,,6
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Química,1,10,-0.25219265,0,,,7
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Biología,2,10,-0.25219265,0,,,8
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Lenguaje,4,10,-0.25219265,0,,,9
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Literatura,4,10,-0.25219265,0,,,10
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Psicología,3,10,-0.25219265,0,,,11
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Educación Cívica,2,10,-0.25219265,0,,,12
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Historia del Perú y Universal,4,10,-0.25219265,0,,,13
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Geografía,4,10,-0.25219265,0,,,14
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Economía,3,10,-0.25219265,0,,,15
+ORDINARIO,"B - Humanidades, Ciencias Jurídicas y Sociales",area,Filosofía,4,10,-0.25219265,0,,,16
+ORDINARIO,C - Ingenierías y Arquitectura,area,Habilidad Verbal,7,10,-0.25219265,0,,,1
+ORDINARIO,C - Ingenierías y Arquitectura,area,Habilidad Lógico-Matemática,7,10,-0.25219265,0,,,2
+ORDINARIO,C - Ingenierías y Arquitectura,area,Aritmética,3,10,-0.25219265,0,,,3
+ORDINARIO,C - Ingenierías y Arquitectura,area,Geometría,3,10,-0.25219265,0,,,4
+ORDINARIO,C - Ingenierías y Arquitectura,area,Álgebra,3,10,-0.25219265,0,,,5
+ORDINARIO,C - Ingenierías y Arquitectura,area,Trigonometría,2,10,-0.25219265,0,,,6
+ORDINARIO,C - Ingenierías y Arquitectura,area,Física,3,10,-0.25219265,0,,,7
+ORDINARIO,C - Ingenierías y Arquitectura,area,Química,3,10,-0.25219265,0,,,8
+ORDINARIO,C - Ingenierías y Arquitectura,area,Biología,3,10,-0.25219265,0,,,9
+ORDINARIO,C - Ingenierías y Arquitectura,area,Lenguaje,2,10,-0.25219265,0,,,10
+ORDINARIO,C - Ingenierías y Arquitectura,area,Literatura,2,10,-0.25219265,0,,,11
+ORDINARIO,C - Ingenierías y Arquitectura,area,Psicología,2,10,-0.25219265,0,,,12
+ORDINARIO,C - Ingenierías y Arquitectura,area,Educación Cívica,2,10,-0.25219265,0,,,13
+ORDINARIO,C - Ingenierías y Arquitectura,area,Historia del Perú y Universal,2,10,-0.25219265,0,,,14
+ORDINARIO,C - Ingenierías y Arquitectura,area,Geografía,2,10,-0.25219265,0,,,15
+ORDINARIO,C - Ingenierías y Arquitectura,area,Economía,2,10,-0.25219265,0,,,16
+ORDINARIO,C - Ingenierías y Arquitectura,area,Filosofía,2,10,-0.25219265,0,,,17
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Habilidad Verbal,7,10,-0.25219265,0,,,1
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Habilidad Lógico-Matemática,7,10,-0.25219265,0,,,2
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Aritmética,2,10,-0.25219265,0,,,3
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Geometría,2,10,-0.25219265,0,,,4
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Álgebra,1,10,-0.25219265,0,,,5
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Trigonometría,1,10,-0.25219265,0,,,6
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Física,3,10,-0.25219265,0,,,7
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Química,3,10,-0.25219265,0,,,8
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Biología,5,10,-0.25219265,0,,,9
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Lenguaje,3,10,-0.25219265,0,,,10
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Literatura,2,10,-0.25219265,0,,,11
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Psicología,3,10,-0.25219265,0,,,12
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Educación Cívica,2,10,-0.25219265,0,,,13
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Historia del Perú y Universal,3,10,-0.25219265,0,,,14
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Geografía,2,10,-0.25219265,0,,,15
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Economía,2,10,-0.25219265,0,,,16
+ORDINARIO,"D y E - Ciencias de la Salud, Formales y Naturales",area,Filosofía,2,10,-0.25219265,0,,,17

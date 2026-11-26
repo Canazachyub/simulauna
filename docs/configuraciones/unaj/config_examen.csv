@@ -1,0 +1,32 @@
+proceso,division,division_tipo,curso,n_preguntas,puntos_correcta,puntos_incorrecta,puntos_blanco,factor_escala,peso,orden
+ORDINARIO,Ingenierías,area,Aritmética,3,54.177,0,0.5,,,1
+ORDINARIO,Ingenierías,area,Álgebra,5,54.177,0,0.5,,,2
+ORDINARIO,Ingenierías,area,Geometría,3,50.79,0,0.5,,,3
+ORDINARIO,Ingenierías,area,Trigonometría,3,50.79,0,0.5,,,4
+ORDINARIO,Ingenierías,area,Comunicación,2,40.632,0,0.5,,,5
+ORDINARIO,Ingenierías,area,Literatura,2,40.632,0,0.5,,,6
+ORDINARIO,Ingenierías,area,Personal Social,1,37.245,0,0.5,,,7
+ORDINARIO,Ingenierías,area,Formación Ciudadana y Cívica,1,37.245,0,0.5,,,8
+ORDINARIO,Ingenierías,area,Historia del Perú,2,44.694,0,0.5,,,9
+ORDINARIO,Ingenierías,area,Geografía,2,33.86,0,0.5,,,10
+ORDINARIO,Ingenierías,area,Psicología y Filosofía,1,33.86,0,0.5,,,11
+ORDINARIO,Ingenierías,area,Economía,4,42.326,0,0.5,,,12
+ORDINARIO,Ingenierías,area,Física,4,47.404,0,0.5,,,13
+ORDINARIO,Ingenierías,area,Química,4,47.404,0,0.5,,,14
+ORDINARIO,Ingenierías,area,Biología,3,44.694,0,0.5,,,15
+ORDINARIO,Ingenierías,area,Razonamiento Matemático,10,57.562,0,0.5,,,16
+ORDINARIO,Ingenierías,area,Razonamiento Verbal,10,57.562,0,0.5,,,17
+ORDINARIO,Sociales,area,Aritmética,3,42.14,0,0.5,,,1
+ORDINARIO,Sociales,area,Álgebra,3,40.454,0,0.5,,,2
+ORDINARIO,Sociales,area,Geometría,3,33.712,0,0.5,,,3
+ORDINARIO,Sociales,area,Trigonometría,3,30.34,0,0.5,,,4
+ORDINARIO,Sociales,area,Comunicación,6,53.938,0,0.5,,,5
+ORDINARIO,Sociales,area,Literatura,4,50.568,0,0.5,,,6
+ORDINARIO,Sociales,area,Personal Social,2,42.14,0,0.5,,,7
+ORDINARIO,Sociales,area,Formación Ciudadana y Cívica,2,44.499,0,0.5,,,8
+ORDINARIO,Sociales,area,Historia del Perú,4,53.938,0,0.5,,,9
+ORDINARIO,Sociales,area,Geografía,4,45.511,0,0.5,,,10
+ORDINARIO,Sociales,area,Psicología y Filosofía,2,50.568,0,0.5,,,11
+ORDINARIO,Sociales,area,Economía,4,53.938,0,0.5,,,12
+ORDINARIO,Sociales,area,Razonamiento Matemático,10,57.31,0,0.5,,,13
+ORDINARIO,Sociales,area,Razonamiento Verbal,10,57.31,0,0.5,,,14

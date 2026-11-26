@@ -1,21 +1,83 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useExamStore, useCurrentQuestion, useProgress, useIsLastQuestion, useIsFirstQuestion } from '../hooks/useExam';
+import {
+  useExamStore, useCurrentQuestion, useProgress, useIsLastQuestion, useIsFirstQuestion,
+  useExamHydrated, hasExamInProgress
+} from '../hooks/useExam';
 import { useUniversityStore } from '../hooks/useUniversity';
-import { useStopwatch } from '../hooks/useTimer';
+import { useSlowHint } from '../hooks/useSlowHint';
+import { useExamExitGuard } from '../hooks/useExamExitGuard';
 import { Question } from './Question';
+import { FichaOptica } from './ficha/FichaOptica';
+import { resolveLogoUrl } from '../utils/logos';
+import { Mascot } from './pages/Mascot';
 import { resolveThemeVars } from '../utils/universityTheme';
+import { whatsappUrl } from '../constants/contact';
 import { CoachTour, type CoachTourStep } from './onboarding/CoachTour';
 import {
   Loader2, ChevronLeft, ChevronRight, CheckCircle,
-  Clock, List, FileCheck, AlertTriangle, X, ChevronDown, Sparkles, AlarmClockCheck
+  Clock, List, FileCheck, AlertTriangle, X, Sparkles, AlarmClockCheck,
+  RotateCcw, MessageCircle, LogOut
 } from 'lucide-react';
 import clsx from 'clsx';
 
+/** Formatea segundos a H:MM:SS o M:SS (mismo formato que useStopwatch). */
+function formatElapsed(seconds: number): string {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  if (hours > 0) {
+    return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }
+  return `${minutes}:${secs.toString().padStart(2, '0')}`;
+}
+
+/**
+ * Cronómetro anclado al `startTime` persistido del examen (no al montaje del componente): si
+ * el alumno recarga la página o retoma el examen más tarde, el tiempo no vuelve a 0:00.
+ */
+function useExamElapsed(startTime: Date | null, running: boolean) {
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    if (!running) return;
+    setNow(Date.now());
+    const intervalId = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(intervalId);
+  }, [running]);
+
+  const elapsedTime = startTime ? Math.max(0, Math.round((now - startTime.getTime()) / 1000)) : 0;
+  return { elapsedTime, formattedTime: formatElapsed(elapsedTime) };
+}
+
+/** true mientras el viewport cumpla la media query (p.ej. panel lateral de la ficha en ≥1280px). */
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(() => {
+    try {
+      return window.matchMedia(query).matches;
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    let mql: MediaQueryList;
+    try {
+      mql = window.matchMedia(query);
+    } catch {
+      return;
+    }
+    const onChange = () => setMatches(mql.matches);
+    onChange();
+    mql.addEventListener?.('change', onChange);
+    return () => mql.removeEventListener?.('change', onChange);
+  }, [query]);
+  return matches;
+}
+
 /** Tour de primera vez del simulacro (ver src/components/onboarding/CoachTour.tsx). Los
- * selectores apuntan a los `data-tour="quiz-*"` del header más abajo. En móvil el botón
- * "Calificar" del header está oculto (`hidden sm:inline-flex`) — CoachTour detecta el
- * elemento con tamaño 0 y degrada ese paso a tarjeta centrada sin halo. */
+ * selectores apuntan a los `data-tour="quiz-*"` del header más abajo. El botón "Terminar"
+ * del header ahora es visible también en móvil (antes estaba oculto y en móvil no había
+ * forma de terminar sin llegar a la última pregunta). */
 const SIMULACRO_TOUR_STEPS: CoachTourStep[] = [
   {
     title: '¡Hola! Soy tu guía',
@@ -28,8 +90,8 @@ const SIMULACRO_TOUR_STEPS: CoachTourStep[] = [
   },
   {
     selector: '[data-tour="quiz-navegador"]',
-    title: 'Salta a cualquier pregunta',
-    text: 'Abre el navegador para revisar o cambiar de pregunta cuando quieras, sin perder tus respuestas.',
+    title: 'Tu ficha de respuestas',
+    text: 'Como la hoja del examen real: marca tus respuestas o toca un número para saltar a esa pregunta, sin perder nada.',
   },
   {
     selector: '[data-tour="quiz-progreso"]',
@@ -38,8 +100,8 @@ const SIMULACRO_TOUR_STEPS: CoachTourStep[] = [
   },
   {
     selector: '[data-tour="quiz-calificar"]',
-    title: 'Cuando termines, califica aquí',
-    text: 'Puedes calificar en cualquier momento; te avisamos si dejas preguntas sin responder.',
+    title: 'Cuando termines, toca aquí',
+    text: 'Puedes terminar y ver tu nota en cualquier momento; te avisamos si dejas preguntas sin responder.',
   },
 ];
 
@@ -54,29 +116,42 @@ export function Quiz() {
     status,
     student,
     config,
+    examEscala,
     questions,
     savedAnswers,
     currentQuestionIndex,
+    startTime,
+    result,
+    error,
+    examSessionId,
     startExam,
+    resumeExam,
     saveAnswer,
     nextQuestion,
     previousQuestion,
     goToQuestion,
-    finishExam
+    finishExam,
+    retrySubmit,
+    backToExam
   } = useExamStore();
+  const hydrated = useExamHydrated();
 
-  // Duración recomendada según la escala de la universidad activa (docs/CONTRATO_API_V2.md §5)
-  const recommendedDurationMin = config?.escala.duracionMin;
+  // Duración recomendada según la escala del examen (la que devolvió getExam; fallback al
+  // config de la universidad activa, docs/CONTRATO_API_V2.md §5)
+  const recommendedDurationMin = examEscala?.duracionMin ?? config?.escala.duracionMin;
 
   const currentQuestion = useCurrentQuestion();
   const progress = useProgress();
   const isLastQuestion = useIsLastQuestion();
   const isFirstQuestion = useIsFirstQuestion();
 
+  // Ficha de respuestas: drawer (<1280px) o panel lateral fijo a la derecha (≥1280px)
   const [showNavigator, setShowNavigator] = useState(false);
+  const isWide = useMediaQuery('(min-width: 1280px)');
+  const [showSidePanel, setShowSidePanel] = useState(true);
   const [showFinishModal, setShowFinishModal] = useState(false);
-  const [collapsedSubjects, setCollapsedSubjects] = useState<Record<string, boolean>>({});
   const [isFinishing, setIsFinishing] = useState(false);
+  const drawerCloseRef = useRef<HTMLButtonElement>(null);
 
   // Dirección de navegación para animación (1 = avanzar, -1 = retroceder, 0 = idle/initial)
   const prevIndexRef = useRef<number>(currentQuestionIndex);
@@ -92,8 +167,15 @@ export function Quiz() {
     prevIndexRef.current = currentQuestionIndex;
   }, [currentQuestionIndex]);
 
-  // Cronómetro global del examen
-  const { elapsedTime, formattedTime } = useStopwatch(status === 'in_progress');
+  // Cronómetro global del examen (anclado al startTime persistido)
+  const { elapsedTime, formattedTime } = useExamElapsed(startTime, status === 'in_progress');
+
+  // "Calificando…" (finishExam en curso, con sus reintentos) vs. carga inicial de preguntas
+  const isSubmitting = status === 'loading' && !!startTime && questions.length > 0;
+  const slowHint = useSlowHint(status === 'loading');
+
+  // Salida accidental (atrás / cerrar pestaña) solo mientras el examen está en curso
+  const { showExitModal, stay: stayInExam, dismiss: dismissExitModal } = useExamExitGuard(status === 'in_progress');
 
   // Estados de alerta del cronómetro respecto a la duración recomendada de la escala activa
   // (>=75% amarillo, >=100% rojo). Sin duración recomendada, el cronómetro queda neutral.
@@ -102,23 +184,29 @@ export function Quiz() {
   const isTimeWarning = recommendedSeconds !== null && timeRatio >= 0.75 && timeRatio < 1;
   const isTimeCritical = recommendedSeconds !== null && timeRatio >= 1;
 
+  // Opción marcada por índice de pregunta (null = en blanco). La ficha permite BORRAR una
+  // marca (saveAnswer(id, null), que finishExam ya trata como "sin responder"), así que una
+  // respuesta cuenta solo si su valor no es null — no basta con que la clave exista en el Map.
+  const marcadas = useMemo(
+    () => questions.map(q => savedAnswers.get(q.id) ?? null),
+    [savedAnswers, questions]
+  );
+
   // Calcular preguntas contestadas y sin contestar
   const { answeredCount, unansweredCount, unansweredIndexes, unansweredNumbers } = useMemo(() => {
-    const answered = savedAnswers.size;
-    const unanswered = questions.length - answered;
     const indexes: number[] = [];
-    questions.forEach((q, idx) => {
-      if (!savedAnswers.has(q.id)) {
+    marcadas.forEach((m, idx) => {
+      if (m === null) {
         indexes.push(idx);
       }
     });
     return {
-      answeredCount: answered,
-      unansweredCount: unanswered,
+      answeredCount: marcadas.length - indexes.length,
+      unansweredCount: indexes.length,
       unansweredIndexes: indexes,
       unansweredNumbers: indexes.map(i => i + 1),
     };
-  }, [savedAnswers, questions]);
+  }, [marcadas]);
 
   // Tiempo promedio por pregunta (segundos)
   const averageSecondsPerQuestion = useMemo(() => {
@@ -143,14 +231,27 @@ export function Quiz() {
     }
   }, [status, questions.length, startExam]);
 
-  // Redirect si no hay datos
+  // Examen rehidratado (recarga de página o vuelta desde otra pantalla): retomarlo. Cubre el
+  // caso en que otra pantalla (p.ej. loadConfig de StudentForm) dejó status en 'idle'.
   useEffect(() => {
-    if (!student) {
-      navigate(`/${universidad}/registro`);
-    } else if (questions.length === 0 && status !== 'loading') {
-      navigate(`/${universidad}/confirmar`);
+    if (!hydrated) return;
+    if ((status === 'idle' || status === 'error') && hasExamInProgress({ questions, startTime, result })) {
+      resumeExam();
     }
-  }, [student, questions.length, status, navigate, universidad]);
+  }, [hydrated, status, questions, startTime, result, resumeExam]);
+
+  // Redirect si no hay datos — SOLO después de rehidratar el store desde localStorage, para
+  // no expulsar a quien recargó la página en medio del examen.
+  useEffect(() => {
+    if (!hydrated) return;
+    if (!student) {
+      navigate(`/${universidad}/registro`, { replace: true });
+    } else if (status === 'completed' && result) {
+      navigate(`/${universidad}/resultados`, { replace: true });
+    } else if (questions.length === 0 && status !== 'loading') {
+      navigate(`/${universidad}/confirmar`, { replace: true });
+    }
+  }, [hydrated, student, questions.length, status, result, navigate, universidad]);
 
   const handleSelectAnswer = useCallback((index: number) => {
     if (!currentQuestion) return;
@@ -172,15 +273,73 @@ export function Quiz() {
     }
   }, [isFirstQuestion, previousQuestion]);
 
+  // Navega a resultados SOLO si el servidor calificó; si no, el store queda en
+  // 'submit_failed' y esta misma pantalla muestra el aviso con Reintentar.
+  const goToResultsIfCompleted = useCallback(() => {
+    if (useExamStore.getState().status === 'completed') {
+      navigate(`/${universidad}/resultados`, { replace: true });
+    }
+  }, [navigate, universidad]);
+
   const handleFinishExam = useCallback(async () => {
     setIsFinishing(true);
+    setShowFinishModal(false);
     try {
       await finishExam();
-      navigate(`/${universidad}/resultados`);
+      goToResultsIfCompleted();
     } finally {
       setIsFinishing(false);
     }
-  }, [finishExam, navigate, universidad]);
+  }, [finishExam, goToResultsIfCompleted]);
+
+  const handleRetrySubmit = useCallback(async () => {
+    await retrySubmit();
+    goToResultsIfCompleted();
+  }, [retrySubmit, goToResultsIfCompleted]);
+
+  const handleExitExam = useCallback(() => {
+    dismissExitModal();
+    navigate(`/${universidad}`);
+  }, [dismissExitModal, navigate, universidad]);
+
+  const openFinishModal = useCallback(() => {
+    setShowNavigator(false);
+    setShowFinishModal(true);
+  }, []);
+
+  // Marcar en la ficha = exactamente la misma acción que tocar la opción en la pregunta
+  // (saveAnswer del store). null borra la marca.
+  const handleMarcarFicha = useCallback((index: number, opcion: number | null) => {
+    const q = questions[index];
+    if (!q) return;
+    saveAnswer(q.id, opcion);
+    if (opcion !== null && typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      navigator.vibrate(10);
+    }
+  }, [questions, saveAnswer]);
+
+  // Tocar el número en la ficha lleva a esa pregunta (en el drawer, además lo cierra)
+  const handleIrFicha = useCallback((index: number) => {
+    goToQuestion(index);
+    if (!isWide) setShowNavigator(false);
+  }, [goToQuestion, isWide]);
+
+  // Botón de lista del header: en ≥1280px muestra/oculta el panel lateral; si no, abre el drawer
+  const handleToggleFicha = useCallback(() => {
+    if (isWide) setShowSidePanel(v => !v);
+    else setShowNavigator(true);
+  }, [isWide]);
+
+  // Drawer: foco al botón de cerrar al abrir y Escape para cerrar
+  useEffect(() => {
+    if (!showNavigator || isWide) return;
+    drawerCloseRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setShowNavigator(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [showNavigator, isWide]);
 
   // Atajos de teclado globales
   useEffect(() => {
@@ -227,37 +386,84 @@ export function Quiz() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentQuestion, isFirstQuestion, isLastQuestion, previousQuestion, nextQuestion, saveAnswer]);
 
-  // Agrupar preguntas por asignatura para el navegador
-  const questionsBySubject = useMemo(() => {
-    const groups: { subject: string; questions: { index: number; answered: boolean }[] }[] = [];
-    let currentSubject = '';
+  // Cabecera de la ficha: nombre y logo de la universidad activa
+  const fichaUniversidad = useMemo(() => {
+    const entry = registroUniversidades.find(u => u.codigo === universidad);
+    return {
+      nombre: entry?.nombre ?? universidad.toUpperCase(),
+      logoUrl: resolveLogoUrl(universidad, entry?.logo),
+    };
+  }, [registroUniversidades, universidad]);
 
-    questions.forEach((q, idx) => {
-      if (q.subject !== currentSubject) {
-        currentSubject = q.subject;
-        groups.push({ subject: currentSubject, questions: [] });
-      }
-      groups[groups.length - 1].questions.push({
-        index: idx,
-        answered: savedAnswers.has(q.id)
-      });
-    });
+  const fichaPostulante = useMemo(
+    () => (student ? { nombre: student.fullName, dni: student.dni } : undefined),
+    [student]
+  );
 
-    return groups;
-  }, [questions, savedAnswers]);
+  // No se pudo calificar (submitExam falló tras los reintentos): NO hay nota inventada.
+  // Las respuestas siguen guardadas (store persistido + envío pendiente en localStorage).
+  if (status === 'submit_failed') {
+    const whatsappHref = whatsappUrl(
+      `Hola, no pude calificar mi simulacro en SimulaUNA.${student ? ` DNI: ${student.dni}.` : ''}${examSessionId ? ` Sesión: ${examSessionId}.` : ''}`
+    );
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-andean-white px-4 py-12" style={themeVars}>
+        <div className="max-w-md w-full text-center">
+          <Mascot
+            src="/illustrations/lobito-pensando.webp"
+            alt="Mascota SimulaUNA: un lobito pensativo"
+            className="w-36 sm:w-44 mx-auto mb-5 select-none"
+          />
+          <h1 className="font-display text-2xl sm:text-3xl font-black text-slate-900 mb-3">
+            No pudimos calificar tu examen
+          </h1>
+          <p className="text-slate-700 font-semibold mb-2">
+            Tus respuestas están guardadas en este dispositivo.
+          </p>
+          {error && <p className="text-slate-500 text-sm mb-6">{error}</p>}
+          <div className="flex flex-col gap-3">
+            <button
+              type="button"
+              onClick={handleRetrySubmit}
+              className="inline-flex items-center justify-center gap-2 min-h-12 px-6 py-3 rounded-xl text-white font-bold active:scale-[0.98] transition"
+              style={{ backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)' }}
+            >
+              <RotateCcw className="w-4 h-4" />
+              Reintentar
+            </button>
+            <button
+              type="button"
+              onClick={backToExam}
+              className="inline-flex items-center justify-center min-h-11 px-6 py-2.5 rounded-xl border-2 border-slate-200 text-slate-700 font-semibold hover:bg-slate-100 transition"
+            >
+              Volver a revisar mis respuestas
+            </button>
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 min-h-11 px-6 py-2.5 rounded-xl text-emerald-700 font-semibold hover:bg-emerald-50 transition"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Escríbenos por WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  const toggleSubject = useCallback((subject: string) => {
-    setCollapsedSubjects(prev => ({ ...prev, [subject]: !prev[subject] }));
-  }, []);
-
-  // Loading state
+  // Calificando (submitExam con reintentos automáticos) o cargando preguntas
   if (status === 'loading' || !currentQuestion) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 paper-bg relative">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 paper-bg relative px-4">
         <div className="absolute inset-x-0 top-0 h-96 spotlight-gold pointer-events-none" aria-hidden="true" />
-        <div className="text-center relative">
+        <div className="text-center relative" aria-live="polite">
           <Loader2 className="w-12 h-12 text-brand-primary animate-spin mx-auto mb-4" />
-          <p className="text-slate-600 font-sans">Cargando pregunta...</p>
+          <p className="text-slate-600 font-sans">
+            {isSubmitting ? 'Calificando tu examen…' : 'Cargando pregunta...'}
+          </p>
+          {slowHint && <p className="mt-2 text-sm text-slate-500 font-sans max-w-xs mx-auto">{slowHint}</p>}
         </div>
       </div>
     );
@@ -286,7 +492,7 @@ export function Quiz() {
       <div
         className="hidden lg:block fixed top-1/4 right-8 w-48 h-32 opacity-[0.08] pointer-events-none z-0"
         style={{
-          backgroundImage: "url('/simulauna/illustrations/constellation.svg')",
+          backgroundImage: "url('/illustrations/constellation.svg')",
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           color: '#003D7A',
@@ -308,14 +514,14 @@ export function Quiz() {
           style={{ color: 'var(--uni-primary)' }}
           aria-hidden="true"
         />
-        <div className="relative h-full max-w-6xl mx-auto px-4 flex items-center gap-4">
+        <div className="relative h-full max-w-6xl mx-auto px-3 sm:px-4 flex items-center gap-2 sm:gap-4">
           {/* Izquierda: marca + asignatura dinámica */}
           <div className="flex items-center gap-2 min-w-0">
             <span className="font-display text-base font-black text-slate-900 tracking-tight hidden sm:inline">
               SimulaUNA
             </span>
             <span
-              className="chip whitespace-nowrap truncate max-w-[40vw] sm:max-w-none ml-0.5 border"
+              className="chip whitespace-nowrap truncate max-w-[28vw] sm:max-w-none ml-0.5 border"
               style={{
                 backgroundColor: 'var(--uni-primary-soft)',
                 color: 'var(--uni-primary-safe)',
@@ -336,7 +542,7 @@ export function Quiz() {
           </div>
 
           {/* Centro: progreso ultra fino + porcentaje */}
-          <div className="flex-1 flex flex-col items-stretch gap-1 min-w-0 px-2" data-tour="quiz-progreso">
+          <div className="flex-1 flex flex-col items-stretch gap-1 min-w-0 px-1 sm:px-2" data-tour="quiz-progreso">
             <div className="flex items-center gap-2">
               <div className="flex-1 h-1.5 rounded-full bg-slate-100 overflow-hidden">
                 <div
@@ -364,7 +570,7 @@ export function Quiz() {
           <div className="flex items-center gap-1.5">
             <div
               className={clsx(
-                'group relative flex items-center gap-1.5 px-2 py-1 rounded-md transition-colors',
+                'group relative flex items-center gap-1.5 px-1.5 sm:px-2 py-1 rounded-md transition-colors',
                 isTimeCritical
                   ? 'text-red-700 bg-red-50 hover:bg-red-100'
                   : isTimeWarning
@@ -377,7 +583,7 @@ export function Quiz() {
               {isTimeWarning || isTimeCritical ? (
                 <AlarmClockCheck className={clsx('w-3.5 h-3.5', isTimeCritical ? 'text-red-500' : 'text-amber-500', 'animate-pulse')} aria-hidden="true" />
               ) : (
-                <Clock className="w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
+                <Clock className="w-3.5 h-3.5 text-slate-400 hidden sm:block" aria-hidden="true" />
               )}
               <span className="font-mono text-sm tabular-nums">{formattedTime}</span>
               {/* Tooltip */}
@@ -390,46 +596,96 @@ export function Quiz() {
             </div>
 
             <button
-              onClick={() => setShowNavigator(true)}
-              className="p-2 rounded-md text-slate-600 hover:bg-slate-100 transition-colors"
-              aria-label="Abrir navegador de preguntas"
+              onClick={handleToggleFicha}
+              className={clsx(
+                'inline-flex items-center justify-center w-11 h-11 rounded-md text-slate-600 hover:bg-slate-100 transition-colors',
+                isWide && showSidePanel && 'bg-slate-100'
+              )}
+              aria-label={isWide
+                ? (showSidePanel ? 'Ocultar tu ficha de respuestas' : 'Mostrar tu ficha de respuestas')
+                : 'Abrir tu ficha de respuestas'}
+              aria-expanded={isWide ? showSidePanel : showNavigator}
               data-tour="quiz-navegador"
             >
-              <List className="w-4 h-4" />
+              <List className="w-5 h-5 sm:w-4 sm:h-4" />
             </button>
 
+            {/* Terminar: visible SIEMPRE (también en móvil), con el color de la universidad */}
             <button
-              onClick={() => setShowFinishModal(true)}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium text-slate-700 hover:bg-slate-100 transition-colors"
-              aria-label="Calificar examen"
+              onClick={openFinishModal}
+              className="inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-lg text-xs sm:text-sm font-semibold text-white active:scale-95 transition-transform whitespace-nowrap"
+              style={{ backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)' }}
+              aria-label="Terminar y ver mi nota"
               data-tour="quiz-calificar"
             >
-              <FileCheck className="w-3.5 h-3.5" />
-              <span>Calificar</span>
+              <FileCheck className="w-4 h-4 hidden sm:block" />
+              <span className="sm:hidden">Terminar</span>
+              <span className="hidden sm:inline">Terminar y ver mi nota</span>
             </button>
           </div>
         </div>
       </header>
 
-      {/* ========== MAIN ========== */}
-      <main className="relative z-10 max-w-3xl mx-auto px-4 py-8 md:py-12">
-        <div
-          key={currentQuestionIndex}
-          className={clsx(
-            navDirection === -1 ? 'animate-slide-in-left' : 'animate-slide-in-right'
-          )}
-        >
-          <Question
-            question={currentQuestion}
-            questionNumber={progress.current}
-            totalQuestions={progress.total}
-            selectedAnswer={currentSavedAnswer}
-            showFeedback={false}
-            isCorrect={null}
-            onSelectAnswer={handleSelectAnswer}
-          />
-        </div>
-      </main>
+      {/* ========== MAIN (+ ficha lateral fija en >=1280px) ========== */}
+      <div className="relative z-10 xl:flex xl:items-start xl:gap-6 xl:max-w-[1360px] xl:mx-auto xl:px-6">
+        <main className="max-w-3xl mx-auto px-4 py-8 md:py-12 xl:flex-1 xl:min-w-0 xl:px-0">
+          {/* Transición corta entre preguntas (fade + 12px); sin animaciones llamativas */}
+          <div
+            key={currentQuestionIndex}
+            className={navDirection === -1 ? 'examen-cambio--ant' : 'examen-cambio--sig'}
+          >
+            <Question
+              question={currentQuestion}
+              questionNumber={progress.current}
+              totalQuestions={progress.total}
+              selectedAnswer={currentSavedAnswer}
+              showFeedback={false}
+              isCorrect={null}
+              onSelectAnswer={handleSelectAnswer}
+            />
+          </div>
+        </main>
+
+        {isWide && showSidePanel && (
+          <aside
+            className="sticky top-[72px] mt-8 md:mt-12 w-[488px] shrink-0 flex flex-col max-h-[calc(100vh-160px)] rounded-2xl border border-slate-200 bg-white shadow-elevation-2 overflow-hidden"
+            aria-labelledby="ficha-panel-titulo"
+          >
+            <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-200">
+              <h2 id="ficha-panel-titulo" className="font-display text-lg font-bold text-slate-900">
+                Tu ficha de respuestas
+              </h2>
+              <span className="text-sm font-semibold text-slate-600 tabular-nums whitespace-nowrap">
+                {answeredCount} de {progress.total} marcadas
+              </span>
+            </div>
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-2 bg-slate-100/70">
+              <FichaOptica
+                preguntas={questions}
+                marcadas={marcadas}
+                modo="marcar"
+                actual={currentQuestionIndex}
+                onMarcar={handleMarcarFicha}
+                onIr={handleIrFicha}
+                permitirDesmarcar
+                universidad={fichaUniversidad}
+                postulante={fichaPostulante}
+                seguirActual
+              />
+            </div>
+            <div className="border-t border-slate-200 px-4 py-3">
+              <button
+                onClick={openFinishModal}
+                className="w-full min-h-12 inline-flex items-center justify-center gap-2 rounded-xl font-semibold text-white active:scale-[0.99] transition"
+                style={{ backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)' }}
+              >
+                <FileCheck className="w-4 h-4" />
+                Terminar y ver mi nota
+              </button>
+            </div>
+          </aside>
+        )}
+      </div>
 
       {/* ========== FOOTER sticky navegación (nav inferior cómoda con el pulgar en móvil) ========== */}
       <footer className="glass fixed bottom-0 left-0 right-0 z-20 border-t border-slate-200/60 h-16 shadow-[0_-4px_16px_-4px_rgba(15,23,42,0.08)]">
@@ -438,7 +694,7 @@ export function Quiz() {
           <button
             onClick={handlePrevious}
             className={clsx(
-              'inline-flex items-center justify-center gap-1.5 min-w-11 min-h-11 px-3 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 active:scale-95 transition-all',
+              'shrink-0 inline-flex items-center justify-center gap-1.5 min-w-11 min-h-11 px-3 sm:px-4 py-2 rounded-lg border-2 border-slate-300 bg-white text-sm font-semibold text-slate-800 hover:bg-slate-50 hover:border-slate-400 active:scale-95 transition-all',
               isFirstQuestion && 'opacity-40 pointer-events-none'
             )}
             aria-label="Pregunta anterior"
@@ -448,73 +704,32 @@ export function Quiz() {
             <span className="hidden sm:inline">Anterior</span>
           </button>
 
-          {/* Minimapa compacto (desktop) con puntos decorativos a los lados */}
-          <div
-            className="hidden md:flex items-center gap-2"
-            role="navigation"
-            aria-label="Minimapa de preguntas"
-          >
-            {/* Puntos decorativos izquierda */}
-            <span className="flex items-center gap-1 mr-1 opacity-50" aria-hidden="true">
-              <span className="w-0.5 h-0.5 rounded-full bg-brand-accent/60" />
-              <span className="w-1 h-1 rounded-full bg-brand-accent/40" />
-              <span className="w-0.5 h-0.5 rounded-full bg-brand-accent/60" />
-            </span>
-
-            {questions.slice(0, 60).map((q, idx) => {
-              const answered = savedAnswers.has(q.id);
-              const isCurrent = idx === currentQuestionIndex;
-              const needsSeparator = idx > 0 && idx % 5 === 0;
-              return (
-                <div key={q.id} className="flex items-center">
-                  {needsSeparator && (
-                    <span className="w-1 h-1 rounded-full bg-slate-200 mr-2" aria-hidden="true" />
-                  )}
-                  <button
-                    onClick={() => goToQuestion(idx)}
-                    aria-label={`Ir a pregunta ${idx + 1}`}
-                    aria-current={isCurrent ? 'true' : undefined}
-                    className={clsx(
-                      'rounded-full transition-all duration-150',
-                      isCurrent
-                        ? 'w-2.5 h-2.5'
-                        : answered
-                          ? 'w-1.5 h-1.5 bg-emerald-400/70 hover:bg-emerald-500'
-                          : 'w-1.5 h-1.5 bg-slate-200 hover:bg-slate-300'
-                    )}
-                    style={isCurrent ? { backgroundColor: 'var(--uni-primary-safe)', boxShadow: '0 0 0 3px var(--uni-primary-soft)' } : undefined}
-                  />
-                </div>
-              );
-            })}
-
-            {/* Puntos decorativos derecha */}
-            <span className="flex items-center gap-1 ml-1 opacity-50" aria-hidden="true">
-              <span className="w-0.5 h-0.5 rounded-full bg-brand-accent/60" />
-              <span className="w-1 h-1 rounded-full bg-brand-accent/40" />
-              <span className="w-0.5 h-0.5 rounded-full bg-brand-accent/60" />
-            </span>
-          </div>
-
-          {/* Contador mobile */}
-          <div className="md:hidden font-mono text-sm text-slate-600 tabular-nums">
-            {currentQuestionIndex + 1} / {progress.total}
+          {/* Contador central: 60 puntos no caben y aplastaban "Siguiente"; el mapa completo
+              está en la ficha de respuestas (ícono de lista del header) */}
+          <div className="flex-1 min-w-0 flex flex-col items-center gap-1" aria-live="polite">
+            <p className="text-sm font-semibold text-slate-800 tabular-nums whitespace-nowrap">
+              Pregunta {currentQuestionIndex + 1} <span className="font-normal text-slate-600">de {progress.total}</span>
+            </p>
+            <p className="hidden sm:block text-xs text-slate-600 tabular-nums">
+              {answeredCount} respondidas · {progress.total - answeredCount} pendientes
+            </p>
           </div>
 
           {/* Siguiente / Calificar */}
           {isLastQuestion ? (
             <button
-              onClick={() => setShowFinishModal(true)}
-              className="btn-accent-gold shine-hover inline-flex items-center justify-center gap-1.5 min-h-11 px-5 py-2 rounded-lg text-sm font-semibold active:scale-95 transition-transform"
-              aria-label="Calificar examen"
+              onClick={openFinishModal}
+              className="shrink-0 btn-accent-gold shine-hover inline-flex items-center justify-center gap-1.5 min-h-11 px-4 sm:px-5 py-2 rounded-lg text-sm font-semibold active:scale-95 transition-transform whitespace-nowrap"
+              aria-label="Terminar y ver mi nota"
             >
               <FileCheck className="w-4 h-4" />
-              <span>Calificar</span>
+              <span className="hidden min-[380px]:inline">Terminar y ver mi nota</span>
+              <span className="min-[380px]:hidden">Terminar</span>
             </button>
           ) : (
             <button
               onClick={handleNext}
-              className="shine-hover inline-flex items-center justify-center gap-1.5 min-h-11 px-5 py-2 rounded-lg text-sm font-semibold text-white active:scale-95 transition-transform"
+              className="shrink-0 whitespace-nowrap shine-hover inline-flex items-center justify-center gap-1.5 min-h-11 px-5 sm:px-6 py-2 rounded-lg text-sm font-semibold text-white active:scale-95 transition-transform"
               style={{
                 backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)',
                 boxShadow: '0 10px 25px -10px var(--uni-primary)',
@@ -528,120 +743,69 @@ export function Quiz() {
         </div>
       </footer>
 
-      {/* ========== DRAWER navegador ========== */}
-      {showNavigator && (
+      {/* ========== DRAWER ficha de respuestas (<1280px) ==========
+          Móvil: hoja desde abajo (85vh, scroll interno). Tablet/laptop: panel a la derecha. */}
+      {showNavigator && !isWide && (
         <div
-          className="fixed inset-0 z-40 bg-black/30 animate-fade-in"
+          className="fixed inset-0 z-40 bg-black/40 animate-fade-in"
           onClick={() => setShowNavigator(false)}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Navegador de preguntas"
+          role="presentation"
         >
           <div
-            className="absolute right-0 top-0 h-full w-full max-w-sm bg-white shadow-elevation-4 overflow-hidden flex flex-col animate-slide-in-right"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="ficha-drawer-titulo"
+            className="absolute inset-x-0 bottom-0 h-[85vh] supports-[height:100dvh]:h-[85dvh] rounded-t-3xl md:left-auto md:right-0 md:top-0 md:h-full md:supports-[height:100dvh]:h-full md:w-full md:max-w-[600px] md:rounded-none bg-white shadow-elevation-4 overflow-hidden flex flex-col animate-slide-up"
             onClick={e => e.stopPropagation()}
           >
-            {/* Header del drawer con patrón andino sutil */}
-            <div className="sticky top-0 bg-white andean-bold border-b border-slate-200 relative" style={{ color: 'var(--uni-primary-soft)' }}>
-              <div className="relative px-5 py-4 flex items-center justify-between bg-white/70 backdrop-blur">
-                <h3 className="font-display text-xl font-bold text-slate-900 flex items-center gap-2">
-                  Navegador de preguntas
+            {/* Asa visual del bottom sheet (solo móvil) */}
+            <div className="md:hidden flex justify-center pt-2" aria-hidden="true">
+              <span className="w-10 h-1.5 rounded-full bg-slate-300" />
+            </div>
+            <div className="flex items-center justify-between gap-3 px-4 sm:px-5 py-2 md:py-3 border-b border-slate-200">
+              <div className="min-w-0">
+                <h3 id="ficha-drawer-titulo" className="font-display text-xl font-bold text-slate-900">
+                  Tu ficha de respuestas
                 </h3>
-                <button
-                  onClick={() => setShowNavigator(false)}
-                  className="p-1.5 rounded-md text-slate-500 hover:bg-slate-100 transition-colors"
-                  aria-label="Cerrar navegador"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+                <p className="text-sm text-slate-600 tabular-nums">
+                  {answeredCount} de {progress.total} marcadas
+                </p>
               </div>
+              <button
+                ref={drawerCloseRef}
+                onClick={() => setShowNavigator(false)}
+                className="shrink-0 inline-flex items-center justify-center w-11 h-11 rounded-md text-slate-600 hover:bg-slate-100 transition-colors"
+                aria-label="Cerrar ficha de respuestas"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
-            {/* Leyenda con mejor contraste (texto AA vía --uni-primary-safe) */}
-            <div className="px-5 py-3 border-b border-slate-100 flex flex-wrap gap-3 text-xs font-medium text-slate-600">
-              <div className="flex items-center gap-1.5">
-                <div
-                  className="w-3 h-3 rounded"
-                  style={{ backgroundColor: 'var(--uni-primary-soft)', boxShadow: '0 0 0 1px var(--uni-primary-safe)' }}
-                ></div>
-                <span>Respondida</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded bg-slate-100 ring-1 ring-slate-200"></div>
-                <span>Pendiente</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded ring-2 bg-white" style={{ boxShadow: '0 0 0 2px var(--uni-primary-safe)' }}></div>
-                <span>Actual</span>
-              </div>
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-2 sm:px-4 py-3 bg-slate-100/70">
+              <FichaOptica
+                preguntas={questions}
+                marcadas={marcadas}
+                modo="marcar"
+                actual={currentQuestionIndex}
+                onMarcar={handleMarcarFicha}
+                onIr={handleIrFicha}
+                permitirDesmarcar
+                universidad={fichaUniversidad}
+                postulante={fichaPostulante}
+                seguirActual
+              />
             </div>
 
-            {/* Grupos por asignatura como cards */}
-            <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3 bg-slate-50/50">
-              {questionsBySubject.map((group, gIdx) => {
-                const groupAnswered = group.questions.filter(q => q.answered).length;
-                const isCollapsed = !!collapsedSubjects[group.subject];
-                return (
-                  <div key={gIdx} className="card-elevated p-3 bg-white rounded-xl">
-                    <button
-                      onClick={() => toggleSubject(group.subject)}
-                      className="w-full flex items-center justify-between py-1 group"
-                      aria-expanded={!isCollapsed}
-                    >
-                      <div className="flex items-center gap-2">
-                        <ChevronDown
-                          className={clsx(
-                            'w-4 h-4 text-slate-400 transition-transform',
-                            isCollapsed && '-rotate-90'
-                          )}
-                        />
-                        <h4 className="font-display text-sm font-semibold text-slate-800">
-                          {group.subject}
-                        </h4>
-                      </div>
-                      <span className="text-xs font-mono text-slate-500 tabular-nums">
-                        {groupAnswered}/{group.questions.length}
-                      </span>
-                    </button>
-
-                    {!isCollapsed && (
-                      <div className="mt-2 grid grid-cols-5 sm:grid-cols-6 gap-1.5">
-                        {group.questions.map(({ index, answered }) => {
-                          const isCurrent = index === currentQuestionIndex;
-                          return (
-                            <button
-                              key={index}
-                              onClick={() => {
-                                goToQuestion(index);
-                                setShowNavigator(false);
-                              }}
-                              aria-label={`Ir a pregunta ${index + 1}${answered ? ', respondida' : ', pendiente'}${isCurrent ? ', actual' : ''}`}
-                              aria-current={isCurrent ? 'true' : undefined}
-                              className={clsx(
-                                'w-11 h-11 rounded-lg text-xs font-semibold transition active:scale-95 tabular-nums focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-                                isCurrent
-                                  ? 'shadow-elevation-2 bg-white'
-                                  : answered
-                                    ? 'hover:brightness-95'
-                                    : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
-                              )}
-                              style={
-                                isCurrent
-                                  ? { boxShadow: '0 0 0 2px var(--uni-primary-safe)', color: 'var(--uni-primary-safe)' }
-                                  : answered
-                                    ? { backgroundColor: 'var(--uni-primary-soft)', color: 'var(--uni-primary-safe)', boxShadow: '0 0 0 1px var(--uni-primary-soft)' }
-                                    : undefined
-                              }
-                            >
-                              {index + 1}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+            {/* Pie del drawer: terminar desde aquí (en móvil es el lugar natural tras revisar) */}
+            <div className="border-t border-slate-200 bg-white px-5 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+              <button
+                onClick={openFinishModal}
+                className="w-full min-h-12 inline-flex items-center justify-center gap-2 rounded-xl font-semibold text-white active:scale-[0.99] transition"
+                style={{ backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)' }}
+              >
+                <FileCheck className="w-4 h-4" />
+                Terminar y ver mi nota
+              </button>
             </div>
           </div>
         </div>
@@ -669,7 +833,7 @@ export function Quiz() {
                       Hay <strong className="text-amber-700">{unansweredCount} preguntas</strong> sin responder.
                       Las no contestadas se calificarán como incorrectas.
                     </p>
-                    <div className="flex flex-wrap gap-1.5 mt-4 max-h-32 overflow-y-auto justify-center">
+                    <div className="flex flex-wrap gap-1.5 mt-4 max-h-40 overflow-y-auto justify-center">
                       {unansweredNumbers.map(n => (
                         <button
                           key={n}
@@ -677,7 +841,8 @@ export function Quiz() {
                             setShowFinishModal(false);
                             goToQuestion(n - 1);
                           }}
-                          className="min-w-[2rem] h-8 px-2 rounded-md bg-amber-100 text-amber-700 hover:bg-amber-200 text-sm font-semibold active:scale-95 transition-transform font-mono tabular-nums"
+                          aria-label={`Ir a la pregunta ${n}`}
+                          className="min-w-11 h-11 px-2 rounded-lg bg-amber-100 text-amber-700 hover:bg-amber-200 text-sm font-semibold active:scale-95 transition-transform font-mono tabular-nums"
                         >
                           {n}
                         </button>
@@ -705,10 +870,15 @@ export function Quiz() {
               </p>
 
               <div className="space-y-2.5">
+                {/* Color de marca (no rojo): terminar no es una acción "peligrosa" */}
                 <button
                   onClick={handleFinishExam}
                   disabled={isFinishing}
-                  className="w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-elevation-2 transition-all active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full min-h-12 py-3 rounded-xl font-semibold text-white shadow-elevation-2 transition-all hover:brightness-110 active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  style={{
+                    backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)',
+                    boxShadow: '0 10px 25px -10px var(--uni-primary)',
+                  }}
                 >
                   {isFinishing ? (
                     <>
@@ -716,7 +886,7 @@ export function Quiz() {
                       Calificando…
                     </>
                   ) : (
-                    'Calificar ahora'
+                    'Terminar y ver mi nota'
                   )}
                 </button>
 
@@ -728,7 +898,7 @@ export function Quiz() {
                       }
                       setShowFinishModal(false);
                     }}
-                    className="w-full py-2.5 rounded-xl font-medium text-slate-700 hover:bg-slate-100 transition-colors"
+                    className="w-full min-h-11 py-2.5 rounded-xl font-medium text-slate-700 hover:bg-slate-100 transition-colors"
                   >
                     Ir a primera pendiente
                   </button>
@@ -736,11 +906,48 @@ export function Quiz() {
 
                 <button
                   onClick={() => setShowFinishModal(false)}
-                  className="w-full py-2 text-slate-500 hover:text-slate-700 text-sm font-sans transition-colors"
+                  className="w-full min-h-11 py-2 text-slate-500 hover:text-slate-700 text-sm font-sans transition-colors"
                 >
                   Continuar examen
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========== MODAL salida (botón atrás durante el examen) ========== */}
+      {showExitModal && (
+        <div
+          className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4 animate-fade-in"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="quiz-exit-title"
+        >
+          <div className="bg-white rounded-2xl shadow-elevation-4 max-w-sm w-full p-6 animate-bounce-in text-center">
+            <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-slate-100 flex items-center justify-center">
+              <LogOut className="w-7 h-7 text-slate-600" />
+            </div>
+            <h2 id="quiz-exit-title" className="font-display text-2xl font-bold text-slate-900 mb-2">
+              ¿Salir del examen?
+            </h2>
+            <p className="text-slate-600 font-sans mb-6">
+              Tus respuestas se guardan y puedes continuar después.
+            </p>
+            <div className="space-y-2.5">
+              <button
+                onClick={stayInExam}
+                className="w-full min-h-12 py-3 rounded-xl font-semibold text-white active:scale-[0.99] transition"
+                style={{ backgroundImage: 'linear-gradient(135deg, var(--uni-primary) 0%, var(--uni-primary-deep) 100%)' }}
+              >
+                Seguir en el examen
+              </button>
+              <button
+                onClick={handleExitExam}
+                className="w-full min-h-11 py-2.5 rounded-xl font-medium text-slate-700 hover:bg-slate-100 transition-colors"
+              >
+                Salir por ahora
+              </button>
             </div>
           </div>
         </div>

@@ -1,0 +1,27 @@
+proceso,division,division_tipo,curso,n_preguntas,puntos_correcta,puntos_incorrecta,puntos_blanco,factor_escala,peso,orden
+ORDINARIO,A - Ingeniería y Ciencias Básicas,area,Aritmética,14,5,0,1,,,1
+ORDINARIO,A - Ingeniería y Ciencias Básicas,area,Álgebra,10,5,0,1,,,2
+ORDINARIO,A - Ingeniería y Ciencias Básicas,area,Competencia Comunicativa,14,5,0,1,,,3
+ORDINARIO,A - Ingeniería y Ciencias Básicas,area,Geometría y Trigonometría,14,5,0,1,,,4
+ORDINARIO,A - Ingeniería y Ciencias Básicas,area,Física,14,5,0,1,,,5
+ORDINARIO,A - Ingeniería y Ciencias Básicas,area,Química,14,5,0,1,,,6
+ORDINARIO,B - Ciencias de la Salud y de la Vida,area,Aritmética,14,5,0,1,,,1
+ORDINARIO,B - Ciencias de la Salud y de la Vida,area,Álgebra,10,5,0,1,,,2
+ORDINARIO,B - Ciencias de la Salud y de la Vida,area,Competencia Comunicativa,14,5,0,1,,,3
+ORDINARIO,B - Ciencias de la Salud y de la Vida,area,Biología,14,5,0,1,,,4
+ORDINARIO,B - Ciencias de la Salud y de la Vida,area,Física,14,5,0,1,,,5
+ORDINARIO,B - Ciencias de la Salud y de la Vida,area,Química,14,5,0,1,,,6
+ORDINARIO,C - Ciencias Empresariales,area,Aritmética,14,5,0,1,,,1
+ORDINARIO,C - Ciencias Empresariales,area,Álgebra,10,5,0,1,,,2
+ORDINARIO,C - Ciencias Empresariales,area,Competencia Comunicativa,14,5,0,1,,,3
+ORDINARIO,C - Ciencias Empresariales,area,Historia,12,5,0,1,,,4
+ORDINARIO,C - Ciencias Empresariales,area,Geografía,12,5,0,1,,,5
+ORDINARIO,C - Ciencias Empresariales,area,Economía,10,5,0,1,,,6
+ORDINARIO,C - Ciencias Empresariales,area,Educación Cívica,8,5,0,1,,,7
+ORDINARIO,D - Ciencias Sociales,area,Aritmética,14,5,0,1,,,1
+ORDINARIO,D - Ciencias Sociales,area,Álgebra,10,5,0,1,,,2
+ORDINARIO,D - Ciencias Sociales,area,Competencia Comunicativa,14,5,0,1,,,3
+ORDINARIO,D - Ciencias Sociales,area,Historia,12,5,0,1,,,4
+ORDINARIO,D - Ciencias Sociales,area,Geografía,12,5,0,1,,,5
+ORDINARIO,D - Ciencias Sociales,area,Filosofía y Lógica,10,5,0,1,,,6
+ORDINARIO,D - Ciencias Sociales,area,Educación Cívica,8,5,0,1,,,7

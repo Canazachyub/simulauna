@@ -1,31 +1,35 @@
-import { useEffect, Suspense, lazy, type ReactNode } from 'react';
+import { useEffect, Suspense, type ReactNode } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { useUniversityStore } from './hooks/useUniversity';
 import { QuickSwitch } from './components/nav/QuickSwitch';
 import { RouteTransition } from './components/nav/RouteTransition';
 import { UniversityBottomNav, isBottomNavHiddenPath } from './components/nav/UniversityBottomNav';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { useExamStore } from './hooks/useExam';
+import { lazyWithRetry } from './utils/lazyWithRetry';
 
 // Todas las rutas son lazy (ver docs/CONTRATO_API_V2.md §5) para no cargar el bundle completo
-// en la landing nacional.
-const Landing = lazy(() => import('./components/Landing').then(m => ({ default: m.Landing })));
-const UniversityPage = lazy(() => import('./components/UniversityPage').then(m => ({ default: m.UniversityPage })));
-const StudentForm = lazy(() => import('./components/StudentForm').then(m => ({ default: m.StudentForm })));
-const ExamConfirmation = lazy(() => import('./components/ExamConfirmation').then(m => ({ default: m.ExamConfirmation })));
-const Quiz = lazy(() => import('./components/Quiz').then(m => ({ default: m.Quiz })));
-const Results = lazy(() => import('./components/Results').then(m => ({ default: m.Results })));
-const Banqueo = lazy(() => import('./components/Banqueo').then(m => ({ default: m.Banqueo })));
-const BanqueoPorTema = lazy(() => import('./components/BanqueoPorTema').then(m => ({ default: m.BanqueoPorTema })));
+// en la landing nacional. lazyWithRetry reintenta el import y, si el chunk ya no existe tras un
+// deploy, recarga la página una sola vez (ver src/utils/lazyWithRetry.ts).
+const Landing = lazyWithRetry(() => import('./components/Landing').then(m => ({ default: m.Landing })));
+const UniversityPage = lazyWithRetry(() => import('./components/UniversityPage').then(m => ({ default: m.UniversityPage })));
+const StudentForm = lazyWithRetry(() => import('./components/StudentForm').then(m => ({ default: m.StudentForm })));
+const ExamConfirmation = lazyWithRetry(() => import('./components/ExamConfirmation').then(m => ({ default: m.ExamConfirmation })));
+const Quiz = lazyWithRetry(() => import('./components/Quiz').then(m => ({ default: m.Quiz })));
+const Results = lazyWithRetry(() => import('./components/Results').then(m => ({ default: m.Results })));
+const Banqueo = lazyWithRetry(() => import('./components/Banqueo').then(m => ({ default: m.Banqueo })));
+const BanqueoPorTema = lazyWithRetry(() => import('./components/BanqueoPorTema').then(m => ({ default: m.BanqueoPorTema })));
 // BanqueoCepreuna es la base elegida para converger BanqueoCepreuna + SimulacroCepreuna en
 // la ruta única /:universidad/cepre (ver componente para el detalle de la decisión).
-const CepreSession = lazy(() => import('./components/BanqueoCepreuna').then(m => ({ default: m.BanqueoCepreuna })));
+const CepreSession = lazyWithRetry(() => import('./components/BanqueoCepreuna').then(m => ({ default: m.BanqueoCepreuna })));
 // Placeholder del Aula virtual (LMS aún no construido, ver docs/DIRECCION_DISENO_V3.md §Aulas virtuales).
-const AulaComingSoon = lazy(() => import('./components/AulaComingSoon').then(m => ({ default: m.AulaComingSoon })));
+const AulaComingSoon = lazyWithRetry(() => import('./components/AulaComingSoon').then(m => ({ default: m.AulaComingSoon })));
 // Páginas nacionales (fuera de UniversityGate: no dependen de :universidad).
-const Nosotros = lazy(() => import('./components/pages/Nosotros').then(m => ({ default: m.Nosotros })));
-const FAQ = lazy(() => import('./components/pages/FAQ').then(m => ({ default: m.FAQ })));
-const Terminos = lazy(() => import('./components/pages/Terminos').then(m => ({ default: m.Terminos })));
-const NotFound = lazy(() => import('./components/pages/NotFound').then(m => ({ default: m.NotFound })));
+const Nosotros = lazyWithRetry(() => import('./components/pages/Nosotros').then(m => ({ default: m.Nosotros })));
+const FAQ = lazyWithRetry(() => import('./components/pages/FAQ').then(m => ({ default: m.FAQ })));
+const Terminos = lazyWithRetry(() => import('./components/pages/Terminos').then(m => ({ default: m.Terminos })));
+const NotFound = lazyWithRetry(() => import('./components/pages/NotFound').then(m => ({ default: m.NotFound })));
 
 function RouteFallback() {
   return (
@@ -62,6 +66,13 @@ function UniversityGate({ children }: { children: ReactNode }) {
     if (universidad) setActiva(universidad);
   }, [universidad, setActiva]);
 
+  // El config del examen (divisiones/escala) es por universidad: si el que quedó en memoria es
+  // de otra, se descarta para que StudentForm lo vuelva a pedir (evita divisiones cruzadas).
+  const invalidateConfigFor = useExamStore(state => state.invalidateConfigFor);
+  useEffect(() => {
+    if (universidad) invalidateConfigFor(universidad);
+  }, [universidad, invalidateConfigFor]);
+
   if (loading && registro.length === 0) {
     return <RouteFallback />;
   }
@@ -90,6 +101,13 @@ function UniversityGate({ children }: { children: ReactNode }) {
       <UniversityBottomNav />
     </>
   );
+}
+
+/** ErrorBoundary de rutas: se reinicia al navegar, así un error en una pantalla no deja
+ * "atascada" la app (el usuario puede ir a otra ruta sin recargar). */
+function RouteErrorBoundary({ children }: { children: ReactNode }) {
+  const location = useLocation();
+  return <ErrorBoundary resetKey={location.pathname}>{children}</ErrorBoundary>;
 }
 
 function App() {
@@ -134,45 +152,47 @@ function App() {
     <AuthProvider>
       {/* future flags: opt-in temprano a los comportamientos de React Router v7
           (silencia los Future Flag Warnings de consola sin cambiar UX). */}
-      <BrowserRouter basename="/simulauna" future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <QuickSwitch />
-        <Suspense fallback={<RouteFallback />}>
-          <RouteTransition>
-            <Routes>
-              {/* Landing nacional */}
-              <Route path="/" element={<Landing />} />
+        <RouteErrorBoundary>
+          <Suspense fallback={<RouteFallback />}>
+            <RouteTransition>
+              <Routes>
+                {/* Landing nacional */}
+                <Route path="/" element={<Landing />} />
 
-              {/* Páginas nacionales — no dependen de :universidad, viven fuera de UniversityGate. */}
-              <Route path="/nosotros" element={<Nosotros />} />
-              <Route path="/preguntas-frecuentes" element={<FAQ />} />
-              <Route path="/terminos" element={<Terminos />} />
+                {/* Páginas nacionales — no dependen de :universidad, viven fuera de UniversityGate. */}
+                <Route path="/nosotros" element={<Nosotros />} />
+                <Route path="/preguntas-frecuentes" element={<FAQ />} />
+                <Route path="/terminos" element={<Terminos />} />
 
-              {/* Rutas por universidad */}
-              <Route path="/:universidad" element={<UniversityGate><UniversityPage /></UniversityGate>} />
-              <Route path="/:universidad/registro" element={<UniversityGate><StudentForm /></UniversityGate>} />
-              <Route path="/:universidad/confirmar" element={<UniversityGate><ExamConfirmation /></UniversityGate>} />
-              <Route path="/:universidad/examen" element={<UniversityGate><Quiz /></UniversityGate>} />
-              <Route path="/:universidad/resultados" element={<UniversityGate><Results /></UniversityGate>} />
-              <Route path="/:universidad/banqueo" element={<UniversityGate><Banqueo /></UniversityGate>} />
-              <Route path="/:universidad/banqueo-tema" element={<UniversityGate><BanqueoPorTema /></UniversityGate>} />
-              <Route path="/:universidad/cepre" element={<UniversityGate><CepreSession /></UniversityGate>} />
-              <Route path="/:universidad/aula" element={<UniversityGate><AulaComingSoon /></UniversityGate>} />
+                {/* Rutas por universidad */}
+                <Route path="/:universidad" element={<UniversityGate><UniversityPage /></UniversityGate>} />
+                <Route path="/:universidad/registro" element={<UniversityGate><StudentForm /></UniversityGate>} />
+                <Route path="/:universidad/confirmar" element={<UniversityGate><ExamConfirmation /></UniversityGate>} />
+                <Route path="/:universidad/examen" element={<UniversityGate><Quiz /></UniversityGate>} />
+                <Route path="/:universidad/resultados" element={<UniversityGate><Results /></UniversityGate>} />
+                <Route path="/:universidad/banqueo" element={<UniversityGate><Banqueo /></UniversityGate>} />
+                <Route path="/:universidad/banqueo-tema" element={<UniversityGate><BanqueoPorTema /></UniversityGate>} />
+                <Route path="/:universidad/cepre" element={<UniversityGate><CepreSession /></UniversityGate>} />
+                <Route path="/:universidad/aula" element={<UniversityGate><AulaComingSoon /></UniversityGate>} />
 
-              {/* Redirects legados EXACTOS (react-router-dom v6 prioriza rutas estáticas sobre
-                  :universidad aunque estén declaradas después, así que estos paths ganan). */}
-              <Route path="/registro" element={<Navigate to="/una/registro" replace />} />
-              <Route path="/confirmar" element={<Navigate to="/una/confirmar" replace />} />
-              <Route path="/examen" element={<Navigate to="/una/examen" replace />} />
-              <Route path="/resultados" element={<Navigate to="/una/resultados" replace />} />
-              <Route path="/banqueo" element={<Navigate to="/una/banqueo" replace />} />
-              <Route path="/banqueo-cepreuna" element={<Navigate to="/una/cepre" replace />} />
-              <Route path="/banqueo-tema" element={<Navigate to="/una/banqueo-tema" replace />} />
-              <Route path="/simulacro-cepreuna" element={<Navigate to="/una/cepre" replace />} />
+                {/* Redirects legados EXACTOS (react-router-dom v6 prioriza rutas estáticas sobre
+                    :universidad aunque estén declaradas después, así que estos paths ganan). */}
+                <Route path="/registro" element={<Navigate to="/una/registro" replace />} />
+                <Route path="/confirmar" element={<Navigate to="/una/confirmar" replace />} />
+                <Route path="/examen" element={<Navigate to="/una/examen" replace />} />
+                <Route path="/resultados" element={<Navigate to="/una/resultados" replace />} />
+                <Route path="/banqueo" element={<Navigate to="/una/banqueo" replace />} />
+                <Route path="/banqueo-cepreuna" element={<Navigate to="/una/cepre" replace />} />
+                <Route path="/banqueo-tema" element={<Navigate to="/una/banqueo-tema" replace />} />
+                <Route path="/simulacro-cepreuna" element={<Navigate to="/una/cepre" replace />} />
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </RouteTransition>
-        </Suspense>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </RouteTransition>
+          </Suspense>
+        </RouteErrorBoundary>
       </BrowserRouter>
     </AuthProvider>
   );

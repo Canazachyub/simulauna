@@ -48,7 +48,7 @@ editor de Apps Script liste los archivos.
    | Propiedad | Valor |
    |---|---|
    | `SPREADSHEET_ID` | ID del spreadsheet legado de UNA Puno (el de siempre) |
-   | `SECRET_TOKEN` | Un token secreto propio. Mientras quede en el valor default `CAMBIAR_ESTE_TOKEN_SECRETO`, la validación de token se **desactiva** (bypass), útil solo para desarrollo. |
+   | `SECRET_TOKEN` | Un token secreto propio (el mismo valor que `VITE_API_TOKEN` del frontend). **Obligatoria**: si falta o queda en `CAMBIAR_ESTE_TOKEN_SECRETO`, el backend rechaza todo salvo `action=test` (falla cerrado). |
    | `CORE_SPREADSHEET_ID` | Se completa solo al correr `setupCore()` (ver abajo) — no la crees a mano. |
 
 4. Abre el archivo `setup.gs` en el editor, selecciona la función
@@ -131,7 +131,8 @@ datos, cero deploys de código:
 | Propiedad | Requerida | Descripción |
 |---|---|---|
 | `SPREADSHEET_ID` | Sí | Spreadsheet legado de UNA Puno (layout `legacy`) |
-| `SECRET_TOKEN` | Recomendada | Token de autenticación. Bypass si queda en el valor default |
+| `SECRET_TOKEN` | **Sí** | Token de autenticación. Sin ella el backend rechaza todo salvo `action=test` |
+| Flags de fase 1 | No | `LEGACY_QUESTIONS_ENABLED`, `SAVE_SCORE_ENABLED`, `ENFORCE_ACCESS_SERVER`, `REQUIRE_EMAIL_FOR_READS` — ver `DEPLOY_FASE1.md` |
 | `CORE_SPREADSHEET_ID` | Se autogenera con `setupCore()` | Spreadsheet CORE multi-tenant |
 
 ## 4. Cómo correr `healthCheck()`

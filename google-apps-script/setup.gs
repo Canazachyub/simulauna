@@ -462,8 +462,9 @@ function healthCheck() {
   }
 
   // Simula una petición GET incluyendo el token (igual que haría el
-  // frontend); sin él, doGet rechaza todo cuando SECRET_TOKEN está
-  // configurado y la suite fallaría completa con "Acceso no autorizado".
+  // frontend); sin él, doGet rechaza todo y la suite fallaría completa con
+  // "Acceso no autorizado". Si SECRET_TOKEN no está configurado, doGet
+  // rechaza todo salvo action=test (falla cerrado, ver main.gs).
   function hcGet_(params) {
     const withToken = Object.assign({ token: SECRET_TOKEN }, params);
     return JSON.parse(doGet({ parameter: withToken }).getContent());
@@ -541,17 +542,100 @@ function healthCheck() {
  * también es un problema en producción (timeout del frontend): avisar.
  */
 function healthCheckQuestions() {
+  // Fase 1: la action legada `questions` quedó apagada por defecto
+  // (LEGACY_QUESTIONS_ENABLED). Se prueba el mismo trabajo pesado vía
+  // getExam (arma el examen desde las 18 hojas Banco_) y que NO filtre
+  // correctAnswer/justification al cliente.
   const results = [];
   const t0 = Date.now();
   try {
-    const res = hcRequest_({ action: 'questions', area: 'Ingenierías' });
-    assertHC_(res.success === true, 'success debe ser true');
-    assertHC_(Array.isArray(res.data), 'data debe ser un array de preguntas');
-    results.push({ name: 'questions area=Ingenierías (legado)', ok: true, ms: Date.now() - t0 });
+    const res = hcRequest_({ action: 'getExam', universidad: 'una', division: 'Ingenierías' });
+    assertHC_(res.success === true, 'success debe ser true: ' + (res.error || ''));
+    assertHC_(!!res.data.examSessionId, 'debe incluir examSessionId');
+    assertHC_(Array.isArray(res.data.questions) && res.data.questions.length > 0, 'questions debe ser un array no vacío');
+    assertHC_(res.data.questions.every(function (q) { return q.correctAnswer === undefined && q.justification === undefined; }),
+      'las preguntas NO deben traer correctAnswer/justification');
+    results.push({ name: 'getExam una/Ingenierías (pool completo)', ok: true, ms: Date.now() - t0 });
   } catch (err) {
-    results.push({ name: 'questions area=Ingenierías (legado)', ok: false, error: err.toString(), ms: Date.now() - t0 });
+    results.push({ name: 'getExam una/Ingenierías (pool completo)', ok: false, error: err.toString(), ms: Date.now() - t0 });
+  }
+
+  const t1 = Date.now();
+  try {
+    const res = hcRequest_({ action: 'questions', area: 'Ingenierías' });
+    if (getFlag_('LEGACY_QUESTIONS_ENABLED', false)) {
+      assertHC_(res.success === true, 'con LEGACY_QUESTIONS_ENABLED=true debe responder success');
+    } else {
+      assertHC_(res.success === false && res.error === 'Acción no válida', 'questions legada debe estar bloqueada ("Acción no válida")');
+    }
+    results.push({ name: 'questions (legada) respeta LEGACY_QUESTIONS_ENABLED', ok: true, ms: Date.now() - t1 });
+  } catch (err) {
+    results.push({ name: 'questions (legada) respeta LEGACY_QUESTIONS_ENABLED', ok: false, error: err.toString(), ms: Date.now() - t1 });
   }
   return hcReport_('healthCheckQuestions', results);
+}
+
+/**
+ * Suite de la fase 1 de endurecimiento (rápida, sin escribir datos):
+ * token, mensaje exacto de acción inválida, validación de DNI/email,
+ * topes de cantidad y estado de los flags. Correr tras cada despliegue.
+ */
+function healthCheckFase1() {
+  const results = [];
+
+  function run(name, fn) {
+    const t0 = Date.now();
+    try {
+      fn();
+      results.push({ name: name, ok: true, ms: Date.now() - t0 });
+    } catch (err) {
+      results.push({ name: name, ok: false, error: err.toString(), ms: Date.now() - t0 });
+    }
+  }
+
+  run('SECRET_TOKEN configurado', function () {
+    assertHC_(!!SECRET_TOKEN, 'Falta la Script Property SECRET_TOKEN: el backend rechaza todo salvo action=test');
+  });
+
+  run('token inválido rechazado', function () {
+    const res = JSON.parse(doGet({ parameter: { action: 'getUniversidades', token: 'token-incorrecto' } }).getContent());
+    assertHC_(res.success === false, 'debe rechazar token incorrecto');
+  });
+
+  run('acción inválida -> texto exacto "Acción no válida"', function () {
+    const res = hcRequest_({ action: 'estoNoExiste' });
+    assertHC_(res.success === false && res.error === 'Acción no válida', 'error debe ser exactamente "Acción no válida" (lo usa el frontend del Aula)');
+  });
+
+  run('DNI inválido rechazado', function () {
+    const res = hcRequest_({ action: 'checkAccess', dni: '12ab', email: 'healthcheck@example.com', universidad: 'una' });
+    assertHC_(res.success === false, 'DNI de formato inválido debe rechazarse');
+  });
+
+  run('email inválido rechazado', function () {
+    const res = hcRequest_({ action: 'checkAccess', dni: '00000000', email: 'no-es-email', universidad: 'una' });
+    assertHC_(res.success === false, 'email inválido debe rechazarse');
+  });
+
+  run('saveScore con puntaje fuera de rango rechazado', function () {
+    if (!getFlag_('SAVE_SCORE_ENABLED', true)) return; // apagado: nada que validar
+    const res = hcRequest_({ action: 'saveScore', dni: '00000000', score: '99999', maxScore: '3000', area: 'Ingenierías', correct: '1', total: '60', universidad: 'una' });
+    assertHC_(res.success === false, 'score > maxScore debe rechazarse');
+  });
+
+  run('submitExam con sesión inexistente -> error controlado', function () {
+    const res = hcPostRequest_({ action: 'submitExam' }, { universidad: 'una', examSessionId: 'no-existe-healthcheck', dni: '00000000', answers: [] });
+    assertHC_(res.success === false, 'debe fallar con mensaje controlado');
+  });
+
+  console.log('Flags: LEGACY_QUESTIONS_ENABLED=' + getFlag_('LEGACY_QUESTIONS_ENABLED', false) +
+    ' SAVE_SCORE_ENABLED=' + getFlag_('SAVE_SCORE_ENABLED', true) +
+    ' ENFORCE_ACCESS_SERVER=' + getFlag_('ENFORCE_ACCESS_SERVER', false) +
+    ' REQUIRE_EMAIL_FOR_READS=' + getFlag_('REQUIRE_EMAIL_FOR_READS', false));
+  const triggers = ScriptApp.getProjectTriggers().filter(function (t) { return t.getHandlerFunction() === 'purgarSesionesAntiguas'; });
+  console.log('Trigger de purga instalado: ' + (triggers.length > 0 ? 'sí' : 'NO (ejecuta instalarTriggerPurga())'));
+
+  return hcReport_('healthCheckFase1', results);
 }
 
 /**

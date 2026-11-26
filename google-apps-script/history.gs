@@ -95,15 +95,51 @@ function getHistoryV2(dni, universidadFilter, procesoFilter) {
     }
   }
 
-  combined.sort(function (a, b) { return new Date(b.fecha) - new Date(a.fecha); });
+  const deduped = dedupeHistory_(combined);
+  deduped.sort(function (a, b) { return new Date(b.fecha) - new Date(a.fecha); });
 
   return {
     dni: dni,
-    totalIntentos: combined.length,
-    history: combined,
-    mejorPuntaje: combined.length > 0 ? Math.max.apply(null, combined.map(function (h) { return h.puntaje; })) : 0,
-    ultimoPuntaje: combined.length > 0 ? combined[0].puntaje : 0
+    totalIntentos: deduped.length,
+    history: deduped,
+    mejorPuntaje: deduped.length > 0 ? Math.max.apply(null, deduped.map(function (h) { return h.puntaje; })) : 0,
+    ultimoPuntaje: deduped.length > 0 ? deduped[0].puntaje : 0
   };
+}
+
+// Ventana para considerar "el mismo examen" dos filas de historial.
+const HISTORY_DEDUP_WINDOW_MS_ = 10 * 60 * 1000;
+
+/**
+ * Para 'una', un mismo examen puede aparecer hasta 3 veces: CORE.historial
+ * + historial_puntajes (doble escritura de submitExam) + historial_puntajes
+ * otra vez (saveScore que todavía llama el frontend). Se deduplica AL LEER:
+ * dos entradas son el mismo examen si coinciden puntaje (2 decimales),
+ * correctas y total, y sus fechas están a menos de 10 min. Gana la
+ * primera vista (CORE va primero en `combined`, así se conserva `proceso`
+ * real). Los registros antiguos que solo existen en el legado se
+ * conservan intactos.
+ */
+function dedupeHistory_(entries) {
+  const accepted = [];
+  entries.forEach(function (h) {
+    const t = new Date(h.fecha).getTime();
+    const puntaje = Math.round((Number(h.puntaje) || 0) * 100) / 100;
+    const dup = accepted.some(function (a) {
+      if (a._puntaje !== puntaje || a.correctas !== h.correctas || a.total !== h.total) return false;
+      if (isNaN(t) || isNaN(a._t)) return false;
+      return Math.abs(a._t - t) <= HISTORY_DEDUP_WINDOW_MS_;
+    });
+    if (!dup) {
+      accepted.push(Object.assign({}, h, { _t: t, _puntaje: puntaje }));
+    }
+  });
+  return accepted.map(function (a) {
+    const copy = Object.assign({}, a);
+    delete copy._t;
+    delete copy._puntaje;
+    return copy;
+  });
 }
 
 /**
@@ -115,7 +151,7 @@ function getHistoryV2(dni, universidadFilter, procesoFilter) {
  */
 function saveScoreForTenant(tenant, dni, score, maxScore, area, correct, total) {
   if (tenant.codigo !== 'una') {
-    throw new Error('"saveScore" es una acción legada deprecada, solo disponible para universidad=una. Usa submitExam.');
+    throw publicError_('"saveScore" es una acción legada deprecada, solo disponible para universidad=una. Usa submitExam.');
   }
   const result = unaSaveUserScore(dni, score, maxScore, area, correct, total);
   result.universidad = 'una';

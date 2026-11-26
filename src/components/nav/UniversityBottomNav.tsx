@@ -48,7 +48,7 @@ export function UniversityBottomNav() {
     { key: 'inicio', label: 'Inicio', icon: Home, to: base, exact: true },
     { key: 'simulacro', label: 'Simulacro', icon: FileText, to: `${base}/registro` },
     { key: 'banqueo', label: 'Banqueo', icon: BookOpen, to: `${base}/banqueo` },
-    { key: 'aula', label: 'Aula', icon: MonitorPlay, to: `${base}/aula`, badge: 'Próximamente' },
+    { key: 'aula', label: 'Aula', icon: MonitorPlay, to: `${base}/aula`, badge: 'Nuevo' },
   ];
 
   const isActive = (item: BottomItem) =>

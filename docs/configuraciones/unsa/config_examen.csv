@@ -1,0 +1,61 @@
+proceso,division,division_tipo,curso,n_preguntas,puntos_correcta,puntos_incorrecta,puntos_blanco,factor_escala,peso,orden
+ORDINARIO,Ingenierías,area,Razonamiento Lógico,4,1.12415,0,0,,,1
+ORDINARIO,Ingenierías,area,Razonamiento Matemático,5,1.10068,0,0,,,2
+ORDINARIO,Ingenierías,area,Razonamiento Verbal,4,1.12415,0,0,,,3
+ORDINARIO,Ingenierías,area,Comprensión Lectora,5,1.10068,0,0,,,4
+ORDINARIO,Ingenierías,area,Álgebra,4,1.658337,0,0,,,5
+ORDINARIO,Ingenierías,area,Aritmética,4,1.658267,0,0,,,6
+ORDINARIO,Ingenierías,area,Geometría,4,1.658787,0,0,,,7
+ORDINARIO,Ingenierías,area,Trigonometría,3,1.698477,0,0,,,8
+ORDINARIO,Ingenierías,area,Historia,4,1.289859,0,0,,,9
+ORDINARIO,Ingenierías,area,Geografía,4,1.210141,0,0,,,10
+ORDINARIO,Ingenierías,area,Química,6,1.425411,0,0,,,11
+ORDINARIO,Ingenierías,area,Biología,5,1.154749,0,0,,,12
+ORDINARIO,Ingenierías,area,Física,7,1.524827,0,0,,,13
+ORDINARIO,Ingenierías,area,Filosofía,3,0.79874,0,0,,,14
+ORDINARIO,Ingenierías,area,Psicología,4,0.80189,0,0,,,15
+ORDINARIO,Ingenierías,area,Educación Cívica,3,0.79874,0,0,,,16
+ORDINARIO,Ingenierías,area,Lenguaje,4,1.021414,0,0,,,17
+ORDINARIO,Ingenierías,area,Literatura,3,0.971448,0,0,,,18
+ORDINARIO,Ingenierías,area,Lengua Extranjera: Lectura,2,1.2587,0,0,,,19
+ORDINARIO,Ingenierías,area,Lengua Extranjera: Gramática,2,1.2413,0,0,,,20
+ORDINARIO,Biomédicas,area,Razonamiento Lógico,4,1.12415,0,0,,,1
+ORDINARIO,Biomédicas,area,Razonamiento Matemático,5,1.10068,0,0,,,2
+ORDINARIO,Biomédicas,area,Razonamiento Verbal,4,1.12415,0,0,,,3
+ORDINARIO,Biomédicas,area,Comprensión Lectora,5,1.10068,0,0,,,4
+ORDINARIO,Biomédicas,area,Álgebra,3,1.265447,0,0,,,5
+ORDINARIO,Biomédicas,area,Aritmética,3,1.265447,0,0,,,6
+ORDINARIO,Biomédicas,area,Geometría,3,1.265447,0,0,,,7
+ORDINARIO,Biomédicas,area,Trigonometría,3,1.203658,0,0,,,8
+ORDINARIO,Biomédicas,area,Historia,5,1.12354,0,0,,,9
+ORDINARIO,Biomédicas,area,Geografía,4,1.095575,0,0,,,10
+ORDINARIO,Biomédicas,area,Química,6,1.68474,0,0,,,11
+ORDINARIO,Biomédicas,area,Biología,9,1.94514,0,0,,,12
+ORDINARIO,Biomédicas,area,Física,5,1.47706,0,0,,,13
+ORDINARIO,Biomédicas,area,Filosofía,3,0.79874,0,0,,,14
+ORDINARIO,Biomédicas,area,Psicología,4,0.80189,0,0,,,15
+ORDINARIO,Biomédicas,area,Educación Cívica,3,0.79874,0,0,,,16
+ORDINARIO,Biomédicas,area,Lenguaje,4,1.021414,0,0,,,17
+ORDINARIO,Biomédicas,area,Literatura,3,0.971448,0,0,,,18
+ORDINARIO,Biomédicas,area,Lengua Extranjera: Lectura,2,1.2587,0,0,,,19
+ORDINARIO,Biomédicas,area,Lengua Extranjera: Gramática,2,1.2413,0,0,,,20
+ORDINARIO,Sociales,area,Razonamiento Lógico,4,1.12415,0,0,,,1
+ORDINARIO,Sociales,area,Razonamiento Matemático,5,1.10068,0,0,,,2
+ORDINARIO,Sociales,area,Razonamiento Verbal,4,1.12415,0,0,,,3
+ORDINARIO,Sociales,area,Comprensión Lectora,5,1.10068,0,0,,,4
+ORDINARIO,Sociales,area,Álgebra,3,0.824574,0,0,,,5
+ORDINARIO,Sociales,area,Aritmética,3,0.824135,0,0,,,6
+ORDINARIO,Sociales,area,Geometría,3,0.825012,0,0,,,7
+ORDINARIO,Sociales,area,Trigonometría,3,0.859614,0,0,,,8
+ORDINARIO,Sociales,area,Historia,8,1.77474,0,0,,,9
+ORDINARIO,Sociales,area,Geografía,5,1.760416,0,0,,,10
+ORDINARIO,Sociales,area,Química,3,1.109301,0,0,,,11
+ORDINARIO,Sociales,area,Biología,3,1.146903,0,0,,,12
+ORDINARIO,Sociales,area,Física,3,1.077129,0,0,,,13
+ORDINARIO,Sociales,area,Filosofía,3,0.887877,0,0,,,14
+ORDINARIO,Sociales,area,Psicología,5,0.934548,0,0,,,15
+ORDINARIO,Sociales,area,Educación Cívica,3,0.887877,0,0,,,16
+ORDINARIO,Sociales,area,Lenguaje,8,1.701541,0,0,,,17
+ORDINARIO,Sociales,area,Literatura,5,1.677534,0,0,,,18
+ORDINARIO,Sociales,area,Lengua Extranjera: Lectura,2,1.2587,0,0,,,19
+ORDINARIO,Sociales,area,Lengua Extranjera: Gramática,2,1.2413,0,0,,,20

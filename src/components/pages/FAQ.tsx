@@ -148,7 +148,7 @@ export function FAQ() {
         <div className="absolute inset-0 andean-bold text-white/15 pointer-events-none" />
         <div className="relative container mx-auto px-4 sm:px-6 max-w-3xl text-center">
           <Mascot
-            src="/simulauna/illustrations/lobito-pensando.webp"
+            src="/illustrations/lobito-pensando.webp"
             alt="Mascota SimulaUNA: un lobito pensando"
             className="w-32 sm:w-40 mx-auto mb-5 animate-float-y drop-shadow-2xl select-none"
           />

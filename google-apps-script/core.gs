@@ -216,12 +216,288 @@ function cacheKey(universidad, recurso) {
 }
 
 function getCachedJson(key) {
-  const cached = CacheService.getScriptCache().get(key);
-  return cached ? JSON.parse(cached) : null;
+  try {
+    const cached = CacheService.getScriptCache().get(key);
+    return cached ? JSON.parse(cached) : null;
+  } catch (err) {
+    // Valor corrupto o CacheService caído: se trata como "no hay cache".
+    console.error('getCachedJson(' + key + ') falló: ' + err);
+    return null;
+  }
 }
 
+/**
+ * Guarda un JSON en cache. NUNCA lanza: CacheService limita cada valor a
+ * 100KB y un agregado grande (p.ej. aula:<u>:<ciclo>) no debe tumbar la
+ * petición solo porque no entró en cache (se recalcula la próxima vez).
+ */
 function setCachedJson(key, value, ttlSeconds) {
-  CacheService.getScriptCache().put(key, JSON.stringify(value), ttlSeconds || 1800);
+  try {
+    CacheService.getScriptCache().put(key, JSON.stringify(value), ttlSeconds || 1800);
+  } catch (err) {
+    console.error('setCachedJson(' + key + ') no se pudo cachear (¿>100KB?): ' + err);
+  }
+}
+
+/**
+ * Anti-estampida de cache: si `key` no está en cache, SOLO UNA ejecución
+ * reconstruye el valor (marca 'rebuild:<key>' puesta bajo un ScriptLock
+ * cortísimo, solo para el test-and-set de la marca; la reconstrucción
+ * pesada corre FUERA del lock para no bloquear registros/submits). Las
+ * demás esperan hasta ~20 s releyendo la cache; si el constructor falló
+ * (la marca desapareció sin valor) reconstruyen ellas mismas; si se agota
+ * la espera, responden un mensaje amable para reintentar.
+ */
+function getOrBuildCachedJson_(key, ttlSeconds, builder) {
+  const cached = getCachedJson(key);
+  if (cached) return cached;
+
+  // Dentro de otra sección bajo lock: construir directo (no anidar locks).
+  if (scriptLockHeld_) {
+    const direct = builder();
+    setCachedJson(key, direct, ttlSeconds);
+    return direct;
+  }
+
+  const cache = CacheService.getScriptCache();
+  const flagKey = 'rebuild:' + key;
+  let soyConstructor = false;
+
+  const lock = LockService.getScriptLock();
+  if (lock.tryLock(3000)) {
+    try {
+      const again = getCachedJson(key);
+      if (again) return again;
+      if (!cache.get(flagKey)) {
+        cache.put(flagKey, '1', 360);
+        soyConstructor = true;
+      }
+    } finally {
+      lock.releaseLock();
+    }
+  } else {
+    // Lock muy disputado: test-and-set best effort (no atómico).
+    soyConstructor = !cache.get(flagKey);
+    if (soyConstructor) cache.put(flagKey, '1', 360);
+  }
+
+  if (!soyConstructor) {
+    const limite = Date.now() + 20000;
+    while (Date.now() < limite) {
+      Utilities.sleep(500);
+      const ready = getCachedJson(key);
+      if (ready) return ready;
+      if (!cache.get(flagKey)) break; // el constructor terminó sin valor (falló): construir aquí
+    }
+    if (cache.get(flagKey)) {
+      throw publicError_('Estamos preparando la información, intenta en unos segundos.');
+    }
+    const fallback = builder();
+    setCachedJson(key, fallback, ttlSeconds);
+    return fallback;
+  }
+
+  try {
+    const built = builder();
+    setCachedJson(key, built, ttlSeconds);
+    return built;
+  } finally {
+    try { cache.remove(flagKey); } catch (err) { /* la marca expira sola */ }
+  }
+}
+
+// ============================================
+// FLAGS (Script Properties) — ver DEPLOY_FASE1.md
+// ============================================
+//
+// Cada flag es una Script Property con valor 'true' / 'false'. Si falta o
+// está vacía se usa el default de código, elegido para PRESERVAR el
+// comportamiento que el frontend publicado espera hoy.
+//   LEGACY_QUESTIONS_ENABLED (default false): action legada `questions`.
+//   SAVE_SCORE_ENABLED       (default true):  action legada `saveScore`.
+//   ENFORCE_ACCESS_SERVER    (default false): getExam / banqueo / CEPRE
+//                                             exigen dni+email y validan acceso.
+//   REQUIRE_EMAIL_FOR_READS  (default false): getHistory / getMisPagos
+//                                             exigen email del titular.
+
+let flagsMemo_ = null;
+
+function getFlag_(name, defaultValue) {
+  try {
+    if (!flagsMemo_) flagsMemo_ = PropertiesService.getScriptProperties().getProperties() || {};
+    const raw = flagsMemo_[name];
+    if (raw === undefined || raw === null || String(raw).trim() === '') return defaultValue;
+    const v = String(raw).trim().toLowerCase();
+    if (v === 'true' || v === '1' || v === 'si' || v === 'sí') return true;
+    if (v === 'false' || v === '0' || v === 'no') return false;
+    return defaultValue;
+  } catch (err) {
+    console.error('getFlag_(' + name + ') falló, uso default: ' + err);
+    return defaultValue;
+  }
+}
+
+// ============================================
+// ERRORES PÚBLICOS vs INTERNOS
+// ============================================
+//
+// handleRequest_ (main.gs) solo muestra al cliente:
+//  - strings lanzados con `throw '...'` (mensajes de negocio ya existentes), o
+//  - errores creados con publicError_('...').
+// Cualquier otra excepción (Sheets, permisos, bugs) se loguea con
+// console.error y el cliente recibe MSG_ERROR_GENERICO_.
+
+const MSG_ERROR_GENERICO_ = 'Ocurrió un error en el servidor. Intenta nuevamente en unos minutos.';
+const MSG_OCUPADO_ = 'Hay mucha gente en este momento, intenta en unos segundos';
+const MSG_VERIFICACION_NO_DISPONIBLE_ = 'No pudimos verificar tus datos en este momento. Intenta en unos minutos.';
+
+function publicError_(message) {
+  const err = new Error(message);
+  err.publico = true;
+  return err;
+}
+
+// ============================================
+// CONCURRENCIA (LockService)
+// ============================================
+
+// true mientras ESTA ejecución tiene el ScriptLock: las secciones anidadas
+// (p.ej. registerUserV2 -> unaRegisterUser) corren directo sin volver a
+// pedir el lock.
+let scriptLockHeld_ = false;
+
+/**
+ * Ejecuta `fn` bajo LockService.getScriptLock(). Si no obtiene el lock en
+ * `timeoutMs`, lanza un error público amable. Hace SpreadsheetApp.flush()
+ * antes de soltar el lock para que la siguiente ejecución lea lo escrito.
+ * Mantener `fn` lo más corta posible (solo leer-decidir-escribir).
+ */
+function withScriptLock_(timeoutMs, fn) {
+  if (scriptLockHeld_) return fn();
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(timeoutMs || 10000)) {
+    console.error('[LOCK] No se obtuvo el ScriptLock en ' + (timeoutMs || 10000) + ' ms');
+    throw publicError_(MSG_OCUPADO_);
+  }
+  scriptLockHeld_ = true;
+  try {
+    return fn();
+  } finally {
+    scriptLockHeld_ = false;
+    try { SpreadsheetApp.flush(); } catch (err) { /* nada que hacer */ }
+    lock.releaseLock();
+  }
+}
+
+// ============================================
+// VALIDACIÓN DE ENTRADA Y ESCRITURA SEGURA EN SHEETS
+// ============================================
+
+const DNI_REGEX_ = /^\d{8}$/;
+const EMAIL_REGEX_ = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_MAX_LEN_ = 120;
+const PARAM_MAX_LEN_ = 500;
+
+function isValidDni_(dni) {
+  return DNI_REGEX_.test(String(dni === null || dni === undefined ? '' : dni).trim());
+}
+
+function isValidEmail_(email) {
+  const e = String(email === null || email === undefined ? '' : email).trim();
+  return e.length > 0 && e.length <= EMAIL_MAX_LEN_ && EMAIL_REGEX_.test(e);
+}
+
+/**
+ * Valida los parámetros comunes de cualquier action. Devuelve un mensaje
+ * de error para humanos, o null si todo está bien. Solo valida lo que
+ * VIENE (dni/email son opcionales en varias actions).
+ */
+function validateCommonParams_(params) {
+  const keys = Object.keys(params || {});
+  for (let i = 0; i < keys.length; i++) {
+    const v = params[keys[i]];
+    if (typeof v === 'string' && v.length > PARAM_MAX_LEN_) {
+      return 'Datos demasiado largos. Revisa lo que ingresaste.';
+    }
+  }
+  if (params.dni !== undefined && params.dni !== null && String(params.dni).trim() !== '') {
+    if (!isValidDni_(params.dni)) return 'DNI inválido: debe tener 8 dígitos.';
+  }
+  if (params.email !== undefined && params.email !== null && String(params.email).trim() !== '') {
+    if (!isValidEmail_(params.email)) return 'Correo electrónico inválido.';
+  }
+  return null;
+}
+
+/**
+ * Sanea un valor que viene del USUARIO antes de escribirlo en Sheets:
+ * recorta a `maxLen` y antepone "'" si empieza con = + - @ (o tab/CR),
+ * para que Sheets lo guarde como texto y no lo evalúe como fórmula
+ * (inyección de fórmulas / CSV injection). Números, booleanos y fechas
+ * se devuelven tal cual.
+ */
+function safeCell_(value, maxLen) {
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'number' || typeof value === 'boolean' || value instanceof Date) return value;
+  let s = String(value);
+  if (/^[\t\r]/.test(s)) s = s.replace(/^[\t\r]+/, '');
+  s = s.trim();
+  if (maxLen && s.length > maxLen) s = s.substring(0, maxLen);
+  if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+  return s;
+}
+
+// ============================================
+// TOPES DE CANTIDAD DE PREGUNTAS
+// ============================================
+
+const QUESTIONS_DEFAULT_COUNT_ = 20;
+const QUESTIONS_MAX_COUNT_ = 100;
+
+/** parseInt seguro con default y tope: nunca devuelve <=0 ni > maxCount. */
+function clampCount_(raw, defaultCount, maxCount) {
+  const n = parseInt(raw, 10);
+  if (!isFinite(n) || n <= 0) return defaultCount;
+  return Math.min(n, maxCount);
+}
+
+// ============================================
+// OPCIONES + RESPUESTA CORRECTA (remapeo al filtrar opciones vacías)
+// ============================================
+
+/**
+ * Filtra las opciones vacías y REMAPEA el índice de la respuesta correcta
+ * al nuevo arreglo (antes se filtraba sin reajustar: si la opción 2 estaba
+ * vacía, la correcta "4" apuntaba a la opción equivocada).
+ *
+ * - correctRaw 1..N y esa opción existe -> {valid:true, correctAnswer:<índice remapeado>}
+ * - correctRaw 1..N pero esa opción está VACÍA -> {valid:false} (el llamador omite la pregunta)
+ * - correctRaw vacío/no numérico/0 -> comportamiento legado: correctAnswer 0
+ * - correctRaw > N -> {valid:false}
+ */
+function buildOptionsWithAnswer_(rawOptions, correctRaw) {
+  const correctNum = parseInt(correctRaw, 10);
+  const numeric = isFinite(correctNum) && correctNum > 0;
+  const options = [];
+  let correctIndex = -1;
+
+  for (let i = 0; i < rawOptions.length; i++) {
+    const opt = rawOptions[i];
+    if (opt && opt !== '') {
+      if (numeric && i === correctNum - 1) correctIndex = options.length;
+      options.push(opt);
+    }
+  }
+
+  if (!numeric) return { options: options, correctAnswer: 0, valid: true };
+  if (correctIndex === -1) return { options: options, correctAnswer: -1, valid: false };
+  return { options: options, correctAnswer: correctIndex, valid: true };
+}
+
+/** Renumera `number` de un arreglo de preguntas tras omitir inválidas. */
+function renumberQuestions_(questions, startingNumber) {
+  questions.forEach(function (q, i) { q.number = startingNumber + i; });
+  return questions;
 }
 
 // ============================================

@@ -1,0 +1,61 @@
+proceso,division,division_tipo,curso,n_preguntas,puntos_correcta,puntos_incorrecta,puntos_blanco,factor_escala,peso,orden
+ORDINARIO,I - Ciencias,area,Razonamiento Verbal,6,3,0,0,3.9130434783,,1
+ORDINARIO,I - Ciencias,area,Lenguaje,6,2,0,0,3.9130434783,,2
+ORDINARIO,I - Ciencias,area,Literatura,6,2,0,0,3.9130434783,,3
+ORDINARIO,I - Ciencias,area,Razonamiento Lógico Matemático,6,3,0,0,3.9130434783,,4
+ORDINARIO,I - Ciencias,area,Aritmética,6,3,0,0,3.9130434783,,5
+ORDINARIO,I - Ciencias,area,Álgebra,4,3,0,0,3.9130434783,,6
+ORDINARIO,I - Ciencias,area,Geometría,4,3,0,0,3.9130434783,,7
+ORDINARIO,I - Ciencias,area,Trigonometría,4,2,0,0,3.9130434783,,8
+ORDINARIO,I - Ciencias,area,Física,6,3,0,0,3.9130434783,,9
+ORDINARIO,I - Ciencias,area,Química,6,2,0,0,3.9130434783,,10
+ORDINARIO,I - Ciencias,area,Biología,6,1,0,0,3.9130434783,,11
+ORDINARIO,I - Ciencias,area,Anatomía,6,1,0,0,3.9130434783,,12
+ORDINARIO,I - Ciencias,area,Historia Universal,6,2,0,0,3.9130434783,,13
+ORDINARIO,I - Ciencias,area,Historia del Perú,6,2,0,0,3.9130434783,,14
+ORDINARIO,I - Ciencias,area,Geografía y Ambiente,6,2,0,0,3.9130434783,,15
+ORDINARIO,I - Ciencias,area,Economía,6,2,0,0,3.9130434783,,16
+ORDINARIO,I - Ciencias,area,Formación Ciudadana y Cívica,5,3,0,0,3.9130434783,,17
+ORDINARIO,I - Ciencias,area,"Actualidad Regional, Nacional e Internacional",5,3,0,0,3.9130434783,,18
+ORDINARIO,I - Ciencias,area,Test de Aptitud Vocacional,10,1,0,0,5,,19
+ORDINARIO,I - Ciencias,area,Test de Actitud Personal,10,1,0,0,5,,20
+ORDINARIO,II - Letras,area,Razonamiento Verbal,6,3,0,0,3.9130434783,,1
+ORDINARIO,II - Letras,area,Lenguaje,6,3,0,0,3.9130434783,,2
+ORDINARIO,II - Letras,area,Literatura,6,3,0,0,3.9130434783,,3
+ORDINARIO,II - Letras,area,Razonamiento Lógico Matemático,6,2,0,0,3.9130434783,,4
+ORDINARIO,II - Letras,area,Aritmética,6,1,0,0,3.9130434783,,5
+ORDINARIO,II - Letras,area,Álgebra,4,2,0,0,3.9130434783,,6
+ORDINARIO,II - Letras,area,Geometría,4,2,0,0,3.9130434783,,7
+ORDINARIO,II - Letras,area,Trigonometría,4,1,0,0,3.9130434783,,8
+ORDINARIO,II - Letras,area,Física,6,1,0,0,3.9130434783,,9
+ORDINARIO,II - Letras,area,Química,6,2,0,0,3.9130434783,,10
+ORDINARIO,II - Letras,area,Biología,6,2,0,0,3.9130434783,,11
+ORDINARIO,II - Letras,area,Anatomía,6,1,0,0,3.9130434783,,12
+ORDINARIO,II - Letras,area,Historia Universal,6,3,0,0,3.9130434783,,13
+ORDINARIO,II - Letras,area,Historia del Perú,6,3,0,0,3.9130434783,,14
+ORDINARIO,II - Letras,area,Geografía y Ambiente,6,3,0,0,3.9130434783,,15
+ORDINARIO,II - Letras,area,Economía,6,3,0,0,3.9130434783,,16
+ORDINARIO,II - Letras,area,Formación Ciudadana y Cívica,5,3,0,0,3.9130434783,,17
+ORDINARIO,II - Letras,area,"Actualidad Regional, Nacional e Internacional",5,3,0,0,3.9130434783,,18
+ORDINARIO,II - Letras,area,Test de Aptitud Vocacional,10,1,0,0,5,,19
+ORDINARIO,II - Letras,area,Test de Actitud Personal,10,1,0,0,5,,20
+ORDINARIO,III - Biomédicas,area,Razonamiento Verbal,6,3,0,0,3.9130434783,,1
+ORDINARIO,III - Biomédicas,area,Lenguaje,6,2,0,0,3.9130434783,,2
+ORDINARIO,III - Biomédicas,area,Literatura,6,2,0,0,3.9130434783,,3
+ORDINARIO,III - Biomédicas,area,Razonamiento Lógico Matemático,6,2,0,0,3.9130434783,,4
+ORDINARIO,III - Biomédicas,area,Aritmética,6,2,0,0,3.9130434783,,5
+ORDINARIO,III - Biomédicas,area,Álgebra,4,2,0,0,3.9130434783,,6
+ORDINARIO,III - Biomédicas,area,Geometría,4,2,0,0,3.9130434783,,7
+ORDINARIO,III - Biomédicas,area,Trigonometría,4,1,0,0,3.9130434783,,8
+ORDINARIO,III - Biomédicas,area,Física,6,1,0,0,3.9130434783,,9
+ORDINARIO,III - Biomédicas,area,Química,6,2,0,0,3.9130434783,,10
+ORDINARIO,III - Biomédicas,area,Biología,6,3,0,0,3.9130434783,,11
+ORDINARIO,III - Biomédicas,area,Anatomía,6,3,0,0,3.9130434783,,12
+ORDINARIO,III - Biomédicas,area,Historia Universal,6,2,0,0,3.9130434783,,13
+ORDINARIO,III - Biomédicas,area,Historia del Perú,6,2,0,0,3.9130434783,,14
+ORDINARIO,III - Biomédicas,area,Geografía y Ambiente,6,3,0,0,3.9130434783,,15
+ORDINARIO,III - Biomédicas,area,Economía,6,3,0,0,3.9130434783,,16
+ORDINARIO,III - Biomédicas,area,Formación Ciudadana y Cívica,5,3,0,0,3.9130434783,,17
+ORDINARIO,III - Biomédicas,area,"Actualidad Regional, Nacional e Internacional",5,3,0,0,3.9130434783,,18
+ORDINARIO,III - Biomédicas,area,Test de Aptitud Vocacional,10,1,0,0,5,,19
+ORDINARIO,III - Biomédicas,area,Test de Actitud Personal,10,1,0,0,5,,20

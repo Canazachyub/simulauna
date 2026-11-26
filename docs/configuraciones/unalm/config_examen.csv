@@ -1,0 +1,13 @@
+proceso,division,division_tipo,curso,n_preguntas,puntos_correcta,puntos_incorrecta,puntos_blanco,factor_escala,peso,orden
+ORDINARIO,Única,area,Razonamiento Matemático,25,1,-0.17,0,,,1
+ORDINARIO,Única,area,Razonamiento Verbal,25,1,-0.17,0,,,2
+ORDINARIO,Única,area,Aritmética,5,1,-0.17,0,,,3
+ORDINARIO,Única,area,Álgebra,5,1,-0.17,0,,,4
+ORDINARIO,Única,area,Geometría,4,1,-0.17,0,,,5
+ORDINARIO,Única,area,Trigonometría,4,1,-0.17,0,,,6
+ORDINARIO,Única,area,Biología,6,1,-0.17,0,,,7
+ORDINARIO,Única,area,Química,6,1,-0.17,0,,,8
+ORDINARIO,Única,area,Física,6,1,-0.17,0,,,9
+ORDINARIO,Única,area,Economía,4,1,-0.17,0,,,10
+ORDINARIO,Única,area,Historia del Perú y del Mundo,5,1,-0.17,0,,,11
+ORDINARIO,Única,area,Geografía,5,1,-0.17,0,,,12

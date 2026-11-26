@@ -140,8 +140,8 @@ export function CepreSelect({
   return (
     <div className="min-h-screen bg-andean-white relative overflow-hidden py-8 px-4 pb-32">
       <div className="absolute -top-24 -right-24 w-80 h-80 bg-mesh-gold opacity-30 rounded-full blur-3xl animate-blob-morph pointer-events-none hidden md:block" aria-hidden />
-      <img src="/simulauna/illustrations/calculator.svg" alt="" aria-hidden="true" className="hidden md:block absolute top-24 right-10 w-40 opacity-35 animate-float-y pointer-events-none" />
-      <img src="/simulauna/illustrations/atom.svg" alt="" aria-hidden="true" className="hidden lg:block absolute bottom-32 left-8 w-32 opacity-20 animate-spin-slow pointer-events-none" />
+      <img src="/illustrations/calculator.svg" alt="" aria-hidden="true" className="hidden md:block absolute top-24 right-10 w-40 opacity-35 animate-float-y pointer-events-none" />
+      <img src="/illustrations/atom.svg" alt="" aria-hidden="true" className="hidden lg:block absolute bottom-32 left-8 w-32 opacity-20 animate-spin-slow pointer-events-none" />
 
       <div className="max-w-4xl mx-auto relative z-10">
         <div className="flex items-center justify-between mb-6 animate-fade-up">
@@ -170,7 +170,7 @@ export function CepreSelect({
         <div className="mb-8 animate-fade-up" style={{ animationDelay: '60ms' }}>
           <div className="flex items-center gap-2 mb-3 flex-wrap">
             <span className="chip bg-brand-accent text-slate-900 text-[11px] font-bold uppercase tracking-[0.22em] font-mono border-2 border-brand-accent-400 shadow-elevation-1 px-3 py-1">
-              <img src="/simulauna/illustrations/graduation-cap.svg" alt="" aria-hidden="true" className="w-6 h-6 inline-block pointer-events-none" />
+              <img src="/illustrations/graduation-cap.svg" alt="" aria-hidden="true" className="w-6 h-6 inline-block pointer-events-none" />
               <Sparkles className="w-3 h-3" />
               {cepreNombre}
             </span>

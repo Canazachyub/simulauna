@@ -1,0 +1,29 @@
+proceso,division,division_tipo,curso,n_preguntas,puntos_correcta,puntos_incorrecta,puntos_blanco,factor_escala,peso,orden
+ORDINARIO,Área A: Ciencias de la Vida y de la Salud,area,Desarrollo Personal,10,4.079,-1.021,0,,,1
+ORDINARIO,Área A: Ciencias de la Vida y de la Salud,area,Ciudadanía y Cívica,5,4.079,-1.021,0,,,2
+ORDINARIO,Área A: Ciencias de la Vida y de la Salud,area,Historia / Geografía / Economía,10,4.079,-1.021,0,,,3
+ORDINARIO,Área A: Ciencias de la Vida y de la Salud,area,Literatura / Análisis del Discurso / Comunicología,20,4.079,-1.021,0,,,4
+ORDINARIO,Área A: Ciencias de la Vida y de la Salud,area,Inglés,5,4.079,-1.021,0,,,5
+ORDINARIO,Área A: Ciencias de la Vida y de la Salud,area,Matemática,20,4.079,-1.021,0,,,6
+ORDINARIO,Área A: Ciencias de la Vida y de la Salud,area,Biología / Química / Física,30,4.079,-1.021,0,,,7
+ORDINARIO,Área B: Ciencias Básicas y Tecnológicas,area,Desarrollo Personal,10,4.079,-1.021,0,,,1
+ORDINARIO,Área B: Ciencias Básicas y Tecnológicas,area,Ciudadanía y Cívica,5,4.079,-1.021,0,,,2
+ORDINARIO,Área B: Ciencias Básicas y Tecnológicas,area,Historia / Geografía / Economía,5,4.079,-1.021,0,,,3
+ORDINARIO,Área B: Ciencias Básicas y Tecnológicas,area,Literatura / Análisis del Discurso / Comunicología,15,4.079,-1.021,0,,,4
+ORDINARIO,Área B: Ciencias Básicas y Tecnológicas,area,Inglés,5,4.079,-1.021,0,,,5
+ORDINARIO,Área B: Ciencias Básicas y Tecnológicas,area,Matemática,30,4.079,-1.021,0,,,6
+ORDINARIO,Área B: Ciencias Básicas y Tecnológicas,area,Biología / Química / Física,30,4.079,-1.021,0,,,7
+ORDINARIO,Área C: Ciencias de la Persona,area,Desarrollo Personal,15,4.079,-1.021,0,,,1
+ORDINARIO,Área C: Ciencias de la Persona,area,Ciudadanía y Cívica,15,4.079,-1.021,0,,,2
+ORDINARIO,Área C: Ciencias de la Persona,area,Historia / Geografía / Economía,15,4.079,-1.021,0,,,3
+ORDINARIO,Área C: Ciencias de la Persona,area,Literatura / Análisis del Discurso / Comunicología,25,4.079,-1.021,0,,,4
+ORDINARIO,Área C: Ciencias de la Persona,area,Inglés,10,4.079,-1.021,0,,,5
+ORDINARIO,Área C: Ciencias de la Persona,area,Matemática,10,4.079,-1.021,0,,,6
+ORDINARIO,Área C: Ciencias de la Persona,area,Biología / Química / Física,10,4.079,-1.021,0,,,7
+ORDINARIO,Área D: Ciencias Económicas,area,Desarrollo Personal,15,4.079,-1.021,0,,,1
+ORDINARIO,Área D: Ciencias Económicas,area,Ciudadanía y Cívica,15,4.079,-1.021,0,,,2
+ORDINARIO,Área D: Ciencias Económicas,area,Historia / Geografía / Economía,15,4.079,-1.021,0,,,3
+ORDINARIO,Área D: Ciencias Económicas,area,Literatura / Análisis del Discurso / Comunicología,25,4.079,-1.021,0,,,4
+ORDINARIO,Área D: Ciencias Económicas,area,Inglés,5,4.079,-1.021,0,,,5
+ORDINARIO,Área D: Ciencias Económicas,area,Matemática,15,4.079,-1.021,0,,,6
+ORDINARIO,Área D: Ciencias Económicas,area,Biología / Química / Física,10,4.079,-1.021,0,,,7

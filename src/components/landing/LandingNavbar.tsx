@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, X, GraduationCap, Sparkles, Search } from 'lucide-react';
+import { Menu, X, GraduationCap, Search } from 'lucide-react';
 import { useQuickSwitchStore } from '../nav/quickSwitchStore';
+import { useUniversityStore } from '../../hooks/useUniversity';
 
 /** Scroll suave a una sección por id, respetando prefers-reduced-motion. */
 function scrollToId(id: string) {
@@ -14,7 +15,7 @@ function scrollToId(id: string) {
 const GOLD_GLOW = { '--uni-primary': '#D4AF37' } as CSSProperties;
 
 /** IDs de sección observados por el scrollspy (deben existir en Landing.tsx). */
-const SPY_SECTION_IDS = ['universidades', 'como-funciona'];
+const SPY_SECTION_IDS = ['universidades', 'como-funciona', 'faq'];
 
 /**
  * Navbar sticky del Landing nacional (Dirección de Diseño v3 §Estructura,
@@ -26,6 +27,10 @@ const SPY_SECTION_IDS = ['universidades', 'como-funciona'];
 export function LandingNavbar() {
   const navigate = useNavigate();
   const setQuickSwitchOpen = useQuickSwitchStore((s) => s.setOpen);
+  const activa = useUniversityStore((s) => s.activa);
+  const registro = useUniversityStore((s) => s.registro);
+  // Universidad de referencia para Banqueo/Aula: la elegida antes (si sigue en el registro) o UNA.
+  const uniBase = activa && registro.some((u) => u.codigo === activa) ? activa : 'una';
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -85,9 +90,17 @@ export function LandingNavbar() {
     setOpen(false);
     scrollToId('como-funciona');
   };
+  const goFaq = () => {
+    setOpen(false);
+    scrollToId('faq');
+  };
   const goBanqueo = () => {
     setOpen(false);
-    navigate('/una/banqueo');
+    navigate(`/${uniBase}/banqueo`);
+  };
+  const goAula = () => {
+    setOpen(false);
+    navigate(`/${uniBase}/aula`);
   };
 
   // Escape cierra el menú móvil; foco vuelve al botón hamburguesa.
@@ -142,7 +155,7 @@ export function LandingNavbar() {
           </span>
         </button>
 
-        {/* Enlaces desktop */}
+        {/* Enlaces desktop: solo 3 (Banqueo y Aula viven dentro de cada universidad y en el menú móvil) */}
         <nav className="hidden lg:flex items-center gap-7 text-sm font-bold text-slate-700">
           <button
             onClick={goUniversidades}
@@ -162,45 +175,25 @@ export function LandingNavbar() {
           >
             Cómo funciona
           </button>
-          <button onClick={goBanqueo} className="hover:text-brand-primary-700 transition-colors">
-            Banqueo
-          </button>
-          <span className="inline-flex items-center gap-1.5 text-slate-400 cursor-default select-none">
-            Aula virtual
-            <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-accent-500 text-brand-primary-900">
-              <Sparkles className="w-2.5 h-2.5" aria-hidden="true" />
-              Próximamente
-            </span>
-          </span>
           <button
-            onClick={() => { setOpen(false); navigate('/nosotros'); }}
-            className="hover:text-brand-primary-700 transition-colors"
+            onClick={goFaq}
+            aria-current={activeSection === 'faq' ? 'true' : undefined}
+            className={`transition-colors ${
+              activeSection === 'faq' ? 'text-brand-primary-700' : 'hover:text-brand-primary-700'
+            }`}
           >
-            Nosotros
+            Preguntas
           </button>
         </nav>
 
         {/* CTA + hamburguesa */}
         <div className="flex items-center gap-2">
           <button
-            type="button"
-            onClick={() => setQuickSwitchOpen(true)}
-            aria-label="Cambiar de universidad (Ctrl K)"
-            className="hidden md:inline-flex items-center gap-2 px-3 h-10 rounded-xl border border-slate-200 text-xs font-bold text-slate-500 hover:text-brand-primary-700 hover:border-brand-primary-200 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary-400"
-          >
-            <Search className="w-3.5 h-3.5" aria-hidden="true" />
-            <span className="hidden lg:inline">Cambiar universidad</span>
-            <kbd className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-slate-100 text-[10px] font-black text-slate-500">
-              Ctrl K
-            </kbd>
-          </button>
-
-          <button
             onClick={goUniversidades}
             style={GOLD_GLOW}
             className="hidden sm:inline-flex btn-glow !px-5 !py-2.5 md:!px-6 md:!py-3 bg-brand-accent-500 text-brand-primary-900 text-sm"
           >
-            Empezar gratis
+            Elegir universidad
           </button>
 
           <button
@@ -243,6 +236,15 @@ export function LandingNavbar() {
             <button role="menuitem" onClick={goBanqueo} className="text-left px-2 py-3 rounded-lg hover:bg-slate-50">
               Banqueo
             </button>
+            <button role="menuitem" onClick={goAula} className="flex items-center gap-2 text-left px-2 py-3 rounded-lg hover:bg-slate-50">
+              Aula virtual
+              <span className="text-xs font-black uppercase tracking-wide px-2 py-0.5 rounded-full bg-brand-accent-500 text-brand-primary-900">
+                Nuevo
+              </span>
+            </button>
+            <button role="menuitem" onClick={goFaq} className="text-left px-2 py-3 rounded-lg hover:bg-slate-50">
+              Preguntas frecuentes
+            </button>
             <button
               role="menuitem"
               onClick={() => { setOpen(false); navigate('/nosotros'); }}
@@ -261,20 +263,13 @@ export function LandingNavbar() {
               <Search className="w-4 h-4 text-slate-400" aria-hidden="true" />
               Cambiar universidad
             </button>
-            <span className="px-2 py-3 inline-flex items-center gap-2 text-slate-400 select-none">
-              Aula virtual
-              <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-accent-500 text-brand-primary-900">
-                <Sparkles className="w-2.5 h-2.5" aria-hidden="true" />
-                Próximamente
-              </span>
-            </span>
             <button
               role="menuitem"
               onClick={goUniversidades}
               style={GOLD_GLOW}
               className="mt-2 btn-glow bg-brand-accent-500 text-brand-primary-900 justify-center"
             >
-              Empezar gratis
+              Elegir universidad
             </button>
           </div>
         </div>

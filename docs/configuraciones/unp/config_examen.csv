@@ -1,0 +1,57 @@
+proceso,division,division_tipo,curso,n_preguntas,puntos_correcta,puntos_incorrecta,puntos_blanco,factor_escala,peso,orden
+ORDINARIO,Ciencias,area,Aptitud Verbal,14,4,-0.25,-0.10,,,1
+ORDINARIO,Ciencias,area,Razonamiento Lógico,10,4,-0.25,-0.10,,,2
+ORDINARIO,Ciencias,area,Razonamiento Matemático,8,4,-0.25,-0.10,,,3
+ORDINARIO,Ciencias,area,Aritmética,8,4,-0.25,-0.10,,,4
+ORDINARIO,Ciencias,area,Geometría,8,4,-0.25,-0.10,,,5
+ORDINARIO,Ciencias,area,Álgebra,8,4,-0.25,-0.10,,,6
+ORDINARIO,Ciencias,area,Trigonometría,8,4,-0.25,-0.10,,,7
+ORDINARIO,Ciencias,area,Lenguaje,2,4,-0.25,-0.10,,,8
+ORDINARIO,Ciencias,area,Literatura,2,4,-0.25,-0.10,,,9
+ORDINARIO,Ciencias,area,Psicología,2,4,-0.25,-0.10,,,10
+ORDINARIO,Ciencias,area,Educación Cívica,2,4,-0.25,-0.10,,,11
+ORDINARIO,Ciencias,area,Filosofía,2,4,-0.25,-0.10,,,12
+ORDINARIO,Ciencias,area,Historia del Perú,2,4,-0.25,-0.10,,,13
+ORDINARIO,Ciencias,area,Historia Universal,2,4,-0.25,-0.10,,,14
+ORDINARIO,Ciencias,area,Economía,2,4,-0.25,-0.10,,,15
+ORDINARIO,Ciencias,area,Geografía,2,4,-0.25,-0.10,,,16
+ORDINARIO,Ciencias,area,Física,6,4,-0.25,-0.10,,,17
+ORDINARIO,Ciencias,area,Química,6,4,-0.25,-0.10,,,18
+ORDINARIO,Ciencias,area,Biología,6,4,-0.25,-0.10,,,19
+ORDINARIO,Ciencias de la Salud,area,Aptitud Verbal,14,4,-0.25,-0.10,,,1
+ORDINARIO,Ciencias de la Salud,area,Razonamiento Lógico,10,4,-0.25,-0.10,,,2
+ORDINARIO,Ciencias de la Salud,area,Razonamiento Matemático,8,4,-0.25,-0.10,,,3
+ORDINARIO,Ciencias de la Salud,area,Aritmética,8,4,-0.25,-0.10,,,4
+ORDINARIO,Ciencias de la Salud,area,Geometría,8,4,-0.25,-0.10,,,5
+ORDINARIO,Ciencias de la Salud,area,Álgebra,8,4,-0.25,-0.10,,,6
+ORDINARIO,Ciencias de la Salud,area,Trigonometría,8,4,-0.25,-0.10,,,7
+ORDINARIO,Ciencias de la Salud,area,Lenguaje,2,4,-0.25,-0.10,,,8
+ORDINARIO,Ciencias de la Salud,area,Literatura,2,4,-0.25,-0.10,,,9
+ORDINARIO,Ciencias de la Salud,area,Psicología,2,4,-0.25,-0.10,,,10
+ORDINARIO,Ciencias de la Salud,area,Educación Cívica,2,4,-0.25,-0.10,,,11
+ORDINARIO,Ciencias de la Salud,area,Filosofía,2,4,-0.25,-0.10,,,12
+ORDINARIO,Ciencias de la Salud,area,Historia del Perú,2,4,-0.25,-0.10,,,13
+ORDINARIO,Ciencias de la Salud,area,Historia Universal,2,4,-0.25,-0.10,,,14
+ORDINARIO,Ciencias de la Salud,area,Economía,2,4,-0.25,-0.10,,,15
+ORDINARIO,Ciencias de la Salud,area,Geografía,2,4,-0.25,-0.10,,,16
+ORDINARIO,Ciencias de la Salud,area,Física,6,4,-0.25,-0.10,,,17
+ORDINARIO,Ciencias de la Salud,area,Química,6,4,-0.25,-0.10,,,18
+ORDINARIO,Ciencias de la Salud,area,Biología,6,4,-0.25,-0.10,,,19
+ORDINARIO,Letras,area,Aptitud Verbal,20,4,-0.25,-0.10,,,1
+ORDINARIO,Letras,area,Razonamiento Lógico,12,4,-0.25,-0.10,,,2
+ORDINARIO,Letras,area,Razonamiento Matemático,10,4,-0.25,-0.10,,,3
+ORDINARIO,Letras,area,Aritmética,2,4,-0.25,-0.10,,,4
+ORDINARIO,Letras,area,Geometría,2,4,-0.25,-0.10,,,5
+ORDINARIO,Letras,area,Álgebra,2,4,-0.25,-0.10,,,6
+ORDINARIO,Letras,area,Lenguaje,10,4,-0.25,-0.10,,,7
+ORDINARIO,Letras,area,Literatura,4,4,-0.25,-0.10,,,8
+ORDINARIO,Letras,area,Psicología,4,4,-0.25,-0.10,,,9
+ORDINARIO,Letras,area,Educación Cívica,4,4,-0.25,-0.10,,,10
+ORDINARIO,Letras,area,Filosofía,4,4,-0.25,-0.10,,,11
+ORDINARIO,Letras,area,Historia del Perú,5,4,-0.25,-0.10,,,12
+ORDINARIO,Letras,area,Historia Universal,5,4,-0.25,-0.10,,,13
+ORDINARIO,Letras,area,Economía,5,4,-0.25,-0.10,,,14
+ORDINARIO,Letras,area,Geografía,5,4,-0.25,-0.10,,,15
+ORDINARIO,Letras,area,Física,2,4,-0.25,-0.10,,,16
+ORDINARIO,Letras,area,Química,2,4,-0.25,-0.10,,,17
+ORDINARIO,Letras,area,Biología,2,4,-0.25,-0.10,,,18
