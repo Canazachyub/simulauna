@@ -152,8 +152,9 @@ function pilotoCargarUniversidad_(codigo, d, registro) {
     if (r) resp.push(r);
   });
 
-  // 4) Bancos vacíos con el encabezado correcto (los existentes NO se tocan).
-  const plan = pilotoPlanBancos_(val.config.rows, getCursoCanonical);
+  // 4) Bancos vacíos con el encabezado correcto (los existentes NO se tocan). Se crean con el nombre
+  //    EXACTO del curso oficial (UNSA: «Filosofía» y «Psicología» van en hojas distintas).
+  const plan = pilotoPlanBancos_(val.config.rows, function (c) { return c; });
   let creados = 0;
   Object.keys(plan).forEach(function (hoja) {
     if (ss.getSheetByName(hoja)) return;
@@ -313,7 +314,7 @@ function revisarPilotoOrdinario() {
         filas.push([codigo, estado, 'CONFIG CON ERRORES', val.errores.map(function (e) { return e.mensaje; }).join(' | ').substring(0, 45000), ss.getUrl()]);
         return;
       }
-      const plan = pilotoPlanBancos_(val.config.rows, getCursoCanonical);
+      const plan = pilotoPlanBancos_(val.config.rows, function (c) { return v2CursoHoja_(ss, c); });
       const conteos = {};
       Object.keys(plan).forEach(function (hoja) {
         const sh = ss.getSheetByName(hoja);

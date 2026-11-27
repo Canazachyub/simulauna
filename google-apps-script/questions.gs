@@ -18,6 +18,16 @@ function v2BancoSheetName_(cursoCanonico) {
   return 'Banco_' + cursoCanonico;
 }
 
+/**
+ * Curso cuya hoja Banco_<…> se usa para un curso de config_examen. Primero el nombre EXACTO del
+ * curso oficial (p. ej. UNSA califica «Filosofía» y «Psicología» por separado y cada uno tiene su
+ * hoja); si esa hoja no existe, el nombre canónico (p. ej. «Biología» → la hoja que ya existiera).
+ */
+function v2CursoHoja_(ss, curso) {
+  if (ss && ss.getSheetByName(v2BancoSheetName_(curso))) return curso;
+  return getCursoCanonical(curso) || curso;
+}
+
 function v2ColIndices_(headers) {
   return {
     questionText: headers.indexOf('Question Text'),
@@ -208,11 +218,17 @@ function buildExamPoolForTenant(tenant, division, proceso, semana) {
   const questions = [];
   const subjectsPlan = [];
   let questionNumber = 1;
+  const ss = SpreadsheetApp.openById(tenant.spreadsheetId);
+  // Filas ya elegidas por hoja: si dos cursos comparten hoja, no se repite ninguna pregunta.
+  const usadas = {};
 
   rows.forEach(function (r) {
-    const cursoCanonico = getCursoCanonical(r.curso) || r.curso;
-    const pool = v2ReadActiveQuestions_(tenant.spreadsheetId, cursoCanonico, { proceso: proceso, division: division, semana: semana });
-    const selected = selectRandomItems(pool.rows, Math.min(r.nPreguntas, pool.rows.length));
+    const cursoHoja = v2CursoHoja_(ss, r.curso);
+    const pool = v2ReadActiveQuestions_(tenant.spreadsheetId, cursoHoja, { proceso: proceso, division: division, semana: semana });
+    const usadasHoja = usadas[cursoHoja] || (usadas[cursoHoja] = {});
+    const libres = pool.rows.filter(function (q) { return !usadasHoja[q.rowIndex]; });
+    const selected = selectRandomItems(libres, Math.min(r.nPreguntas, libres.length));
+    selected.forEach(function (q) { usadasHoja[q.rowIndex] = true; });
 
     const factor = r.factor || 1;
     const subjectQuestions = renumberQuestions_(selected.map(function (q, index) {

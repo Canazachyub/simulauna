@@ -1259,7 +1259,7 @@ function cfgValidarTenant_(tenant, procesoClave, opciones) {
       const nombres = ss.getSheets().map(function (s) { return s.getName(); });
       const vistos = {};
       res.config.rows.forEach(function (r) {
-        const banco = v2BancoSheetName_(getCursoCanonical(r.curso) || r.curso);
+        const banco = v2BancoSheetName_(v2CursoHoja_(ss, r.curso));
         if (vistos[banco]) return;
         vistos[banco] = true;
         if (nombres.indexOf(banco) === -1) {
