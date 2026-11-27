@@ -1,9 +1,10 @@
-﻿import { useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import {
   ChevronRight, Loader2, AlertCircle, CheckCircle, Home, Sparkles,
   Target, LogOut, Zap, Timer, Clock, Brain
 } from 'lucide-react';
-import { AVAILABLE_COURSES, getBanqueoQuestions } from '../../../services/api';
+import { AVAILABLE_COURSES, getBanqueoGeneral, getResumenGeneral, type ModoBanqueo, type NivelMix, type ResumenGeneral } from '../../../services/api';
+import { ModalidadBanqueo } from './OrigenSelector';
 import { CourseSelector, type CourseOption } from '../../CourseSelector';
 import { CoachTour, type CoachTourStep } from '../../onboarding/CoachTour';
 import type { PracticeSelectStepProps, QuestionCount } from '../types';
@@ -43,12 +44,38 @@ export function BanqueoCourseSelect({
 }: PracticeSelectStepProps) {
   const [selectedCourse, setSelectedCourse] = useState('');
   const [questionCount, setQuestionCount] = useState<QuestionCount>(10);
+  // Modalidad: solo mi universidad (la de la página) o mix de las otras por nivel.
+  const origen = universidad || 'una';
+  const [modo, setModo] = useState<ModoBanqueo>('mio');
+  const [nivel, setNivel] = useState<NivelMix>('progresivo');
+  const [resumen, setResumen] = useState<ResumenGeneral | null>(null);
+
+  useEffect(() => {
+    let vigente = true;
+    getResumenGeneral(origen, modo, nivel)
+      .then((r) => {
+        if (!vigente) return;
+        // Si mi universidad aún no tiene preguntas en el banco, solo queda el mix.
+        if (modo === 'mio' && !r.universidades.some((u) => u.codigo === origen)) { setModo('mix'); return; }
+        setResumen(r);
+        setSelectedCourse((c) => (c && !r.cursos.some((x) => x.curso === c) ? '' : c));
+      })
+      .catch((err) => console.error('Error cargando cursos del banqueo:', err));
+    return () => { vigente = false; };
+  }, [origen, modo, nivel]);
+
+  const courseOptions: CourseOption[] = resumen
+    ? resumen.cursos.map((c) => ({ name: c.curso, count: c.totalPreguntas }))
+    : COURSE_OPTIONS;
+  const nombreOrigen = modo === 'mix'
+    ? 'otras universidades, del mismo curso'
+    : (resumen?.universidades.find((u) => u.codigo === origen)?.nombre ?? origen.toUpperCase());
 
   const handleStart = () => {
     if (!selectedCourse) return;
     onSubmit(
       { course: selectedCourse },
-      () => getBanqueoQuestions(selectedCourse, questionCount, universidad, identity)
+      () => getBanqueoGeneral(selectedCourse, questionCount, origen, undefined, identity, modo, nivel)
     );
   };
 
@@ -105,12 +132,17 @@ export function BanqueoCourseSelect({
             Elige tu curso
           </h1>
           <p className="font-sans text-lg text-slate-600 max-w-2xl">
-            Practica enfocado en un solo tema. Preguntas reales de exámenes anteriores UNAP.
+            Practica enfocado en un solo curso. Preguntas reales de exámenes de admisión de {nombreOrigen}.
           </p>
         </div>
 
+        {resumen && (
+          <ModalidadBanqueo modo={modo} onModo={setModo} nivel={nivel} onNivel={setNivel}
+            universidad={origen} universidades={resumen.universidades} />
+        )}
+
         <div className="mb-8 animate-fade-up" style={{ animationDelay: '120ms' }} data-tour="banqueo-curso">
-          <CourseSelector courses={COURSE_OPTIONS} selected={selectedCourse || null} onSelect={setSelectedCourse} />
+          <CourseSelector courses={courseOptions} selected={selectedCourse || null} onSelect={setSelectedCourse} />
         </div>
 
         <div className="card-elevated p-6 md:p-8 mb-8 animate-fade-up" style={{ animationDelay: '180ms' }} data-tour="banqueo-cantidad">

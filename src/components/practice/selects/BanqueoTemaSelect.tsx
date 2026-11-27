@@ -3,7 +3,8 @@ import {
   BookOpen, ChevronRight, Loader2, AlertCircle, CheckCircle, Home, Sparkles,
   Tag, LogOut, Zap, Layers, ChevronDown
 } from 'lucide-react';
-import { getCursosConTemas, getTemasPorCurso, getBanqueoByTema, type CursoConTemas, type TemaInfo } from '../../../services/api';
+import { getBanqueoGeneral, getResumenGeneral, type ModoBanqueo, type NivelMix, type ResumenGeneral } from '../../../services/api';
+import { ModalidadBanqueo } from './OrigenSelector';
 import { CourseSelector, type CourseOption } from '../../CourseSelector';
 import type { PracticeSelectStepProps, QuestionCount } from '../types';
 import clsx from 'clsx';
@@ -12,32 +13,39 @@ import clsx from 'clsx';
 export function BanqueoTemaSelect({
   universidad, isAuthenticated, identity, isLoading, error, onBack, onLogout, onSubmit
 }: PracticeSelectStepProps) {
-  const [cursos, setCursos] = useState<CursoConTemas[]>([]);
-  const [temas, setTemas] = useState<TemaInfo[]>([]);
   const [selectedCurso, setSelectedCurso] = useState('');
   const [selectedTema, setSelectedTema] = useState('');
   const [questionCount, setQuestionCount] = useState<QuestionCount>(10);
-  const [loadingTemas, setLoadingTemas] = useState(false);
+  // Modalidad: solo mi universidad o mix de las otras (el tema se empareja con su equivalente).
+  const origen = universidad || 'una';
+  const [modo, setModo] = useState<ModoBanqueo>('mio');
+  const [nivel, setNivel] = useState<NivelMix>('progresivo');
+  const [resumen, setResumen] = useState<ResumenGeneral | null>(null);
+  const loadingTemas = !resumen;
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Carga inicial de cursos al montar (reemplaza a la carga post-login del componente original;
-  // se recarga siempre al volver a este paso).
   useEffect(() => {
-    getCursosConTemas(universidad).then(setCursos).catch(err => console.error('Error loading cursos:', err));
-  }, [universidad]);
+    let vigente = true;
+    setResumen(null);
+    getResumenGeneral(origen, modo, nivel)
+      .then((r) => {
+        if (!vigente) return;
+        if (modo === 'mio' && !r.universidades.some((u) => u.codigo === origen)) { setModo('mix'); return; }
+        setResumen(r);
+      })
+      .catch((err) => console.error('Error cargando cursos del banqueo por tema:', err));
+    return () => { vigente = false; };
+  }, [origen, modo, nivel]);
 
-  // Carga de temas cuando cambia el curso
+  const cursos = resumen?.cursos ?? [];
+  const temas = (cursos.find((c) => c.curso === selectedCurso)?.temas ?? []);
+
+  // Al cambiar de curso o de universidad, el tema elegido ya no aplica.
+  useEffect(() => { setSelectedTema(''); }, [selectedCurso, modo]);
   useEffect(() => {
-    if (!selectedCurso) return;
-    setLoadingTemas(true);
-    setTemas([]);
-    setSelectedTema('');
-    getTemasPorCurso(selectedCurso, universidad)
-      .then(setTemas)
-      .catch(err => console.error('Error loading temas:', err))
-      .finally(() => setLoadingTemas(false));
-  }, [selectedCurso, universidad]);
+    if (resumen && selectedCurso && !resumen.cursos.some((c) => c.curso === selectedCurso)) setSelectedCurso('');
+  }, [resumen, selectedCurso]);
 
   // Atajo de teclado "/" para enfocar el buscador visible (curso o tema)
   useEffect(() => {
@@ -65,7 +73,7 @@ export function BanqueoTemaSelect({
     if (!selectedCurso || !selectedTema) return;
     onSubmit(
       { course: selectedCurso, tema: selectedTema },
-      () => getBanqueoByTema(selectedCurso, selectedTema, undefined, questionCount, universidad, identity)
+      () => getBanqueoGeneral(selectedCurso, questionCount, origen, selectedTema, identity, modo, nivel)
     );
   };
 
@@ -123,6 +131,11 @@ export function BanqueoTemaSelect({
             Practica preguntas filtradas por curso y tema específico.
           </p>
         </div>
+
+        {resumen && (
+          <ModalidadBanqueo modo={modo} onModo={setModo} nivel={nivel} onNivel={setNivel}
+            universidad={origen} universidades={resumen.universidades} />
+        )}
 
         {/* Stepper visual: Curso → Tema → Cantidad */}
         <div className="mb-6 animate-fade-up" style={{ animationDelay: '90ms' }}>

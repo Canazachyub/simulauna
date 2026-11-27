@@ -1908,3 +1908,61 @@ function saveMockExamSession(examSessionId: string, session: MockExamSession): v
 function getMockExamSession(examSessionId: string): MockExamSession | undefined {
   return mockExamSessions.get(examSessionId) ?? readMockSessionsStorage()[examSessionId];
 }
+
+// ============================================
+// BANQUEO GENERAL — todas las universidades, con filtro (google-apps-script/banqueo_general.gs)
+// ============================================
+
+/** Modalidad del banqueo: solo mi universidad, o mix de las otras por nivel de exigencia. */
+export type ModoBanqueo = 'mio' | 'mix';
+export type NivelMix = 'progresivo' | 'basico' | 'intermedio' | 'avanzado';
+
+export interface ResumenGeneral {
+  origen: string;
+  modo: ModoBanqueo;
+  nivel?: NivelMix;
+  universidades: { codigo: string; nombre: string; totalPreguntas: number; nivel: Exclude<NivelMix, 'progresivo'> }[];
+  cursos: { curso: string; totalPreguntas: number; temas: { tema: string; totalPreguntas: number }[] }[];
+}
+
+/** Cursos y temas del banco general con sus totales para `origen` (código de universidad o 'todas'). */
+export async function getResumenGeneral(origen: string, modo: ModoBanqueo = 'mio', nivel: NivelMix = 'progresivo'): Promise<ResumenGeneral> {
+  try {
+    const params = new URLSearchParams({ action: 'getResumenGeneral', origen, modo, nivel });
+    if (API_TOKEN) params.set('token', API_TOKEN);
+    const response = await fetchWithTimeout(`${API_BASE_URL}?${params.toString()}`, 30000, READ_RETRIES);
+    if (!response.ok) throw new HttpError(response.status);
+    const result = await response.json();
+    if (!result.success) throw new Error(result.error || 'Error al obtener los cursos');
+    return result.data as ResumenGeneral;
+  } catch (error) {
+    console.error('Error al obtener el resumen del banqueo general:', error);
+    throw toFriendlyError(error);
+  }
+}
+
+/** Preguntas del banqueo general: un curso (y opcionalmente un tema) de una universidad o de todas. */
+export async function getBanqueoGeneral(
+  course: string,
+  count: 10 | 15 | 20,
+  origen: string,
+  tema?: string,
+  identity?: PracticeIdentity,
+  modo: ModoBanqueo = 'mio',
+  nivel: NivelMix = 'progresivo'
+): Promise<BanqueoQuestionsResult> {
+  try {
+    const params = new URLSearchParams({ action: 'getBanqueoGeneral', course, count: String(count), origen, modo, nivel });
+    if (tema) params.set('tema', tema);
+    setIdentity(params, identity);
+    if (API_TOKEN) params.set('token', API_TOKEN);
+    const response = await fetchWithTimeout(`${API_BASE_URL}?${params.toString()}`, 30000, READ_RETRIES);
+    if (!response.ok) throw new HttpError(response.status);
+    const result = await response.json();
+    if (!result.success) throw new Error(result.error || 'Error al obtener preguntas');
+    return result.data as BanqueoQuestionsResult;
+  } catch (error) {
+    console.error('Error al obtener preguntas del banqueo general:', error);
+    throw toFriendlyError(error);
+  }
+}
