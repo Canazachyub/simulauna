@@ -42,8 +42,11 @@ export type { AreaType } from '../types';
 // URL del Google Apps Script desplegado como aplicación web
 // IMPORTANT: The API URL must be set via the VITE_API_URL environment variable.
 // Never hardcode the URL here — it would be visible in the deployed JavaScript bundle.
-const API_BASE_URL = (import.meta.env.VITE_API_URL as string) || '';
-const API_TOKEN = import.meta.env.VITE_API_TOKEN as string;
+// Se limpian BOM (U+FEFF) y espacios: un secreto de GitHub guardado desde PowerShell puede traer
+// un BOM invisible al inicio, y entonces fetch() lo trata como ruta relativa (404 en todo).
+const limpiarEnv = (v: unknown) => String(v ?? '').replace(/^\uFEFF/, '').trim();
+const API_BASE_URL = limpiarEnv(import.meta.env.VITE_API_URL);
+const API_TOKEN = limpiarEnv(import.meta.env.VITE_API_TOKEN);
 
 /**
  * Modo mock: activo si VITE_USE_MOCK=true, o en DESARROLLO si no hay VITE_API_URL configurada.
