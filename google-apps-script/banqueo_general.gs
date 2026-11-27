@@ -79,10 +79,11 @@ function filasGeneral_(curso) {
   return { ci: ci, iUni: iUni, filas: filas };
 }
 
-/** Conteos por curso, tema y universidad (caché 10 min, se renueva con limpiarCacheBancos). */
+/** Conteos por curso, tema y universidad (caché 6 h, se renueva con limpiarCacheBancos). */
 function resumenGeneral_() {
   const ver = PropertiesService.getScriptProperties().getProperty('BANCO_CACHE_VER') || '0';
-  return getOrBuildCachedJson_('gen:resumen:' + ver, 600, function () {
+  // 6 h (máximo de CacheService): el banco solo cambia al importar, y limpiarCacheBancos cambia `ver`.
+  return getOrBuildCachedJson_('gen:resumen:' + ver, 21600, function () {
     const cursos = {};
     CURSOS_GENERAL_.forEach(function (curso) {
       const g = filasGeneral_(curso);
