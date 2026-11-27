@@ -15,7 +15,7 @@ function scrollToId(id: string) {
 const GOLD_GLOW = { '--uni-primary': '#D4AF37' } as CSSProperties;
 
 /** IDs de sección observados por el scrollspy (deben existir en Landing.tsx). */
-const SPY_SECTION_IDS = ['universidades', 'como-funciona', 'faq'];
+const SPY_SECTION_IDS = ['universidades', 'banqueo-mix', 'calificacion', 'como-funciona', 'faq'];
 
 /**
  * Navbar sticky del Landing nacional (Dirección de Diseño v3 §Estructura,
@@ -90,6 +90,14 @@ export function LandingNavbar() {
     setOpen(false);
     scrollToId('como-funciona');
   };
+  const goMix = () => {
+    setOpen(false);
+    scrollToId('banqueo-mix');
+  };
+  const goCalificacion = () => {
+    setOpen(false);
+    scrollToId('calificacion');
+  };
   const goFaq = () => {
     setOpen(false);
     scrollToId('faq');
@@ -155,7 +163,7 @@ export function LandingNavbar() {
           </span>
         </button>
 
-        {/* Enlaces desktop: solo 3 (Banqueo y Aula viven dentro de cada universidad y en el menú móvil) */}
+        {/* Enlaces desktop (Banqueo y Aula viven dentro de cada universidad y en el menú móvil) */}
         <nav className="hidden lg:flex items-center gap-7 text-sm font-bold text-slate-700">
           <button
             onClick={goUniversidades}
@@ -165,6 +173,24 @@ export function LandingNavbar() {
             }`}
           >
             Universidades
+          </button>
+          <button
+            onClick={goMix}
+            aria-current={activeSection === 'banqueo-mix' ? 'true' : undefined}
+            className={`transition-colors ${
+              activeSection === 'banqueo-mix' ? 'text-brand-primary-700' : 'hover:text-brand-primary-700'
+            }`}
+          >
+            Banqueo mix
+          </button>
+          <button
+            onClick={goCalificacion}
+            aria-current={activeSection === 'calificacion' ? 'true' : undefined}
+            className={`transition-colors ${
+              activeSection === 'calificacion' ? 'text-brand-primary-700' : 'hover:text-brand-primary-700'
+            }`}
+          >
+            Calificación
           </button>
           <button
             onClick={goComoFunciona}
@@ -229,6 +255,12 @@ export function LandingNavbar() {
           <div className="container mx-auto px-4 sm:px-6 py-4 flex flex-col gap-1 text-base font-bold text-slate-700">
             <button role="menuitem" onClick={goUniversidades} className="text-left px-2 py-3 rounded-lg hover:bg-slate-50">
               Universidades
+            </button>
+            <button role="menuitem" onClick={goMix} className="text-left px-2 py-3 rounded-lg hover:bg-slate-50">
+              Banqueo mix
+            </button>
+            <button role="menuitem" onClick={goCalificacion} className="text-left px-2 py-3 rounded-lg hover:bg-slate-50">
+              Calificación oficial
             </button>
             <button role="menuitem" onClick={goComoFunciona} className="text-left px-2 py-3 rounded-lg hover:bg-slate-50">
               Cómo funciona

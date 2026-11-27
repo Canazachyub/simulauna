@@ -38,8 +38,8 @@ export function Hero() {
           </div>
 
           <p className="mt-3 text-[15px] sm:text-lg text-white/90 leading-snug max-w-md">
-            Preguntas reales de exámenes pasados de la UNA Puno, la UNSA, San Marcos, la UNI, la UNT, la UNC y la UNCP, con tu
-            puntaje calculado como lo hace tu universidad.
+            Más de 18 000 preguntas reales de exámenes pasados de la UNA Puno, la UNSA, San Marcos, la UNI, la UNT, la UNC y
+            la UNCP, con tu puntaje calculado con la tabla oficial de tu universidad.
           </p>
 
           <div className="mt-5 max-w-md">
@@ -48,7 +48,7 @@ export function Hero() {
 
           <p className="mt-3 inline-flex items-center gap-1.5 text-sm text-white/80">
             <CheckCircle2 className="w-4 h-4 shrink-0 text-brand-accent-300" aria-hidden="true" />
-            Primer simulacro gratis · Sin instalar nada
+            Primer simulacro gratis · Sin tarjeta · Sin instalar nada
           </p>
         </div>
 

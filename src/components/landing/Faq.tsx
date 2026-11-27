@@ -37,6 +37,14 @@ const PREGUNTAS: { q: string; a: ReactNode }[] = [
     a: 'Sí. Las preguntas provienen de exámenes de admisión de años pasados de cada universidad, con su clave y, en muchas, la solución explicada.',
   },
   {
+    q: '¿Cómo se calcula mi puntaje?',
+    a: 'Con la tabla oficial de tu universidad: su escala (por ejemplo 2 000 en San Marcos o 407,9 en la UNT), el peso de cada curso según tu área y lo que resta cada respuesta incorrecta. Es una referencia muy cercana; el resultado oficial lo da tu universidad.',
+  },
+  {
+    q: '¿Qué es el banqueo mix?',
+    a: 'Es practicar un tema con preguntas de otras universidades. Eliges el nivel: básico (UNA, UNSA, UNT, UNC, UNCP), intermedio (San Marcos), avanzado (UNI) o progresivo, que empieza fácil y termina difícil. Viene incluido con el acceso al banqueo.',
+  },
+  {
     q: '¿Qué universidades están disponibles?',
     a: 'Hoy puedes rendir simulacros de la UNA Puno (Universidad Nacional del Altiplano) y, en versión beta, de la UNSA (Arequipa), San Marcos (Lima), la UNT (Trujillo), la UNC (Cajamarca), la UNCP (Huancayo) y la UNI (Lima). Cada simulacro se califica con la tabla oficial de su universidad. Estamos preparando más, como la UNAJ de Juliaca y la UNSAAC del Cusco.',
   },

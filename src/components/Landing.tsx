@@ -6,7 +6,7 @@
 /*   C. Universidades (activas del registro + franja "Llegan pronto")          */
 /*   D. ComoFunciona (3 pasos + línea que se dibuja con el scroll)             */
 /*   E. ProductoPreview (celular con la vista de resultados)                   */
-/*   F. Areas                                                                  */
+/*   F. Ventajas + BanqueoMix + CalificacionOficial (lo que nos diferencia)   */
 /*   G. HechoEnPuno (sección honesta; aquí irán testimonios REALES)            */
 /*   H. Faq + CtaFinal                                                         */
 /*  Regla de contenido: nada de cifras de usuarios, testimonios ni logros     */
@@ -19,7 +19,9 @@ import { Universidades } from './landing/Universidades';
 import { GuiaUniversidades } from './landing/GuiaUniversidades';
 import { ComoFunciona } from './landing/ComoFunciona';
 import { ProductoPreview } from './landing/ProductoPreview';
-import { Areas } from './landing/Areas';
+import { Cifras, Ventajas } from './landing/Ventajas';
+import { BanqueoMix } from './landing/BanqueoMix';
+import { CalificacionOficial } from './landing/CalificacionOficial';
 import { Faq } from './landing/Faq';
 import { CtaFinal, HechoEnPuno } from './landing/CtaFinal';
 import { LandingFooter } from './landing/LandingFooter';
@@ -31,11 +33,14 @@ export function Landing() {
       <LandingNavbar />
       <main>
         <Hero />
+        <Cifras />
         <DemoPregunta />
+        <Ventajas />
         <Universidades />
+        <BanqueoMix />
+        <CalificacionOficial />
         <ComoFunciona />
         <ProductoPreview />
-        <Areas />
         <GuiaUniversidades />
         <HechoEnPuno />
         <Faq />

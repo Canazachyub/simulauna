@@ -109,6 +109,11 @@ export function GuiaUniversidades() {
                   <li key={u.codigo}>
                     <Link to={`/${u.codigo}`} className={enlace}>Simulacro de admisión {u.nombre}</Link>
                     <span className="block text-sm text-slate-600">{u.texto}</span>
+                    <span className="block text-sm">
+                      <a href={`/${u.codigo}/preguntas/`} className="text-brand-primary-700 underline underline-offset-2">Preguntas por curso</a>
+                      {' · '}
+                      <a href={`/${u.codigo}/examenes/`} className="text-brand-primary-700 underline underline-offset-2">Exámenes por año</a>
+                    </span>
                   </li>
                 ))}
               </ul>
