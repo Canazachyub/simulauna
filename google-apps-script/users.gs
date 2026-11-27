@@ -335,13 +335,20 @@ function checkPermiso_(universidad, dniStr, modalidad) {
     if (!sheet) return false;
     const data = sheet.getDataRange().getValues();
     const modalidadLower = (modalidad || '').toLowerCase();
+    // Columna opcional `vence` (panel admin, 2026-11-26): si la fecha ya pasó, el permiso no vale.
+    const colVence = data.length ? data[0].map(function (h) { return String(h).trim().toLowerCase(); }).indexOf('vence') : -1;
+    const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
     for (let i = 1; i < data.length; i++) {
       const rowDni = String(data[i][0] || '').trim();
       const rowUniversidad = String(data[i][1] || '').trim().toLowerCase();
       const rowModalidad = String(data[i][2] || '').trim().toLowerCase();
       const rowEstado = String(data[i][3] || '').trim().toLowerCase();
-      if (rowDni === dniStr && rowUniversidad === universidad && rowModalidad === modalidadLower &&
-        rowEstado !== 'inactivo' && rowEstado !== 'revocado') {
+      if (rowDni === dniStr && (rowUniversidad === universidad || rowUniversidad === 'todas') &&
+        rowModalidad === modalidadLower && rowEstado !== 'inactivo' && rowEstado !== 'revocado') {
+        if (colVence >= 0 && data[i][colVence]) {
+          const vence = data[i][colVence] instanceof Date ? data[i][colVence] : new Date(data[i][colVence]);
+          if (!isNaN(vence.getTime()) && vence < hoy) continue; // vencido
+        }
         return true;
       }
     }

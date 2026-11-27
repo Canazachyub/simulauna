@@ -43,6 +43,9 @@ const ALLOWED_ORIGINS = [
 // ============================================
 
 function doGet(e) {
+  // Panel de administración (admin.gs): solo en su implementación propia «como usuario que accede»;
+  // adminServe_ verifica correo en ADMIN_EMAILS y responde «Sin acceso» a cualquier otro.
+  if (e && e.parameter && e.parameter.vista === 'admin') return adminServe_();
   return handleRequest_(e, 'GET');
 }
 

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<base target="_top">
+<style>
+  :root { --uni:#7a1f2b; --uni2:#5b1720; --ink:#1e293b; --mut:#64748b; --line:#e2e8f0; --bg:#f6f7fb; --ok:#15803d; --warn:#b45309; --bad:#b91c1c; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--ink); background:var(--bg); }
+  header { background:linear-gradient(135deg,var(--uni),var(--uni2)); color:#fff; padding:14px 22px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+  header h1 { margin:0; font-size:18px; } header small { opacity:.8; }
+  main { max-width:1180px; margin:0 auto; padding:18px; }
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:16px; }
+  .stat { background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px 14px; }
+  .stat b { display:block; font-size:22px; color:var(--uni); }
+  .tabs { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
+  .tab { border:1px solid var(--line); background:#fff; border-radius:999px; padding:7px 14px; cursor:pointer; font-weight:600; color:var(--mut); }
+  .tab.on { background:var(--uni); color:#fff; border-color:var(--uni); }
+  .card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px; }
+  .grid { display:grid; grid-template-columns: 1.1fr 1fr; gap:14px; } @media (max-width:900px){ .grid{ grid-template-columns:1fr; } }
+  input, select, textarea { font:inherit; padding:8px 10px; border:1px solid var(--line); border-radius:8px; width:100%; background:#fff; }
+  button { font:inherit; cursor:pointer; border-radius:8px; border:1px solid var(--line); background:#fff; padding:8px 12px; font-weight:600; }
+  button.pri { background:var(--uni); color:#fff; border-color:var(--uni); } button.pri:disabled { opacity:.5; }
+  button.danger { color:var(--bad); border-color:#fecaca; } button.mini { padding:4px 9px; font-size:12px; }
+  table { width:100%; border-collapse:collapse; } th, td { text-align:left; padding:7px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--mut); }
+  tr.click { cursor:pointer; } tr.click:hover { background:#fdf2f3; } tr.sel { background:#fbe4e7; }
+  .pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; background:#eef2f7; color:var(--mut); }
+  .pill.ok { background:#dcfce7; color:var(--ok); } .pill.bad { background:#fee2e2; color:var(--bad); } .pill.warn { background:#fef3c7; color:var(--warn); }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; } .row > * { flex:1; min-width:120px; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0; }
+  .chip { border:1px solid var(--line); border-radius:999px; padding:6px 12px; cursor:pointer; background:#fff; font-weight:600; font-size:13px; }
+  .chip.on { background:var(--uni); color:#fff; border-color:var(--uni); }
+  label.chk { display:flex; gap:8px; align-items:center; padding:4px 0; cursor:pointer; } label.chk input { width:auto; }
+  h3 { margin:0 0 8px; font-size:15px; } .mut { color:var(--mut); font-size:12px; }
+  #toast { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); background:#111827; color:#fff; padding:10px 16px; border-radius:10px; display:none; z-index:9; }
+  .vacio { color:var(--mut); padding:18px; text-align:center; }
+</style>
+</head>
+<body>
+<header>
+  <div><h1>Sinapsis Preu · Administración</h1><small>Accesos de alumnos por universidad y servicio</small></div>
+  <small>Conectado como <b><?= adminEmail ?></b></small>
+</header>
+<main>
+  <div class="stats">
+    <div class="stat"><span class="mut">Alumnos registrados</span><b id="sTotal">…</b></div>
+    <div class="stat"><span class="mut">Con algún acceso activo</span><b id="sConAcceso">…</b></div>
+    <div class="stat"><span class="mut">Accesos que vencen en 7 días</span><b id="sVencen">…</b></div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" data-t="buscar">Buscar alumno</button>
+    <button class="tab" data-t="activos">Con acceso</button>
+    <button class="tab" data-t="vencen">Por vencer</button>
+    <button class="tab" data-t="recientes">Registrados recientes</button>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <div id="vBuscar">
+        <div class="row" style="margin-bottom:10px">
+          <input id="q" placeholder="DNI, nombre o correo (vacío = los más recientes)" autofocus>
+          <button class="pri" id="btnBuscar" style="flex:0 0 auto">Buscar</button>
+        </div>
+        <div class="row" style="margin-bottom:6px">
+          <input id="dniNuevo" placeholder="O escribe un DNI (8 dígitos) para abrir su ficha aunque no esté registrado" maxlength="8">
+          <button id="btnAbrir" style="flex:0 0 auto">Abrir ficha</button>
+        </div>
+      </div>
+      <div id="lista"><div class="vacio">Cargando…</div></div>
+    </section>
+
+    <section class="card" id="ficha"><div class="vacio">Elige un alumno para ver y cambiar sus accesos.</div></section>
+  </div>
+</main>
+<div id="toast"></div>
+
+<script>
+let INFO = null, TAB = 'buscar', LISTAS = null, DNI = null, PLAN = null;
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+const toast = (m, ms) => { const t = $('#toast'); t.textContent = m; t.style.display = 'block'; clearTimeout(t._h); t._h = setTimeout(() => t.style.display = 'none', ms || 2600); };
+const run = (fn, ...args) => new Promise((ok, ko) => google.script.run.withSuccessHandler(ok).withFailureHandler((e) => { toast('⚠ ' + (e.message || e), 5000); ko(e); })[fn](...args));
+const nomServ = (id) => (INFO.servicios.find((s) => s.id === id) || { nombre: id }).nombre;
+const nomUni = (c) => c === 'todas' ? 'Todas' : ((INFO.universidades.find((u) => u.codigo === c) || { nombre: c.toUpperCase() }).nombre);
+const masDias = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+
+async function iniciar() {
+  INFO = await run('adminInfo');
+  await cargarListas();
+  buscar();
+}
+async function cargarListas() {
+  LISTAS = await run('adminListas');
+  $('#sTotal').textContent = LISTAS.totalUsuarios; $('#sConAcceso').textContent = LISTAS.alumnosConAcceso; $('#sVencen').textContent = LISTAS.porVencer.length;
+}
+function tablaUsuarios(arr) {
+  if (!arr.length) return '<div class="vacio">Sin resultados.</div>';
+  return '<table><tr><th>DNI</th><th>Alumno</th><th>Accesos</th></tr>' + arr.map((u) =>
+    `<tr class="click ${u.dni === DNI ? 'sel' : ''}" data-dni="${esc(u.dni)}"><td><b>${esc(u.dni)}</b><div class="mut">${esc(u.fecha || '')}</div></td>
+     <td>${esc(u.nombre)}<div class="mut">${esc(u.email || '')}</div></td>
+     <td>${u.serviciosActivos ? `<span class="pill ok">${u.serviciosActivos} activo(s)</span>` : '<span class="pill">sin acceso</span>'}</td></tr>`).join('') + '</table>';
+}
+function tablaPermisos(arr, conVence) {
+  if (!arr.length) return '<div class="vacio">Nada por aquí.</div>';
+  return '<table><tr><th>DNI</th><th>Alumno</th><th>Universidad</th><th>Servicio</th><th>Vence</th></tr>' + arr.map((p) =>
+    `<tr class="click" data-dni="${esc(p.dni)}"><td><b>${esc(p.dni)}</b></td><td>${esc(p.nombre)}</td><td>${esc(nomUni(p.universidad))}</td>
+     <td>${esc(nomServ(p.modalidad))}</td><td>${p.vence ? `<span class="pill ${conVence ? 'warn' : ''}">${esc(p.vence)}</span>` : '<span class="mut">sin fecha</span>'}</td></tr>`).join('') + '</table>';
+}
+async function buscar() {
+  $('#lista').innerHTML = '<div class="vacio">Buscando…</div>';
+  const r = await run('adminBuscar', $('#q').value);
+  $('#lista').innerHTML = tablaUsuarios(r);
+}
+function pintarTab() {
+  document.querySelectorAll('.tab').forEach((b) => b.classList.toggle('on', b.dataset.t === TAB));
+  $('#vBuscar').style.display = TAB === 'buscar' ? '' : 'none';
+  if (TAB === 'buscar') return buscar();
+  if (TAB === 'activos') $('#lista').innerHTML = tablaPermisos(LISTAS.activos);
+  if (TAB === 'vencen') $('#lista').innerHTML = tablaPermisos(LISTAS.porVencer, true);
+  if (TAB === 'recientes') $('#lista').innerHTML = tablaUsuarios(LISTAS.recientes.map((u) => Object.assign({ serviciosActivos: 0 }, u)));
+}
+async function abrir(dni) {
+  DNI = dni; PLAN = null;
+  $('#ficha').innerHTML = '<div class="vacio">Cargando ficha…</div>';
+  document.querySelectorAll('tr.click').forEach((tr) => tr.classList.toggle('sel', tr.dataset.dni === dni));
+  pintarFicha(await run('adminDetalle', dni));
+}
+function pintarFicha(d) {
+  const u = d.usuario;
+  const vig = d.permisos.filter((p) => p.vigente), hist = d.permisos.filter((p) => !p.vigente);
+  const legado = (d.legado.confirmado || d.legado.accesoBanqueo) ?
+    `<p class="mut">⚠ Tiene acceso en hojas antiguas de la UNA (${[d.legado.confirmado && 'confirmado', d.legado.accesoBanqueo && 'acceso_banqueo'].filter(Boolean).join(', ')}). Se pasará a este panel al hacer el primer cambio.</p>` : '';
+  $('#ficha').innerHTML = `
+    <h3>${esc(u.nombre)} <span class="mut">· DNI ${esc(u.dni)}</span></h3>
+    <div class="mut">${esc(u.email || 'sin correo')} ${u.celular ? '· ' + esc(u.celular) : ''} ${u.carrera ? '· ' + esc(u.carrera) : ''} ${u.fecha ? '· registrado ' + esc(u.fecha) : ''}</div>
+    ${legado}
+    <h3 style="margin-top:14px">Accesos activos</h3>
+    ${vig.length ? '<table><tr><th>Universidad</th><th>Servicio</th><th>Vence</th><th></th></tr>' + vig.map((p) =>
+      `<tr><td>${esc(nomUni(p.universidad))}</td><td>${esc(nomServ(p.modalidad))}<div class="mut">${esc(p.plan)}</div></td>
+       <td>${p.vence ? esc(p.vence) : '<span class="mut">sin fecha</span>'}</td>
+       <td><button class="danger mini" data-rev="${esc(p.universidad)}|${esc(p.modalidad)}">Quitar</button></td></tr>`).join('') + '</table>' +
+      `<div style="margin-top:6px"><button class="danger mini" data-rev="todas|todas">Quitar TODO a este alumno</button></div>` : '<div class="vacio">Sin accesos activos.</div>'}
+
+    <h3 style="margin-top:16px">Dar acceso</h3>
+    <div class="row"><div><span class="mut">Universidad</span>
+      <select id="fUni">${INFO.universidades.map((x) => `<option value="${x.codigo}">${esc(x.nombre)}${x.estado && x.estado !== 'activa' ? ' (' + esc(x.estado) + ')' : ''}</option>`).join('')}<option value="todas">Todas las universidades</option></select></div></div>
+    <div class="mut" style="margin-top:8px">Plan (un clic) o servicios sueltos:</div>
+    <div class="chips" id="fPlanes">${INFO.planes.map((p) => `<span class="chip" data-plan="${p.id}">${esc(p.nombre)}</span>`).join('')}</div>
+    <div id="fServ">${INFO.servicios.map((s) => `<label class="chk"><input type="checkbox" value="${s.id}"> ${esc(s.nombre)}</label>`).join('')}</div>
+    <div class="mut" style="margin-top:8px">Vence (el acceso se apaga solo ese día):</div>
+    <div class="chips">${[[30, '30 días'], [90, '3 meses'], [180, '6 meses'], [365, '1 año']].map(([n, t]) => `<span class="chip" data-dias="${n}">${t}</span>`).join('')}<span class="chip" data-dias="0">Sin vencimiento</span></div>
+    <div class="row"><input type="date" id="fVence" value="${masDias(90)}"><input id="fNota" placeholder="Nota (ej.: pagó S/ 50 por Yape el 26/11)"></div>
+    <div style="margin-top:10px"><button class="pri" id="btnDar">Dar acceso</button></div>
+    ${hist.length ? `<details style="margin-top:14px"><summary class="mut">Historial de accesos (${hist.length})</summary><table>${hist.map((p) =>
+      `<tr><td>${esc(nomUni(p.universidad))}</td><td>${esc(nomServ(p.modalidad))}</td><td><span class="pill bad">${esc(p.estado || 'vencido')}</span></td><td class="mut">${esc(p.vence || '')}</td><td class="mut">${esc(p.otorgadoPor)}</td></tr>`).join('')}</table></details>` : ''}
+    ${d.intentos.length ? `<details style="margin-top:8px"><summary class="mut">Últimos simulacros (${d.intentos.length})</summary><table>${d.intentos.map((i) =>
+      `<tr><td>${esc(nomUni(i.universidad))}</td><td>${esc(i.division)}</td><td>${esc(i.puntaje)}</td><td class="mut">${esc(i.fecha)}</td></tr>`).join('')}</table></details>` : ''}`;
+}
+
+document.addEventListener('click', async (ev) => {
+  const t = ev.target;
+  if (t.classList.contains('tab')) { TAB = t.dataset.t; pintarTab(); return; }
+  const tr = t.closest('tr.click'); if (tr) { abrir(tr.dataset.dni); return; }
+  if (t.dataset.plan) {
+    PLAN = PLAN === t.dataset.plan ? null : t.dataset.plan;
+    document.querySelectorAll('[data-plan]').forEach((c) => c.classList.toggle('on', c.dataset.plan === PLAN));
+    const plan = INFO.planes.find((p) => p.id === PLAN);
+    document.querySelectorAll('#fServ input').forEach((c) => c.checked = !!plan && plan.servicios.includes(c.value));
+    return;
+  }
+  if (t.dataset.dias !== undefined) { $('#fVence').value = t.dataset.dias === '0' ? '' : masDias(+t.dataset.dias); return; }
+  if (t.dataset.rev) {
+    const [uni, mod] = t.dataset.rev.split('|');
+    if (!confirm(`¿Quitar ${mod === 'todas' ? 'TODOS los accesos' : nomServ(mod)} de ${nomUni(uni)} al DNI ${DNI}?`)) return;
+    t.disabled = true; pintarFicha(await run('adminRevocar', { dni: DNI, universidad: uni, modalidad: mod })); toast('Acceso quitado'); cargarListas(); return;
+  }
+  if (t.id === 'btnDar') {
+    const servicios = [...document.querySelectorAll('#fServ input:checked')].map((c) => c.value);
+    if (!servicios.length) { toast('Elige un plan o al menos un servicio'); return; }
+    t.disabled = true; t.textContent = 'Guardando…';
+    try {
+      pintarFicha(await run('adminOtorgar', { dni: DNI, universidad: $('#fUni').value, servicios, plan: PLAN, vence: $('#fVence').value, nota: $('#fNota').value }));
+      toast('✔ Acceso otorgado'); cargarListas();
+    } catch (e) { t.disabled = false; t.textContent = 'Dar acceso'; }
+    return;
+  }
+  if (t.id === 'btnBuscar') buscar();
+  if (t.id === 'btnAbrir') { const d = $('#dniNuevo').value.replace(/\D/g, ''); if (d.length !== 8) { toast('El DNI debe tener 8 dígitos'); return; } abrir(d); }
+});
+$('#q').addEventListener('keydown', (e) => { if (e.key === 'Enter') buscar(); });
+iniciar();
+</script>
+</body>
+</html>
