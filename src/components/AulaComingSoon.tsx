@@ -54,7 +54,7 @@ type Vista = 'cargando' | 'login' | 'matriculado' | 'inscripcion' | 'fallback';
 const validateEmail = (email: string): boolean => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 // Mismo número que usa StudentForm.tsx (src/constants/contact.ts) — lista de espera del Aula virtual.
-const WHATSAPP_MESSAGE = 'Hola, quiero unirme a la lista de espera del Aula Virtual de SimulaUNA';
+const WHATSAPP_MESSAGE = 'Hola, quiero unirme a la lista de espera del Aula Virtual de Sinapsis Preu';
 
 const BULLETS = [
   { icon: GraduationCap, text: 'Clases de calidad por universidad' },
@@ -487,7 +487,7 @@ export function AulaComingSoon() {
               <div className="shrink-0 w-40 sm:w-52 md:w-64">
                 <img
                   src="/illustrations/mascota-lobito.webp"
-                  alt="Mascota SimulaUNA: un lobito muy estudioso"
+                  alt="Mascota Sinapsis Preu: un lobito muy estudioso"
                   onError={() => setMascotFailed(true)}
                   className="w-full h-auto drop-shadow-2xl animate-float-y"
                 />
@@ -654,7 +654,7 @@ export function AulaComingSoon() {
             </h2>
             <p className="text-slate-500 text-sm md:text-base text-center max-w-prose mx-auto mb-8">
               Una plataforma organizada en secciones: clases en vivo, grabaciones, materiales,
-              horario, anuncios y más — cada una con su propio panel, todo dentro de SimulaUNA.
+              horario, anuncios y más — cada una con su propio panel, todo dentro de Sinapsis Preu.
             </p>
             <AulaShell
               universidad={universidadCode}

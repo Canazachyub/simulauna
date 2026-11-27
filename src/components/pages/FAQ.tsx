@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { whatsappUrl } from '../../constants/contact';
 import { PageHeader } from './PageHeader';
@@ -9,8 +9,8 @@ interface FaqEntry {
   a: ReactNode;
 }
 
-const WHATSAPP_ERROR_MSG = 'Hola, encontré un error en una pregunta de SimulaUNA';
-const WHATSAPP_ACCESO_MSG = 'Hola, quiero acceso ilimitado a los simulacros de SimulaUNA';
+const WHATSAPP_ERROR_MSG = 'Hola, encontré un error en una pregunta de Sinapsis Preu';
+const WHATSAPP_ACCESO_MSG = 'Hola, quiero acceso ilimitado a los simulacros de Sinapsis Preu';
 
 function WhatsAppLink({ mensaje, children }: { mensaje: string; children: ReactNode }) {
   return (
@@ -31,7 +31,7 @@ const FAQS: FaqEntry[] = [
     a: 'Elige tu universidad, regístrate gratis con tus datos básicos y entra directo a tu primer simulacro o al banqueo de preguntas.',
   },
   {
-    q: '¿SimulaUNA es gratis?',
+    q: '¿Sinapsis Preu es gratis?',
     a: (
       <>
         Tu primer simulacro es gratis en cada universidad. Si quieres acceso ilimitado a
@@ -73,7 +73,7 @@ const FAQS: FaqEntry[] = [
   },
   {
     q: '¿Necesito instalar algo?',
-    a: 'No. SimulaUNA funciona directo desde tu navegador, en el celular o la computadora, sin apps ni instalaciones.',
+    a: 'No. Sinapsis Preu funciona directo desde tu navegador, en el celular o la computadora, sin apps ni instalaciones.',
   },
   {
     q: '¿Qué pasa con mis datos?',
@@ -136,10 +136,6 @@ function FaqItem({
 export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  useEffect(() => {
-    document.title = 'Preguntas frecuentes · SimulaUNA';
-  }, []);
-
   return (
     <div className="min-h-screen bg-andean-white">
       <PageHeader />
@@ -149,14 +145,14 @@ export function FAQ() {
         <div className="relative container mx-auto px-4 sm:px-6 max-w-3xl text-center">
           <Mascot
             src="/illustrations/lobito-pensando.webp"
-            alt="Mascota SimulaUNA: un lobito pensando"
+            alt="Mascota Sinapsis Preu: un lobito pensando"
             className="w-32 sm:w-40 mx-auto mb-5 animate-float-y drop-shadow-2xl select-none"
           />
           <h1 className="font-display text-display-hero font-black [text-shadow:0_4px_20px_rgba(0,0,0,0.35)]">
             Preguntas frecuentes
           </h1>
           <p className="mt-4 text-white/90 text-base md:text-lg max-w-prose mx-auto leading-relaxed">
-            Todo lo que necesitas saber sobre SimulaUNA, sin letra chica.
+            Todo lo que necesitas saber sobre Sinapsis Preu, sin letra chica.
           </p>
         </div>
       </section>

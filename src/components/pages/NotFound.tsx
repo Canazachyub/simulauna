@@ -21,7 +21,7 @@ export function NotFound() {
   const loadRegistro = useUniversityStore((state) => state.loadRegistro);
 
   useEffect(() => {
-    document.title = 'Página no encontrada · SimulaUNA';
+    document.title = 'Página no encontrada · Sinapsis Preu';
   }, []);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export function NotFound() {
       <div className="relative container mx-auto px-4 sm:px-6 py-20 md:py-28 max-w-2xl text-center">
         <Mascot
           src="/illustrations/lobito-perdido.webp"
-          alt="Mascota SimulaUNA: un lobito perdido mirando un mapa al revés"
+          alt="Mascota Sinapsis Preu: un lobito perdido mirando un mapa al revés"
           className="w-44 sm:w-56 md:w-64 mx-auto mb-6 animate-float-y drop-shadow-2xl select-none"
         />
 

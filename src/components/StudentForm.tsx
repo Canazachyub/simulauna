@@ -92,9 +92,9 @@ const NAME_ERROR_MESSAGES = {
 } as const;
 
 const WHATSAPP_MESSAGES: Record<BlockVariant, string> = {
-  fraud: 'Hola, tengo un problema con mi registro en SimulaUNA (datos ya vinculados).',
-  cuota: 'Hola, quiero solicitar mi código de acceso ilimitado a SimulaUNA.',
-  blocked: 'Hola, necesito soporte con mi acceso a SimulaUNA.'
+  fraud: 'Hola, tengo un problema con mi registro en Sinapsis Preu (datos ya vinculados).',
+  cuota: 'Hola, quiero solicitar mi código de acceso ilimitado a Sinapsis Preu.',
+  blocked: 'Hola, necesito soporte con mi acceso a Sinapsis Preu.'
 };
 
 function detectBlockVariant(reason: string, isFraud: boolean, attemptCount: number): BlockVariant {

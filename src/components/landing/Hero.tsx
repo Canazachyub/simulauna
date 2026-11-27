@@ -22,13 +22,13 @@ export function Hero() {
         <div className="min-w-0 max-w-xl">
           <div className="flex items-center gap-3">
             <h1 className="flex-1 min-w-0 font-display font-black text-[2.15rem] leading-[1.08] sm:text-5xl lg:text-6xl tracking-tight">
-              Ensaya tu examen de{' '}
+              Simulacros de examen de{' '}
               <span className="text-brand-accent-400">admisión</span>
             </h1>
             {/* Lobito pequeño en móvil/tablet (en desktop vive dentro de la escena) */}
             <img
               src={LANDING_ASSETS.lobitoSaludo}
-              alt="Lobito, la mascota de SimulaUNA, saludando"
+              alt="Lobito, la mascota de Sinapsis Preu, saludando"
               width={600}
               height={600}
               decoding="async"
@@ -38,7 +38,8 @@ export function Hero() {
           </div>
 
           <p className="mt-3 text-[15px] sm:text-lg text-white/90 leading-snug max-w-md">
-            Preguntas de exámenes pasados y tu puntaje calculado como lo hace tu universidad.
+            Preguntas reales de exámenes pasados de la UNA Puno, la UNSA y más universidades, con tu
+            puntaje calculado como lo hace tu universidad.
           </p>
 
           <div className="mt-5 max-w-md">

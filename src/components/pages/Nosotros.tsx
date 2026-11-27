@@ -1,4 +1,4 @@
-import { useEffect, type CSSProperties } from 'react';
+import { type CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileCheck2, MessageCircleHeart, Gift, ArrowRight } from 'lucide-react';
 import { PageHeader } from './PageHeader';
@@ -30,15 +30,11 @@ const VALORES = [
 ];
 
 /**
- * Página "Nosotros" (/nosotros). Historia real y honesta de SimulaUNA — solo
+ * Página "Nosotros" (/nosotros). Historia real y honesta de Sinapsis Preu — solo
  * los hechos indicados por el usuario, sin inventar cifras ni testimonios.
  */
 export function Nosotros() {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    document.title = 'Nosotros · SimulaUNA';
-  }, []);
 
   return (
     <div className="min-h-screen bg-andean-white">
@@ -59,7 +55,7 @@ export function Nosotros() {
               Hoy somos de todo el Perú.
             </h1>
             <p className="mt-5 text-white/90 text-base md:text-lg max-w-prose mx-auto md:mx-0 leading-relaxed">
-              SimulaUNA nació como un simulador para postulantes de la Universidad Nacional del
+              Sinapsis Preu nació como un simulador para postulantes de la Universidad Nacional del
               Altiplano (UNA) — Puno. Hoy es una plataforma nacional multi-universidad, con un banco
               de preguntas de exámenes históricos reales y un puntaje calculado exactamente como lo
               hace cada universidad.
@@ -68,7 +64,7 @@ export function Nosotros() {
 
           <Mascot
             src="/illustrations/lobito-corazon.webp"
-            alt="Mascota SimulaUNA: un lobito con un corazón"
+            alt="Mascota Sinapsis Preu: un lobito con un corazón"
             className="w-40 sm:w-52 md:w-60 shrink-0 animate-float-y drop-shadow-2xl select-none"
           />
         </div>

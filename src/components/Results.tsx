@@ -1192,7 +1192,7 @@ export function Results() {
               {esUsuarioNuevo && (
                 <div className="mt-4">
                   <a
-                    href={whatsappUrl('Hola, acabo de dar mi simulacro en SimulaUNA y quiero inscribirme para tener acceso completo.', WHATSAPP_INSCRIPCION)}
+                    href={whatsappUrl('Hola, acabo de dar mi simulacro en Sinapsis Preu y quiero inscribirme para tener acceso completo.', WHATSAPP_INSCRIPCION)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 min-h-12 px-6 py-3 rounded-xl font-bold whitespace-nowrap bg-[#25D366] text-white hover:bg-[#1ebe5b] shadow-lg"
@@ -1234,7 +1234,7 @@ export function Results() {
         </Reveal>
 
         <p className="text-center text-slate-600 text-sm font-display">
-          SimulaUNA · {universidadRegistrada?.nombre || 'Universidad Nacional del Altiplano'}
+          Sinapsis Preu · {universidadRegistrada?.nombre || 'Universidad Nacional del Altiplano'}
         </p>
       </div>
 

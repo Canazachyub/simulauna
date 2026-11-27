@@ -21,7 +21,7 @@ export function PageHeader() {
             <GraduationCap className="w-4 h-4 text-white" aria-hidden="true" />
           </span>
           <span className="font-display text-lg font-black text-display-tight text-brand-primary-700">
-            SimulaUNA
+            Sinapsis Preu
           </span>
         </button>
 

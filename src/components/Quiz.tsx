@@ -404,14 +404,14 @@ export function Quiz() {
   // Las respuestas siguen guardadas (store persistido + envío pendiente en localStorage).
   if (status === 'submit_failed') {
     const whatsappHref = whatsappUrl(
-      `Hola, no pude calificar mi simulacro en SimulaUNA.${student ? ` DNI: ${student.dni}.` : ''}${examSessionId ? ` Sesión: ${examSessionId}.` : ''}`
+      `Hola, no pude calificar mi simulacro en Sinapsis Preu.${student ? ` DNI: ${student.dni}.` : ''}${examSessionId ? ` Sesión: ${examSessionId}.` : ''}`
     );
     return (
       <div className="min-h-screen flex items-center justify-center bg-andean-white px-4 py-12" style={themeVars}>
         <div className="max-w-md w-full text-center">
           <Mascot
             src="/illustrations/lobito-pensando.webp"
-            alt="Mascota SimulaUNA: un lobito pensativo"
+            alt="Mascota Sinapsis Preu: un lobito pensativo"
             className="w-36 sm:w-44 mx-auto mb-5 select-none"
           />
           <h1 className="font-display text-2xl sm:text-3xl font-black text-slate-900 mb-3">
@@ -518,7 +518,7 @@ export function Quiz() {
           {/* Izquierda: marca + asignatura dinámica */}
           <div className="flex items-center gap-2 min-w-0">
             <span className="font-display text-base font-black text-slate-900 tracking-tight hidden sm:inline">
-              SimulaUNA
+              Sinapsis Preu
             </span>
             <span
               className="chip whitespace-nowrap truncate max-w-[28vw] sm:max-w-none ml-0.5 border"

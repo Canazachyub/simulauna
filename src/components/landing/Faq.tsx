@@ -21,7 +21,7 @@ const PREGUNTAS: { q: string; a: ReactNode }[] = [
         Tu primer simulacro en cada universidad es gratis, sin tarjeta. Si luego quieres acceso
         completo a simulacros y banqueo, consulta las opciones por{' '}
         <a
-          href={whatsappUrl('Hola, quiero información sobre el acceso completo a SimulaUNA')}
+          href={whatsappUrl('Hola, quiero información sobre el acceso completo a Sinapsis Preu')}
           target="_blank"
           rel="noopener noreferrer"
           className={linkClass}
@@ -31,6 +31,14 @@ const PREGUNTAS: { q: string; a: ReactNode }[] = [
         .
       </>
     ),
+  },
+  {
+    q: '¿Las preguntas son de exámenes reales?',
+    a: 'Sí. Las preguntas provienen de exámenes de admisión de años pasados de cada universidad, con su clave y, en muchas, la solución explicada.',
+  },
+  {
+    q: '¿Qué universidades están disponibles?',
+    a: 'Hoy puedes rendir simulacros de la UNA Puno (Universidad Nacional del Altiplano) y, en versión beta, de la UNSA de Arequipa. Estamos preparando más universidades, como la UNAJ de Juliaca, la UNSAAC del Cusco y San Marcos.',
   },
   {
     q: '¿Necesito instalar algo?',

@@ -1,0 +1,93 @@
+{
+  "sitio": {
+    "url": "https://simulacros.sinapsispreu.com",
+    "nombre": "Sinapsis Preu",
+    "imagen": "/og-sinapsis-preu.jpg",
+    "whatsapp": "+51989855026"
+  },
+  "paginas": [
+    {
+      "ruta": "/",
+      "title": "Simulacros de admisión UNA Puno, UNSA y más | Sinapsis Preu",
+      "description": "Simulacros de examen de admisión con preguntas reales de años pasados de la UNA Puno, UNSA y otras universidades del Perú. Puntaje calculado como en tu universidad. Primer simulacro gratis.",
+      "h1": "Simulacros de examen de admisión con preguntas reales",
+      "intro": "Practica para el examen de admisión de la UNA Puno, la UNSA y otras universidades del Perú con preguntas de exámenes pasados, tiempo cronometrado y tu puntaje calculado con la tabla oficial de cada universidad. Tu primer simulacro es gratis.",
+      "prioridad": "1.0"
+    },
+    {
+      "ruta": "/una",
+      "title": "Simulacro de admisión UNA Puno con preguntas reales | Sinapsis Preu",
+      "description": "Simulacro del examen de admisión de la Universidad Nacional del Altiplano (UNA Puno): más de 8 000 preguntas de exámenes pasados, puntaje por área (Ingenierías, Biomédicas, Sociales) y revisión con solución.",
+      "h1": "Simulacro de admisión UNA Puno",
+      "intro": "Rinde un simulacro del examen ordinario de la Universidad Nacional del Altiplano con preguntas de exámenes de admisión de años anteriores. Elige tu área (Ingenierías, Biomédicas o Sociales), resuelve las 60 preguntas con tiempo y recibe tu puntaje calculado con la ponderación de la UNA Puno, más la revisión pregunta por pregunta.",
+      "prioridad": "0.9"
+    },
+    {
+      "ruta": "/una/cepre",
+      "title": "Simulacro y banqueo CEPREUNA por semanas | Sinapsis Preu",
+      "description": "Practica para los exámenes del CEPREUNA (UNA Puno) con simulacros y banqueo de preguntas organizados por semana y por curso.",
+      "h1": "Simulacro y banqueo CEPREUNA",
+      "intro": "Preguntas para prepararte para los exámenes del Centro Preuniversitario de la UNA Puno (CEPREUNA), ordenadas por semana y por curso, con simulacros cronometrados.",
+      "prioridad": "0.8"
+    },
+    {
+      "ruta": "/una/banqueo",
+      "title": "Banqueo de preguntas de admisión UNA Puno | Sinapsis Preu",
+      "description": "Banqueo histórico de preguntas del examen de admisión de la UNA Puno por curso: Aritmética, Álgebra, Biología, Química, Física, Razonamiento Verbal y más, con su clave y solución.",
+      "h1": "Banqueo de preguntas de admisión UNA Puno",
+      "intro": "Practica curso por curso con preguntas reales de exámenes de admisión pasados de la Universidad Nacional del Altiplano, con su respuesta correcta y la solución explicada.",
+      "prioridad": "0.7"
+    },
+    {
+      "ruta": "/una/banqueo-tema",
+      "title": "Banqueo por tema UNA Puno: preguntas de admisión por curso y tema | Sinapsis Preu",
+      "description": "Elige curso, tema y subtema y practica con preguntas del examen de admisión de la UNA Puno agrupadas por tema, con solución.",
+      "h1": "Banqueo por tema UNA Puno",
+      "intro": "Refuerza tus temas débiles: elige un curso, un tema y un subtema y practica solo con las preguntas de admisión de la UNA Puno sobre ese tema.",
+      "prioridad": "0.7"
+    },
+    {
+      "ruta": "/unsa",
+      "title": "Simulacro de admisión UNSA Arequipa (beta) | Sinapsis Preu",
+      "description": "Simulacro del examen de admisión de la Universidad Nacional de San Agustín de Arequipa (UNSA) con preguntas de exámenes pasados y revisión de cada respuesta. Versión beta.",
+      "h1": "Simulacro de admisión UNSA Arequipa",
+      "intro": "Practica para el examen de admisión de la Universidad Nacional de San Agustín de Arequipa con preguntas de exámenes de años anteriores, tiempo cronometrado y revisión de cada respuesta. Esta universidad está en versión beta.",
+      "prioridad": "0.8"
+    },
+    {
+      "ruta": "/preguntas-frecuentes",
+      "title": "Preguntas frecuentes sobre los simulacros | Sinapsis Preu",
+      "description": "Cómo funcionan los simulacros de admisión de Sinapsis Preu: precio, puntaje, universidades disponibles, uso en el celular y cómo obtener acceso completo.",
+      "h1": "Preguntas frecuentes",
+      "intro": "Todo lo que necesitas saber sobre los simulacros de admisión de Sinapsis Preu.",
+      "prioridad": "0.5"
+    },
+    {
+      "ruta": "/nosotros",
+      "title": "Nosotros: preparación preuniversitaria hecha en Puno | Sinapsis Preu",
+      "description": "Sinapsis Preu es un proyecto de preparación preuniversitaria hecho en Puno, Perú, para postulantes de todo el país.",
+      "h1": "Nosotros",
+      "intro": "Sinapsis Preu nació en Puno para que cualquier postulante pueda ensayar su examen de admisión con preguntas reales.",
+      "prioridad": "0.4"
+    },
+    {
+      "ruta": "/terminos",
+      "title": "Términos y privacidad | Sinapsis Preu",
+      "description": "Términos de uso y política de privacidad de la plataforma de simulacros de admisión Sinapsis Preu.",
+      "h1": "Términos y privacidad",
+      "intro": "Cómo funciona la plataforma, qué datos pedimos y cómo los cuidamos.",
+      "prioridad": "0.2"
+    }
+  ],
+  "faqInicio": [
+    { "q": "¿Es gratis?", "a": "Tu primer simulacro en cada universidad es gratis, sin tarjeta. Si luego quieres acceso completo a simulacros y banqueo, consulta las opciones por WhatsApp." },
+    { "q": "¿Las preguntas son de exámenes reales?", "a": "Sí. Las preguntas provienen de exámenes de admisión de años pasados de cada universidad, con su clave y, en muchas, la solución explicada." },
+    { "q": "¿Qué universidades están disponibles?", "a": "Hoy puedes rendir simulacros de la UNA Puno (Universidad Nacional del Altiplano) y, en versión beta, de la UNSA de Arequipa. Estamos preparando más universidades, como la UNAJ de Juliaca, la UNSAAC del Cusco y San Marcos." },
+    { "q": "¿Necesito instalar algo?", "a": "No. Funciona directo desde el navegador de tu celular, tablet o computadora." },
+    { "q": "¿Funciona en mi celular?", "a": "Sí. Está pensado primero para celulares, incluso con datos móviles: las páginas son livianas y los botones grandes." },
+    { "q": "¿Qué pasa si se me va el internet?", "a": "Tus respuestas se guardan en tu celular mientras rindes. Si la conexión falla al enviar, no se pierden: puedes reintentar el envío cuando vuelva." },
+    { "q": "¿Hay límite de tiempo?", "a": "Tienes un tiempo sugerido, como el del examen real, para que practiques tu ritmo. Si te pasas, igual se califica." },
+    { "q": "¿El puntaje es igual al real?", "a": "Se calcula con la tabla de puntajes de tu universidad, así que es una referencia muy cercana. El resultado oficial siempre lo da tu universidad el día del examen." }
+  ],
+  "noIndexar": ["/registro", "/confirmar", "/examen", "/resultados", "/aula"]
+}

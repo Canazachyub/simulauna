@@ -4,7 +4,7 @@ import { X, ExternalLink, LoaderCircle, CircleAlert } from 'lucide-react';
 /**
  * Visor modal embebido, reutilizable en toda el Aula (Grabaciones, Materiales, Recursos):
  * ES la pieza que cumple "links externos DENTRO de nuestra plataforma" — en vez de mandar al
- * alumno a otra pestaña, el contenido se ve en un iframe dentro de SimulaUNA.
+ * alumno a otra pestaña, el contenido se ve en un iframe dentro de Sinapsis Preu.
  *
  * Política de embebido (ver docs/AULA_VIRTUAL_DISENO.md, sección v2):
  * - `youtube` y `drive`: se reescribe la URL a su variante embebible
@@ -221,7 +221,7 @@ export function ResourceViewer({ open, onClose, title, subtitle, url, kind }: Re
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center">
               <CircleAlert className="w-8 h-8 text-slate-400" aria-hidden="true" />
               <p className="font-semibold text-slate-700 text-sm max-w-xs">
-                Este recurso no permite verse embebido dentro de SimulaUNA.
+                Este recurso no permite verse embebido dentro de Sinapsis Preu.
               </p>
               <p className="text-xs text-slate-400 max-w-xs">
                 Algunos sitios bloquean el visor por seguridad. Ábrelo en una pestaña nueva para verlo completo.

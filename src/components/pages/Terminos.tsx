@@ -1,15 +1,14 @@
-import { useEffect } from 'react';
 import { FileText, ShieldCheck, BookMarked, Users, MessageCircle } from 'lucide-react';
 import { whatsappUrl } from '../../constants/contact';
 import { PageHeader } from './PageHeader';
 
-const WHATSAPP_CONTACTO_MSG = 'Hola, tengo una consulta sobre los términos y privacidad de SimulaUNA';
+const WHATSAPP_CONTACTO_MSG = 'Hola, tengo una consulta sobre los términos y privacidad de Sinapsis Preu';
 
 const SECCIONES = [
   {
     icon: FileText,
-    title: 'Qué es SimulaUNA',
-    text: 'SimulaUNA es una plataforma de simulacros y bancos de preguntas para postulantes a universidades públicas del Perú. También estamos construyendo un Aula Virtual con clases, todavía en desarrollo.',
+    title: 'Qué es Sinapsis Preu',
+    text: 'Sinapsis Preu es una plataforma de simulacros y bancos de preguntas para postulantes a universidades públicas del Perú. También estamos construyendo un Aula Virtual con clases, todavía en desarrollo.',
   },
   {
     icon: ShieldCheck,
@@ -24,7 +23,7 @@ const SECCIONES = [
   {
     icon: Users,
     title: 'No afiliación',
-    text: 'SimulaUNA es un proyecto independiente hecho por el equipo SINAPSIS. No está afiliado oficialmente a ninguna universidad del Perú. El puntaje que calculamos es una referencia basada en el sistema oficial de cada universidad, no un resultado oficial de admisión.',
+    text: 'Sinapsis Preu es un proyecto independiente hecho por el equipo SINAPSIS. No está afiliado oficialmente a ninguna universidad del Perú. El puntaje que calculamos es una referencia basada en el sistema oficial de cada universidad, no un resultado oficial de admisión.',
   },
 ];
 
@@ -34,9 +33,6 @@ const SECCIONES = [
  * documento redactado por un estudio de abogados.
  */
 export function Terminos() {
-  useEffect(() => {
-    document.title = 'Términos y privacidad · SimulaUNA';
-  }, []);
 
   return (
     <div className="min-h-screen bg-andean-white">
@@ -48,7 +44,7 @@ export function Terminos() {
             Términos y privacidad
           </h1>
           <p className="text-slate-600 leading-relaxed">
-            Este documento explica en términos simples cómo funciona SimulaUNA, qué datos pedimos y
+            Este documento explica en términos simples cómo funciona Sinapsis Preu, qué datos pedimos y
             por qué. No es un documento legal complicado — solo queremos ser claros contigo.
           </p>
 

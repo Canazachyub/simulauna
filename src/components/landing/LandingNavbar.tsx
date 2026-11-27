@@ -151,7 +151,7 @@ export function LandingNavbar() {
             <GraduationCap className="w-5 h-5 text-white" />
           </span>
           <span className="font-display text-xl md:text-2xl font-black text-display-tight text-brand-primary-700">
-            SimulaUNA
+            Sinapsis Preu
           </span>
         </button>
 

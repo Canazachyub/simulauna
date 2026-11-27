@@ -92,7 +92,7 @@ export function Universidades() {
                   <p className="text-sm text-slate-600">Estamos preparando más universidades del Perú.</p>
                 </div>
                 <a
-                  href={whatsappUrl('Hola, quiero que me avisen cuando SimulaUNA tenga mi universidad: ')}
+                  href={whatsappUrl('Hola, quiero que me avisen cuando Sinapsis Preu tenga mi universidad: ')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="self-start md:self-auto inline-flex items-center gap-2 min-h-[44px] px-5 rounded-full bg-white border-2 border-emerald-600 text-emerald-800 text-sm font-bold hover:bg-emerald-50 transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200"

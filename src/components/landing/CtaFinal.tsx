@@ -93,7 +93,7 @@ export function CtaFinal() {
             <UniversityPicker idPrefix="cta-uni" />
           </div>
           <a
-            href={whatsappUrl('Hola, tengo una consulta sobre SimulaUNA')}
+            href={whatsappUrl('Hola, tengo una consulta sobre Sinapsis Preu')}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-4 inline-flex items-center gap-2 min-h-[44px] px-2 text-sm font-bold text-white/90 underline underline-offset-4 decoration-white/40 hover:decoration-white"

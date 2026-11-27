@@ -27,7 +27,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error('[SimulaUNA] Error no controlado en la interfaz:', error, info.componentStack);
+    console.error('[Sinapsis Preu] Error no controlado en la interfaz:', error, info.componentStack);
   }
 
   componentDidUpdate(prevProps: ErrorBoundaryProps) {
@@ -47,7 +47,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <div className="max-w-md w-full text-center">
           <Mascot
             src="/illustrations/lobito-pensando.webp"
-            alt="Mascota SimulaUNA: un lobito pensativo"
+            alt="Mascota Sinapsis Preu: un lobito pensativo"
             className="w-40 sm:w-48 mx-auto mb-6 select-none"
           />
           <h1 className="font-display text-3xl font-black text-slate-900 mb-3">
@@ -55,7 +55,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           </h1>
           <p className="text-slate-600 font-medium mb-2 leading-relaxed">
             {isNewVersion
-              ? 'Actualizamos SimulaUNA mientras la tenías abierta. Vuelve a cargar la página para continuar.'
+              ? 'Actualizamos Sinapsis Preu mientras la tenías abierta. Vuelve a cargar la página para continuar.'
               : 'Tuvimos un problema al mostrar esta pantalla. Vuelve a cargar la página e inténtalo otra vez.'}
           </p>
           <p className="text-slate-500 text-sm mb-8">

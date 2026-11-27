@@ -1,4 +1,5 @@
 import { useEffect, Suspense, type ReactNode } from 'react';
+import { SeoSync } from './seo/SeoSync';
 import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { useUniversityStore } from './hooks/useUniversity';
@@ -154,6 +155,7 @@ function App() {
           (silencia los Future Flag Warnings de consola sin cambiar UX). */}
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <QuickSwitch />
+        <SeoSync />
         <RouteErrorBoundary>
           <Suspense fallback={<RouteFallback />}>
             <RouteTransition>

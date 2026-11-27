@@ -1,7 +1,7 @@
 /* -------------------------------------------------------------------------- */
 /*  Footer del Landing. Universidades derivadas del registro maestro.         */
 /* -------------------------------------------------------------------------- */
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { GraduationCap } from 'lucide-react';
 import { whatsappUrl } from '../../constants/contact';
 import { scrollToSection, useLandingUniversities } from './landingData';
@@ -9,8 +9,7 @@ import { scrollToSection, useLandingUniversities } from './landingData';
 const linkBtn = 'inline-flex items-center min-h-[40px] text-left hover:text-white transition-colors';
 
 export function LandingFooter() {
-  const navigate = useNavigate();
-  const { activas, proximas, irAUniversidad } = useLandingUniversities();
+  const { activas, proximas } = useLandingUniversities();
 
   return (
     <footer className="bg-slate-900 text-white/75 pt-12 pb-8">
@@ -22,12 +21,12 @@ export function LandingFooter() {
                 <GraduationCap className="w-5 h-5 text-brand-primary-900" aria-hidden="true" />
               </span>
               <span>
-                <span className="block font-display font-black text-white text-lg leading-none">SimulaUNA</span>
-                <span className="block text-xs text-white/60 mt-0.5">por SINAPSIS</span>
+                <span className="block font-display font-black text-white text-lg leading-none">Sinapsis Preu</span>
+                <span className="block text-xs text-white/60 mt-0.5">Simulacros de admisión</span>
               </span>
             </div>
             <p className="text-sm leading-relaxed max-w-xs">
-              Simulacros y bancos de preguntas con exámenes de admisión pasados de las universidades del Perú.
+              Simulacros de examen de admisión y banqueo de preguntas con exámenes pasados de la UNA Puno, la UNSA y más universidades del Perú.
             </p>
           </div>
 
@@ -36,10 +35,10 @@ export function LandingFooter() {
             <ul className="text-sm">
               {activas.map(u => (
                 <li key={u.codigo}>
-                  <button type="button" onClick={() => irAUniversidad(u.codigo)} className={linkBtn}>
-                    {u.nombreCorto}
+                  <Link to={`/${u.codigo}`} className={linkBtn}>
+                    Simulacro {u.nombreCorto}
                     {u.estado === 'piloto' && <span className="ml-1 text-xs text-white/60">· Beta</span>}
-                  </button>
+                  </Link>
                 </li>
               ))}
               {proximas.length > 0 && (
@@ -55,10 +54,10 @@ export function LandingFooter() {
           <div>
             <p className="font-bold text-white uppercase tracking-wider text-xs mb-3">Practicar · UNA Puno</p>
             <ul className="text-sm">
-              <li><button type="button" onClick={() => navigate('/una/cepre')} className={linkBtn}>Simulacro y banqueo CEPREUNA</button></li>
-              <li><button type="button" onClick={() => navigate('/una/banqueo-tema')} className={linkBtn}>Banqueo por tema</button></li>
-              <li><button type="button" onClick={() => navigate('/una/banqueo')} className={linkBtn}>Banqueo histórico</button></li>
-              <li><button type="button" onClick={() => navigate('/una/aula')} className={linkBtn}>Aula virtual</button></li>
+              <li><Link to="/una/cepre" className={linkBtn}>Simulacro y banqueo CEPREUNA</Link></li>
+              <li><Link to="/una/banqueo-tema" className={linkBtn}>Banqueo por tema</Link></li>
+              <li><Link to="/una/banqueo" className={linkBtn}>Banqueo histórico</Link></li>
+              <li><Link to="/una/aula" className={linkBtn}>Aula virtual</Link></li>
               <li>
                 <a href="https://ceprem.unap.edu.pe" target="_blank" rel="noopener noreferrer" className={linkBtn}>
                   Web oficial CEPREUNA
@@ -68,13 +67,13 @@ export function LandingFooter() {
           </div>
 
           <div>
-            <p className="font-bold text-white uppercase tracking-wider text-xs mb-3">SimulaUNA</p>
+            <p className="font-bold text-white uppercase tracking-wider text-xs mb-3">Sinapsis Preu</p>
             <ul className="text-sm">
-              <li><button type="button" onClick={() => navigate('/nosotros')} className={linkBtn}>Nosotros</button></li>
-              <li><button type="button" onClick={() => navigate('/preguntas-frecuentes')} className={linkBtn}>Preguntas frecuentes</button></li>
-              <li><button type="button" onClick={() => navigate('/terminos')} className={linkBtn}>Términos y privacidad</button></li>
+              <li><Link to="/nosotros" className={linkBtn}>Nosotros</Link></li>
+              <li><Link to="/preguntas-frecuentes" className={linkBtn}>Preguntas frecuentes</Link></li>
+              <li><Link to="/terminos" className={linkBtn}>Términos y privacidad</Link></li>
               <li>
-                <a href={whatsappUrl('Hola, quiero información sobre SimulaUNA')} target="_blank" rel="noopener noreferrer" className={linkBtn}>
+                <a href={whatsappUrl('Hola, quiero información sobre Sinapsis Preu')} target="_blank" rel="noopener noreferrer" className={linkBtn}>
                   WhatsApp
                 </a>
               </li>
@@ -86,7 +85,7 @@ export function LandingFooter() {
         </div>
 
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-white/60 text-center">
-          <p>© {new Date().getFullYear()} SimulaUNA · Todos los derechos reservados</p>
+          <p>© {new Date().getFullYear()} Sinapsis Preu · Todos los derechos reservados</p>
           <p>Hecho en Puno, Perú — para los postulantes de todo el país</p>
         </div>
       </div>

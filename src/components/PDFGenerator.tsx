@@ -85,7 +85,7 @@ export function PDFGenerator({ result, accentColor = '#003D7A', universidadNombr
       doc.setFont('helvetica', 'bold'); doc.setFontSize(15); doc.setTextColor(...TINTA);
       doc.text(universidadNombre, M, 13);
       doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(...GRIS);
-      doc.text('SimulaUNA · Plataforma de simulacros de admisión', M, 18);
+      doc.text('Sinapsis Preu · Plataforma de simulacros de admisión', M, 18);
 
       const proceso = (result.proceso || 'ORDINARIO').toUpperCase() === 'CEPRE' ? 'CEPRE' : 'ORDINARIO';
       const codigo = `SU-${result.student.dni}-${new Date(result.date).getTime().toString(36).toUpperCase()}`;
@@ -205,11 +205,11 @@ export function PDFGenerator({ result, accentColor = '#003D7A', universidadNombr
       const pieY = H - 14;
       doc.setDrawColor(...LINEA); doc.setLineWidth(0.3); doc.line(M, pieY, W - M, pieY);
       doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(...GRIS);
-      doc.text('Documento referencial generado por SimulaUNA. No constituye un resultado oficial de admisión.', M, pieY + 4);
+      doc.text('Documento referencial generado por Sinapsis Preu. No constituye un resultado oficial de admisión.', M, pieY + 4);
       doc.text(`Emitido el ${formatDate(new Date())}`, M, pieY + 8);
       doc.text(`${universidadNombre} · ${codigo}`, W - M, pieY + 8, { align: 'right' });
 
-      const fileName = `SimulaUNA_${result.student.dni}_${new Date().toISOString().split('T')[0]}.pdf`;
+      const fileName = `SinapsisPreu_${result.student.dni}_${new Date().toISOString().split('T')[0]}.pdf`;
       doc.save(fileName);
     } catch (error) {
       console.error('Error generating PDF:', error);

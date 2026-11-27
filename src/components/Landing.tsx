@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------- */
-/*  Landing nacional de SimulaUNA — composición de secciones.                 */
+/*  Landing nacional de Sinapsis Preu — composición de secciones.                 */
 /*  Cada sección vive en src/components/landing/ (mobile-first):              */
 /*   A. Hero (titular + selector de universidad + CTA sin scroll en 360×640)   */
 /*   B. DemoPregunta (prueba una pregunta sin registrarte — el gancho)         */
@@ -16,6 +16,7 @@ import { LandingNavbar } from './landing/LandingNavbar';
 import { Hero } from './landing/Hero';
 import { DemoPregunta } from './landing/DemoPregunta';
 import { Universidades } from './landing/Universidades';
+import { GuiaUniversidades } from './landing/GuiaUniversidades';
 import { ComoFunciona } from './landing/ComoFunciona';
 import { ProductoPreview } from './landing/ProductoPreview';
 import { Areas } from './landing/Areas';
@@ -35,6 +36,7 @@ export function Landing() {
         <ComoFunciona />
         <ProductoPreview />
         <Areas />
+        <GuiaUniversidades />
         <HechoEnPuno />
         <Faq />
         <CtaFinal />

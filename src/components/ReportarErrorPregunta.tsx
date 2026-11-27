@@ -16,7 +16,7 @@ interface Props {
 export function ReportarErrorPregunta({ question, numero, className = '' }: Props) {
   const enunciado = String(question.questionText ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
   const mensaje = [
-    'Hola, encontré un error en una pregunta de SimulaUNA.',
+    'Hola, encontré un error en una pregunta de Sinapsis Preu.',
     numero ? `• Pregunta N.° ${numero}` : null,
     question.subject ? `• Curso: ${question.subject}` : null,
     question.sourceFile ? `• Fuente: ${question.sourceFile}` : null,
