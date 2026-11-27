@@ -161,9 +161,15 @@ ${unsa ? `- UNSA (Universidad Nacional de San Agustín de Arequipa), en beta: ${
 - [Preguntas frecuentes](${url}/preguntas-frecuentes/)
 `);
 
+// Coincidencia EXACTA ($ y /): robots.txt compara por prefijo, y la regla vieja "Disallow: /<u>/examen"
+// (con comodín) bloqueaba también las páginas públicas /una/examenes/.
+const reglasPrivadas = ['registro', 'confirmar', 'examen', 'resultados']
+  .flatMap((s) => [`Disallow: /*/${s}$`, `Disallow: /*/${s}/`, `Disallow: /*/${s}?`])
+  .join('\n');
+
 writeFileSync(join(dist, 'robots.txt'), `User-agent: *
 Allow: /
-${['registro', 'confirmar', 'examen', 'resultados'].map((s) => `Disallow: /*/${s}`).join('\n')}
+${reglasPrivadas}
 
 Sitemap: ${url}/sitemap.xml
 `);
