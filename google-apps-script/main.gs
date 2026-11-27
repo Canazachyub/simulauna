@@ -253,7 +253,7 @@ function handleQuestionsLegacy_(ctx) {
 }
 
 function handleGetCepreSimulacroLegacy_(ctx) {
-  enforcePracticeAccess_(ctx);
+  enforcePracticeAccess_(ctx, 'cepre');
   return unaGetCepreSimulacro(ctx.params.area, ctx.params.semana);
 }
 
@@ -305,12 +305,13 @@ function handleSubmitExam_(ctx) {
 }
 
 /**
- * Validación de acceso EN SERVIDOR para banqueo / banqueo por tema / CEPRE
- * (todos se habilitan en el frontend con checkBanqueoAccess). Solo activa
- * con ENFORCE_ACCESS_SERVER='true': el frontend publicado todavía NO manda
- * dni/email en esas llamadas, así que activarlo antes las rompería.
+ * Validación de acceso EN SERVIDOR para banqueo / banqueo por tema / CEPRE.
+ * El servicio (`modalidad`) lo fija la acción llamada, NO el cliente: así un
+ * permiso de banqueo no abre CEPRE mandando modalidad=banqueo.
+ * Solo activa con ENFORCE_ACCESS_SERVER='true' (el frontend manda dni/email
+ * en estas llamadas desde la versión de lanzamiento).
  */
-function enforcePracticeAccess_(ctx) {
+function enforcePracticeAccess_(ctx, modalidad) {
   if (!getFlag_('ENFORCE_ACCESS_SERVER', false)) return;
 
   const dni = String(ctx.params.dni || '').trim();
@@ -319,12 +320,23 @@ function enforcePracticeAccess_(ctx) {
     throw publicError_('Ingresa con tu DNI y correo para practicar.');
   }
 
+  // Un acceso aprobado se recuerda 10 min (cada tanda de preguntas no relee permisos y
+  // usuarios). Un permiso quitado desde el panel deja de valer como máximo a los 10 min.
+  const universidadKey = ctx.hasUniversidad ? normalizeUniversidadCode_(ctx.params.universidad) : 'una';
+  const cacheKey = ['acc', universidadKey, dni, email, modalidad].join('|');
+  let cache = null;
+  try { cache = CacheService.getScriptCache(); } catch (err) { cache = null; }
+  if (cache && cacheKey.length <= 250 && cache.get(cacheKey) === '1') return;
+
   const acceso = ctx.hasUniversidad
-    ? checkBanqueoAccessV2(resolveTenantOrThrow_(ctx.params.universidad), dni, email, ctx.params.modalidad)
+    ? checkBanqueoAccessV2(resolveTenantOrThrow_(ctx.params.universidad), dni, email, modalidad)
     : unaCheckBanqueoAccess(dni, email);
 
   if (!acceso || !acceso.canAccess) {
     throw publicError_((acceso && acceso.reason) || 'No tienes acceso a esta práctica.');
+  }
+  if (cache && cacheKey.length <= 250) {
+    try { cache.put(cacheKey, '1', 600); } catch (err) { /* sin caché: se valida en cada pedido */ }
   }
 }
 
@@ -447,7 +459,7 @@ function handleCheckBanqueoAccess_(ctx) {
 }
 
 function handleGetBanqueoQuestions_(ctx) {
-  enforcePracticeAccess_(ctx);
+  enforcePracticeAccess_(ctx, 'banqueo');
   const course = ctx.params.course || '';
   // Solo 10/15/20 son válidos aguas abajo (cualquier otro valor -> 10).
   const count = clampCount_(ctx.params.count, 10, QUESTIONS_MAX_COUNT_);
@@ -461,7 +473,7 @@ function handleGetBanqueoQuestions_(ctx) {
 }
 
 function handleGetCepreQuestions_(ctx) {
-  enforcePracticeAccess_(ctx);
+  enforcePracticeAccess_(ctx, 'cepre');
   const course = ctx.params.course || '';
   const area = ctx.params.area || '';
   const semana = ctx.params.semana || '';
@@ -518,7 +530,7 @@ function handleGetBanqueoByTema_(ctx) {
   const curso = ctx.params.curso || '';
   const tema = ctx.params.tema || '';
   const subtema = ctx.params.subtema || '';
-  enforcePracticeAccess_(ctx);
+  enforcePracticeAccess_(ctx, 'banqueo_tema');
   // El frontend siempre manda 10/15/20; sin count => default 20 (antes: todo el banco).
   const count = clampCount_(ctx.params.count, QUESTIONS_DEFAULT_COUNT_, QUESTIONS_MAX_COUNT_);
 

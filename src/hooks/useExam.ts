@@ -18,6 +18,16 @@ import { getConfig, getExam, submitExam, type SubmitExamPayload, type SubmitExam
 import { calculateExamResult } from '../utils/calculations';
 import { friendlyError, isRetriableError } from '../utils/friendlyError';
 import { safeGetItem, safeRemoveItem, safeSetItem } from '../utils/safeStorage';
+import { readRememberedIdentity } from '../utils/rememberedIdentity';
+
+/** Correo del alumno para getExam; si el alumno guardado es de antes de que se guardara el
+ * correo, se usa el recordado en este celular para el mismo DNI. */
+function emailDelAlumno(student: Student | null | undefined): string | undefined {
+  if (!student) return undefined;
+  if (student.email) return student.email;
+  const recordado = readRememberedIdentity();
+  return recordado && recordado.dni === student.dni ? recordado.email : undefined;
+}
 
 function procesoFromStudent(processType?: Student['processType']): string {
   return processType === 'CEPREUNA' ? 'CEPRE' : 'ORDINARIO';
@@ -311,7 +321,7 @@ export const useExamStore = create<ExamStoreState>()(
         set({ status: 'loading', error: null });
 
         try {
-          const result = await getExam(universidad, division, proceso, undefined, { dni: student?.dni });
+          const result = await getExam(universidad, division, proceso, undefined, { dni: student?.dni, email: emailDelAlumno(student) });
           // Examen NUEVO: se limpia cualquier resultado/progreso anterior.
           set({
             ...EMPTY_EXAM,

@@ -24,6 +24,8 @@ export type ExamStatus = 'idle' | 'loading' | 'ready' | 'in_progress' | 'complet
 export interface Student {
   dni: string;
   fullName: string;
+  /** Correo del registro: el servidor lo usa con el DNI para validar el acceso al simulacro. */
+  email?: string;
   /** Código/nombre de división académica (antes "área"). Ver nota AreaType arriba. */
   area: AreaType;
   processType?: ProcessType; // Tipo de proceso (CEPREUNA usa hojas CEPRE_)

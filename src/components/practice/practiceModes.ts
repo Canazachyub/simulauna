@@ -8,6 +8,7 @@ import type { PracticeMode } from './types';
 /** Modo "Banqueo histórico": sólo filtro de curso, preguntas de exámenes anteriores. */
 export const banqueoMode: PracticeMode = {
   id: 'banqueo',
+  modalidad: 'banqueo',
   loginKicker: 'Banqueo histórico',
   loginTitle: 'Banqueo histórico',
   loginSubtitle: 'Practica con preguntas reales de exámenes anteriores',
@@ -39,6 +40,7 @@ export const banqueoMode: PracticeMode = {
 /** Modo "Banqueo por Tema": filtro curso → tema (stepper). */
 export const banqueoTemaMode: PracticeMode = {
   id: 'banqueoTema',
+  modalidad: 'banqueo_tema',
   loginKicker: 'Por Tema',
   loginTitle: 'Banqueo por Tema',
   loginSubtitle: 'Practica preguntas filtradas por curso y tema',
@@ -66,6 +68,7 @@ export const banqueoTemaMode: PracticeMode = {
 export function createCepreMode(cepreNombre: string): PracticeMode {
   return {
     id: 'cepre',
+    modalidad: 'cepre',
     loginKicker: cepreNombre,
     loginTitle: `Banqueo ${cepreNombre}`,
     loginSubtitle: `Practica con preguntas de los cuadernillos ${cepreNombre} por semana`,

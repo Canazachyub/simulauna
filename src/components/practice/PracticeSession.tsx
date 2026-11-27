@@ -76,6 +76,21 @@ export function PracticeSession({ mode }: { mode: PracticeMode }) {
 
   const goHome = useCallback(() => navigate(`/${universidad}`), [navigate, universidad]);
 
+  // La sesión guardada es común a los tres servicios: al entrar a uno se confirma que el
+  // alumno tiene permiso para ESE servicio (banqueo, por tema o CEPRE). El servidor lo vuelve
+  // a validar en cada pedido de preguntas; esto solo evita mostrar un selector que no le sirve.
+  useEffect(() => {
+    if (!user) return;
+    let vigente = true;
+    checkBanqueoAccess(user.dni, user.email, universidad, mode.modalidad).then(r => {
+      if (!vigente || r.canAccess || r.reason === 'Error de conexión') return;
+      setLoginError(r.reason);
+      setStep('login');
+    });
+    return () => { vigente = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [universidad, mode.modalidad]);
+
   const handleLoginSubmit = async (dni: string, email: string) => {
     setLoginError('');
 
@@ -91,7 +106,7 @@ export function PracticeSession({ mode }: { mode: PracticeMode }) {
     setIsLoading(true);
     try {
       const emailNorm = email.toLowerCase();
-      const result = await checkBanqueoAccess(dni, emailNorm, universidad);
+      const result = await checkBanqueoAccess(dni, emailNorm, universidad, mode.modalidad);
       if (!result.canAccess) {
         setLoginError(result.reason);
         setIsLoading(false);
@@ -149,8 +164,9 @@ export function PracticeSession({ mode }: { mode: PracticeMode }) {
       setStreak(0);
       setBestStreak(0);
       setStep('quiz');
-    } catch {
-      setLoginError('Error al cargar preguntas. Intenta de nuevo.');
+    } catch (err) {
+      // toFriendlyError ya deja un mensaje apto para el alumno (p. ej. permiso vencido).
+      setLoginError(err instanceof Error && err.message ? err.message : 'Error al cargar preguntas. Intenta de nuevo.');
     }
     setIsLoading(false);
   };
@@ -217,6 +233,7 @@ export function PracticeSession({ mode }: { mode: PracticeMode }) {
         universidad={universidad}
         isAuthenticated={isAuthenticated}
         userDni={user?.dni}
+        identity={{ dni: user?.dni, email: user?.email }}
         isLoading={isLoading}
         error={loginError}
         onBack={goHome}

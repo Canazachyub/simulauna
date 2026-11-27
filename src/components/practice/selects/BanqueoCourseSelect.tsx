@@ -39,7 +39,7 @@ const BANQUEO_TOUR_STEPS: CoachTourStep[] = [
 
 /** Selección de filtros del banqueo histórico: sólo curso + cantidad de preguntas. */
 export function BanqueoCourseSelect({
-  universidad, isAuthenticated, userDni, isLoading, error, onBack, onLogout, onSubmit
+  universidad, isAuthenticated, userDni, identity, isLoading, error, onBack, onLogout, onSubmit
 }: PracticeSelectStepProps) {
   const [selectedCourse, setSelectedCourse] = useState('');
   const [questionCount, setQuestionCount] = useState<QuestionCount>(10);
@@ -48,7 +48,7 @@ export function BanqueoCourseSelect({
     if (!selectedCourse) return;
     onSubmit(
       { course: selectedCourse },
-      () => getBanqueoQuestions(selectedCourse, questionCount, universidad)
+      () => getBanqueoQuestions(selectedCourse, questionCount, universidad, identity)
     );
   };
 

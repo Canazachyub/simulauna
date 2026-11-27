@@ -10,7 +10,7 @@ import clsx from 'clsx';
 
 /** Selección de filtros del banqueo por tema: curso → tema (stepper) + cantidad de preguntas. */
 export function BanqueoTemaSelect({
-  universidad, isAuthenticated, isLoading, error, onBack, onLogout, onSubmit
+  universidad, isAuthenticated, identity, isLoading, error, onBack, onLogout, onSubmit
 }: PracticeSelectStepProps) {
   const [cursos, setCursos] = useState<CursoConTemas[]>([]);
   const [temas, setTemas] = useState<TemaInfo[]>([]);
@@ -65,7 +65,7 @@ export function BanqueoTemaSelect({
     if (!selectedCurso || !selectedTema) return;
     onSubmit(
       { course: selectedCurso, tema: selectedTema },
-      () => getBanqueoByTema(selectedCurso, selectedTema, undefined, questionCount, universidad)
+      () => getBanqueoByTema(selectedCurso, selectedTema, undefined, questionCount, universidad, identity)
     );
   };
 

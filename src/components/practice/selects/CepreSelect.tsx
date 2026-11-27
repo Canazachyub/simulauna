@@ -25,7 +25,7 @@ const AREA_LABELS: Record<'ING' | 'BIO' | 'SOC', string> = {
  * siempre arranca de nuevo en la elección de sub-modo.
  */
 export function CepreSelect({
-  universidad, isAuthenticated, isLoading, error, onBack, onLogout, onSubmit
+  universidad, isAuthenticated, identity, isLoading, error, onBack, onLogout, onSubmit
 }: PracticeSelectStepProps) {
   const registro = useUniversityStore(state => state.registro);
   const cepreNombre = registro.find(u => u.codigo === universidad)?.cepreNombre || 'CEPREUNA';
@@ -44,12 +44,12 @@ export function CepreSelect({
     if (cepreMode === 'cuadernillo') {
       onSubmit(
         { course: selectedCourse, area: selectedArea, semana: selectedSemana },
-        () => getCepreQuestions(selectedCourse, selectedArea, selectedSemana, undefined, universidad)
+        () => getCepreQuestions(selectedCourse, selectedArea, selectedSemana, undefined, universidad, identity)
       );
     } else {
       onSubmit(
         { course: selectedCourse },
-        () => getCepreQuestions(selectedCourse, 'ALL', undefined, questionCount, universidad)
+        () => getCepreQuestions(selectedCourse, 'ALL', undefined, questionCount, universidad, identity)
       );
     }
   };

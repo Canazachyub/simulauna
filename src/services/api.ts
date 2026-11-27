@@ -722,6 +722,14 @@ export interface BanqueoQuestionsResult {
   availableCourses?: string[];
 }
 
+/** Identidad del alumno para las prácticas: el servidor valida con ella su permiso. */
+export interface PracticeIdentity { dni?: string; email?: string }
+
+function setIdentity(params: URLSearchParams, identity?: PracticeIdentity) {
+  if (identity?.dni) params.set('dni', identity.dni);
+  if (identity?.email) params.set('email', identity.email);
+}
+
 /**
  * Verifica si un usuario puede acceder al Banqueo Histórico
  * Solo usuarios confirmados (inscritos) pueden acceder
@@ -774,7 +782,8 @@ export async function checkBanqueoAccess(
 export async function getBanqueoQuestions(
   course: string,
   count: 10 | 15 | 20 = 10,
-  universidad: string = DEFAULT_UNIVERSIDAD
+  universidad: string = DEFAULT_UNIVERSIDAD,
+  identity?: PracticeIdentity
 ): Promise<BanqueoQuestionsResult> {
   try {
     const params = new URLSearchParams({
@@ -783,6 +792,7 @@ export async function getBanqueoQuestions(
       count: count.toString(),
       universidad
     });
+    setIdentity(params, identity);
 
     if (API_TOKEN) params.set('token', API_TOKEN);
     const url = `${API_BASE_URL}?${params.toString()}`;
@@ -925,7 +935,8 @@ export async function getCepreQuestions(
   area?: CepreAreaCode,
   semana?: CepreSemana | string,
   count?: number,
-  universidad: string = DEFAULT_UNIVERSIDAD
+  universidad: string = DEFAULT_UNIVERSIDAD,
+  identity?: PracticeIdentity
 ): Promise<CepreQuestionsResult> {
   try {
     const params = new URLSearchParams({
@@ -933,6 +944,7 @@ export async function getCepreQuestions(
       course: course,
       universidad
     });
+    setIdentity(params, identity);
 
     if (area) params.append('area', area);
     if (semana) params.append('semana', semana);
@@ -1234,7 +1246,8 @@ export async function getBanqueoByTema(
   tema?: string,
   subtema?: string,
   count: 10 | 15 | 20 = 10,
-  universidad: string = DEFAULT_UNIVERSIDAD
+  universidad: string = DEFAULT_UNIVERSIDAD,
+  identity?: PracticeIdentity
 ): Promise<BanqueoByTemaResult> {
   try {
     const params = new URLSearchParams({
@@ -1243,6 +1256,7 @@ export async function getBanqueoByTema(
       count: count.toString(),
       universidad
     });
+    setIdentity(params, identity);
 
     if (tema) params.append('tema', tema);
     if (subtema) params.append('subtema', subtema);

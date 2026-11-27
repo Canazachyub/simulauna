@@ -39,6 +39,8 @@ export interface PracticeSelectStepProps {
   universidad: string;
   isAuthenticated: boolean;
   userDni?: string;
+  /** DNI + correo del alumno: van en cada pedido de preguntas para que el servidor valide el permiso. */
+  identity: { dni?: string; email?: string };
   isLoading: boolean;
   error: string;
   onBack: () => void;
@@ -57,6 +59,8 @@ export type BadgeStyle = 'topic' | 'cepre';
  */
 export interface PracticeMode {
   id: 'banqueo' | 'banqueoTema' | 'cepre';
+  /** Servicio que se valida en el servidor (columna `modalidad` de la hoja `permisos`). */
+  modalidad: 'banqueo' | 'banqueo_tema' | 'cepre';
 
   // --- Login ---
   loginKicker: string;

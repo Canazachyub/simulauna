@@ -684,6 +684,7 @@ export function StudentForm() {
     setStudent({
       dni: dniValue,
       fullName: nameValue,
+      email: emailValue,
       area: area!,
       processType: processType!
     });

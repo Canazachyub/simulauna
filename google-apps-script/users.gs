@@ -420,22 +420,34 @@ function checkBanqueoAccessV2(tenant, dni, email, modalidad) {
   const dniStr = String(dni).trim();
   const emailLower = (email || '').toLowerCase().trim();
   const modalidadNorm = (modalidad || 'banqueo').toLowerCase();
+  const servicio = { banqueo: 'El Banqueo Histórico', banqueo_tema: 'El Banqueo por Tema', cepre: 'El Banqueo CEPRE' }[modalidadNorm] || 'Este servicio';
+  const negado = {
+    canAccess: false,
+    reason: servicio + ' es exclusivo para usuarios inscritos. Escríbenos por WhatsApp para activarlo.',
+    isConfirmed: false,
+    universidad: tenant.codigo
+  };
+
+  // El correo tiene que ser el del titular del DNI (si el DNI está registrado): sin esto,
+  // bastaría conocer el DNI de un alumno con acceso para usar su cuenta.
+  if (emailLower) {
+    const dueno = dniEmailOwnership_(tenant.codigo, dniStr, emailLower);
+    if (dueno === 'error') return { canAccess: false, reason: MSG_VERIFICACION_NO_DISPONIBLE_, isConfirmed: false, universidad: tenant.codigo };
+    if (dueno === 'mismatch') {
+      return { canAccess: false, reason: 'DNI y email no coinciden con el usuario registrado', isConfirmed: false, universidad: tenant.codigo };
+    }
+  }
 
   const hasPermiso = checkPermiso_(tenant.codigo, dniStr, modalidadNorm);
   if (hasPermiso) {
-    return { canAccess: true, reason: 'Acceso autorizado al Banqueo Histórico', isConfirmed: true, universidad: tenant.codigo };
+    return { canAccess: true, reason: 'Acceso autorizado', isConfirmed: true, universidad: tenant.codigo };
   }
 
   if (tenant.codigo === 'una') {
     if (isConfirmadoLegacy_(dniStr, emailLower) || isAccesoBanqueoLegacy_(dniStr, emailLower)) {
-      return { canAccess: true, reason: 'Acceso autorizado al Banqueo Histórico', isConfirmed: true, universidad: tenant.codigo };
+      return { canAccess: true, reason: 'Acceso autorizado', isConfirmed: true, universidad: tenant.codigo };
     }
   }
 
-  return {
-    canAccess: false,
-    reason: 'El Banqueo Histórico es exclusivo para usuarios inscritos',
-    isConfirmed: false,
-    universidad: tenant.codigo
-  };
+  return negado;
 }
