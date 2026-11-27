@@ -26,7 +26,7 @@ export function LandingFooter() {
               </span>
             </div>
             <p className="text-sm leading-relaxed max-w-xs">
-              Simulacros de examen de admisión y banqueo de preguntas con exámenes pasados de la UNA Puno, la UNSA y más universidades del Perú.
+              Simulacros de examen de admisión y banqueo de preguntas con exámenes pasados de la UNA Puno, la UNSA, San Marcos, la UNT, la UNC y la UNCP.
             </p>
           </div>
 

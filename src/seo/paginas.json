@@ -8,10 +8,10 @@
   "paginas": [
     {
       "ruta": "/",
-      "title": "Simulacros de admisión UNA Puno, UNSA y más | Sinapsis Preu",
-      "description": "Simulacros de examen de admisión con preguntas reales de años pasados de la UNA Puno, UNSA y otras universidades del Perú. Puntaje calculado como en tu universidad. Primer simulacro gratis.",
+      "title": "Simulacros de admisión UNA Puno, UNSA, San Marcos y más | Sinapsis Preu",
+      "description": "Simulacros de examen de admisión con preguntas reales de la UNA Puno, UNSA, San Marcos, UNT, UNC y UNCP, calificados con la tabla oficial de cada universidad. Primer simulacro gratis.",
       "h1": "Simulacros de examen de admisión con preguntas reales",
-      "intro": "Practica para el examen de admisión de la UNA Puno, la UNSA y otras universidades del Perú con preguntas de exámenes pasados, tiempo cronometrado y tu puntaje calculado con la tabla oficial de cada universidad. Tu primer simulacro es gratis.",
+      "intro": "Practica para el examen de admisión de la UNA Puno, la UNSA, San Marcos, la UNT, la UNC y la UNCP con preguntas de exámenes pasados, tiempo cronometrado y tu puntaje calculado con la tabla oficial de cada universidad. Tu primer simulacro es gratis.",
       "prioridad": "1.0"
     },
     {
@@ -55,6 +55,38 @@
       "prioridad": "0.8"
     },
     {
+      "ruta": "/sanmarcos",
+      "title": "Simulacro de admisión San Marcos (UNMSM) con preguntas reales | Sinapsis Preu",
+      "description": "Simulacro del examen de admisión de la UNMSM (San Marcos): preguntas de exámenes pasados por área A-E, Habilidad Verbal, Lógico-Matemática y conocimientos, con la calificación oficial (+20, −1,125). Versión beta.",
+      "h1": "Simulacro de admisión San Marcos (UNMSM)",
+      "intro": "Rinde un simulacro del examen de admisión de la Universidad Nacional Mayor de San Marcos con preguntas de exámenes pasados, tu área (A, B, C, D o E) y el puntaje calculado como en la UNMSM: +20 por correcta y −1,125 por incorrecta. Versión beta.",
+      "prioridad": "0.8"
+    },
+    {
+      "ruta": "/unt",
+      "title": "Simulacro de admisión UNT Trujillo con preguntas reales | Sinapsis Preu",
+      "description": "Simulacro del examen de admisión de la Universidad Nacional de Trujillo (UNT): 100 preguntas por área con la calificación oficial (+4,079, −1,021). Versión beta.",
+      "h1": "Simulacro de admisión UNT Trujillo",
+      "intro": "Practica el examen de admisión de la Universidad Nacional de Trujillo con 100 preguntas por área (A, B, C o D) y el puntaje calculado como en la UNT. Versión beta.",
+      "prioridad": "0.8"
+    },
+    {
+      "ruta": "/unc",
+      "title": "Simulacro de admisión UNC Cajamarca con preguntas reales | Sinapsis Preu",
+      "description": "Simulacro del examen de admisión de la Universidad Nacional de Cajamarca (UNC): 90 preguntas por módulo con la calificación oficial sobre 600 puntos. Versión beta.",
+      "h1": "Simulacro de admisión UNC Cajamarca",
+      "intro": "Practica el examen de admisión de la Universidad Nacional de Cajamarca con 90 preguntas por módulo (A, B, C o D) y tu puntaje sobre 600, como en la UNC. Versión beta.",
+      "prioridad": "0.8"
+    },
+    {
+      "ruta": "/uncp",
+      "title": "Simulacro de admisión UNCP Huancayo con preguntas reales | Sinapsis Preu",
+      "description": "Simulacro del examen de admisión de la Universidad Nacional del Centro del Perú (UNCP): 80 preguntas por área con la ponderación oficial sobre 1500 puntos. Versión beta.",
+      "h1": "Simulacro de admisión UNCP Huancayo",
+      "intro": "Practica el examen de admisión de la Universidad Nacional del Centro del Perú con 80 preguntas por área (I a V) y tu puntaje ponderado sobre 1500, como en la UNCP. Versión beta.",
+      "prioridad": "0.8"
+    },
+    {
       "ruta": "/preguntas-frecuentes",
       "title": "Preguntas frecuentes sobre los simulacros | Sinapsis Preu",
       "description": "Cómo funcionan los simulacros de admisión de Sinapsis Preu: precio, puntaje, universidades disponibles, uso en el celular y cómo obtener acceso completo.",
@@ -80,14 +112,44 @@
     }
   ],
   "faqInicio": [
-    { "q": "¿Es gratis?", "a": "Tu primer simulacro en cada universidad es gratis, sin tarjeta. Si luego quieres acceso completo a simulacros y banqueo, consulta las opciones por WhatsApp." },
-    { "q": "¿Las preguntas son de exámenes reales?", "a": "Sí. Las preguntas provienen de exámenes de admisión de años pasados de cada universidad, con su clave y, en muchas, la solución explicada." },
-    { "q": "¿Qué universidades están disponibles?", "a": "Hoy puedes rendir simulacros de la UNA Puno (Universidad Nacional del Altiplano) y, en versión beta, de la UNSA de Arequipa. Estamos preparando más universidades, como la UNAJ de Juliaca, la UNSAAC del Cusco y San Marcos." },
-    { "q": "¿Necesito instalar algo?", "a": "No. Funciona directo desde el navegador de tu celular, tablet o computadora." },
-    { "q": "¿Funciona en mi celular?", "a": "Sí. Está pensado primero para celulares, incluso con datos móviles: las páginas son livianas y los botones grandes." },
-    { "q": "¿Qué pasa si se me va el internet?", "a": "Tus respuestas se guardan en tu celular mientras rindes. Si la conexión falla al enviar, no se pierden: puedes reintentar el envío cuando vuelva." },
-    { "q": "¿Hay límite de tiempo?", "a": "Tienes un tiempo sugerido, como el del examen real, para que practiques tu ritmo. Si te pasas, igual se califica." },
-    { "q": "¿El puntaje es igual al real?", "a": "Se calcula con la tabla de puntajes de tu universidad, así que es una referencia muy cercana. El resultado oficial siempre lo da tu universidad el día del examen." }
+    {
+      "q": "¿Es gratis?",
+      "a": "Tu primer simulacro en cada universidad es gratis, sin tarjeta. Si luego quieres acceso completo a simulacros y banqueo, consulta las opciones por WhatsApp."
+    },
+    {
+      "q": "¿Las preguntas son de exámenes reales?",
+      "a": "Sí. Las preguntas provienen de exámenes de admisión de años pasados de cada universidad, con su clave y, en muchas, la solución explicada."
+    },
+    {
+      "q": "¿Qué universidades están disponibles?",
+      "a": "Hoy puedes rendir simulacros de la UNA Puno y, en versión beta, de la UNSA (Arequipa), San Marcos (Lima), la UNT (Trujillo), la UNC (Cajamarca) y la UNCP (Huancayo), cada uno calificado con la tabla oficial de su universidad. Estamos preparando más, como la UNAJ de Juliaca, la UNSAAC del Cusco y la UNI."
+    },
+    {
+      "q": "¿Necesito instalar algo?",
+      "a": "No. Funciona directo desde el navegador de tu celular, tablet o computadora."
+    },
+    {
+      "q": "¿Funciona en mi celular?",
+      "a": "Sí. Está pensado primero para celulares, incluso con datos móviles: las páginas son livianas y los botones grandes."
+    },
+    {
+      "q": "¿Qué pasa si se me va el internet?",
+      "a": "Tus respuestas se guardan en tu celular mientras rindes. Si la conexión falla al enviar, no se pierden: puedes reintentar el envío cuando vuelva."
+    },
+    {
+      "q": "¿Hay límite de tiempo?",
+      "a": "Tienes un tiempo sugerido, como el del examen real, para que practiques tu ritmo. Si te pasas, igual se califica."
+    },
+    {
+      "q": "¿El puntaje es igual al real?",
+      "a": "Se calcula con la tabla de puntajes de tu universidad, así que es una referencia muy cercana. El resultado oficial siempre lo da tu universidad el día del examen."
+    }
   ],
-  "noIndexar": ["/registro", "/confirmar", "/examen", "/resultados", "/aula"]
+  "noIndexar": [
+    "/registro",
+    "/confirmar",
+    "/examen",
+    "/resultados",
+    "/aula"
+  ]
 }

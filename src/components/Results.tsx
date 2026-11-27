@@ -233,8 +233,10 @@ export function Results() {
   const isGood = score >= umbralBueno && score < umbralExcelente;
   const isRegular = score >= umbralRegular && score < umbralBueno;
 
-  // Escalas chicas (p.ej. vigesimal) muestran decimales; las grandes, enteros (como antes)
-  const scoreDecimals = Number.isInteger(score) || result.maxScore > 100 ? 0 : 2;
+  // Escalas chicas (p.ej. vigesimal) muestran decimales; las grandes y enteras, enteros (como antes).
+  // Una escala grande con decimales (UNT: 407,9) los muestra para no redondear el máximo oficial.
+  const escalaEntera = Number.isInteger(Math.round(result.maxScore * 100) / 100);
+  const scoreDecimals = Number.isInteger(score) || (result.maxScore > 100 && escalaEntera) ? 0 : 2;
 
   const heroTitle = isExcellent
     ? '¡Estás listo!'

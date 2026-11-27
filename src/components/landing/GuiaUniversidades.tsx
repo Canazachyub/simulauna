@@ -3,7 +3,7 @@
 /*  practicar en cada universidad, con enlaces <a href> rastreables (Link) a   */
 /*  cada página, y una guía corta para preparar el examen de admisión.         */
 /*  Regla de contenido: solo cifras reales del banco (UNA ≈ 8 000 preguntas    */
-/*  activas, UNSA ≈ 1 000 en beta). Las que no están activas se dicen "pronto".*/
+/*  activas; UNSA, San Marcos, UNT, UNC y UNCP en beta). Las demás, "pronto". */
 /* -------------------------------------------------------------------------- */
 import { Link } from 'react-router-dom';
 import { ArrowRight, BookOpenCheck, CalendarClock, Target, TimerReset } from 'lucide-react';
@@ -39,12 +39,19 @@ const PASOS = [
 const PRONTO = [
   'UNAJ (Universidad Nacional de Juliaca)',
   'UNSAAC (Cusco)',
-  'UNMSM (San Marcos)',
   'UNI',
-  'UNCP (Huancayo)',
-  'UNT (Trujillo)',
   'UNSCH (Ayacucho)',
   'UNP (Piura)',
+  'UNFV',
+  'UNALM',
+];
+
+/** Universidades en beta con banco y calificación oficial (registro: estado 'piloto'). */
+const BETA = [
+  { codigo: 'sanmarcos', nombre: 'San Marcos (UNMSM)', texto: 'Habilidad Verbal y Lógico-Matemática y 16 cursos de conocimientos, con la calificación oficial de la UNMSM.' },
+  { codigo: 'unt', nombre: 'UNT Trujillo', texto: 'Simulacro de 100 preguntas por área con la calificación oficial de la UNT.' },
+  { codigo: 'unc', nombre: 'UNC Cajamarca', texto: 'Simulacro de 90 preguntas por módulo con la calificación oficial de la UNC.' },
+  { codigo: 'uncp', nombre: 'UNCP Huancayo', texto: 'Simulacro de 80 preguntas por área con la ponderación oficial de la UNCP.' },
 ];
 
 export function GuiaUniversidades() {
@@ -95,6 +102,15 @@ export function GuiaUniversidades() {
                 <li><Link to="/unsa" className={enlace}>Simulacro de admisión UNSA <ArrowRight className="w-4 h-4" aria-hidden="true" /></Link></li>
                 <li><a href="/unsa/preguntas/" className={enlace}>Preguntas del examen de admisión UNSA por curso</a></li>
                 <li><a href="/unsa/examenes/" className={enlace}>Exámenes de admisión UNSA por año</a></li>
+              </ul>
+              <h3 className="mt-6 font-display text-lg font-black text-slate-900">También en beta</h3>
+              <ul className="mt-1 text-[15px] text-slate-700 space-y-1">
+                {BETA.map((u) => (
+                  <li key={u.codigo}>
+                    <Link to={`/${u.codigo}`} className={enlace}>Simulacro de admisión {u.nombre}</Link>
+                    <span className="block text-sm text-slate-600">{u.texto}</span>
+                  </li>
+                ))}
               </ul>
               <h3 className="mt-6 font-display text-lg font-black text-slate-900">Muy pronto</h3>
               <p className="mt-1 text-[15px] text-slate-700 leading-relaxed">
