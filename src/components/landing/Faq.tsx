@@ -38,7 +38,7 @@ const PREGUNTAS: { q: string; a: ReactNode }[] = [
   },
   {
     q: '¿Qué universidades están disponibles?',
-    a: 'Hoy puedes rendir simulacros de la UNA Puno (Universidad Nacional del Altiplano) y, en versión beta, de la UNSA (Arequipa), San Marcos (Lima), la UNT (Trujillo), la UNC (Cajamarca) y la UNCP (Huancayo). Cada simulacro se califica con la tabla oficial de su universidad. Estamos preparando más, como la UNAJ de Juliaca, la UNSAAC del Cusco y la UNI.',
+    a: 'Hoy puedes rendir simulacros de la UNA Puno (Universidad Nacional del Altiplano) y, en versión beta, de la UNSA (Arequipa), San Marcos (Lima), la UNT (Trujillo), la UNC (Cajamarca), la UNCP (Huancayo) y la UNI (Lima). Cada simulacro se califica con la tabla oficial de su universidad. Estamos preparando más, como la UNAJ de Juliaca y la UNSAAC del Cusco.',
   },
   {
     q: '¿Necesito instalar algo?',

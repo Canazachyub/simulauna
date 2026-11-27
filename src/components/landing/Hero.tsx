@@ -38,7 +38,7 @@ export function Hero() {
           </div>
 
           <p className="mt-3 text-[15px] sm:text-lg text-white/90 leading-snug max-w-md">
-            Preguntas reales de exámenes pasados de la UNA Puno, la UNSA, San Marcos, la UNT, la UNC y la UNCP, con tu
+            Preguntas reales de exámenes pasados de la UNA Puno, la UNSA, San Marcos, la UNI, la UNT, la UNC y la UNCP, con tu
             puntaje calculado como lo hace tu universidad.
           </p>
 

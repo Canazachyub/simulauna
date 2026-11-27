@@ -39,7 +39,6 @@ const PASOS = [
 const PRONTO = [
   'UNAJ (Universidad Nacional de Juliaca)',
   'UNSAAC (Cusco)',
-  'UNI',
   'UNSCH (Ayacucho)',
   'UNP (Piura)',
   'UNFV',
@@ -49,6 +48,7 @@ const PRONTO = [
 /** Universidades en beta con banco y calificación oficial (registro: estado 'piloto'). */
 const BETA = [
   { codigo: 'sanmarcos', nombre: 'San Marcos (UNMSM)', texto: 'Habilidad Verbal y Lógico-Matemática y 16 cursos de conocimientos, con la calificación oficial de la UNMSM.' },
+  { codigo: 'uni', nombre: 'UNI (Ingeniería)', texto: 'Las tres pruebas en un simulacro: Aptitud Académica y Humanidades, Matemática, y Física y Química.' },
   { codigo: 'unt', nombre: 'UNT Trujillo', texto: 'Simulacro de 100 preguntas por área con la calificación oficial de la UNT.' },
   { codigo: 'unc', nombre: 'UNC Cajamarca', texto: 'Simulacro de 90 preguntas por módulo con la calificación oficial de la UNC.' },
   { codigo: 'uncp', nombre: 'UNCP Huancayo', texto: 'Simulacro de 80 preguntas por área con la ponderación oficial de la UNCP.' },
