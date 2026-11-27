@@ -127,3 +127,22 @@ function revisarExamenesOficiales() {
   });
   Logger.log(log.join('\n'));
 }
+
+/**
+ * Publica como Beta (estado 'piloto') las universidades con banco oficial listo. Solo cambia la
+ * columna `estado` de CORE.universidades; para ocultarlas otra vez, poner 'oculta' a mano.
+ */
+function publicarUniversidadesBeta() {
+  const codigos = ['sanmarcos', 'unt', 'unc', 'uncp'];
+  const registro = pilotoHojaRegistro_(SpreadsheetApp.openById(CORE_SPREADSHEET_ID));
+  const log = [];
+  codigos.forEach(function (codigo) {
+    const fila = pilotoBuscarFila_(registro, codigo);
+    if (!fila) { log.push('✗ ' + codigo + ': no está en el registro'); return; }
+    const antes = String(fila.valores[registro.idx.estado] || '');
+    registro.sheet.getRange(fila.numero, registro.idx.estado + 1).setValue('piloto');
+    log.push('✓ ' + codigo + ': ' + antes + ' → piloto');
+  });
+  try { CacheService.getScriptCache().remove('core:universidades'); } catch (err) { /* nada */ }
+  Logger.log(log.join('\n'));
+}
