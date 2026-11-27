@@ -125,6 +125,5 @@ function revisarExamenesOficiales() {
       log.push('✗ ' + codigo + ': ' + (err && err.message ? err.message : err));
     }
   });
-  Logger.log(log.join('
-'));
+  Logger.log(log.join('\n'));
 }
