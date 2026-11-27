@@ -75,6 +75,9 @@ export function GuiaUniversidades() {
                 <li><Link to="/una/cepre" className={enlace}>Simulacro y banqueo CEPREUNA por semanas</Link></li>
                 <li><Link to="/una/banqueo-tema" className={enlace}>Banqueo por curso y tema</Link></li>
                 <li><Link to="/una/banqueo" className={enlace}>Banqueo histórico de preguntas</Link></li>
+                {/* Páginas estáticas (fuera de React): <a> normal, no <Link>. */}
+                <li><a href="/una/preguntas/" className={enlace}>Preguntas del examen de admisión UNA Puno por curso</a></li>
+                <li><a href="/una/examenes/" className={enlace}>Exámenes de admisión UNA Puno por año</a></li>
               </ul>
             </article>
           </Reveal>
@@ -90,6 +93,8 @@ export function GuiaUniversidades() {
               </p>
               <ul className="mt-3 text-[15px] text-slate-700">
                 <li><Link to="/unsa" className={enlace}>Simulacro de admisión UNSA <ArrowRight className="w-4 h-4" aria-hidden="true" /></Link></li>
+                <li><a href="/unsa/preguntas/" className={enlace}>Preguntas del examen de admisión UNSA por curso</a></li>
+                <li><a href="/unsa/examenes/" className={enlace}>Exámenes de admisión UNSA por año</a></li>
               </ul>
               <h3 className="mt-6 font-display text-lg font-black text-slate-900">Muy pronto</h3>
               <p className="mt-1 text-[15px] text-slate-700 leading-relaxed">

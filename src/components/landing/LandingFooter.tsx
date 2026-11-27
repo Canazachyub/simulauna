@@ -57,6 +57,8 @@ export function LandingFooter() {
               <li><Link to="/una/cepre" className={linkBtn}>Simulacro y banqueo CEPREUNA</Link></li>
               <li><Link to="/una/banqueo-tema" className={linkBtn}>Banqueo por tema</Link></li>
               <li><Link to="/una/banqueo" className={linkBtn}>Banqueo histórico</Link></li>
+              <li><a href="/una/preguntas/" className={linkBtn}>Preguntas por curso</a></li>
+              <li><a href="/una/examenes/" className={linkBtn}>Exámenes por año</a></li>
               <li><Link to="/una/aula" className={linkBtn}>Aula virtual</Link></li>
               <li>
                 <a href="https://ceprem.unap.edu.pe" target="_blank" rel="noopener noreferrer" className={linkBtn}>

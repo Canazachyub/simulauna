@@ -7,6 +7,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { generarContenido } from './seo-contenido.mjs';
 
 const raiz = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(raiz, 'dist');
@@ -64,6 +65,11 @@ const migas = (p) => ({
 const enlaces = seo.paginas
   .filter((p) => p.ruta !== '/')
   .map((p) => `<li><a href="${canonica(p.ruta)}">${esc(p.h1)}</a></li>`)
+  .concat([
+    `<li><a href="${url}/una/preguntas/">Preguntas del examen de admisión UNA Puno por curso</a></li>`,
+    `<li><a href="${url}/una/examenes/">Exámenes de admisión UNA Puno por año</a></li>`,
+    `<li><a href="${url}/unsa/preguntas/">Preguntas del examen de admisión UNSA por curso</a></li>`,
+  ])
   .join('');
 
 function reemplazarMeta(html, p) {
@@ -111,10 +117,48 @@ for (const p of seo.paginas) {
   writeFileSync(destino, reemplazarMeta(plantilla, p));
 }
 
+// Páginas de contenido (preguntas por curso y exámenes por año), ver seo-contenido.mjs.
+const contenido = generarContenido({ raiz, dist, sitio: seo.sitio });
+
+const todas = [
+  ...seo.paginas.map((p) => ({ loc: canonica(p.ruta), prioridad: p.prioridad })),
+  ...contenido.map((p) => ({ loc: url + p.ruta, prioridad: p.prioridad })),
+];
 writeFileSync(join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${seo.paginas.map((p) => `  <url><loc>${canonica(p.ruta)}</loc><lastmod>${hoy}</lastmod><priority>${p.prioridad}</priority></url>`).join('\n')}
+${todas.map((p) => `  <url><loc>${p.loc}</loc><lastmod>${hoy}</lastmod><priority>${p.prioridad}</priority></url>`).join('\n')}
 </urlset>
+`);
+
+// llms.txt: resumen del sitio para asistentes de IA (opcional; casi nadie lo lee aún, cuesta poco).
+const resumenUni = (codigo) => {
+  try {
+    return JSON.parse(readFileSync(join(raiz, 'src/seo/muestras', `${codigo}.json`), 'utf8'));
+  } catch {
+    return null;
+  }
+};
+const una = resumenUni('una');
+const unsa = resumenUni('unsa');
+writeFileSync(join(dist, 'llms.txt'), `# ${nombre}
+
+> Plataforma peruana de simulacros de examen de admisión universitaria con preguntas reales de exámenes pasados. Hecha en Puno, Perú. El primer simulacro de cada universidad es gratis; el acceso completo se activa por WhatsApp (${whatsapp}).
+
+${una ? `- UNA Puno (Universidad Nacional del Altiplano): ${una.total} preguntas de ${una.examenes} exámenes de admisión (${una.anioMin}–${una.anioMax}), ${una.cursos.length} cursos, con clave y solución. Puntaje calculado con la ponderación oficial por área (Ingenierías, Biomédicas, Sociales).` : ''}
+${unsa ? `- UNSA (Universidad Nacional de San Agustín de Arequipa), en beta: ${unsa.total} preguntas de ${unsa.examenes} exámenes (${unsa.anioMin}–${unsa.anioMax}).` : ''}
+- Modalidades: simulacro cronometrado de 60 preguntas, banqueo por curso, banqueo por tema y subtema, banqueo CEPREUNA por semanas.
+- No está afiliado a ninguna universidad.
+
+## Páginas principales
+
+- [Simulacro de admisión UNA Puno](${url}/una/): simulacro gratis con puntaje por área
+- [Preguntas del examen de admisión UNA Puno por curso](${url}/una/preguntas/): temas más preguntados y ejemplos resueltos
+- [Exámenes de admisión UNA Puno por año](${url}/una/examenes/): exámenes ${una ? `${una.anioMin}–${una.anioMax}` : ''} con preguntas de ejemplo
+- [Banqueo por tema UNA Puno](${url}/una/banqueo-tema/)
+- [Simulacro y banqueo CEPREUNA](${url}/una/cepre/)
+- [Simulacro de admisión UNSA](${url}/unsa/)
+- [Preguntas del examen de admisión UNSA](${url}/unsa/preguntas/)
+- [Preguntas frecuentes](${url}/preguntas-frecuentes/)
 `);
 
 writeFileSync(join(dist, 'robots.txt'), `User-agent: *
@@ -124,4 +168,4 @@ ${['registro', 'confirmar', 'examen', 'resultados'].map((s) => `Disallow: /*/${s
 Sitemap: ${url}/sitemap.xml
 `);
 
-console.log(`SEO: ${seo.paginas.length} páginas estáticas + sitemap.xml + robots.txt`);
+console.log(`SEO: ${seo.paginas.length} páginas de la app + ${contenido.length} de contenido + sitemap.xml + robots.txt`);

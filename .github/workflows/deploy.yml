@@ -63,3 +63,12 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # IndexNow: avisa a Bing (y a los buscadores que lo comparten) qué URLs hay, para que
+      # rastreen rápido. Bing alimenta Copilot y parte de ChatGPT search. Google no usa IndexNow.
+      - name: Avisar a IndexNow
+        continue-on-error: true
+        run: |
+          sleep 30
+          URLS=$(curl -fsS https://simulacros.sinapsispreu.com/sitemap.xml | grep -o '<loc>[^<]*' | sed 's/<loc>//' | python3 -c 'import sys,json;print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))')
+          curl -sS -o /dev/null -w "IndexNow HTTP %{http_code}\n" -X POST https://api.indexnow.org/indexnow             -H 'Content-Type: application/json; charset=utf-8'             -d "{\"host\":\"simulacros.sinapsispreu.com\",\"key\":\"16cc707254eb7cc729fe09e8696be021\",\"keyLocation\":\"https://simulacros.sinapsispreu.com/16cc707254eb7cc729fe09e8696be021.txt\",\"urlList\":$URLS}"
