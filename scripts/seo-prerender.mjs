@@ -170,7 +170,7 @@ const lineasUnis = LLMS_UNIS.map(([c, n, nota]) => {
 const enlacesUnis = LLMS_UNIS.map(([c, n]) => `- [Simulacro de admisión ${n.split(' (')[0]}](${url}/${c}/) · [preguntas por curso](${url}/${c}/preguntas/) · [exámenes por año](${url}/${c}/examenes/)`).join('\n');
 writeFileSync(join(dist, 'llms.txt'), `# ${nombre}
 
-> Plataforma peruana de simulacros de examen de admisión universitaria con preguntas reales de exámenes pasados. Hecha en Puno, Perú. Cada simulacro se califica con la tabla oficial de su universidad. El primer simulacro de cada universidad es gratis; el acceso completo se activa por WhatsApp (${whatsapp}).
+> Plataforma peruana de simulacros de examen de admisión universitaria con preguntas reales de exámenes pasados. Hecha en Perú para todos los estudiantes que desean ingresar a una universidad nacional. Cada simulacro se califica con la tabla oficial de su universidad. El primer simulacro de cada universidad es gratis; el acceso completo se activa por WhatsApp (${whatsapp}).
 
 ${lineasUnis}
 - Modalidades: simulacro cronometrado con la calificación oficial, banqueo por curso y por tema de tu universidad, y banqueo mix con preguntas del mismo tema de otras universidades por nivel de dificultad (básico, intermedio San Marcos, avanzado UNI, progresivo).

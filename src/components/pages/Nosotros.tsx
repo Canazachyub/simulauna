@@ -50,13 +50,13 @@ export function Nosotros() {
               Sobre nosotros
             </span>
             <h1 className="font-display text-display-hero font-black [text-shadow:0_4px_20px_rgba(0,0,0,0.35)]">
-              Empezamos en Puno.
+              Hecho en Perú,
               <br />
-              Hoy somos de todo el Perú.
+              para todos los postulantes.
             </h1>
             <p className="mt-5 text-white/90 text-base md:text-lg max-w-prose mx-auto md:mx-0 leading-relaxed">
-              Sinapsis Preu nació como un simulador para postulantes de la Universidad Nacional del
-              Altiplano (UNA) — Puno. Hoy es una plataforma nacional multi-universidad, con un banco
+              Sinapsis Preu es una plataforma peruana para todos los estudiantes que desean ingresar a
+              una universidad nacional. Reúne varias universidades del país, con un banco
               de preguntas de exámenes históricos reales y un puntaje calculado exactamente como lo
               hace cada universidad.
             </p>

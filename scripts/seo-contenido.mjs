@@ -198,7 +198,7 @@ ${[migasLd, {
 <h1>${esc(h1)}</h1>
 ${cuerpo}
 </main>
-<footer><div class="in"><b>${esc(nombre)}</b> · Simulacros de examen de admisión con preguntas reales de años anteriores, hechos en Puno, Perú.
+<footer><div class="in"><b>${esc(nombre)}</b> · Simulacros de examen de admisión con preguntas reales de años anteriores, hechos en Perú para todos los estudiantes que desean ingresar a una universidad nacional.
 Las preguntas provienen de exámenes de admisión públicos de cada universidad; ${esc(nombre)} no está afiliado a ninguna universidad.
 · <a href="/preguntas-frecuentes/">Preguntas frecuentes</a> · <a href="/nosotros/">Nosotros</a> · <a href="/terminos/">Términos</a> · Actualizado: ${hoy}</div></footer>
 </body>

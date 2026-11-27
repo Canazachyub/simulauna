@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------- */
-/*  "Hecho en Puno" (sección honesta, sin cifras ni testimonios inventados)   */
+/*  "Hecho en Perú" (sección honesta, sin cifras ni testimonios inventados)   */
 /*  + CTA FINAL con el lobito y el selector de universidad.                   */
 /* -------------------------------------------------------------------------- */
 import { useState } from 'react';
@@ -18,8 +18,8 @@ const PUNTOS = [
   },
   {
     icon: MapPin,
-    t: 'Nació en Puno',
-    d: 'Un proyecto independiente que empezó con el examen de la UNA y hoy suma más universidades.',
+    t: 'Hecho en Perú',
+    d: 'Un proyecto peruano e independiente para todos los que quieren ingresar a una universidad nacional.',
   },
   {
     icon: ShieldCheck,
@@ -39,7 +39,7 @@ export function HechoEnPuno() {
     <section id="nosotros" className="relative py-14 md:py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
         <Reveal>
-          <SectionHeading eyebrow="Quiénes somos" title="Hecho en Puno, para todo el Perú" />
+          <SectionHeading eyebrow="Quiénes somos" title="Hecho en Perú, para todos los que quieren ingresar a una universidad nacional" />
         </Reveal>
         <ul className="mt-8 grid gap-4 md:grid-cols-3">
           {PUNTOS.map((p, i) => (

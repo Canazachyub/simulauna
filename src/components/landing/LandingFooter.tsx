@@ -88,7 +88,7 @@ export function LandingFooter() {
 
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-white/60 text-center">
           <p>© {new Date().getFullYear()} Sinapsis Preu · Todos los derechos reservados</p>
-          <p>Hecho en Puno, Perú — para los postulantes de todo el país</p>
+          <p>Hecho en Perú para todos los estudiantes que desean ingresar a una universidad nacional</p>
         </div>
       </div>
     </footer>
