@@ -172,7 +172,12 @@ document.addEventListener('click', async (ev) => {
   if (t.dataset.dias !== undefined) { $('#fVence').value = t.dataset.dias === '0' ? '' : masDias(+t.dataset.dias); return; }
   if (t.dataset.rev) {
     const [uni, mod] = t.dataset.rev.split('|');
-    if (!confirm(`¿Quitar ${mod === 'todas' ? 'TODOS los accesos' : nomServ(mod)} de ${nomUni(uni)} al DNI ${DNI}?`)) return;
+    // Confirmación en la misma página (sin confirm(), que en móviles y en el marco de Google molesta): 2º toque en 4 s.
+    if (t.dataset.armado !== '1') {
+      t.dataset.armado = '1'; t.dataset.texto = t.textContent; t.textContent = '¿Seguro? Toca otra vez';
+      setTimeout(() => { if (t.isConnected && t.dataset.armado === '1') { t.dataset.armado = ''; t.textContent = t.dataset.texto; } }, 4000);
+      return;
+    }
     t.disabled = true; pintarFicha(await run('adminRevocar', { dni: DNI, universidad: uni, modalidad: mod })); toast('Acceso quitado'); cargarListas(); return;
   }
   if (t.id === 'btnDar') {
