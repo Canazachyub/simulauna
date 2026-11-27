@@ -52,9 +52,11 @@ function adminAssert_() {
 function adminServe_() {
   let email = '';
   try { email = adminAssert_(); } catch (err) {
+    const quien = String(Session.getActiveUser().getEmail() || '');
     return HtmlService.createHtmlOutput(
       '<div style="font:16px system-ui;padding:40px;text-align:center"><h2>Sin acceso</h2>' +
-      '<p>Esta página es solo para administradores de Sinapsis Preu.</p></div>')
+      '<p>Esta página es solo para administradores de Sinapsis Preu.</p>' +
+      '<p style="color:#64748b;font-size:13px">Cuenta detectada: ' + (quien ? quien.replace(/[<>&"]/g, '') : '(ninguna)') + '</p></div>')
       .setTitle('Sin acceso');
   }
   const t = HtmlService.createTemplateFromFile('admin');
@@ -98,7 +100,7 @@ function adminPermisosSheet_() {
 function adminFecha_(v) {
   if (!v) return '';
   const d = v instanceof Date ? v : new Date(v);
-  return isNaN(d.getTime()) ? String(v) : Utilities.formatDate(d, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+  return isNaN(d.getTime()) ? String(v) : Utilities.formatDate(d, 'America/Lima', 'yyyy-MM-dd');
 }
 
 function adminHoy_() { const d = new Date(); d.setHours(0, 0, 0, 0); return d; }
@@ -108,7 +110,7 @@ function adminVigente_(estado, vence) {
   if (e === 'revocado' || e === 'inactivo') return false;
   if (!vence) return true;
   const d = vence instanceof Date ? vence : new Date(vence);
-  return isNaN(d.getTime()) || d >= adminHoy_();
+  return isNaN(d.getTime()) || adminFecha_(d) >= adminFecha_(new Date()); // por fecha, hora de Lima
 }
 
 function adminLimpiarDni_(dni) {
@@ -252,7 +254,7 @@ function adminEscribirPermisos_(dni, universidad, servicios, vence, plan, admin,
   const data = sh.getDataRange().getValues();
   const h = {}; data[0].forEach(function (c, i) { h[String(c).trim().toLowerCase()] = i; });
   const ahora = new Date();
-  const venceVal = vence ? new Date(vence + 'T23:59:59') : '';
+  const venceVal = vence ? Utilities.parseDate(vence + ' 12:00', 'America/Lima', 'yyyy-MM-dd HH:mm') : '';
   servicios.forEach(function (s) {
     let fila = -1;
     for (let i = data.length - 1; i >= 1; i--) {
