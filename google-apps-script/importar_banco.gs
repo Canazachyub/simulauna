@@ -20,7 +20,8 @@ const BANCOS_OFICIALES_ = {
   sanmarcos: '1NAneYZQjBYkUZ63PTcUc-l2IQqw2qgaBZZmtUrC2t90',
   unt: '1zcYnTMCe3pO7QjjftKeFUhPPUVlyeYnlLMFGCBWkTXU',
   unc: '1rOzCSs85s2bWycACiSHjSIH2G6hzshXCVE54XVZ7bhE',
-  uncp: '1UszKwSVwbWDvKP6sOZ3Sj16-kqxv8MoFmLiHdhNl-Cw'
+  uncp: '1UszKwSVwbWDvKP6sOZ3Sj16-kqxv8MoFmLiHdhNl-Cw',
+  uni: '1Do0270pZB12VUfIC0ynzxop-8Cu7sJqs0eSrZUjgyCM'
 };
 
 /** Importa todos los bancos oficiales y limpia la caché una vez. Si se corta por tiempo, volver a ejecutar. */
@@ -38,6 +39,7 @@ function importarBancoSanMarcos() { importarBancoOficial_('sanmarcos', BANCOS_OF
 function importarBancoUNT() { importarBancoOficial_('unt', BANCOS_OFICIALES_.unt); }
 function importarBancoUNC() { importarBancoOficial_('unc', BANCOS_OFICIALES_.unc); }
 function importarBancoUNCP() { importarBancoOficial_('uncp', BANCOS_OFICIALES_.uncp); }
+function importarBancoUNI() { importarBancoOficial_('uni', BANCOS_OFICIALES_.uni); }
 
 function importarBancoOficial_(codigo, origenId, sinLimpiarCache) {
   if (codigo === 'una') throw new Error('UNA usa su propio importador (hojas legadas).');
@@ -133,7 +135,7 @@ function revisarExamenesOficiales() {
  * columna `estado` de CORE.universidades; para ocultarlas otra vez, poner 'oculta' a mano.
  */
 function publicarUniversidadesBeta() {
-  const codigos = ['sanmarcos', 'unt', 'unc', 'uncp'];
+  const codigos = ['sanmarcos', 'unt', 'unc', 'uncp', 'uni'];
   const registro = pilotoHojaRegistro_(SpreadsheetApp.openById(CORE_SPREADSHEET_ID));
   const log = [];
   codigos.forEach(function (codigo) {

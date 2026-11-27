@@ -455,7 +455,16 @@ function handleCheckBanqueoAccess_(ctx) {
   }
 
   const tenant = resolveTenantOrThrow_(ctx.params.universidad);
-  return checkBanqueoAccessV2(tenant, dni, email, ctx.params.modalidad);
+  const acceso = checkBanqueoAccessV2(tenant, dni, email, ctx.params.modalidad);
+  // Banqueo y por tema usan el banco general: cualquier banqueo activo (en cualquier universidad)
+  // abre la práctica (decisión del dueño, 2026-11-27). CEPRE sigue siendo por universidad.
+  const modalidad = String(ctx.params.modalidad || 'banqueo').toLowerCase();
+  if (!acceso.canAccess && (modalidad === 'banqueo' || modalidad === 'banqueo_tema') &&
+      !/no coinciden|verificar/i.test(acceso.reason || '')) {
+    const general = accesoPracticaGeneral_(dni, email);
+    if (general.canAccess) return Object.assign({ universidad: tenant.codigo }, general);
+  }
+  return acceso;
 }
 
 function handleGetBanqueoQuestions_(ctx) {
@@ -606,6 +615,10 @@ const ROUTES = {
   getTemasPorCurso: { handler: handleGetTemasPorCurso_, required: ['curso'] },
   getSubtemasPorTema: { handler: handleGetSubtemasPorTema_, required: ['curso', 'tema'] },
   getBanqueoByTema: { handler: handleGetBanqueoByTema_, required: ['curso'] },
+
+  // ---- Banqueo general: todas las universidades, con filtro (banqueo_general.gs) ----
+  getResumenGeneral: { handler: handleGetResumenGeneral_, required: [], method: 'GET' },
+  getBanqueoGeneral: { handler: handleGetBanqueoGeneral_, required: ['course'], method: 'GET' },
 
   // ---- Aula Virtual (v2.1, ver docs/CONTRATO_AULA_V21.md) ----
   getCiclos: { handler: handleGetCiclos_, required: ['universidad'], method: 'GET' },

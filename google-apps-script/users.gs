@@ -344,7 +344,8 @@ function checkPermiso_(universidad, dniStr, modalidad) {
       const rowUniversidad = String(data[i][1] || '').trim().toLowerCase();
       const rowModalidad = String(data[i][2] || '').trim().toLowerCase();
       const rowEstado = String(data[i][3] || '').trim().toLowerCase();
-      if (rowDni === dniStr && (rowUniversidad === universidad || rowUniversidad === 'todas') &&
+      // universidad '*' = en cualquier universidad (banqueo general, ver banqueo_general.gs).
+      if (rowDni === dniStr && (universidad === '*' || rowUniversidad === universidad || rowUniversidad === 'todas') &&
         rowModalidad === modalidadLower && rowEstado !== 'inactivo' && rowEstado !== 'revocado') {
         if (colVence >= 0 && data[i][colVence]) {
           const vence = data[i][colVence] instanceof Date ? data[i][colVence] : new Date(data[i][colVence]);
