@@ -6,10 +6,11 @@
 /*  Peso del primer pantallazo en móvil: 1 pose del lobito (~40 KB) + los     */
 /*  logos de las universidades activas. Nada de fondos bg-universo.           */
 /* -------------------------------------------------------------------------- */
+import { LoopVideo } from './LoopVideo';
 import { CheckCircle2 } from 'lucide-react';
-import { useScrollProgress, ILLUSTRATIONS_3D } from '../motion/hooks';
+import { useScrollProgress } from '../motion/hooks';
 import { SectionCurve } from './SectionCurve';
-import { Illus3D, UniversityPicker } from './LandingParts';
+import { UniversityPicker } from './LandingParts';
 import { LANDING_ASSETS } from './landingData';
 
 export function Hero() {
@@ -20,6 +21,9 @@ export function Hero() {
       <div className="relative z-10 container mx-auto px-4 sm:px-6 pt-5 pb-14 md:pt-12 md:pb-24 lg:pt-16 lg:pb-28 grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] gap-10 items-center">
         {/* ---------------- Texto + selector (no se mueve con el scroll) ---------------- */}
         <div className="min-w-0 max-w-xl">
+          <p className="mb-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-bold uppercase tracking-[0.14em] text-brand-accent-200">
+            7 universidades nacionales · Calificación oficial
+          </p>
           <div className="flex items-center gap-3">
             <h1 className="flex-1 min-w-0 font-display font-black text-[2.15rem] leading-[1.08] sm:text-5xl lg:text-6xl tracking-tight">
               Simulacros de examen de{' '}
@@ -38,8 +42,8 @@ export function Hero() {
           </div>
 
           <p className="mt-3 text-[15px] sm:text-lg text-white/90 leading-snug max-w-md">
-            Más de 18 000 preguntas reales de exámenes pasados de la UNA Puno, la UNSA, San Marcos, la UNI, la UNT, la UNC y
-            la UNCP, con tu puntaje calculado con la tabla oficial de tu universidad.
+            Ensaya tu examen antes del día real: más de 18 000 preguntas de exámenes pasados de la UNA Puno, la UNSA, San
+            Marcos, la UNI, la UNT, la UNC y la UNCP, y tu puntaje con la tabla oficial de tu universidad.
           </p>
 
           <div className="mt-5 max-w-md">
@@ -48,7 +52,7 @@ export function Hero() {
 
           <p className="mt-3 inline-flex items-center gap-1.5 text-sm text-white/80">
             <CheckCircle2 className="w-4 h-4 shrink-0 text-brand-accent-300" aria-hidden="true" />
-            Primer simulacro gratis · Sin tarjeta · Sin instalar nada
+            Primer simulacro gratis · Sin tarjeta · Clave y solución en cada pregunta
           </p>
         </div>
 
@@ -58,10 +62,11 @@ export function Hero() {
             <div className="lp-scene-glow" />
             {/* Una sola escena: el escritorio isométrico (antes se apilaban ficha + lobito y saturaba) */}
             <div className="absolute inset-[4%] parallax-slow">
-              <Illus3D
-                srcs={[ILLUSTRATIONS_3D.escritorio, ILLUSTRATIONS_3D.simulacro]}
-                size={768}
-                className="w-full h-full object-contain float-3d"
+              <LoopVideo
+                src={`${import.meta.env.BASE_URL}videos/hero-escritorio.mp4`}
+                poster={`${import.meta.env.BASE_URL}videos/hero-escritorio.webp`}
+                alt="Escritorio de estudio animado con laptop, libros y cohete"
+                className="w-full h-full object-contain"
               />
             </div>
           </div>

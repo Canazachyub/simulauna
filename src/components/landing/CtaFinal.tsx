@@ -84,10 +84,11 @@ export function CtaFinal() {
         <CtaMascot />
         <div className="w-full max-w-md lg:max-w-lg text-center lg:text-left">
           <h2 className="font-display text-display-section font-black">
-            Tu primer simulacro <span className="text-brand-accent-400">es gratis</span>
+            Tu vacante empieza con un simulacro. <span className="text-brand-accent-400">El primero es gratis.</span>
           </h2>
           <p className="mt-2 text-white/85 text-base md:text-lg">
-            Elige tu universidad y empieza hoy. Sin tarjeta y sin instalar nada.
+            Rinde hoy un examen con preguntas reales, mira tu puntaje oficial y descubre qué curso reforzar. Sin tarjeta y sin
+            instalar nada.
           </p>
           <div className="mt-6 text-left">
             <UniversityPicker idPrefix="cta-uni" />

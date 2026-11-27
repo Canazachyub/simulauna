@@ -86,7 +86,7 @@ export function Ventajas() {
         <Reveal>
           <SectionHeading
             eyebrow="Todo en un solo lugar"
-            title="Lo que puedes hacer en Sinapsis Preu"
+            title="Todo lo que necesitas para ingresar"
             subtitle="Simulacros con la nota de tu universidad, práctica enfocada y tu avance a la vista."
           />
         </Reveal>

@@ -7,6 +7,7 @@ import { ArrowRight, Shuffle } from 'lucide-react';
 import { Reveal } from '../motion/motion';
 import { SectionHeading } from './LandingParts';
 import { useLandingUniversities } from './landingData';
+import { LoopVideo } from './LoopVideo';
 
 const NIVELES = [
   { nombre: 'Básico', unis: 'UNA, UNSA, UNT, UNC, UNCP', color: 'bg-emerald-500' },
@@ -25,7 +26,7 @@ export function BanqueoMix() {
           <Reveal>
             <SectionHeading
               className="!text-left !mx-0"
-              eyebrow="Solo en Sinapsis Preu"
+              eyebrow="Novedad"
               title="Banqueo mix: el mismo tema, de otras universidades"
               subtitle="¿Dominas Razones y proporciones con las preguntas de tu universidad? Pruébate con las de San Marcos o la UNI. Elegimos al azar preguntas del tema equivalente y las ordenamos por nivel."
             />
@@ -54,14 +55,11 @@ export function BanqueoMix() {
           <p className="mt-2 text-sm text-slate-500">Incluido con el acceso al banqueo de cualquier universidad.</p>
         </div>
         <Reveal className="order-first lg:order-none">
-          <img
-            src={`${import.meta.env.BASE_URL}illustrations/banqueo-mix.webp`}
+          <LoopVideo
+            src={`${import.meta.env.BASE_URL}videos/banqueo-mix.mp4`}
+            poster={`${import.meta.env.BASE_URL}videos/banqueo-mix.webp`}
             alt="Escalera de tres niveles con hojas de examen, de básico a avanzado, y un trofeo en la cima"
-            width={640}
-            height={640}
-            loading="lazy"
-            decoding="async"
-            className="mx-auto w-56 sm:w-72 lg:w-full max-w-[440px] h-auto drop-shadow-xl"
+            className="mx-auto w-60 sm:w-80 lg:w-full max-w-[460px] aspect-square object-cover"
           />
         </Reveal>
       </div>
