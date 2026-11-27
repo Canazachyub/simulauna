@@ -17,11 +17,11 @@
 // Origen de cada universidad: IMPORTAR_<U>_OFICIAL subido a Drive (dueño canazach12, lectura camaleonse).
 const BANCOS_OFICIALES_ = {
   unsa: '1b5sFyN7B8bQBi_5bQxqSEIrbj0SgXaytxlsYI2yQyc0',
-  sanmarcos: '1NAneYZQjBYkUZ63PTcUc-l2IQqw2qgaBZZmtUrC2t90',
+  sanmarcos: '1EVtO7RqOipK4TpVAQZ9KPXWKqiEiRjHMxoEy2huu4qE',
   unt: '1zcYnTMCe3pO7QjjftKeFUhPPUVlyeYnlLMFGCBWkTXU',
   unc: '1rOzCSs85s2bWycACiSHjSIH2G6hzshXCVE54XVZ7bhE',
   uncp: '1UszKwSVwbWDvKP6sOZ3Sj16-kqxv8MoFmLiHdhNl-Cw',
-  uni: '1Do0270pZB12VUfIC0ynzxop-8Cu7sJqs0eSrZUjgyCM'
+  uni: '1zVGs--YRwTJsHf7i32-7JdJ2BlL9uGINFUSlZ1jkWfs'
 };
 
 /** Importa todos los bancos oficiales y limpia la caché una vez. Si se corta por tiempo, volver a ejecutar. */
