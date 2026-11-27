@@ -24,8 +24,33 @@ function v2BancoSheetName_(cursoCanonico) {
  * hoja); si esa hoja no existe, el nombre canónico (p. ej. «Biología» → la hoja que ya existiera).
  */
 function v2CursoHoja_(ss, curso) {
-  if (ss && ss.getSheetByName(v2BancoSheetName_(curso))) return curso;
-  return getCursoCanonical(curso) || curso;
+  // Caché 10 min por spreadsheet+curso, atada a BANCO_CACHE_VER (limpiarCacheBancos la cambia).
+  let cache = null, clave = '';
+  try {
+    const ver = PropertiesService.getScriptProperties().getProperty('BANCO_CACHE_VER') || '0';
+    clave = ('hoja|' + ver + '|' + (ss ? ss.getId() : '') + '|' + curso).substring(0, 250);
+    cache = CacheService.getScriptCache();
+    const guardado = cache.get(clave);
+    if (guardado) return guardado;
+  } catch (err) { cache = null; }
+  const res = v2CursoHojaSinCache_(ss, curso);
+  if (cache) { try { cache.put(clave, res, 600); } catch (err) { /* nada */ } }
+  return res;
+}
+
+function v2CursoHojaSinCache_(ss, curso) {
+  const conPreguntas = function (c) {
+    const sh = ss && ss.getSheetByName(v2BancoSheetName_(c));
+    return !!(sh && sh.getLastRow() > 1);
+  };
+  if (conPreguntas(curso)) return curso;
+  // UNCP califica el mismo curso con distinto peso según la prueba: «Aritmética (P.A.)»,
+  // «Aritmética (P.I.)»… → todas usan la hoja «Banco_Aritmética» (y no se repiten preguntas).
+  const sinSufijo = String(curso).replace(/\s*\([^)]*\)\s*$/, '').trim();
+  if (sinSufijo && sinSufijo !== curso && conPreguntas(sinSufijo)) return sinSufijo;
+  const canonico = getCursoCanonical(sinSufijo || curso) || curso;
+  if (conPreguntas(canonico)) return canonico;
+  return (ss && ss.getSheetByName(v2BancoSheetName_(curso))) ? curso : canonico;
 }
 
 function v2ColIndices_(headers) {
@@ -226,7 +251,15 @@ function buildExamPoolForTenant(tenant, division, proceso, semana) {
     const cursoHoja = v2CursoHoja_(ss, r.curso);
     const pool = v2ReadActiveQuestions_(tenant.spreadsheetId, cursoHoja, { proceso: proceso, division: division, semana: semana });
     const usadasHoja = usadas[cursoHoja] || (usadas[cursoHoja] = {});
-    const libres = pool.rows.filter(function (q) { return !usadasHoja[q.rowIndex]; });
+    // Solo filas que v2FormatQuestion_ puede servir (alternativa correcta con texto): así un curso
+    // no sale incompleto por elegir una pregunta que luego se descarta.
+    const libres = pool.rows.filter(function (q) {
+      return !usadasHoja[q.rowIndex] && buildOptionsWithAnswer_([
+        formatCellValue(q.data[pool.colIndices.option1]), formatCellValue(q.data[pool.colIndices.option2]),
+        formatCellValue(q.data[pool.colIndices.option3]), formatCellValue(q.data[pool.colIndices.option4]),
+        formatCellValue(q.data[pool.colIndices.option5])
+      ], q.data[pool.colIndices.correctAnswer]).valid;
+    });
     const selected = selectRandomItems(libres, Math.min(r.nPreguntas, libres.length));
     selected.forEach(function (q) { usadasHoja[q.rowIndex] = true; });
 
