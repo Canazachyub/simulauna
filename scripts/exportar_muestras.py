@@ -23,10 +23,23 @@ import openpyxl
 BANCO = Path(r"F:\PERU SINAPSIS\BANCO_APP")
 SALIDA = Path(__file__).resolve().parent.parent / "src" / "seo" / "muestras"
 
+# UNA usa sus cursos de siempre; las demás, los cursos OFICIALES de su calificación
+# (IMPORTAR_<U>_OFICIAL.xlsx de mapear_oficial.py), que son los que busca el postulante.
 UNIVERSIDADES = {
     "una": {"archivo": "IMPORTAR_UNA.xlsx", "por_curso": 8, "por_anio": 6},
-    "unsa": {"archivo": "IMPORTAR_UNSA.xlsx", "por_curso": 6, "por_anio": 8},
+    "unsa": {"archivo": "IMPORTAR_UNSA_OFICIAL.xlsx", "por_curso": 6, "por_anio": 8},
+    "sanmarcos": {"archivo": "IMPORTAR_UNMSM_OFICIAL.xlsx", "por_curso": 6, "por_anio": 8},
+    "uni": {"archivo": "IMPORTAR_UNI_OFICIAL.xlsx", "por_curso": 6, "por_anio": 8},
+    "unt": {"archivo": "IMPORTAR_UNT_OFICIAL.xlsx", "por_curso": 6, "por_anio": 8},
+    "unc": {"archivo": "IMPORTAR_UNC_OFICIAL.xlsx", "por_curso": 6, "por_anio": 8},
+    "uncp": {"archivo": "IMPORTAR_UNCP_OFICIAL.xlsx", "por_curso": 6, "por_anio": 8},
 }
+
+
+def nombre_curso(curso):
+    """«P1 Humanidades» (UNI) → «Humanidades (Prueba 1)»."""
+    m = re.match(r"^P(\d) (.+)$", str(curso))
+    return f"{m.group(2)} (Prueba {m.group(1)})" if m else str(curso)
 
 FIGURA_SIN_IMAGEN = re.compile(r"\b(figura|gr[aá]fic|diagrama|imagen|cuadro adjunto|mostrad)", re.I)
 
@@ -86,10 +99,13 @@ def exportar(codigo, cfg):
     wb = openpyxl.load_workbook(BANCO / cfg["archivo"], read_only=True)
     filas = []
     for hoja in wb.sheetnames:
-        if not hoja.startswith("Banco_"):
+        if hoja in ("SIN_CURSO",):
             continue
         for f in wb[hoja].iter_rows(min_row=2, values_only=True):
-            if f and f[0] and f[12]:
+            # «(examen UNT)»: inglés de otra universidad usado en el simulacro UNSA; no va en sus páginas.
+            if f and f[0] and f[12] and "(examen " not in str(f[15] or ""):
+                f = list(f)
+                f[12] = nombre_curso(f[12])
                 filas.append(f)
 
     cursos = defaultdict(list)

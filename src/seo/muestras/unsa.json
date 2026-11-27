@@ -1,90 +1,54 @@
 {
  "universidad": "unsa",
- "total": 1019,
- "conImagen": 80,
+ "total": 999,
+ "conImagen": 68,
  "examenes": 18,
  "anioMin": "2022",
  "anioMax": "2024",
  "cursos": [
   {
-   "curso": "Comunicación",
-   "slug": "comunicacion",
-   "total": 122,
+   "curso": "Lenguaje",
+   "slug": "lenguaje",
+   "total": 116,
    "temas": [
     {
      "tema": "Semántica y lexicología",
-     "total": 24
+     "total": 29
     },
     {
      "tema": "Discurso escrito y normativa",
-     "total": 23
+     "total": 25
     },
     {
      "tema": "Uso de estructuras gramaticales básicas",
-     "total": 15
+     "total": 18
     },
     {
      "tema": "Comunicación y lenguaje",
      "total": 14
     },
     {
-     "tema": "Lengua, habla y realidad lingüística",
-     "total": 6
-    },
-    {
      "tema": "Fonología y ortografía",
-     "total": 6
+     "total": 9
     },
     {
      "tema": "Vocabulario funcional",
-     "total": 6
+     "total": 8
     },
     {
-     "tema": "VIII. Semántica y lexicología",
-     "total": 5
+     "tema": "Lengua, habla y realidad lingüística",
+     "total": 6
     },
     {
      "tema": "Sintaxis",
      "total": 3
     },
     {
-     "tema": "Comprensión de textos",
-     "total": 3
-    },
-    {
-     "tema": "II. Uso de estructuras gramaticales básicas",
-     "total": 3
-    },
-    {
-     "tema": "III. Fonología y ortografía",
-     "total": 3
-    },
-    {
-     "tema": "Comprensión de textos escritos",
-     "total": 2
-    },
-    {
-     "tema": "VII. Discurso escrito y normativa",
-     "total": 2
-    },
-    {
-     "tema": "I. Vocabulario funcional",
-     "total": 2
-    },
-    {
-     "tema": "Comprensión Lectora",
-     "total": 1
-    },
-    {
      "tema": "Oración gramatical",
-     "total": 1
+     "total": 2
     },
     {
-     "tema": "IV. Elementos gramaticales de soporte",
-     "total": 1
-    },
-    {
-     "tema": "VI. Oración gramatical",
+     "tema": "Elementos gramaticales de soporte",
      "total": 1
     },
     {
@@ -106,7 +70,7 @@
      "correcta": 1,
      "imagen": null,
      "justificacion": "La comunicación de carácter dialógica es también llamada bidireccional y se refiere a aquellos casos de comunicación en el cual el receptor puede responder al emisor, quien pasaría a cumplir la función de receptor. Es decir, en la comunicación bidireccional, tanto el emisor como el receptor intercambian roles. Por ejemplo, la conversación por señas, la comunicación telefónica, comunicación por WhatsApp, confesarse ante un cura.",
-     "curso": "Comunicación",
+     "curso": "Lenguaje",
      "tema": "Comunicación y lenguaje",
      "subtema": "Comunicación: concepto, elementos de la comunicación",
      "examen": "UNSA 2022-II SOC"
@@ -123,7 +87,7 @@
      "correcta": 0,
      "imagen": null,
      "justificacion": "El autor remarca meliorativamente las variaciones diacrónicas de la lengua. El autor señala la naturaleza de la lengua enfatizando los aspectos culturales y de desarrollo de la misma. Este enfoque puede entenderse como meliorativo o moral que mejora constantemente, pues la lengua va evolucionando con el paso del tiempo y, en el caso del español, va asimilando diversas influencias que la enriquecen y fortalecen.",
-     "curso": "Comunicación",
+     "curso": "Lenguaje",
      "tema": "Lengua, habla y realidad lingüística",
      "subtema": "Variedades de la lengua: regional, social, situacional, estándar",
      "examen": "UNSA 2023-I SOC"
@@ -140,7 +104,7 @@
      "correcta": 4,
      "imagen": null,
      "justificacion": "La concordancia nominal es la coincidencia de accidentes gramaticales (género y número) entre categorías nominales (sustantivo, adjetivo y determinante). En la siguiente oración, observamos la concordancia entre el determinante artículo la y el sustantivo oficina: “Dejé mi USB y celular en la oficina”.",
-     "curso": "Comunicación",
+     "curso": "Lenguaje",
      "tema": "Sintaxis",
      "subtema": "Frase nominal: estructura, clases, concordancia, funciones",
      "examen": "UNSA 2022-I SOC"
@@ -157,7 +121,7 @@
      "correcta": 4,
      "imagen": null,
      "justificacion": "La oración de la pregunta se completa con el conector lógico aunque. Este conector indica la contradicción parcial entre el concepto amplio de deterioro de la memoria y su aplicación restringida a la memoria de corto plazo.",
-     "curso": "Comunicación",
+     "curso": "Lenguaje",
      "tema": "Discurso escrito y normativa",
      "subtema": "Texto escrito: coherencia, cohesión",
      "examen": "UNSA 2023-II SOC"
@@ -174,7 +138,7 @@
      "correcta": 2,
      "imagen": null,
      "justificacion": "La expresión “yo no soy aculturado” refiere a la persona que se identifica con su cultura. En efecto, la RAE define aculturar como incorporar a un individuo o a un grupo humano elementos culturales de otro grupo, dicho de otro modo, ser aculturado supone la identificación con una cultura en particular.",
-     "curso": "Comunicación",
+     "curso": "Lenguaje",
      "tema": "Semántica y lexicología",
      "subtema": "Significado: clases",
      "examen": "UNSA 2023-I SOC"
@@ -191,7 +155,7 @@
      "correcta": 3,
      "imagen": null,
      "justificacion": "Se deben completar las siguientes oraciones, utilizando la gramática correcta: I. The weather is very nice today (El clima está muy agradable el día de hoy). En esta oración debemos utilizar un adverbio de intensidad: very; para describir el adjetivo: nice. II. My brother and I are good tennis players (Mi hermano y yo somos buenos jugadores de tenis). Aquí debemos usar la conjugación correcta del verbo Be; el sujeto de la oración es: My brother and I (Mi hermano y yo) reemplazable por el pronombre personal We (nosotros), por lo que, la conjugación correcta del verbo be es are. III. The dog sleeps on my bed (Mi perro duerme sobre mi cama). Debemos conjugar el verbo sleep de manera correcta. El sujeto de la oración es The dog (El perro) tercera persona del singular, por tal motivo debemos de agregar –s al final del verbo: sleeps. IV. My parents are at home today (Mis padres están en casa hoy). En esta oración se debe usar la preposición correcta para el sustantivo home (casa). En ingles, decimos at home, como una frase ya establecida, el cual hace mención al lugar en forma específica.",
-     "curso": "Comunicación",
+     "curso": "Lenguaje",
      "tema": "Uso de estructuras gramaticales básicas",
      "subtema": "Present Simple",
      "examen": "UNSA 2023-I SOC"
@@ -205,18 +169,22 @@
    "temas": [
     {
      "tema": "Magnitudes y proporcionalidad",
-     "total": 17
-    },
-    {
-     "tema": "Sucesiones y progresiones",
-     "total": 11
-    },
-    {
-     "tema": "Estadística descriptiva",
-     "total": 11
+     "total": 19
     },
     {
      "tema": "Sumatorias y aplicaciones aritméticas",
+     "total": 13
+    },
+    {
+     "tema": "Sucesiones y progresiones",
+     "total": 13
+    },
+    {
+     "tema": "Estadística descriptiva",
+     "total": 12
+    },
+    {
+     "tema": "Probabilidad",
      "total": 10
     },
     {
@@ -228,51 +196,23 @@
      "total": 8
     },
     {
-     "tema": "Probabilidad",
+     "tema": "Porcentajes",
      "total": 7
     },
     {
-     "tema": "Porcentajes",
-     "total": 7
+     "tema": "Razones y proporciones",
+     "total": 5
     },
     {
      "tema": "Sistema de los números naturales ($\\mathbb{N}$)",
      "total": 5
     },
     {
-     "tema": "Razones y proporciones",
-     "total": 4
-    },
-    {
-     "tema": "X. Sumatorias y aplicaciones aritméticas",
-     "total": 3
-    },
-    {
-     "tema": "XIII. Probabilidad",
-     "total": 3
-    },
-    {
      "tema": "Relaciones lógicas y conjuntos",
      "total": 2
     },
     {
-     "tema": "VII. Magnitudes y proporcionalidad",
-     "total": 2
-    },
-    {
-     "tema": "IX. Sucesiones y progresiones",
-     "total": 2
-    },
-    {
      "tema": "Sistema de los números racionales ($\\mathbb{Q}$)",
-     "total": 1
-    },
-    {
-     "tema": "XI. Estadística descriptiva",
-     "total": 1
-    },
-    {
-     "tema": "VI. Razones y proporciones",
      "total": 1
     }
    ],
@@ -364,131 +304,67 @@
      "examen": "UNSA 2024-II BIO"
     },
     {
-     "texto": "Sobre una mesa, Carlos ordena sus fichas en filas de modo que en la primera fila coloca 7; en la segunda, 13; en la tercera, 24; en la cuarta, 45; y así sucesivamente. ¿Cuántas fichas utilizó Carlos hasta la quinta fila?",
+     "texto": "Halle $ n $ de: $\\displaystyle n! + 2 - \\frac{(n! + 25)}{n! - 2} = \\frac{1}{n! - 2}$",
      "opciones": [
-      "155",
-      "185",
-      "195",
-      "165",
-      "175"
+      "6",
+      "7",
+      "4",
+      "3",
+      "5"
      ],
-     "correcta": 4,
+     "correcta": 3,
      "imagen": null,
-     "justificacion": "Nos piden cuántas fichas utilizó Carlos hasta la quinta fila. De acuerdo al enunciado tenemos N.° de fila: Cantidad: 1 2 3 4 5 7 13 24 45 86 ×2 – 4 ×2 – 3 ×2 – 2 ×2 – 1 Nos piden 7+13+24+45+86=175 Por lo tanto, Carlos utilizó en total 175 fichas.",
+     "justificacion": "Nos piden hallar el valor de n. De la expresión n n n n ! ! ! ! + − + ( ) − = − 2 25 2 1 2 n n n n n n ! ! ! ! ! ! + ( ) − ( ) − ( ) − + ( ) − = − 2 2 2 25 2 1 2 (n!)2 – 4 – n! – 25=1 n!2 – n!=30 n!(n! – 1)=6×5 n!=6=1×2×3=3! Por lo tanto, el valor de n es 3.",
      "curso": "Aritmética",
-     "tema": "IX. Sucesiones y progresiones",
-     "subtema": "Sucesiones numéricas",
-     "examen": "UNSA 2024-I BIO"
+     "tema": "Análisis combinatorio",
+     "subtema": "Factorial de un número",
+     "examen": "UNSA 2022-II ING"
     }
    ]
   },
   {
-   "curso": "Razonamiento Verbal",
-   "slug": "razonamiento-verbal",
-   "total": 100,
+   "curso": "Comprensión Lectora",
+   "slug": "comprension-lectora",
+   "total": 75,
    "temas": [
     {
      "tema": "Comprensión inferencial",
-     "total": 19
+     "total": 24
     },
     {
      "tema": "Comprensión de textos escritos",
-     "total": 13
+     "total": 18
+    },
+    {
+     "tema": "Comprensión global",
+     "total": 11
     },
     {
      "tema": "Comprensión literal",
      "total": 9
     },
     {
-     "tema": "Comprensión global",
-     "total": 9
-    },
-    {
-     "tema": "Relaciones semánticas básicas",
-     "total": 7
-    },
-    {
-     "tema": "Vocabulario en contexto",
-     "total": 5
-    },
-    {
-     "tema": "I. Comprensión de textos escritos",
-     "total": 5
-    },
-    {
-     "tema": "II. Comprensión inferencial",
-     "total": 5
-    },
-    {
      "tema": "Intención y propósito del texto",
-     "total": 3
-    },
-    {
-     "tema": "Resolución de problemas verbales",
-     "total": 2
+     "total": 5
     },
     {
      "tema": "Evaluación de la información",
-     "total": 2
+     "total": 3
     },
     {
-     "tema": "Organización y orden lógico",
-     "total": 2
-    },
-    {
-     "tema": "Pragmática en enunciados",
-     "total": 2
-    },
-    {
-     "tema": "IV. Intención y propósito del texto",
-     "total": 2
-    },
-    {
-     "tema": "VI. Vocabulario en contexto",
-     "total": 2
-    },
-    {
-     "tema": "III. Comprensión global",
-     "total": 2
-    },
-    {
-     "tema": "IV. Lógica de enunciados",
-     "total": 2
-    },
-    {
-     "tema": "Lógica de enunciados",
-     "total": 2
-    },
-    {
-     "tema": "Analogías verbales",
-     "total": 1
-    },
-    {
-     "tema": "I. Relaciones semánticas básicas",
-     "total": 1
-    },
-    {
-     "tema": "V. Razonamiento argumentativo básico",
-     "total": 1
-    },
-    {
-     "tema": "V. Evaluación de la información",
-     "total": 1
-    },
-    {
-     "tema": "II. Analogías verbales",
-     "total": 1
+     "tema": "Comprensión de textos",
+     "total": 3
     },
     {
      "tema": "Tipos de texto",
      "total": 1
     },
     {
-     "tema": "Semántica y lexicología",
+     "tema": "Comprensión Lectora",
      "total": 1
     }
    ],
-   "examenes": 16,
+   "examenes": 18,
    "muestras": [
     {
      "texto": "Marque la expresión que NO es afín a la propuesta del autor.",
@@ -502,27 +378,10 @@
      "correcta": 2,
      "imagen": null,
      "justificacion": "La expresión que no es afín a la propuesta del autor es la descontextualización del saber. En el texto, el autor señala que el sistema imperante busca formar personas que no consideren la realidad ni los problemas que se presentan en esta. La descontextualización del saber es quitarles a los conocimientos el vínculo con la realidad y esa no es una propuesta del autor.",
-     "curso": "Razonamiento Verbal",
+     "curso": "Comprensión Lectora",
      "tema": "Comprensión inferencial",
      "subtema": "Inferir información no explícita",
      "examen": "UNSA 2023-II SOC"
-    },
-    {
-     "texto": "La lenidad de las autoridades ha permitido que algunos médicos no cumplan su juramento hipocrático. El antónimo de la palabra subrayada es",
-     "opciones": [
-      "Suavidad",
-      "Delicadeza",
-      "Tenacidad",
-      "Excluir",
-      "Rechazo"
-     ],
-     "correcta": 2,
-     "imagen": null,
-     "justificacion": "En la oración analizada, el término lenidad se entiende como blandura o debilidad para exigir el cumplimento de las normas. Por tal razón su antónimo contextual es tenacidad, pues esta palabra refiere a la firmeza o insistencia para el cumplimento de las tareas u objetivos.",
-     "curso": "Razonamiento Verbal",
-     "tema": "Relaciones semánticas básicas",
-     "subtema": "Identificar antonimia contextual",
-     "examen": "UNSA 2022-I SOC"
     },
     {
      "texto": "La tesis planteada en el texto es:",
@@ -536,27 +395,27 @@
      "correcta": 4,
      "imagen": null,
      "justificacion": "La tesis planteada en el texto es que la investigación en las universidades debe ser sumamente rigurosa y especializada. El autor señala que las universidades no deben estudiar todo y de todo solo por gusto o por mera curiosidad, sino realizar investigaciones de calidad y serias, especializándose para alcanzar la excelencia en sus investigaciones.",
-     "curso": "Razonamiento Verbal",
-     "tema": "III. Comprensión global",
+     "curso": "Comprensión Lectora",
+     "tema": "Comprensión global",
      "subtema": "Identificar la idea principal",
      "examen": "UNSA 2024-I SOC"
     },
     {
-     "texto": "La problemática abordada pertenece al cambio",
+     "texto": "Respecto al tema, ideas principales y secundarias de un texto, marque lo incorrecto.",
      "opciones": [
-      "del conocimiento científico.",
-      "del progreso de la tecnología.",
-      "de la política.",
-      "de la bioética.",
-      "de la justicia social."
+      "Las ideas secundarias detallan un aspecto del tema central.",
+      "La idea principal contiene al tema.",
+      "El título y el subtítulo de un texto son considerados temas.",
+      "El tema puede ser determinado con una palabra.",
+      "Si te acercas a una conversación y preguntas: \"¿De qué hablan?\", te refieres al tema."
      ],
-     "correcta": 3,
+     "correcta": 0,
      "imagen": null,
-     "justificacion": "La problemática abordada pertenece al campo de la bioética. El autor destaca que el desarrollo de la ciencia debe ir de la mano con el respeto de la dignidad humana. En suma, la ciencia supone un gran poder que no debe ser monopolizado por unos cuantos, para evitar ello es necesario un diálogo constante y abierto con todos los hombres.",
-     "curso": "Razonamiento Verbal",
-     "tema": "Comprensión global",
-     "subtema": "Identificar la idea principal",
-     "examen": "UNSA 2023-II BIO"
+     "justificacion": "Todo texto presenta una estructura de ideas jerarquizadas en torno a un tema central. Así tenemos la idea principal que es la más importante del texto, lo que el autor nos quiere transmitir de manera preeminente. En cambio, las ideas secundarias son aquellas que sustentan y detallan a la idea principal, no al tema central.",
+     "curso": "Comprensión Lectora",
+     "tema": "Comprensión de textos",
+     "subtema": "Comprensión global: tema del texto",
+     "examen": "UNSA 2022-II SOC"
     },
     {
      "texto": "En el texto anterior prevalece el carácter:",
@@ -570,282 +429,59 @@
      "correcta": 3,
      "imagen": null,
      "justificacion": "En el texto anterior predomina el carácter argumentativo. Esto se evidencia en la estructura del texto. En efecto, el autor, en primer lugar, plantea el tema de discusión (la semántica cognitiva) para luego proponer su tesis sobre los juicios semánticos- cognitivos. Luego va planteando sus argumentos con el fin de justificar su tesis.",
-     "curso": "Razonamiento Verbal",
+     "curso": "Comprensión Lectora",
      "tema": "Intención y propósito del texto",
      "subtema": "Reconocer la intención comunicativa",
      "examen": "UNSA 2024-II SOC"
     },
     {
-     "texto": "En el enunciado: \"La universidad se orienta a la investigación, en sus aulas generalmente se revela la disidencia epistémica, el cuestionamiento inteligente y la tolerancia. La rebeldía no se funda en la intransigencia, sino en postulados racionales\". Los antónimos de las palabras subrayadas, respectivamente, son:",
+     "texto": "Which of the following ideas is NOT recommended by the director?",
      "opciones": [
-      "abstiene - empatía - transacción",
-      "oculta - sumisión - indulgencia",
-      "obstruye - parsimonia - irreverencia",
-      "calla - osadía - tolerancia",
-      "opaca - apatía - obnubilación"
-     ],
-     "correcta": 1,
-     "imagen": null,
-     "justificacion": "Los antónimos de las palabras revela, rebeldía e intransigencia son respectivamente oculta, sumisión e indulgencia. De acuerdo con el texto, la palabra revela significa “evidenciar algo”, en ese sentido, lo opuesto será ocultar o esconder. El término rebeldía, en el texto, se entiende como oponerse o dar un punto de vista distinto al de los demás, por eso, su antónimo es la palabra sumisión, es decir, acatar u obedecer lo dicho. En el texto, la palabra intransigencia se refiere a la actitud de no consentir lo racional o con lo que se piensa, por ello, su antónimo sería la palabra indulgencia que alude a conceder.",
-     "curso": "Razonamiento Verbal",
-     "tema": "I. Relaciones semánticas básicas",
-     "subtema": "Identificar antonimia contextual",
-     "examen": "UNSA 2024-I BIO"
-    }
-   ]
-  },
-  {
-   "curso": "Psicología y Filosofía",
-   "slug": "psicologia-y-filosofia",
-   "total": 91,
-   "temas": [
-    {
-     "tema": "Procesos psicológicos básicos",
-     "total": 12
-    },
-    {
-     "tema": "Ética",
-     "total": 12
-    },
-    {
-     "tema": "Aprendizaje",
-     "total": 8
-    },
-    {
-     "tema": "Crecimiento, maduración y desarrollo",
-     "total": 6
-    },
-    {
-     "tema": "Conocimiento, ciencia y verdad",
-     "total": 5
-    },
-    {
-     "tema": "Búsqueda de identidad",
-     "total": 5
-    },
-    {
-     "tema": "Motivación y afectividad humana",
-     "total": 4
-    },
-    {
-     "tema": "Factores de riesgo",
-     "total": 4
-    },
-    {
-     "tema": "La filosofía a lo largo de la historia",
-     "total": 3
-    },
-    {
-     "tema": "Salud sexual y reproductiva",
-     "total": 3
-    },
-    {
-     "tema": "X. Ética",
-     "total": 3
-    },
-    {
-     "tema": "Personalidad",
-     "total": 2
-    },
-    {
-     "tema": "Filosofía política",
-     "total": 2
-    },
-    {
-     "tema": "Filosofía del ser humano",
-     "total": 2
-    },
-    {
-     "tema": "Inteligencia emocional",
-     "total": 2
-    },
-    {
-     "tema": "X. Procesos psicológicos básicos",
-     "total": 2
-    },
-    {
-     "tema": "Proyecto de vida",
-     "total": 1
-    },
-    {
-     "tema": "Hábitos de estudio",
-     "total": 1
-    },
-    {
-     "tema": "Lógica y teoría de la argumentación",
-     "total": 1
-    },
-    {
-     "tema": "Disciplinas filosóficas",
-     "total": 1
-    },
-    {
-     "tema": "Factores de protección",
-     "total": 1
-    },
-    {
-     "tema": "V. Búsqueda de identidad",
-     "total": 1
-    },
-    {
-     "tema": "VI. Motivación y afectividad humana",
-     "total": 1
-    },
-    {
-     "tema": "XV. Crecimiento, maduración y desarrollo",
-     "total": 1
-    },
-    {
-     "tema": "XI. Axiología",
-     "total": 1
-    },
-    {
-     "tema": "VI. La filosofía a lo largo de la historia",
-     "total": 1
-    },
-    {
-     "tema": "XIV. Salud sexual y reproductiva",
-     "total": 1
-    },
-    {
-     "tema": "XIII. Factores de riesgo",
-     "total": 1
-    },
-    {
-     "tema": "III. Problemas fundamentales de la filosofía",
-     "total": 1
-    },
-    {
-     "tema": "Problemas fundamentales de la filosofía",
-     "total": 1
-    },
-    {
-     "tema": "Filosofía en Latinoamérica y en el Perú",
-     "total": 1
-    },
-    {
-     "tema": "Pensamiento filosófico contemporáneo y sociedad",
-     "total": 1
-    }
-   ],
-   "examenes": 18,
-   "muestras": [
-    {
-     "texto": "En cuanto al estudio de los hemisferios cerebrales. Cuando se encuentra dañado el lóbulo occipital, ¿qué alteración puede producirse?",
-     "opciones": [
-      "De la rnotricidad",
-      "De la inteligencia",
-      "De la memoria",
-      "De la vista",
-      "Del lenguaje"
+      "Quarantining infected individuals",
+      "Hand washing with antimicrobial soap",
+      "Cleaning surfaces with disinfectant",
+      "Storing biohazards in proper cabinets",
+      "Maintaining strict hygiene standards"
      ],
      "correcta": 3,
      "imagen": null,
-     "justificacion": "La corteza cerebral es la base o soporte biológico de la actividad psíquica. Se divide en dos hemisferios (izquierdo: lógico - matemático; y derecho: artístico- musical) y cada uno de ellos en lóbulos que adoptan sus nombres en función del hueso craneal que los protege o cubre. Para estudiar las funciones de la corteza se ha utilizado con frecuencia el estudio de casos donde se aprecian lesiones, y se hace un seguimiento para determinar qué funciones empiezan a fallar o presentan deficiencias. El lóbulo occipital está relacionado con las funciones visuales, se ubica la corteza visual primaria y secundaria; por lo tanto, una lesión a este nivel ocasionará problemas visuales o incluso una ceguera.",
-     "curso": "Psicología y Filosofía",
-     "tema": "Procesos psicológicos básicos",
-     "subtema": "Percepción",
-     "examen": "UNSA 2022-II ING"
+     "justificacion": "Which of the following ideas is NOT recommended by the director? (¿Cuál de las siguientes ideas NO recomienda el director?) Storing biohazards in proper cabinets (Almacenamiento de riesgos biológicos en gabinetes adecuados). En el texto se menciona: We must always store antibiotic drugs in the proper cabinets. Biohazards should be mindful disposed of (Siempre debemos guardar los antibióticos en los armarios adecuados. Los peligros biológicos deben eliminarse con precaución).",
+     "curso": "Comprensión Lectora",
+     "tema": "Comprensión de textos escritos",
+     "subtema": "Identificar información explícita",
+     "examen": "UNSA 2024-II BIO"
     },
     {
-     "texto": "Micaela Vera es una madre de familia que tiene que plasmar los ingresos y gastos para el mes de octubre. Nos encontramos frente al:",
+     "texto": "En el texto, \"la comunidad virtual\" se explica por:",
      "opciones": [
-      "Gasto flexible",
-      "Gasto discrecional",
-      "Servicio familiar",
-      "Gasto variable",
-      "Presupuesto familiar"
+      "La mediación de la tecnología y el Internet.",
+      "El paralelismo entre mundo personal y social.",
+      "Las apariencias cuyo sustrato es ficcional.",
+      "El paradigma actual de socialización tradicional.",
+      "La observación permanente de los cambios tecnológicos."
      ],
-     "correcta": 4,
+     "correcta": 0,
      "imagen": null,
-     "justificacion": "El presupuesto es un documento en el cual una persona, la familia, las empresas o el Estado proyecta sus ingresos y gastos esperados para un periodo determinado. Este instrumento sirve para la gestión financiera en cualquier ámbito, así como el cumplimiento de metas económicas en un periodo de tiempo. Para el caso de Micaela, notamos que planifica sus gastos a través de este instrumento cuidando de no exceder sus gastos mensuales.",
-     "curso": "Psicología y Filosofía",
-     "tema": "Proyecto de vida",
-     "subtema": "Pautas para elaborar un proyecto de vida",
-     "examen": "UNSA 2023-I BIO"
-    },
-    {
-     "texto": "Dentro del humanismo planteado por Carl Rogers, ¿cómo se llama al intento de hacer realidad nuestro sentido consciente de quiénes somos?",
-     "opciones": [
-      "Consideración positiva condicional",
-      "Persona con funcionamiento óptimo",
-      "Tendencia a la autorrealización",
-      "Tendencia a la realización",
-      "Consideración positiva incondicional"
-     ],
-     "correcta": 2,
-     "imagen": null,
-     "justificacion": "Desde la perspectiva de la psicología humanista de Carl Rogers, los seres humanos desarrollamos la tendencia a la autorrealización que es la racionalidad o la consciencia de quiénes somos. Esta capacidad de ser conscientes nos lleva a comprender que no somos controlados por fuerzas inconscientes (como los impulsos biológicos de la tendencia a la realización) y nos lleva a hacer realidad nuestro sentido de vida. Así, la tendencia a la autorrealización involucra acciones subjetivas e interpretaciones para el desarrollo personal siendo consecuentes y auténticos.",
-     "curso": "Psicología y Filosofía",
-     "tema": "Aprendizaje",
-     "subtema": "Teorías del aprendizaje: características, conductismo, cognitivismo, aprendizaje significativo",
-     "examen": "UNSA 2022-I SOC"
-    },
-    {
-     "texto": "Cualquier acto discriminatorio practicado, sea por raza, condición social, lugar de origen, forma de hablar o cualquier otra situación, siempre se dará por:",
-     "opciones": [
-      "Infortunio",
-      "Solvencia",
-      "Esnobismo",
-      "Prejuicio",
-      "Probidad"
-     ],
-     "correcta": 3,
-     "imagen": null,
-     "justificacion": "El prejuicio es la opinión preconcebida, generalmente negativa, hacia algo o alguien, nos lleva a respetar el derecho que tenemos consagrado en la Constitución Política, el cual señala que toda persona tiene derecho a la igualdad ante la ley. Nadie debe ser discriminado por motivo de origen, raza, sexo, idioma, religión, opinión, condición económica o de cualquiera otra índole.",
-     "curso": "Psicología y Filosofía",
-     "tema": "Factores de riesgo",
-     "subtema": "Violencia, conductas delictivas",
-     "examen": "UNSA 2022-II ING"
-    },
-    {
-     "texto": "Esteban conoce y cree en sus derechos y en los derechos de los demás. Lo demuestra cada vez que escucha hablar mentiras sobre las personas. Sabe que la libertad de expresarnos no es viable cuando se usa para difamar a quién sea. Qué patrón de comportamiento muestra Esteban en relación a las habilidades sociales",
-     "opciones": [
-      "paternal",
-      "litigante",
-      "asertivo",
-      "ofensivo",
-      "Inhíbido"
-     ],
-     "correcta": 2,
-     "imagen": null,
-     "justificacion": "La inteligencia emocional implica el dominio de dimensiones intrapersonales (autoconocimiento, autocontrol y automotivación) y dimensiones interpersonales (empatía y habilidades sociales). Las habilidades sociales son conocidas como asertividad que consiste en la capacidad de hacer respetar nuestros derechos sin vulnerar el derecho de los demás. De acuerdo con el enunciado de la pregunta, Esteban evidencia un patrón de comportamientos asertivos.",
-     "curso": "Psicología y Filosofía",
-     "tema": "Inteligencia emocional",
-     "subtema": "Inteligencia interpersonal",
-     "examen": "UNSA 2023-I ING"
-    },
-    {
-     "texto": "En una reunión de amigos, Julia y Sandro son testigos de un hecho poco común; al conversar sobre ello. Julia se pronuncia diciendo: \"Mentir es siempre malo\". Lo dicho por Julia, desde la ética, se define como",
-     "opciones": [
-      "sentido moral",
-      "juicio moral",
-      "hecho moral",
-      "desarrollo moral",
-      "conciencia moral"
-     ],
-     "correcta": 1,
-     "imagen": null,
-     "justificacion": "La persona moral es aquella que posee libertad para elegir sus actos y conciencia para comprender la ley moral y distinguir entre el bien y el mal. La afirmación de Julia, «Mentir es siempre malo», constituye una valoración moral de un hecho. Por lo que se le considera un juicio moral.",
-     "curso": "Psicología y Filosofía",
-     "tema": "Ética",
-     "subtema": "Acto moral; valores y antivalores",
-     "examen": "UNSA 2023-I BIO"
+     "justificacion": "En el texto, “la comunidad virtual” se explica por la mediación de la tecnología y el internet. En efecto, el surgimiento de la comunidad virtual fue posible gracias al desarrollo de la tecnología y la expansión acelerada de internet. Sin estos cambios, los individuos no podrían forjar vínculos sociales virtuales a partir de sus intereses comunes, y tampoco habría perdido relevancia la proximidad física en la socialización.",
+     "curso": "Comprensión Lectora",
+     "tema": "Comprensión literal",
+     "subtema": "Identificar información explícita en el texto",
+     "examen": "UNSA 2024-II SOC"
     }
    ]
   },
   {
    "curso": "Historia",
    "slug": "historia",
-   "total": 73,
+   "total": 72,
    "temas": [
     {
      "tema": "HISTORIA DEL PERÚ",
-     "total": 17
+     "total": 28
     },
     {
-     "tema": "II. HISTORIA DEL PERÚ",
-     "total": 11
+     "tema": "HISTORIA UNIVERSAL",
+     "total": 8
     },
     {
      "tema": "El Perú Prehispánico",
@@ -853,10 +489,6 @@
     },
     {
      "tema": "Historia del Perú",
-     "total": 6
-    },
-    {
-     "tema": "HISTORIA UNIVERSAL",
      "total": 6
     },
     {
@@ -880,10 +512,6 @@
      "total": 3
     },
     {
-     "tema": "I. HISTORIA UNIVERSAL",
-     "total": 3
-    },
-    {
      "tema": "La Edad Antigua",
      "total": 2
     },
@@ -896,11 +524,11 @@
      "total": 1
     },
     {
-     "tema": "II.3. La Emancipación",
+     "tema": "3. La Emancipación",
      "total": 1
     },
     {
-     "tema": "II.2. La Conquista y el Virreinato",
+     "tema": "2. La Conquista y el Virreinato",
      "total": 1
     }
    ],
@@ -958,40 +586,6 @@
      "examen": "UNSA 2024-II SOC"
     },
     {
-     "texto": "Para conocer las ideas políticas de los pensadores y académicos europeos a mediados del siglo XVIII, debemos revisar:",
-     "opciones": [
-      "La Enciclopedia",
-      "El espíritu de las leyes",
-      "La Carta Magna",
-      "La Declaración Universal de Derechos Humanos",
-      "El contrato social"
-     ],
-     "correcta": 0,
-     "imagen": null,
-     "justificacion": "A mediados del siglo xviii, en el contexto de la crítica al antiguo régimen feudal y absolutista en Francia, apareció la Enciclopedia. Esta publicación, en varios tomos, se caracterizaba por explicar los diversos conocimientos de la época y de los grandes pensadores europeos. Publicada en 1751, la Enciclopedia contó con la participación de casi 160 colaboradores entre los que destacan Rousseau, Montesquieu y Voltaire. En sus páginas destacan grandes ideas revolucionarias para la época.",
-     "curso": "Historia",
-     "tema": "I. HISTORIA UNIVERSAL",
-     "subtema": "1.5. La Edad Moderna: Absolutismo monárquico",
-     "examen": "UNSA 2024-I SOC"
-    },
-    {
-     "texto": "¿Qué variante de la bandera del Perú debe ser izada por civiles desde el 27 al 30 de julio?",
-     "opciones": [
-      "La Bandera de Guerra",
-      "La Bandera Nacional",
-      "La Escarapela",
-      "El Estandarte",
-      "El Pabellón Nacional"
-     ],
-     "correcta": 1,
-     "imagen": null,
-     "justificacion": "El Título II de nuestra Constitución señala que nuestro país es democrático, social, independiente y soberano. Tiene como capital de la República a la ciudad de Lima y son símbolos de la patria, la bandera de tres franjas verticales con los colores rojo, blanco y rojo; el escudo y el himno nacional establecidos por ley. Así, en las fiestas de la patria, las familias, las instituciones, colegios, clubes, oficinas, establecimientos comerciales y centros de trabajo de cualquier nacionalidad que se encuentren en el territorio nacional deben izar la Bandera Nacional los días del 27 al 30 de julio.",
-     "curso": "Historia",
-     "tema": "II. HISTORIA DEL PERÚ",
-     "subtema": "La Emancipación — símbolos patrios y proclamación de la Independencia",
-     "examen": "UNSA 2024-I SOC"
-    },
-    {
      "texto": "El mecanismo de integración regional, que pretende impulsar el crecimiento, la competitividad económica para la superación de las desigualdades socioeconómicas y la inclusión social en Colombia, Chile, México y Perú, se denomina",
      "opciones": [
       "Mercado Común del Sur",
@@ -1007,68 +601,82 @@
      "tema": "Historia Universal",
      "subtema": "La Edad Contemporánea: mundo contemporáneo, organismos internacionales",
      "examen": "UNSA 2023-II SOC"
+    },
+    {
+     "texto": "La resistencia indígena realizada por los incas de Vilcabamba tuvo como propósito fundamental",
+     "opciones": [
+      "restablecer el Tahuantinsuyo.",
+      "restablecer el poder político de Manco Inca y Sayri Túpac.",
+      "eliminar la extirpación de idolatrías.",
+      "restablecer los privilegios de la nobleza incaica.",
+      "colocar a Tito Cusi Yupanqui como soberano inca."
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Los hermanos del inca derrocado, Huáscar, apoyaron a los españoles que mataron a Atahualpa. Manco Inca (huascarista) hizo entrar a los españoles al Cusco; tiempo después, los españoles iniciaron el saqueo de tesoros en aquella ciudad. Manco Inca, al darse cuenta de que los incas estaban perdiendo el poder a manos de los españoles, inicia una gran resistencia militar tomando como base de operaciones a Vilcabamba. El objetivo era derrotar a los españoles y restablecer el Tahuantinsuyo.",
+     "curso": "Historia",
+     "tema": "La Conquista y el Virreinato",
+     "subtema": "Conquista del Perú: expediciones, resistencia indígena.",
+     "examen": "UNSA 2022-I BIO"
+    },
+    {
+     "texto": "La caída del régimen fujimorista a inicios del siglo XXI generó una profunda crisis política e institucional en nuestro país. El reto de restituir la democracia y devolver la confianza en el estado recayó en el gobierno de:",
+     "opciones": [
+      "Valentín Paniagua Corazao",
+      "Martín Vizcarra Cornejo",
+      "Alejandro Toledo Manrique",
+      "Francisco Sagasti Hochhauster",
+      "Javier Pérez de Cuéllar"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "En julio del año 2000 Alberto Fujimori iniciaba su tercer mandato presidencial con una debilidad política. La difusión de los vladivideos con personajes políticos sobornados agudizó la crisis política. Las amenazas del asesor de inteligencia Vladimiro Montesinos al fujimorismo fortalecieron a la oposición. Fujimori viajo al foro económico Asia- Pacifico en Brunei en noviembre de ese año. El 21 de noviembre renuncia desde Japón vía fax a la presidencia, el congreso peruano no aceptó ésta, y lo vacó por incapacidad moral. El presidente del congreso Valentín Paniagua asumió como presidente transitorio de la Reública y para convocar a nuevas elecciones presidenciales.",
+     "curso": "Historia",
+     "tema": "El Perú Republicano y Contemporáneo",
+     "subtema": "Gobiernos militares del siglo XX. Retorno a la democracia",
+     "examen": "UNSA 2023-II BIO"
     }
    ]
   },
   {
    "curso": "Geografía",
    "slug": "geografia",
-   "total": 66,
+   "total": 65,
    "temas": [
     {
-     "tema": "Actividades económicas y desarrollo",
-     "total": 11
+     "tema": "Clima y cambio climático",
+     "total": 13
     },
     {
      "tema": "Geografía física: estructura y dinámica de la Tierra",
-     "total": 11
+     "total": 13
     },
     {
-     "tema": "Clima y cambio climático",
+     "tema": "Actividades económicas y desarrollo",
      "total": 10
     },
     {
+     "tema": "Recursos naturales y desarrollo sostenible",
+     "total": 8
+    },
+    {
      "tema": "Hidrografía",
-     "total": 6
+     "total": 7
     },
     {
      "tema": "Representación y localización del espacio geográfico",
-     "total": 6
-    },
-    {
-     "tema": "Recursos naturales y desarrollo sostenible",
-     "total": 6
+     "total": 7
     },
     {
      "tema": "La Geografía y el espacio geográfico",
      "total": 4
     },
     {
-     "tema": "IV. Clima y cambio climático",
-     "total": 3
-    },
-    {
      "tema": "Gestión del riesgo de desastres",
      "total": 2
     },
     {
-     "tema": "VIII. Recursos naturales y desarrollo sostenible",
-     "total": 2
-    },
-    {
-     "tema": "III. Geografía física: estructura y dinámica de la Tierra",
-     "total": 2
-    },
-    {
      "tema": "Biodiversidad y ecosistemas",
-     "total": 1
-    },
-    {
-     "tema": "V. Hidrografía",
-     "total": 1
-    },
-    {
-     "tema": "II. Representación y localización del espacio geográfico",
      "total": 1
     }
    ],
@@ -1160,55 +768,55 @@
      "examen": "UNSA 2023-II SOC"
     },
     {
-     "texto": "Son relieves longitudinales profundos, representados por los ríos Marañón, Mantaro, Apurímac y Vilcanota; siguen un curso de sur a norte y desaguan en la Amazonía:",
+     "texto": "En un movimiento sísmico, el lugar donde se libera la energía se denomina:",
      "opciones": [
-      "valles interandinos.",
-      "cuenca del Titicaca.",
-      "arco de conos volcánicos.",
-      "llanuras preandinas.",
-      "cordillera occidental."
+      "Hipocentro",
+      "Magmatismo",
+      "Movimiento orogénico",
+      "Epicentro",
+      "Vulcanismo"
      ],
-     "correcta": 0,
+     "correcta": 3,
      "imagen": null,
-     "justificacion": "Los valles interandinos son relieves longitudinales profundos, representados por los ríos Marañón, Mantaro, Apurímac y Vilcanota, que siguen un curso de SE a NO, entre las cordilleras Occidental y Oriental, y van a desaguar en la Amazonía. Estos valles se caracterizan por presentar suelos muy fértiles, garantizando gran producción agropecuaria, principal factor de concentración poblacional andino y donde se emplazan las principales ciudades andinas.",
+     "justificacion": "El punto exacto en donde se origina el sismo se llama foco o hipocentro, se sitúa debajo de la superficie terrestre a unos pocos kilómetros hasta un máximo de unos 700 km de profundidad. El epicentro es la proyección del foco a nivel de tierra, es decir, el punto de la superficie terrestre situada directamente sobre el foco, donde el sismo alcanza su mayor intensidad. El fallamiento (falla) de una roca es causado precisamente por la liberación repentina de los esfuerzos (compresión, tensión o de cizalla) impuestos al terreno, de esta manera, la tierra es puesta en vibración; esta vibración se debe a que las ondas sísmicas se propagan en todas las direcciones y trasmiten la fuerza que se genera en el foco sísmico hasta el epicentro en proporción a la intensidad y magnitud de cada sismo.",
      "curso": "Geografía",
-     "tema": "III. Geografía física: estructura y dinámica de la Tierra",
-     "subtema": "B. Relieve del Perú: relieve de la región andina.",
-     "examen": "UNSA 2024-I ING"
+     "tema": "Gestión del riesgo de desastres",
+     "subtema": "Clasificación de peligros: geodinámica interna, geodinámica externa, hidrometeorológicos, oceanográficos, antrópicos",
+     "examen": "UNSA 2023-I SOC"
     }
    ]
   },
   {
-   "curso": "Biología y Anatomía",
-   "slug": "biologia-y-anatomia",
+   "curso": "Biología",
+   "slug": "biologia",
    "total": 64,
    "temas": [
     {
      "tema": "Sistemas en los seres vivos",
-     "total": 13
+     "total": 19
     },
     {
      "tema": "Reproducción y desarrollo",
-     "total": 10
+     "total": 11
     },
     {
      "tema": "Organización tisular",
-     "total": 7
+     "total": 8
     },
     {
      "tema": "Base química de la vida",
-     "total": 6
+     "total": 7
     },
     {
-     "tema": "VII. Sistemas en los seres vivos",
-     "total": 6
+     "tema": "Ecología, ambiente y sostenibilidad",
+     "total": 5
     },
     {
      "tema": "La célula como unidad de la vida",
      "total": 4
     },
     {
-     "tema": "XIII. Ecología, ambiente y sostenibilidad",
+     "tema": "Evolución y diversidad biológica",
      "total": 3
     },
     {
@@ -1216,15 +824,7 @@
      "total": 2
     },
     {
-     "tema": "Evolución y diversidad biológica",
-     "total": 2
-    },
-    {
      "tema": "Genética y continuidad de la vida",
-     "total": 2
-    },
-    {
-     "tema": "Ecología, ambiente y sostenibilidad",
      "total": 2
     },
     {
@@ -1233,22 +833,6 @@
     },
     {
      "tema": "Seres vivos y niveles de organización biológica",
-     "total": 1
-    },
-    {
-     "tema": "VI. Organización tisular",
-     "total": 1
-    },
-    {
-     "tema": "XI. Evolución y diversidad biológica",
-     "total": 1
-    },
-    {
-     "tema": "IX. Reproducción y desarrollo",
-     "total": 1
-    },
-    {
-     "tema": "III. Base química de la vida",
      "total": 1
     },
     {
@@ -1270,8 +854,8 @@
      "correcta": 2,
      "imagen": null,
      "justificacion": "Analizando cada proposición: I. Falso (F) Las proteínas son macromoléculas (polimeros) formadas por cadenas lineales de aminoácidos. II. Verdadero (V) En la estructura de un aminoácido: C H R COOH H2N grupo amino grupo carboxilo carbono central III. Verdadero (V) En la desnaturalización de las proteínas hay un cambio estructural que afecta su estructura primaria cambiando sus propiedades. IV. Verdadero (V) Los aminoácidos son moléculas que se unen para formar proteínas mediante enlace peptídico.",
-     "curso": "Biología y Anatomía",
-     "tema": "III. Base química de la vida",
+     "curso": "Biología",
+     "tema": "Base química de la vida",
      "subtema": "Biomoléculas orgánicas — proteínas y aminoácidos",
      "examen": "UNSA 2024-I SOC"
     },
@@ -1287,8 +871,8 @@
      "correcta": 0,
      "imagen": null,
      "justificacion": "La razón para conservar la biodiversidad se basa principalmente en consideraciones éticas. Respetar la diversidad de formas de vida y evitar acciones que pongan en peligro a los seres vivos es necesario para preservar los recursos de las futuras generaciones porque implica un deber moral hacia todas las formas de vida en nuestro planeta. La biodiversidad tiene un valor intrínseco y una importancia fundamental en el equilibrio de los ecosistemas y en el bienestar de todas las especies, incluyendo la humana.",
-     "curso": "Biología y Anatomía",
-     "tema": "XIII. Ecología, ambiente y sostenibilidad",
+     "curso": "Biología",
+     "tema": "Ecología, ambiente y sostenibilidad",
      "subtema": "Recursos naturales; Desarrollo sostenible",
      "examen": "UNSA 2024-I SOC"
     },
@@ -1304,8 +888,8 @@
      "correcta": 3,
      "imagen": null,
      "justificacion": "La microcirculación es la red de pequeños vasos sanguíneos que conectan las arteriolas con las vénulas a través de los capilares. En esta región, los nutrientes y el oxígeno se entregan a los tejidos y los desechos se eliminan. Los capilares son extremadamente delgados y permiten el intercambio eficiente de sustancias entre la sangre y las células. Este proceso es esencial para mantener la salud de los tejidos y órganos en el cuerpo. La microcirculación también regula la presión arterial y la temperatura corporal.",
-     "curso": "Biología y Anatomía",
-     "tema": "VII. Sistemas en los seres vivos",
+     "curso": "Biología",
+     "tema": "Sistemas en los seres vivos",
      "subtema": "Sistema circulatorio humano",
      "examen": "UNSA 2024-I BIO"
     },
@@ -1321,27 +905,10 @@
      "correcta": 2,
      "imagen": null,
      "justificacion": "Los ácidos nucleicos son biomoléculas que cumplen funciones esenciales en todas las células. El ácido desoxirribonucleico, o ADN, codifica la información que las células necesitan para producir proteínas. El ácido ribonucleico (ARN) se presenta en diferentes formas moleculares que cumplen funciones celulares múltiples, que incluyen la síntesis proteica. La mayor parte del ADN se encuentra en el núcleo celular, donde forma los cromosomas. El ADN tiene dos cadenas que conforman una estructura helicoidal y antiparalela. Las bases nitrogenadas purínicas y pirimidínicas se unen mediante puentes de hidrógeno en forma complementaria.",
-     "curso": "Biología y Anatomía",
+     "curso": "Biología",
      "tema": "La célula como unidad de la vida",
      "subtema": "Núcleo celular, ADN y código genético",
      "examen": "UNSA 2023-I BIO"
-    },
-    {
-     "texto": "Los lípidos forman un grupo amplio de sustancias diversas, cuya característica principal es que no se disuelven en agua, aunque sí en solventes orgánicos. Se clasifican en tres grupos principales: simple, complejos y esteroides. Una característica de los lípidos complejos es:",
-     "opciones": [
-      "Se componen de cuatro anillos de carbono fusionados, unidos a distintos grupos funcionales.",
-      "Un ejemplo de lípido que pertenece a este grupo es el omega – 3.",
-      "A este grupo pertenecen los aceites, las grasas y las ceras.",
-      "Además de carbono, hidrógeno y oxígeno, contienen otros elementos.",
-      "Un ejemplo de lípido complejo es el colesterol."
-     ],
-     "correcta": 3,
-     "imagen": null,
-     "justificacion": "Los lípidos son biomoléculas orgánicas ternarias compuestas de C, H y O. Pueden clasificarse en: • Simples: Están formados, en su estructura, por C, H y O; entre estos lípidos tenemos a los céridos y glicéridos. • Complejos: Formados por C, H y O, además de otros elementos como P y N; entre estos tenemos a los fosfolípidos y glucolípidos. • Esteroides: Uno de los más importantes es el colesterol, que es precursora de la vitamina D, bilis, hormonas sexuales, etc.",
-     "curso": "Biología y Anatomía",
-     "tema": "Base química de la vida",
-     "subtema": "Biomoléculas orgánicas: lípidos",
-     "examen": "UNSA 2023-II BIO"
     },
     {
      "texto": "El cáncer es un grupo de enfermedades caracterizadas por la proliferación celular anormal o descontrolada; es decir, las células de una parte del cuerpo se dividen sin control; el exceso de tejido que se genera se denomina tumor o neoplasia y el nombre de un cáncer se basa en el tipo de tejido a partir del cual se origina. El sarcoma es un término general para designar a todo cáncer originado en:",
@@ -1355,21 +922,42 @@
      "correcta": 0,
      "imagen": null,
      "justificacion": "El cáncer se forma cuando ocurren mutaciones en el ADN dentro de las células. El sarcoma es un término que hace referencia a diversos tipos de cáncer que se originan. El sarcoma de tejido blando comprende a los músculos, la grasa, los vasos sanguíneos, los nervios, los tendones y el revestimiento de las articulaciones.",
-     "curso": "Biología y Anatomía",
+     "curso": "Biología",
      "tema": "Organización tisular",
      "subtema": "Tejidos animales: tejido conectivo",
      "examen": "UNSA 2023-I BIO"
+    },
+    {
+     "texto": "En los organismos multicelulares, la mitosis es el tipo de división de las células somáticas responsables del crecimiento y reparación tisular. Por razones didácticas se divide en 4 etapas: profase, metaphase, anafase y telofase. En la anafase:",
+     "opciones": [
+      "Se reconstituye la envoltura nuclear.",
+      "Los centrómeros se dividen y las cromátidas hermanas se separan.",
+      "Se separan las células formadas.",
+      "Se inicia la condensación de la cromatina.",
+      "Los cromosomas se ordenan en la región ecuatorial de la célula."
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "La anafase es la tercera fase de la mitosis en donde los centrosomas se encuentran en los polos y los cromosomas se separan. Las cromátidas hermanas son, entonces, desplazadas de forma equitativa hacia los polos opuestos de la célula en división por el huso mitótico o acromático, para que cada célula hija herede una copia de cada cromosoma.",
+     "curso": "Biología",
+     "tema": "Reproducción y desarrollo",
+     "subtema": "Ciclo celular. Mitosis y meiosis",
+     "examen": "UNSA 2022-II ING"
     }
    ]
   },
   {
    "curso": "Química",
    "slug": "quimica",
-   "total": 64,
+   "total": 63,
    "temas": [
     {
      "tema": "Química orgánica",
-     "total": 17
+     "total": 18
+    },
+    {
+     "tema": "Estequiometría",
+     "total": 8
     },
     {
      "tema": "Estructura atómica",
@@ -1380,31 +968,19 @@
      "total": 7
     },
     {
-     "tema": "Estequiometría",
+     "tema": "Enlace químico y estructura de la materia",
      "total": 6
     },
     {
-     "tema": "Enlace químico y estructura de la materia",
-     "total": 5
-    },
-    {
      "tema": "Nomenclatura y funciones químicas inorgánicas",
-     "total": 5
+     "total": 6
     },
     {
      "tema": "Estructura electrónica y Tabla Periódica",
-     "total": 3
+     "total": 6
     },
     {
-     "tema": "V. Estructura electrónica y Tabla Periódica",
-     "total": 3
-    },
-    {
-     "tema": "XIV. Química orgánica",
-     "total": 2
-    },
-    {
-     "tema": "IX. Estequiometría",
+     "tema": "Estados físicos de la materia",
      "total": 2
     },
     {
@@ -1412,23 +988,7 @@
      "total": 1
     },
     {
-     "tema": "Estados físicos de la materia",
-     "total": 1
-    },
-    {
      "tema": "Sistemas dispersos y soluciones",
-     "total": 1
-    },
-    {
-     "tema": "VII. Nomenclatura y funciones químicas inorgánicas",
-     "total": 1
-    },
-    {
-     "tema": "VI. Enlace químico y estructura de la materia",
-     "total": 1
-    },
-    {
-     "tema": "X. Estados físicos de la materia",
      "total": 1
     },
     {
@@ -1451,7 +1011,7 @@
      "imagen": null,
      "justificacion": "Piden indicar la sal que contiene la mayor cantidad de átomo de oxígeno. Entonces, para cada nombre escribimos la fórmula química. A) 1Na+1(NO2) → NaNO2 +1 –1 : 2 átomos de oxígeno B) 2K+1(CO3) → K2CO3 +1 –2 : 3 átomos de oxígeno C) 3Cu+2(PO4) → Cu3(PO4)2 +2 –3 : 8 átomos de oxígeno D) 2Fe+3(CrO4) → Fe2(CrO4)3 +3 –2 : 12 átomos de oxígeno E) 1Na+1(HSO3) → NaHSO3 +1 –1 : 3 átomos de oxígeno",
      "curso": "Química",
-     "tema": "VII. Nomenclatura y funciones químicas inorgánicas",
+     "tema": "Nomenclatura y funciones químicas inorgánicas",
      "subtema": "Funciones químicas: sales",
      "examen": "UNSA 2024-I BIO"
     },
@@ -1524,169 +1084,21 @@
      "examen": "UNSA 2024-II ING"
     },
     {
-     "texto": "Considerando la relación fórmula-nombre de los siguientes hidruros: I. CsH: Hidruro de cesio II. $\\mathrm{H_2Se_4}$: Seleniuro de hidrógeno III. CaH: Hidruro de calcio IV. $\\mathrm{AlH_3}$: Hidruro de aluminio V. $\\mathrm{H_2S_4}$: Sulfuro de hidrógeno VI. $\\mathrm{HF_4}$: Ácido fluorhídrico Indique cuántas proposiciones correctas:",
+     "texto": "Se tiene cinco elementos E, X, Y, J y T cuyos números atómicos (Z) son 11, 13, 26, 30 y 56, respectivamente. El elemento que pertenece a los alcalinos terreos es",
      "opciones": [
-      "5",
-      "2",
-      "1",
-      "4",
-      "3"
+      "I",
+      "X",
+      "Y",
+      "T",
+      "E"
      ],
      "correcta": 3,
      "imagen": null,
-     "justificacion": "Pide la relación fórmula - nombre correctas I. Correcto CsH: hidruro de cesio II. Correcto H2Se(): Seleniuro de hidrógeno III. Incorrecto CaH2: Hidruro de calcio IV Correcto AlH3: Hidruro de aluminio V. Correcto H2S(g): Sulfuro de hidrógeno VI. Incorrecto HF(g): Fluoruro de hidrógeno",
+     "justificacion": "Piden el elemento que pertenece a los alcalinos térreos (grupo IIA). En base a la configuración electrónica, ubicamos el grupo de los elementos. 11E=[Ne]3s1 → Grupo=IA 13X=[Ne]3s2 3p1 → Grupo=IIIA 26Y=[Ar]4s2 3d6 → Grupo=VIIIB 30I=[Ar]4s2 3d10 → Grupo=IIB 56T=[Xe]5s2 → Grupo=IIA",
      "curso": "Química",
-     "tema": "Nomenclatura y funciones químicas inorgánicas",
-     "subtema": "Funciones químicas: hidruros",
-     "examen": "UNSA 2024-II BIO"
-    }
-   ]
-  },
-  {
-   "curso": "Razonamiento Matemático",
-   "slug": "razonamiento-matematico",
-   "total": 63,
-   "temas": [
-    {
-     "tema": "Razonamiento numérico",
-     "total": 22
-    },
-    {
-     "tema": "Organización y orden lógico",
-     "total": 12
-    },
-    {
-     "tema": "Magnitudes y proporcionalidad",
-     "total": 7
-    },
-    {
-     "tema": "Razonamiento algebraico intuitivo",
-     "total": 6
-    },
-    {
-     "tema": "I. Razonamiento numérico",
-     "total": 6
-    },
-    {
-     "tema": "II. Conectores lógicos",
-     "total": 3
-    },
-    {
-     "tema": "VIII. Organización y orden lógico",
-     "total": 3
-    },
-    {
-     "tema": "Análisis combinatorio intuitivo",
-     "total": 2
-    },
-    {
-     "tema": "Razonamiento geométrico",
-     "total": 2
-    }
-   ],
-   "examenes": 17,
-   "muestras": [
-    {
-     "texto": "Si hoy es lunes, ¿qué día será el ayer del anteayer del ayer del pasado mañana del pasado mañana de mañana?",
-     "opciones": [
-      "Viernes",
-      "Miércoles",
-      "Jueves",
-      "Martes",
-      "Sábado"
-     ],
-     "correcta": 3,
-     "imagen": null,
-     "justificacion": "Nos piden encontrar un día determinado. De acuerdo al enunciado hoy es lunes. Calculamos el día por determinar utilizando equivalentes numéricos. qué día será el ayer del anteayer del ayer del –1 – 2 –1 pasado mañana del pasado mañana de mañana +2 +2 +1 Luego se tiene: Día = (Hoy) – 1 – 2 – 1+2+2+1 Día = (Lunes) +1=Martes Por lo tanto, el día pedido es martes.",
-     "curso": "Razonamiento Matemático",
-     "tema": "VIII. Organización y orden lógico",
-     "subtema": "Resolver situaciones de orden — relaciones de precedencia temporal",
+     "tema": "Estructura electrónica y Tabla Periódica",
+     "subtema": "Tabla Periódica moderna — familias químicas, metales alcalinos y alcalinotérreos",
      "examen": "UNSA 2024-I SOC"
-    },
-    {
-     "texto": "Completa el conector lógico que corresponda en la siguiente oración: \"El tenis es un deporte de caballeros, ............. no todo jugador de tenis es un caballero\".",
-     "opciones": [
-      "aunque",
-      "incluso",
-      "además",
-      "en cambio",
-      "en consecuencia"
-     ],
-     "correcta": 0,
-     "imagen": null,
-     "justificacion": "A la oración propuesta le corresponde el conector lógico aunque. El conector aunque es un conector de función concesiva, se utiliza para generar una oposición parcial entre la información. En ese sentido, en la oración se da una oposición parcial entre los distintos significados de la palabra caballero. En el primer segmento se usa caballero como el género masculino; mientras que en el segundo segmento, se le da un sentido de comportamiento. De ahí la oposición parcial.",
-     "curso": "Razonamiento Matemático",
-     "tema": "II. Conectores lógicos",
-     "subtema": "Analizar el efecto del conector en el significado del enunciado",
-     "examen": "UNSA 2024-I BIO"
-    },
-    {
-     "texto": "Susan ahorra el 10% de su ingreso mensual, el cual varía de S/1200 a S/1500; además, su gasto mensual varía de S/800 a S/1000. Si el dinero que le queda lo repartiera equitativamente entre sus 4 hijos, ¿cuál es la mínima cantidad que recibiría cada uno de sus hijos?",
-     "opciones": [
-      "S/20",
-      "S/15",
-      "S/30",
-      "S/50",
-      "S/10"
-     ],
-     "correcta": 0,
-     "imagen": null,
-     "justificacion": "Nos piden la mínima cantidad que recibiría cada hijo. De los datos, cada uno de los 4 hijos recibirá Ingreso mensual Ahorro Gasto mensual    −   −    10 4 % Si queremos que cada hijo reciba lo mínimo, entonces el ingreso mensual debe ser mínimo y el gasto mensual, máximo. Así: 1200 1500 1200 ≤ ≤ → = ingreso mensual Ingreso mensual mínimo 800 1000 1000 ≤ ≤ → = Gasto mensual Gasto mensual máximo Finalmente Recibe cada hijo = − − 1200 10 1200 1000 4 %( ) = − − = 1200 120 1000 4 20",
-     "curso": "Razonamiento Matemático",
-     "tema": "Magnitudes y proporcionalidad",
-     "subtema": "Interpretar y aplicar porcentajes en la resolución de problemas",
-     "examen": "UNSA 2023-II BIO"
-    },
-    {
-     "texto": "Un padre tiene 57 años y sus hijos 6; 3 y 2 años, respectivamente. ¿Cuántos años deberán transcurrir para que la edad del padre sea igual al triple de la suma de las edades de sus hijos?",
-     "opciones": [
-      "5",
-      "7",
-      "3",
-      "8",
-      "4"
-     ],
-     "correcta": 2,
-     "imagen": null,
-     "justificacion": "Nos piden la cantidad de años que debe transcurrir para que la edad del padre sea el triple de la suma de las edades de sus hijos. Trasladamos la información a un cuadro de edades. Edad actual Padre 57 57+x Hijo N.º 1 6 6+x Hijo N.º 2 3 3+x Hijo N.º 3 2 2+x +x años Del dato 57+x=3(6+x+3+x+2+x) 57+x=3(11+3x) 57+x=33+9x → x=3 Por lo tanto, deben transcurrir 3 años.",
-     "curso": "Razonamiento Matemático",
-     "tema": "Razonamiento algebraico intuitivo",
-     "subtema": "Resolver problemas de edades y relaciones básicas a partir del razonamiento",
-     "examen": "UNSA 2024-II ING"
-    },
-    {
-     "texto": "Halle x en la siguiente analogía: 35 (5) 61 24 (x) 92 46 (5) 73",
-     "opciones": [
-      "5",
-      "12",
-      "7",
-      "4",
-      "9"
-     ],
-     "correcta": 3,
-     "imagen": null,
-     "justificacion": "Nos piden hallar el valor de x. De acuerdo a la analogía se tiene: 35 5 61 3 5 2 5 6 1 14 ( ) → + ( ) + − = ( ) 24 92 2 4 2 9 2 14 4 x x x ( ) → + ( ) + + − = → = ( ) 46 5 73 4 6 2 5 7 3 14 ( ) → + ( ) + + − = ( ) Por lo tanto, el valor de x es 4.",
-     "curso": "Razonamiento Matemático",
-     "tema": "Razonamiento numérico",
-     "subtema": "Inferir la regla de formación en series numéricas aritméticas, figurativas y mixtas",
-     "examen": "UNSA 2023-I BIO"
-    },
-    {
-     "texto": "Yo soy un ingeniero y deseo saber, ¿qué parentesco tiene conmigo el padre del único tío del hijo de la única hermana de mi padre?",
-     "opciones": [
-      "Es mi tío.",
-      "Es mi abuelo.",
-      "Es mi hermano.",
-      "Es mi padre.",
-      "Es mi hijo."
-     ],
-     "correcta": 1,
-     "imagen": null,
-     "justificacion": "Del enunciado: ¿Qué parentesco tiene conmigo el padre del único tío 5 4 del hijo de la única hermana de mi padre? 3 2 1 Mi abuelo Mi padre Mi tía (5) (2) Mi primo Yo (3) (4)(1) Por lo tanto, representa a mi abuelo.",
-     "curso": "Razonamiento Matemático",
-     "tema": "Organización y orden lógico",
-     "subtema": "Resolver situaciones de: orden, ubicación, correspondencia",
-     "examen": "UNSA 2024-II SOC"
     }
    ]
   },
@@ -1697,10 +1109,14 @@
    "temas": [
     {
      "tema": "Electricidad",
-     "total": 10
+     "total": 12
     },
     {
      "tema": "Cinemática del movimiento",
+     "total": 12
+    },
+    {
+     "tema": "Dinámica",
      "total": 10
     },
     {
@@ -1708,48 +1124,20 @@
      "total": 8
     },
     {
-     "tema": "Dinámica",
-     "total": 7
-    },
-    {
      "tema": "Trabajo, energía y potencia",
-     "total": 6
+     "total": 7
     },
     {
      "tema": "La Física y las magnitudes físicas",
      "total": 5
     },
     {
-     "tema": "III. Dinámica",
-     "total": 3
-    },
-    {
      "tema": "Magnetismo y electromagnetismo",
-     "total": 2
+     "total": 4
     },
     {
      "tema": "Física moderna",
-     "total": 2
-    },
-    {
-     "tema": "X. Magnetismo y electromagnetismo",
-     "total": 2
-    },
-    {
-     "tema": "XII. Física moderna",
-     "total": 2
-    },
-    {
-     "tema": "II. Cinemática del movimiento",
-     "total": 2
-    },
-    {
-     "tema": "IX. Electricidad",
-     "total": 2
-    },
-    {
-     "tema": "VI. Trabajo, energía y potencia",
-     "total": 1
+     "total": 4
     }
    ],
    "examenes": 18,
@@ -1861,43 +1249,31 @@
   {
    "curso": "Literatura",
    "slug": "literatura",
-   "total": 62,
+   "total": 61,
    "temas": [
     {
      "tema": "Literatura peruana",
-     "total": 24
-    },
-    {
-     "tema": "Conceptos fundamentales de la literatura",
-     "total": 9
+     "total": 30
     },
     {
      "tema": "Literatura española",
-     "total": 7
+     "total": 9
+    },
+    {
+     "tema": "Conceptos fundamentales de la literatura",
+     "total": 8
     },
     {
      "tema": "Literatura universal",
      "total": 6
     },
     {
-     "tema": "V. Literatura peruana",
-     "total": 6
-    },
-    {
      "tema": "Literatura hispanoamericana",
-     "total": 4
+     "total": 5
     },
     {
      "tema": "Literatura regional del sur andino",
      "total": 3
-    },
-    {
-     "tema": "III. Literatura española",
-     "total": 2
-    },
-    {
-     "tema": "IV. Literatura hispanoamericana",
-     "total": 1
     }
    ],
    "examenes": 18,
@@ -1988,21 +1364,21 @@
      "examen": "UNSA 2024-II SOC"
     },
     {
-     "texto": "En el fragmento: \"Estaba ya vestido con todas sus insignias! Un pañuelo blanco le cubría parte de la frente. La seda azul de su chaqueta, los espejos, la tela roja del pantalón ardían bajo el angosto rayo del sol\" (La agonía de Rasu-Niti, J. M. Arguedas), se evidencia el uso de la:",
+     "texto": "En Casi un objeto, Saramago plantea ............... a través de cuentos ..............",
      "opciones": [
-      "Similitud",
-      "Caricatura",
-      "Etopeya",
-      "Prosopografía",
-      "Prosopopeya"
+      "una apología al neoliberalismo - realistas.",
+      "un discurso histórico - policíacos.",
+      "la rectoría de la globalización - naturalistas.",
+      "la rebelión de los objetos - fantásticos.",
+      "escenarios surrealistas - maravillosos."
      ],
      "correcta": 3,
      "imagen": null,
-     "justificacion": "La prosopografía (que etimológicamente significa “descripción del aspecto exterior de una persona”, de prosopón, ‘rostro’, y grafía, ‘escritura o descripción’, ambos en griego) es la descripción de un personaje. Esta figura literaria consiste en describir al personaje de la obra: sus rasgos físicos, estatura, corpulencia, facciones, etc. Actualmente también se aplica en todas las divisiones, cronologías de la historia, y al estudio de las biografías. En el anterior fragmento de “La agonía de Rasu-Ñiti”, se describe la vestimenta de un personaje de manera externa.",
+     "justificacion": "En el enunciado de la pregunta aparece el verbo «plantear». Este vocablo significa ‘proponer o enfocar la solución de un problema’. Es decir, el autor, con clara intencionalidad, asume una postura o punto de vista ante un hecho. Así, en el libro de cuentos Casi un objeto, de Saramago, hay algunos en los cuales, de manera literal, los objetos se rebelan contra el hombre. Esto se puede apreciar en el cuento «Cosas», en donde los objetos actúan como seres vivos. Por tanto, estamos ante narraciones fantásticas.",
      "curso": "Literatura",
-     "tema": "V. Literatura peruana",
-     "subtema": "Siglo XX: Realismo e indigenismo (Los ríos profundos - José María Arguedas)",
-     "examen": "UNSA 2024-I SOC"
+     "tema": "Literatura universal",
+     "subtema": "Literatura contemporánea",
+     "examen": "UNSA 2023-I ING"
     }
    ]
   },
@@ -2013,14 +1389,14 @@
    "temas": [
     {
      "tema": "Organización del Estado peruano",
-     "total": 16
-    },
-    {
-     "tema": "Democracia y sistema político",
-     "total": 8
+     "total": 20
     },
     {
      "tema": "Participación ciudadana y vida democrática",
+     "total": 9
+    },
+    {
+     "tema": "Democracia y sistema político",
      "total": 8
     },
     {
@@ -2040,19 +1416,11 @@
      "total": 4
     },
     {
-     "tema": "IV. Organización del Estado peruano",
-     "total": 4
-    },
-    {
      "tema": "La persona y la vida en sociedad",
      "total": 3
     },
     {
      "tema": "Constitución y orden jurídico",
-     "total": 1
-    },
-    {
-     "tema": "VIII. Participación ciudadana y vida democrática",
      "total": 1
     }
    ],
@@ -2163,28 +1531,192 @@
    ]
   },
   {
+   "curso": "Psicología",
+   "slug": "psicologia",
+   "total": 56,
+   "temas": [
+    {
+     "tema": "Procesos psicológicos básicos",
+     "total": 14
+    },
+    {
+     "tema": "Aprendizaje",
+     "total": 8
+    },
+    {
+     "tema": "Crecimiento, maduración y desarrollo",
+     "total": 7
+    },
+    {
+     "tema": "Búsqueda de identidad",
+     "total": 6
+    },
+    {
+     "tema": "Motivación y afectividad humana",
+     "total": 5
+    },
+    {
+     "tema": "Factores de riesgo",
+     "total": 5
+    },
+    {
+     "tema": "Salud sexual y reproductiva",
+     "total": 4
+    },
+    {
+     "tema": "Personalidad",
+     "total": 2
+    },
+    {
+     "tema": "Inteligencia emocional",
+     "total": 2
+    },
+    {
+     "tema": "Proyecto de vida",
+     "total": 1
+    },
+    {
+     "tema": "Hábitos de estudio",
+     "total": 1
+    },
+    {
+     "tema": "Factores de protección",
+     "total": 1
+    }
+   ],
+   "examenes": 18,
+   "muestras": [
+    {
+     "texto": "En cuanto al estudio de los hemisferios cerebrales. Cuando se encuentra dañado el lóbulo occipital, ¿qué alteración puede producirse?",
+     "opciones": [
+      "De la rnotricidad",
+      "De la inteligencia",
+      "De la memoria",
+      "De la vista",
+      "Del lenguaje"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "La corteza cerebral es la base o soporte biológico de la actividad psíquica. Se divide en dos hemisferios (izquierdo: lógico - matemático; y derecho: artístico- musical) y cada uno de ellos en lóbulos que adoptan sus nombres en función del hueso craneal que los protege o cubre. Para estudiar las funciones de la corteza se ha utilizado con frecuencia el estudio de casos donde se aprecian lesiones, y se hace un seguimiento para determinar qué funciones empiezan a fallar o presentan deficiencias. El lóbulo occipital está relacionado con las funciones visuales, se ubica la corteza visual primaria y secundaria; por lo tanto, una lesión a este nivel ocasionará problemas visuales o incluso una ceguera.",
+     "curso": "Psicología",
+     "tema": "Procesos psicológicos básicos",
+     "subtema": "Percepción",
+     "examen": "UNSA 2022-II ING"
+    },
+    {
+     "texto": "Micaela Vera es una madre de familia que tiene que plasmar los ingresos y gastos para el mes de octubre. Nos encontramos frente al:",
+     "opciones": [
+      "Gasto flexible",
+      "Gasto discrecional",
+      "Servicio familiar",
+      "Gasto variable",
+      "Presupuesto familiar"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "El presupuesto es un documento en el cual una persona, la familia, las empresas o el Estado proyecta sus ingresos y gastos esperados para un periodo determinado. Este instrumento sirve para la gestión financiera en cualquier ámbito, así como el cumplimiento de metas económicas en un periodo de tiempo. Para el caso de Micaela, notamos que planifica sus gastos a través de este instrumento cuidando de no exceder sus gastos mensuales.",
+     "curso": "Psicología",
+     "tema": "Proyecto de vida",
+     "subtema": "Pautas para elaborar un proyecto de vida",
+     "examen": "UNSA 2023-I BIO"
+    },
+    {
+     "texto": "Dentro del humanismo planteado por Carl Rogers, ¿cómo se llama al intento de hacer realidad nuestro sentido consciente de quiénes somos?",
+     "opciones": [
+      "Consideración positiva condicional",
+      "Persona con funcionamiento óptimo",
+      "Tendencia a la autorrealización",
+      "Tendencia a la realización",
+      "Consideración positiva incondicional"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Desde la perspectiva de la psicología humanista de Carl Rogers, los seres humanos desarrollamos la tendencia a la autorrealización que es la racionalidad o la consciencia de quiénes somos. Esta capacidad de ser conscientes nos lleva a comprender que no somos controlados por fuerzas inconscientes (como los impulsos biológicos de la tendencia a la realización) y nos lleva a hacer realidad nuestro sentido de vida. Así, la tendencia a la autorrealización involucra acciones subjetivas e interpretaciones para el desarrollo personal siendo consecuentes y auténticos.",
+     "curso": "Psicología",
+     "tema": "Aprendizaje",
+     "subtema": "Teorías del aprendizaje: características, conductismo, cognitivismo, aprendizaje significativo",
+     "examen": "UNSA 2022-I SOC"
+    },
+    {
+     "texto": "Cualquier acto discriminatorio practicado, sea por raza, condición social, lugar de origen, forma de hablar o cualquier otra situación, siempre se dará por:",
+     "opciones": [
+      "Infortunio",
+      "Solvencia",
+      "Esnobismo",
+      "Prejuicio",
+      "Probidad"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "El prejuicio es la opinión preconcebida, generalmente negativa, hacia algo o alguien, nos lleva a respetar el derecho que tenemos consagrado en la Constitución Política, el cual señala que toda persona tiene derecho a la igualdad ante la ley. Nadie debe ser discriminado por motivo de origen, raza, sexo, idioma, religión, opinión, condición económica o de cualquiera otra índole.",
+     "curso": "Psicología",
+     "tema": "Factores de riesgo",
+     "subtema": "Violencia, conductas delictivas",
+     "examen": "UNSA 2022-II ING"
+    },
+    {
+     "texto": "Esteban conoce y cree en sus derechos y en los derechos de los demás. Lo demuestra cada vez que escucha hablar mentiras sobre las personas. Sabe que la libertad de expresarnos no es viable cuando se usa para difamar a quién sea. Qué patrón de comportamiento muestra Esteban en relación a las habilidades sociales",
+     "opciones": [
+      "paternal",
+      "litigante",
+      "asertivo",
+      "ofensivo",
+      "Inhíbido"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "La inteligencia emocional implica el dominio de dimensiones intrapersonales (autoconocimiento, autocontrol y automotivación) y dimensiones interpersonales (empatía y habilidades sociales). Las habilidades sociales son conocidas como asertividad que consiste en la capacidad de hacer respetar nuestros derechos sin vulnerar el derecho de los demás. De acuerdo con el enunciado de la pregunta, Esteban evidencia un patrón de comportamientos asertivos.",
+     "curso": "Psicología",
+     "tema": "Inteligencia emocional",
+     "subtema": "Inteligencia interpersonal",
+     "examen": "UNSA 2023-I ING"
+    },
+    {
+     "texto": "Esteban, un adolescente de 16 años, al asistir a una feria de orientación vocacional se hace las preguntas: ¿quién soy?, ¿hacia dónde voy?, ¿quién quiero ser? Y se da cuenta de que sus respuestas positivas y negativas se ven influenciadas en parte por su entorno. En esta situación se está propiciando el desarrollo de",
+     "opciones": [
+      "la autoeficacia.",
+      "la identidad personal.",
+      "la imagen corporal.",
+      "la identidad cultural.",
+      "su proyecto de vida."
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Los continuos cambios y retos que enfrenta el adolescente durante su desarrollo hacen imperante que él se centre en la búsqueda de su identidad (Erikson, 1956). El adolescente busca definir su identidad al plantearse preguntas como ¿quién soy?, ¿cómo me ven los demás?, ¿quién quiero llegar a ser? Aunque el adolescente tiene una necesidad de autonomía, la construcción de su identidad está determinada en gran medida por su entorno, las expectativas de sus amigos, sus maestros, y las propias que resultan importantes indicadores en reconocer su papel en el mundo.",
+     "curso": "Psicología",
+     "tema": "Crecimiento, maduración y desarrollo",
+     "subtema": "Desarrollo humano",
+     "examen": "UNSA 2024-I BIO"
+    }
+   ]
+  },
+  {
    "curso": "Álgebra",
    "slug": "algebra",
    "total": 40,
    "temas": [
     {
      "tema": "Funciones elementales",
-     "total": 7
+     "total": 8
     },
     {
      "tema": "Sistemas de ecuaciones",
-     "total": 4
+     "total": 6
     },
     {
      "tema": "Función exponencial y logarítmica",
-     "total": 4
+     "total": 6
     },
     {
      "tema": "Ecuaciones",
-     "total": 3
+     "total": 5
     },
     {
      "tema": "Expresiones algebraicas",
+     "total": 4
+    },
+    {
+     "tema": "Aplicaciones y modelación básica",
      "total": 3
     },
     {
@@ -2192,19 +1724,7 @@
      "total": 2
     },
     {
-     "tema": "XIV. Función exponencial y logarítmica",
-     "total": 2
-    },
-    {
-     "tema": "X. Sistemas de ecuaciones",
-     "total": 2
-    },
-    {
-     "tema": "VIII. Ecuaciones",
-     "total": 2
-    },
-    {
-     "tema": "XVI. Aplicaciones y modelación básica",
+     "tema": "Inecuaciones",
      "total": 2
     },
     {
@@ -2216,31 +1736,11 @@
      "total": 1
     },
     {
-     "tema": "Aplicaciones y modelación básica",
-     "total": 1
-    },
-    {
-     "tema": "Inecuaciones",
-     "total": 1
-    },
-    {
      "tema": "Números reales",
      "total": 1
     },
     {
      "tema": "Fracciones algebraicas",
-     "total": 1
-    },
-    {
-     "tema": "IX. Inecuaciones",
-     "total": 1
-    },
-    {
-     "tema": "XIII. Funciones elementales",
-     "total": 1
-    },
-    {
-     "tema": "IV. Expresiones algebraicas",
      "total": 1
     }
    ],
@@ -2293,26 +1793,9 @@
      "imagen": null,
      "justificacion": "Nos piden la relación entre el número de hombres y el número de mujeres. De los datos: Capital Provincia Hombres 18 9K Mujeres 12 15K 30 + 24K = 126 → K = 4 ∴ Varones Mujeres = + + = = 18 9 12 15 54 72 3 4 K K",
      "curso": "Álgebra",
-     "tema": "X. Sistemas de ecuaciones",
+     "tema": "Sistemas de ecuaciones",
      "subtema": "Sistemas de ecuaciones lineales: con dos variables",
      "examen": "UNSA 2024-I BIO"
-    },
-    {
-     "texto": "Si $\\displaystyle 2x-1 = x-2 \\quad \\text{y} \\quad x+3 = 3x-1$ halle $\\displaystyle \\triangle (7)$",
-     "opciones": [
-      "4",
-      "7",
-      "5",
-      "2",
-      "8"
-     ],
-     "correcta": 0,
-     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNSA/UNSA-2022-I-ING/P20.webp",
-     "justificacion": "Nos piden el resultado de 7 De los datos 2x – 1 =x – 2 (I) x+3 =3x–1 (II) Analizando lo pedido ∴ 7 = 11 =6 – 2=4 reemplazando en (II) para x=4 reemplazando en (I) para x=6",
-     "curso": "Álgebra",
-     "tema": "Sistemas de ecuaciones",
-     "subtema": "Sistemas de ecuaciones lineales con dos variables",
-     "examen": "UNSA 2022-I ING"
     },
     {
      "texto": "El cuadrado de la edad de Roberto, menos 3 es mayor que 165. En cambio, el doble de su edad, más 3 es un número menor que 30. ¿Qué edad tiene Roberto?",
@@ -2347,6 +1830,307 @@
      "tema": "Ecuaciones",
      "subtema": "Ecuaciones de segundo grado.",
      "examen": "UNSA 2022-I BIO"
+    },
+    {
+     "texto": "Si $a$ y $b$ ($a < b$) son las soluciones de la ecuación $\\displaystyle \\begin{vmatrix} 3x & 5 \\\\ x-1 & x+1 \\end{vmatrix} = \\begin{vmatrix} x^2 + x + 1 & 1 \\\\ x^3 - x^2 - 9x - 1 & x-1 \\end{vmatrix}$ Halle el valor de $4a + b$.",
+     "opciones": [
+      "6",
+      "10",
+      "11",
+      "7",
+      "5"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "3 5 1 1 1 1 9 1 1 2 3 2 x x x x x x x x x − + = + + − − − − 3x(x+1)–5(x–1)=(x–1)(x2+x+1)–(x5–x2–9x–1) 3x2–2x+5 = x3–1 –x3+x2+9x+1 → 2x2–11x+5=0 2x –1 x –5 (2x–1)(x–5)=0 2x–1=0 ∨ x–5=0 x a = 1 2 ∨ x=5 b ∴ 4 4 1 2 5 7 a b + =    + =",
+     "curso": "Álgebra",
+     "tema": "Fracciones algebraicas",
+     "subtema": "Operaciones con fracciones algebraicas",
+     "examen": "UNSA 2023-II ING"
+    }
+   ]
+  },
+  {
+   "curso": "Razonamiento Matemático",
+   "slug": "razonamiento-matematico",
+   "total": 37,
+   "temas": [
+    {
+     "tema": "Razonamiento numérico",
+     "total": 22
+    },
+    {
+     "tema": "Magnitudes y proporcionalidad",
+     "total": 7
+    },
+    {
+     "tema": "Razonamiento algebraico intuitivo",
+     "total": 6
+    },
+    {
+     "tema": "Análisis combinatorio intuitivo",
+     "total": 2
+    }
+   ],
+   "examenes": 15,
+   "muestras": [
+    {
+     "texto": "Susan ahorra el 10% de su ingreso mensual, el cual varía de S/1200 a S/1500; además, su gasto mensual varía de S/800 a S/1000. Si el dinero que le queda lo repartiera equitativamente entre sus 4 hijos, ¿cuál es la mínima cantidad que recibiría cada uno de sus hijos?",
+     "opciones": [
+      "S/20",
+      "S/15",
+      "S/30",
+      "S/50",
+      "S/10"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Nos piden la mínima cantidad que recibiría cada hijo. De los datos, cada uno de los 4 hijos recibirá Ingreso mensual Ahorro Gasto mensual    −   −    10 4 % Si queremos que cada hijo reciba lo mínimo, entonces el ingreso mensual debe ser mínimo y el gasto mensual, máximo. Así: 1200 1500 1200 ≤ ≤ → = ingreso mensual Ingreso mensual mínimo 800 1000 1000 ≤ ≤ → = Gasto mensual Gasto mensual máximo Finalmente Recibe cada hijo = − − 1200 10 1200 1000 4 %( ) = − − = 1200 120 1000 4 20",
+     "curso": "Razonamiento Matemático",
+     "tema": "Magnitudes y proporcionalidad",
+     "subtema": "Interpretar y aplicar porcentajes en la resolución de problemas",
+     "examen": "UNSA 2023-II BIO"
+    },
+    {
+     "texto": "Un padre tiene 57 años y sus hijos 6; 3 y 2 años, respectivamente. ¿Cuántos años deberán transcurrir para que la edad del padre sea igual al triple de la suma de las edades de sus hijos?",
+     "opciones": [
+      "5",
+      "7",
+      "3",
+      "8",
+      "4"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Nos piden la cantidad de años que debe transcurrir para que la edad del padre sea el triple de la suma de las edades de sus hijos. Trasladamos la información a un cuadro de edades. Edad actual Padre 57 57+x Hijo N.º 1 6 6+x Hijo N.º 2 3 3+x Hijo N.º 3 2 2+x +x años Del dato 57+x=3(6+x+3+x+2+x) 57+x=3(11+3x) 57+x=33+9x → x=3 Por lo tanto, deben transcurrir 3 años.",
+     "curso": "Razonamiento Matemático",
+     "tema": "Razonamiento algebraico intuitivo",
+     "subtema": "Resolver problemas de edades y relaciones básicas a partir del razonamiento",
+     "examen": "UNSA 2024-II ING"
+    },
+    {
+     "texto": "Halle x en la siguiente analogía: 35 (5) 61 24 (x) 92 46 (5) 73",
+     "opciones": [
+      "5",
+      "12",
+      "7",
+      "4",
+      "9"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Nos piden hallar el valor de x. De acuerdo a la analogía se tiene: 35 5 61 3 5 2 5 6 1 14 ( ) → + ( ) + − = ( ) 24 92 2 4 2 9 2 14 4 x x x ( ) → + ( ) + + − = → = ( ) 46 5 73 4 6 2 5 7 3 14 ( ) → + ( ) + + − = ( ) Por lo tanto, el valor de x es 4.",
+     "curso": "Razonamiento Matemático",
+     "tema": "Razonamiento numérico",
+     "subtema": "Inferir la regla de formación en series numéricas aritméticas, figurativas y mixtas",
+     "examen": "UNSA 2023-I BIO"
+    },
+    {
+     "texto": "Seis fichas, cada una con un número diferente del 4 al 9 se colocan en las cajas A y B de modo que la suma de los números de las fichas en la caja A y en la de B difieren en 21. Si solo hay dos fichas en la caja A, ¿cuál de las siguientes alternativas es correcta?",
+     "opciones": [
+      "En la caja B está la ficha con el número 9",
+      "En la caja A hay dos fichas con números pares",
+      "En la caja B hay 3 fichas con número impar",
+      "En la caja B hay 3 fichas con número par",
+      "La ficha con el número 7 está en la caja A"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Nos piden la alternativa correcta. Se tiene 6 fichas 4 5 6 7 8 9 → suma total=39 A B B+A=39 B – A=21 2B=60 B=30 A=9 + Única opción 4 5 6 7 8 9 A B Por lo tanto, es cierto que en la caja B se encuentra el número 9.",
+     "curso": "Razonamiento Matemático",
+     "tema": "Análisis combinatorio intuitivo",
+     "subtema": "Resolver problemas de rutas y elecciones.",
+     "examen": "UNSA 2022-I BIO"
+    },
+    {
+     "texto": "Un ingeniero civil pensó en hacer unos planos en 30 días, pero se enfermó, tardando 20 días más por trabajar 2 horas menos cada día. ¿Cuántas horas diarias trabajó?",
+     "opciones": [
+      "1",
+      "4",
+      "2",
+      "5",
+      "3"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Nos piden el número de horas diarias que trabajó. De los datos: N.o de horas diarias N.o de días x x – 2 30 50 +20 – 2 IP Se cumple que 50(x – 2)=30x 5x – 10=3x → x=5 Por lo tanto, trabajó x – 2 horas: 5 – 2=3.",
+     "curso": "Razonamiento Matemático",
+     "tema": "Magnitudes y proporcionalidad",
+     "subtema": "Deducir situaciones de variación directa e inversa",
+     "examen": "UNSA 2022-I SOC"
+    },
+    {
+     "texto": "Una empresa produce pernos de precisión y en el control de calidad de dicho producto, se determinó que la relación entre los pernos defectuosos y el total de pernos es $\\frac{3}{200}$. Luego de hacer algunos ajustes a la maquinaria, la relación cambia a $\\frac{1}{200}$. Si la empresa toma siempre la misma cantidad de pernos como muestra y después de los ajustes se encontraron 75 pernos defectuosos, ¿cuántos pernos defectuosos produjo antes de ajustar la maquinaria?",
+     "opciones": [
+      "250",
+      "275",
+      "225",
+      "80",
+      "150"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Nos piden el número de pernos defectuosos antes del ajuste. De los datos Total 200k Defectuosos 3k Antes Defectuosos k Después =75 3 200 1 200 Por lo tanto, los pernos defectuosos antes del ajuste de la maquinaria son 3k=3(75) → 3k=225",
+     "curso": "Razonamiento Matemático",
+     "tema": "Magnitudes y proporcionalidad",
+     "subtema": "Establecer relaciones mediante escalas y proporcionalidad",
+     "examen": "UNSA 2022-I SOC"
+    }
+   ]
+  },
+  {
+   "curso": "Filosofía",
+   "slug": "filosofia",
+   "total": 35,
+   "temas": [
+    {
+     "tema": "Ética",
+     "total": 15
+    },
+    {
+     "tema": "Conocimiento, ciencia y verdad",
+     "total": 5
+    },
+    {
+     "tema": "La filosofía a lo largo de la historia",
+     "total": 4
+    },
+    {
+     "tema": "Filosofía política",
+     "total": 2
+    },
+    {
+     "tema": "Filosofía del ser humano",
+     "total": 2
+    },
+    {
+     "tema": "Problemas fundamentales de la filosofía",
+     "total": 2
+    },
+    {
+     "tema": "Lógica y teoría de la argumentación",
+     "total": 1
+    },
+    {
+     "tema": "Disciplinas filosóficas",
+     "total": 1
+    },
+    {
+     "tema": "Axiología",
+     "total": 1
+    },
+    {
+     "tema": "Filosofía en Latinoamérica y en el Perú",
+     "total": 1
+    },
+    {
+     "tema": "Pensamiento filosófico contemporáneo y sociedad",
+     "total": 1
+    }
+   ],
+   "examenes": 17,
+   "muestras": [
+    {
+     "texto": "En una reunión de amigos, Julia y Sandro son testigos de un hecho poco común; al conversar sobre ello. Julia se pronuncia diciendo: \"Mentir es siempre malo\". Lo dicho por Julia, desde la ética, se define como",
+     "opciones": [
+      "sentido moral",
+      "juicio moral",
+      "hecho moral",
+      "desarrollo moral",
+      "conciencia moral"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "La persona moral es aquella que posee libertad para elegir sus actos y conciencia para comprender la ley moral y distinguir entre el bien y el mal. La afirmación de Julia, «Mentir es siempre malo», constituye una valoración moral de un hecho. Por lo que se le considera un juicio moral.",
+     "curso": "Filosofía",
+     "tema": "Ética",
+     "subtema": "Acto moral; valores y antivalores",
+     "examen": "UNSA 2023-I BIO"
+    },
+    {
+     "texto": "Brianna escribe un ensayo sobre la libertad en el Medio Oriente y la imposición de algunas costumbres en ciertos países. ¿A qué tipo de valores se hace referencia?",
+     "opciones": [
+      "Objetivos",
+      "Relativos",
+      "Apriorismo",
+      "Subjetivos",
+      "Antivalores"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Brianna cuando escribe un ensayo sobre la libertad en Medio Oriente, comprende que el modo de entender la libertad en Oriente es distinto que en Occidente. Por ello, podríamos decir que toma conciencia de la relatividad de los valores según la cultura.",
+     "curso": "Filosofía",
+     "tema": "Axiología",
+     "subtema": "Axiología: concepto. Clasificación de los valores.",
+     "examen": "UNSA 2024-I ING"
+    },
+    {
+     "texto": "Eulalia pregunta a Marisol ¿qué es aquello que nos diferencia de todo lo que se mueve de modo necesario e irremediable, aquello que nos permite saber que no estamos obligados a querer hacer una sola cosa, pero tampoco a hacer cualquier cosa?",
+     "opciones": [
+      "Libertad",
+      "Humildad",
+      "Solidaridad",
+      "Generosidad",
+      "Mezquindad"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "A diferencia de las cosas, cuyo movimiento está determinado por causas mecánicas y necesarias (o el de los animales cuyo movimiento está determinado por sus instintos), el ser humano se sobrepone a estas condiciones y posee libertad. La libertad es la capacidad de elegir con autonomía nuestras acciones, trae consigo la exigencia de la responsabilidad, ya que debemos responder por nuestros actos.",
+     "curso": "Filosofía",
+     "tema": "Problemas fundamentales de la filosofía",
+     "subtema": "La libertad",
+     "examen": "UNSA 2024-II BIO"
+    },
+    {
+     "texto": "Si el Perú es un país multicultural, entendiendo por esto que está formado por distintas culturas, entonces es válido hablar de culturas hegemónica y subalterna; tal designación es posible hacerla, gracias a que las culturas son un fenómeno en las que está presente:",
+     "opciones": [
+      "La interdependencia",
+      "El poder",
+      "El mestizaje",
+      "La autonomía",
+      "La hibridación"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Las actitudes son disposiciones que pueden ser de aceptación o de rechazo hacia algún objeto social, ya sea una persona, un grupo, una cultura o incluso otra actitud. Al ser el Perú un país pluricultural y multicultural, en él coexisten diversas culturas. Lamentablemente no todas ellas tienen la misma aceptación ni difusión. En el Perú, por ejemplo, hay algunas culturas que se imponen sobre otras a las que subordinan. Esta cultura está representada por una clase dominante, la cual justifica el statu quo social político y económico como inherente así misma, y con mayor y perpetuo poder.",
+     "curso": "Filosofía",
+     "tema": "Filosofía en Latinoamérica y en el Perú",
+     "subtema": "Reflexión filosófica en el contexto latinoamericano y peruano",
+     "examen": "UNSA 2024-II SOC"
+    },
+    {
+     "texto": "En una clase de filosofía, Diana explica a sus alumnos que el verdadero conocimiento se encuentra en el alma, declara que una vida no examinada no vale la pena ser vivida. El argumento hace referencia a la filosofía de",
+     "opciones": [
+      "Heráldito",
+      "Platón",
+      "Sócrates",
+      "Plotino",
+      "Aristóteles"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Cuando Diana considera que el verdadero conocimiento se encuentra en el alma y que una vida sin reflexión no vale la pena ser vivida, está asumiendo las ideas del filósofo Sócrates, quien es recordado por sus frases “Conócete a ti mismo” y “Solo sé que nada sé”.",
+     "curso": "Filosofía",
+     "tema": "La filosofía a lo largo de la historia",
+     "subtema": "Filosofía antigua: problemas fundamentales.",
+     "examen": "UNSA 2024-I ING"
+    },
+    {
+     "texto": "Según el texto, el ser diferente es:",
+     "opciones": [
+      "Necesidad de autoconciencia",
+      "Afección al carácter personal",
+      "El principio vital",
+      "Causa suficiente",
+      "Sustancia individual"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Según el texto, el ser diferente es el principio vital. El ser del hombre está constituido por la unidad de cuerpo y alma. El alma es el principio vital que configura el hombre. De ello se desprende que lo que caracteriza y, por ende, distingue al hombre del resto de seres es el alma, es decir, su principio vital.",
+     "curso": "Filosofía",
+     "tema": "Filosofía del ser humano",
+     "subtema": "Persona humana. Dignidad humana.",
+     "examen": "UNSA 2022-II SOC"
     }
    ]
   },
@@ -2357,50 +2141,30 @@
    "temas": [
     {
      "tema": "Teoremas fundamentales en el triángulo",
-     "total": 7
+     "total": 8
     },
     {
      "tema": "Perímetros, áreas y longitudes",
+     "total": 7
+    },
+    {
+     "tema": "Polígonos",
      "total": 6
     },
     {
      "tema": "Geometría analítica",
-     "total": 4
+     "total": 5
     },
     {
-     "tema": "Polígonos",
-     "total": 4
+     "tema": "Triángulos",
+     "total": 3
     },
     {
      "tema": "La circunferencia",
      "total": 3
     },
     {
-     "tema": "Triángulos",
-     "total": 2
-    },
-    {
-     "tema": "VI. Polígonos",
-     "total": 2
-    },
-    {
      "tema": "Geometría espacial",
-     "total": 1
-    },
-    {
-     "tema": "III. Triángulos",
-     "total": 1
-    },
-    {
-     "tema": "XI. Geometría analítica",
-     "total": 1
-    },
-    {
-     "tema": "VIII. Perímetros, áreas y longitudes",
-     "total": 1
-    },
-    {
-     "tema": "IV. Teoremas fundamentales en el triángulo",
      "total": 1
     }
    ],
@@ -2475,23 +2239,6 @@
      "examen": "UNSA 2023-II BIO"
     },
     {
-     "texto": "Encuentra la ecuación estándar de una elipse cuyos focos son (-3;2) y (5;2) y eje mayor de longitud 10.",
-     "opciones": [
-      "$\\frac{(x+1)^2}{25} + \\frac{(y+2)^2}{9} = 1$",
-      "$\\frac{(x-1)^2}{36} + \\frac{(y-2)^2}{4} = 1$",
-      "$\\frac{(x+2)^2}{25} + \\frac{(y-1)^2}{9} = 1$",
-      "$\\frac{(x-2)^2}{25} + \\frac{(y-1)^2}{9} = 1$",
-      "$\\frac{(x-1)^2}{25} + \\frac{(y-2)^2}{9} = 1$"
-     ],
-     "correcta": 4,
-     "imagen": null,
-     "justificacion": "Por dato: F1=(–3; 2) F2=(5; 2) → 2c=5–(–3) → c=4 Luego eje mayor=10 2a=10 → a=5 → b=3 El centro de la elipse es (1; 2). Por lo tanto, la ecuación de la elipse es x y − ( ) + − ( ) = 1 25 2 9 1 2 2",
-     "curso": "Geometría",
-     "tema": "XI. Geometría analítica",
-     "subtema": "Ecuación de la elipse",
-     "examen": "UNSA 2024-I BIO"
-    },
-    {
      "texto": "La figura muestra un cubo cuya arista mide 10 m. Si M y N son puntos medios y P es el centro de la cara, calcule el perímetro de la región sombreada.",
      "opciones": [
       "$5(2\\sqrt{3}+\\sqrt{5})$ m",
@@ -2507,6 +2254,287 @@
      "tema": "Geometría espacial",
      "subtema": "Poliedros: convexos, regulares",
      "examen": "UNSA 2022-II ING"
+    },
+    {
+     "texto": "La figura muestra el techo de un edificio, el cual se debe cubrir con material sellador que cuesta S/18 el metro cuadrado. ¿Cuánto será el costo total del material?",
+     "opciones": [
+      "S/1894",
+      "S/1796",
+      "S/2124",
+      "S/1944",
+      "S/2016"
+     ],
+     "correcta": 3,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNSA/UNSA-2023-II-ING/P17.webp",
+     "justificacion": "Nos piden el costo total del material. De los datos: 12 10 2 4 4 3 Área sombreada=10×12 – 4×3=108 m2 ∴ Costo total=108(18)=S/1944",
+     "curso": "Geometría",
+     "tema": "Perímetros, áreas y longitudes",
+     "subtema": "Áreas de: triángulos, cuadriláteros, polígonos",
+     "examen": "UNSA 2023-II ING"
+    }
+   ]
+  },
+  {
+   "curso": "Razonamiento Lógico",
+   "slug": "razonamiento-logico",
+   "total": 22,
+   "temas": [
+    {
+     "tema": "Organización y orden lógico",
+     "total": 14
+    },
+    {
+     "tema": "Lógica de enunciados",
+     "total": 4
+    },
+    {
+     "tema": "Conectores lógicos",
+     "total": 3
+    },
+    {
+     "tema": "Razonamiento argumentativo básico",
+     "total": 1
+    }
+   ],
+   "examenes": 11,
+   "muestras": [
+    {
+     "texto": "Si hoy es lunes, ¿qué día será el ayer del anteayer del ayer del pasado mañana del pasado mañana de mañana?",
+     "opciones": [
+      "Viernes",
+      "Miércoles",
+      "Jueves",
+      "Martes",
+      "Sábado"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Nos piden encontrar un día determinado. De acuerdo al enunciado hoy es lunes. Calculamos el día por determinar utilizando equivalentes numéricos. qué día será el ayer del anteayer del ayer del –1 – 2 –1 pasado mañana del pasado mañana de mañana +2 +2 +1 Luego se tiene: Día = (Hoy) – 1 – 2 – 1+2+2+1 Día = (Lunes) +1=Martes Por lo tanto, el día pedido es martes.",
+     "curso": "Razonamiento Lógico",
+     "tema": "Organización y orden lógico",
+     "subtema": "Resolver situaciones de orden — relaciones de precedencia temporal",
+     "examen": "UNSA 2024-I SOC"
+    },
+    {
+     "texto": "Completa el conector lógico que corresponda en la siguiente oración: \"El tenis es un deporte de caballeros, ............. no todo jugador de tenis es un caballero\".",
+     "opciones": [
+      "aunque",
+      "incluso",
+      "además",
+      "en cambio",
+      "en consecuencia"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "A la oración propuesta le corresponde el conector lógico aunque. El conector aunque es un conector de función concesiva, se utiliza para generar una oposición parcial entre la información. En ese sentido, en la oración se da una oposición parcial entre los distintos significados de la palabra caballero. En el primer segmento se usa caballero como el género masculino; mientras que en el segundo segmento, se le da un sentido de comportamiento. De ahí la oposición parcial.",
+     "curso": "Razonamiento Lógico",
+     "tema": "Conectores lógicos",
+     "subtema": "Analizar el efecto del conector en el significado del enunciado",
+     "examen": "UNSA 2024-I BIO"
+    },
+    {
+     "texto": "Indique la oración que debe ser eliminada. I. Esta espada es filosa y flexible. II. Es la más cara del mercado. III. Tiene una empuñadura con incrustaciones de diamante. IV. Su estuche lleva motivos medievales. V. Geralt de Rivia usa una espada imponente.",
+     "opciones": [
+      "II",
+      "IV",
+      "V",
+      "III",
+      "I"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "La oración que debe ser eliminada es la II. El tema central del ejercicio es “las características imponentes de la espada de Geralt de Rivia”. Por tal razón, la oración II se elimina por disociación, ya que aborda un tema distinto o ajeno, esto es el valor económico de la espada de Geralt de Rivia.",
+     "curso": "Razonamiento Lógico",
+     "tema": "Lógica de enunciados",
+     "subtema": "Detectar contradicciones internas simples",
+     "examen": "UNSA 2024-I ING"
+    },
+    {
+     "texto": "\"Pedrito siempre ha sido estudiós, aplicado y sobre todo cumplidor con las tareas, en consecuencia, ha tenido resultados positivos en su vida académica\". ¿Cuál es la enseñanza o lección que muestra el enunciado?",
+     "opciones": [
+      "La verdad",
+      "La solidaridad",
+      "El positivismo",
+      "La responsabilidad",
+      "El estudio"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Los sentimientos, por ser de origen superior, se van desarrollando dentro de la sociedad, se pueden clasificar en tres categorías: intelectuales, morales y estéticos. Los sentimientos morales muestran de una manera muy clara que estos están condicionados por la manera de vivir en una sociedad, de los fines que las personas se plantean y de cómo se esmeran para alcanzarlos. El deber, la responsabilidad y el honor no solamente se reconocen conscientemente, sino que se sienten también emocionalmente. El cumplimiento del deber, de sus obligaciones y la observancia del honor motivan una satisfacción moral.",
+     "curso": "Razonamiento Lógico",
+     "tema": "Razonamiento argumentativo básico",
+     "subtema": "Identificar premisas y conclusiones en argumentos breves",
+     "examen": "UNSA 2024-I ING"
+    },
+    {
+     "texto": "Yo soy un ingeniero y deseo saber, ¿qué parentesco tiene conmigo el padre del único tío del hijo de la única hermana de mi padre?",
+     "opciones": [
+      "Es mi tío.",
+      "Es mi abuelo.",
+      "Es mi hermano.",
+      "Es mi padre.",
+      "Es mi hijo."
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Del enunciado: ¿Qué parentesco tiene conmigo el padre del único tío 5 4 del hijo de la única hermana de mi padre? 3 2 1 Mi abuelo Mi padre Mi tía (5) (2) Mi primo Yo (3) (4)(1) Por lo tanto, representa a mi abuelo.",
+     "curso": "Razonamiento Lógico",
+     "tema": "Organización y orden lógico",
+     "subtema": "Resolver situaciones de: orden, ubicación, correspondencia",
+     "examen": "UNSA 2024-II SOC"
+    },
+    {
+     "texto": "Si la polea M se moviera en sentido antihorario, ¿cuántas poleas en total se moverían en sentido antihorario?",
+     "opciones": [
+      "2",
+      "4",
+      "3",
+      "5",
+      "1"
+     ],
+     "correcta": 2,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNSA/UNSA-2023-II-BIO/P55.webp",
+     "justificacion": "Nos piden el número de poleas que giran en sentido antihorario. Dato: M se mueve en sentido antihorario M Antihorario Horario Antihorario Antihorario Horario Por lo tanto, hay 3 ruedas que giran en sentido antihorario.",
+     "curso": "Razonamiento Lógico",
+     "tema": "Organización y orden lógico",
+     "subtema": "Ordenar enunciados según una secuencia lógica",
+     "examen": "UNSA 2023-II BIO"
+    }
+   ]
+  },
+  {
+   "curso": "Razonamiento Verbal",
+   "slug": "razonamiento-verbal",
+   "total": 22,
+   "temas": [
+    {
+     "tema": "Relaciones semánticas básicas",
+     "total": 8
+    },
+    {
+     "tema": "Vocabulario en contexto",
+     "total": 7
+    },
+    {
+     "tema": "Resolución de problemas verbales",
+     "total": 2
+    },
+    {
+     "tema": "Analogías verbales",
+     "total": 2
+    },
+    {
+     "tema": "Pragmática en enunciados",
+     "total": 2
+    },
+    {
+     "tema": "Semántica y lexicología",
+     "total": 1
+    }
+   ],
+   "examenes": 11,
+   "muestras": [
+    {
+     "texto": "La lenidad de las autoridades ha permitido que algunos médicos no cumplan su juramento hipocrático. El antónimo de la palabra subrayada es",
+     "opciones": [
+      "Suavidad",
+      "Delicadeza",
+      "Tenacidad",
+      "Excluir",
+      "Rechazo"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "En la oración analizada, el término lenidad se entiende como blandura o debilidad para exigir el cumplimento de las normas. Por tal razón su antónimo contextual es tenacidad, pues esta palabra refiere a la firmeza o insistencia para el cumplimento de las tareas u objetivos.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Relaciones semánticas básicas",
+     "subtema": "Identificar antonimia contextual",
+     "examen": "UNSA 2022-I SOC"
+    },
+    {
+     "texto": "En el texto, intuición se opone a",
+     "opciones": [
+      "a científico",
+      "conciencia",
+      "científico",
+      "subjetividad",
+      "razón"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "En el texto, la intuición se opone a acientífico. El autor alega que la intuición ejerce un rol fundamental en el quehacer científico, vale decir, la intuición es científica y no acientífica. Gracias a la intuición, el científico puede elegir un tema de investigación mejor que otro.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Vocabulario en contexto",
+     "subtema": "Deducir el significado de palabras por el contexto del texto",
+     "examen": "UNSA 2023-I ING"
+    },
+    {
+     "texto": "Cuál es el mensaje de: \"El señor Mario es una flecha en su trabajo\".",
+     "opciones": [
+      "Mario es negligente.",
+      "Mario es ligero.",
+      "Mario es diligente.",
+      "Mario es precipitado.",
+      "Mario es delgado."
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "En la oración “El señor Mario es una flecha en su trabajo”, nos da a entender como mensaje lo siguiente: Mario es diligente. El mensaje de un texto es el contenido esencial trasmitido por el autor. En el caso de la expresión “El señor Mario es una flecha en su trabajo”, el mensaje se sintetiza en la frase que señala la característica del sujeto: “es una flecha”. Esta, de manera connotada, indica que Mario es rápido, preciso y cuidadoso en su labor, es decir, es diligente en su trabajo. Se descarta precipitado, ya que indica apuro, pero no precisión o cuidado.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Semántica y lexicología",
+     "subtema": "Significado: clases; contexto y situación",
+     "examen": "UNSA 2024-II BIO"
+    },
+    {
+     "texto": "\"Los ............... más innovadores en el ámbito ............... facilitan la resolución de problemas que aquejan a la sociedad\" Marque la respuesta que completa el enunciado anterior.",
+     "opciones": [
+      "encuentros - laboral",
+      "hallazgos - artístico",
+      "eventos - cultural",
+      "inventos - científico",
+      "conflictos - bélico"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "En la oración encontramos los rastros verbales inno- vadores, resolución de problemas, sociedad, los cuales nos permiten deducir que serían los inventos científicos los que permitirían resolver los problemas de la sociedad.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Resolución de problemas verbales",
+     "subtema": "Seleccionar datos relevantes. Reorganizar información.",
+     "examen": "UNSA 2022-I BIO"
+    },
+    {
+     "texto": "Determine el tipo de analogía de las palabras subrayadas: Se hablaba de muerte natural cuando sobrevenía de las enfermedades y la edad. Actualmente, se habla de muerte intervenida, cuando se emplean todos los medios médico-tecnológicos para evitarla o retrasarla.",
+     "opciones": [
+      "ubicación",
+      "sinonimia",
+      "oposición",
+      "intensidad",
+      "inclusivas"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Entre los conceptos muerte natural y muerte inter­ venida se observa una relación de oposición, pues el primer concepto alude a lo que ocurre por interven­ ción de la naturaleza, mientras que en el segundo lo decisivo es el uso de la tecnología.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Analogías verbales",
+     "subtema": "Analogías: semánticas o funcionales",
+     "examen": "UNSA 2022-II BIO"
+    },
+    {
+     "texto": "\"Este domingo gran pollada bailable. ¡Ven, degusta, canta, diviértete y gana muchos premios! ¡Te esperamos!\". Es:",
+     "opciones": [
+      "Un prólogo",
+      "Un glosario",
+      "Una reseña",
+      "Una propaganda",
+      "Un cómic"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "En el texto: Este domingo gran pollada bailable. ¡Ven, degusta, canta, diviértete y gana muchos premios! ¡Te esperamos!, encontramos una propaganda, pues es un texto publicitario que da a conocer una actividad (en este caso, una pollada) con el fin de atraer compradores y participantes. Sobre las otras alternativas, explicaremos en qué consiste cada una: • Un prólogo: Es el texto preliminar de un libro, escrito por el autor o por otra persona, que sirve de introducción a su lectura. • Un glosario: Es el catálogo de palabras de una misma disciplina, de un mismo campo de estudio, de una misma obra, etc., que están definidas o comentadas. • Una reseña: Es una noticia o comentario, generalmente de corta extensión, que se hace sobre una obra literaria, artística o científica, y se publica en un periódico o en una revista. • Un cómic: Es una serie o secuencia de viñetas (cuadros con dibujos y texto) que cuenta una historia. Esta puede publicarse en un libro o en una revista.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Pragmática en enunciados",
+     "subtema": "Reconocer la intención comunicativa en un enunciado",
+     "examen": "UNSA 2023-II ING"
     }
    ]
   },
@@ -2525,7 +2553,7 @@
     },
     {
      "tema": "Ecuaciones trigonométricas",
-     "total": 1
+     "total": 2
     },
     {
      "tema": "Aplicaciones geométricas",
@@ -2533,10 +2561,6 @@
     },
     {
      "tema": "Funciones trigonométricas inversas",
-     "total": 1
-    },
-    {
-     "tema": "VII. Ecuaciones trigonométricas",
      "total": 1
     },
     {
@@ -2631,99 +2655,26 @@
      "imagen": null,
      "justificacion": "sen2x – senx+2cosx=1 2senxcosx – senx+2cosx – 1=0 senx(2cosx – 1)+(2cosx – 1)=0 (2cosx – 1)(senx+1)=0 i) 2cosx – 1=0 → cos x = 1 2 x1 3 = π x2 5 3 = π ii) senx+1=0 → senx= – 1 x3 3 2 = π Por lo tanto, el número de soluciones es 3.",
      "curso": "Trigonometría",
-     "tema": "VII. Ecuaciones trigonométricas",
+     "tema": "Ecuaciones trigonométricas",
      "subtema": "Ecuaciones trigonométricas no elementales",
      "examen": "UNSA 2024-I ING"
     },
     {
-     "texto": "Determine cuántas raíces tiene la ecuación: $4\\operatorname{sen}2x + 4\\cos x = 1 + 2\\operatorname{sen}x$ Sabiendo que $x \\in \\left[-\\pi; \\frac{\\pi}{2}\\right]$",
+     "texto": "Halle el dominio de la función $\\displaystyle f(x) = \\sqrt[3]{\\sin x} + \\sqrt{\\cos x - 1}$",
      "opciones": [
-      "1",
-      "3",
-      "4",
-      "0",
-      "2"
+      "$\\{n\\pi \\leq x \\leq 2n\\pi / n \\in \\mathbb{Z}^+\\}$",
+      "$\\{x = (2n+1)\\pi / n \\in \\mathbb{Z}\\}$",
+      "$\\{0 \\leq x \\leq n\\pi / n \\in \\mathbb{Z}^+\\}$",
+      "$\\{x = 2n\\pi / n \\in \\mathbb{Z}\\}$",
+      "$\\{x = n\\pi / n \\in \\mathbb{Z}\\}$"
      ],
-     "correcta": 2,
+     "correcta": 3,
      "imagen": null,
-     "justificacion": "De la ecuación 4sen2x+4cosx=1+2senx 4(2senxcosx)+4cosx=1+2senx 4cosx(2senx+1) = 2senx+1 4cosx(2senx+1) – (2senx+1)=0 (2senx+1)(4cosx–1)=0 Igualando a cero cada factor, se obtiene • 2 1 0 1 2 sen sen x x + = → = − Luego x k k = + − ( ) −     π 1 1 2 arcsen → x k k k = + − ( ) −     ∈ π π 1 6 ; Z x x 1 2 5 6 6 = − = − π π ; • 4 1 0 1 4 cos cos x x −= → = Luego x k k = ±     ∈ 2 1 4 π arccos ; Z x x 3 4 1 4 1 4 = −     =     arccos ; arccos Por lo tanto, el número de soluciones es 4.",
+     "justificacion": "f x x x ( )= + − sen cos 3 1 Por existencia cosx – 1 ≥ 0 → cosx 1 → cosx=1 Se obtiene x=0, 2p, 4p, 6p... → x=2np; n∈Z Por lo tanto, el dominio de la función es x n n = ∈ { } 2 π Z",
      "curso": "Trigonometría",
-     "tema": "Ecuaciones trigonométricas",
-     "subtema": "Ecuaciones trigonométricas elementales",
-     "examen": "UNSA 2022-I ING"
-    }
-   ]
-  },
-  {
-   "curso": "Economía",
-   "slug": "economia",
-   "total": 3,
-   "temas": [
-    {
-     "tema": "Magnitudes y proporcionalidad",
-     "total": 1
-    },
-    {
-     "tema": "Inflación",
-     "total": 1
-    },
-    {
-     "tema": "Fallas de mercado",
-     "total": 1
-    }
-   ],
-   "examenes": 2,
-   "muestras": [
-    {
-     "texto": "La ley de la oferta es enunciada así:",
-     "opciones": [
-      "Las cantidades ofertadas varían en relación directa al ingreso del consumidor.",
-      "Las cantidades ofertadas varían en relación inversa al precio del producto.",
-      "Las cantidades ofertadas varían en relación directa al precio del producto.",
-      "La cantidad demandada de un bien varía en relación inversa al precio del producto.",
-      "Las cantidades ofertadas varían en relación directa a la demanda del producto."
-     ],
-     "correcta": 2,
-     "imagen": null,
-     "justificacion": "El estudio de la oferta analiza el comportamiento del productor en el mercado durante un tiempo. Para ello existe una serie de factores y condiciones para que el estudio se realice, por ejemplo, una condición es que estamos dentro de un mercado competitivo. Dentro de este estudio tenemos a la ley de la oferta que indica lo siguiente: “las cantidades ofertadas varían en relación directa al precio del producto”. 1 2 4 6 8 10 Q O 2 3 4 5 6 P Se observa en el gráfico que si el precio se eleva de 2 a 4, entonces la cantidad que se ofrecería pasaría de 6 a 10; es decir, a mayor precio, mayor cantidad ofertada, lo cual establece una relación directa.",
-     "curso": "Economía",
-     "tema": "Magnitudes y proporcionalidad",
-     "subtema": "Analizar situaciones problemáticas que involucren razones y proporciones",
-     "examen": "UNSA 2023-I ING"
-    },
-    {
-     "texto": "Marcelo se encuentra preocupado por la mala atención en el servicio. Como cliente quiere expresar su malestar y lo hace mediante una ..................",
-     "opciones": [
-      "apelación",
-      "queja",
-      "pedido",
-      "reclamo",
-      "reconsideración"
-     ],
-     "correcta": 1,
-     "imagen": null,
-     "justificacion": "El reclamo es la disconformidad relacionada directamente con los bienes o servicios adquiridos, por ejemplo, si la comida en un restaurante no está conforme a lo solicitado. Una queja es el malestar por algo que está relacionado directamente al producto o servicio comprado o se refiere a una mala atención al cliente, por ejemplo, no prestar atención a tu pedido o responder de mala manera en el restaurante por parte del mozo.",
-     "curso": "Economía",
-     "tema": "Fallas de mercado",
-     "subtema": "Fallas de mercado",
-     "examen": "UNSA 2024-I BIO"
-    },
-    {
-     "texto": "................. produce una disminución del poder adquisitivo del dinero y se mide a través del índice de precios al consumidor.",
-     "opciones": [
-      "la deflación",
-      "la inflación",
-      "el desempleo",
-      "el sub empleo",
-      "la pobreza"
-     ],
-     "correcta": 1,
-     "imagen": null,
-     "justificacion": "La inflación es un fenómeno monetario que consiste en el incremento del precio de manera persistente y generalizada de la canasta básica de consumo. Entre sus efectos está la pérdida del valor o poder adquisitivo; es decir, al subir el precio y no aumentar el ingreso, entonces se podrá adquirir menos productos en el mercado.",
-     "curso": "Economía",
-     "tema": "Inflación",
-     "subtema": "Inflación",
-     "examen": "UNSA 2024-I BIO"
+     "tema": "Funciones trigonométricas",
+     "subtema": "Dominio y rango",
+     "examen": "UNSA 2024-II ING"
     }
    ]
   }
@@ -2731,45 +2682,41 @@
  "anios": [
   {
    "anio": "2024",
-   "total": 360,
+   "total": 352,
    "examenes": [
     {
      "examen": "UNSA 2024-I BIO",
-     "total": 60
+     "total": 58
     },
     {
      "examen": "UNSA 2024-I ING",
-     "total": 60
+     "total": 59
     },
     {
      "examen": "UNSA 2024-I SOC",
-     "total": 60
+     "total": 59
     },
     {
      "examen": "UNSA 2024-II BIO",
-     "total": 60
+     "total": 58
     },
     {
      "examen": "UNSA 2024-II ING",
-     "total": 60
+     "total": 59
     },
     {
      "examen": "UNSA 2024-II SOC",
-     "total": 60
+     "total": 59
     }
    ],
    "cursos": [
     {
-     "curso": "Razonamiento Verbal",
-     "total": 46
-    },
-    {
-     "curso": "Comunicación",
+     "curso": "Lenguaje",
      "total": 37
     },
     {
-     "curso": "Psicología y Filosofía",
-     "total": 34
+     "curso": "Comprensión Lectora",
+     "total": 32
     },
     {
      "curso": "Aritmética",
@@ -2777,10 +2724,10 @@
     },
     {
      "curso": "Historia",
-     "total": 27
+     "total": 26
     },
     {
-     "curso": "Biología y Anatomía",
+     "curso": "Biología",
      "total": 24
     },
     {
@@ -2789,10 +2736,6 @@
     },
     {
      "curso": "Geografía",
-     "total": 23
-    },
-    {
-     "curso": "Educación Cívica",
      "total": 22
     },
     {
@@ -2800,12 +2743,16 @@
      "total": 22
     },
     {
-     "curso": "Literatura",
-     "total": 18
+     "curso": "Educación Cívica",
+     "total": 22
     },
     {
-     "curso": "Razonamiento Matemático",
-     "total": 17
+     "curso": "Psicología",
+     "total": 20
+    },
+    {
+     "curso": "Literatura",
+     "total": 18
     },
     {
      "curso": "Álgebra",
@@ -2816,12 +2763,24 @@
      "total": 14
     },
     {
-     "curso": "Trigonometría",
-     "total": 5
+     "curso": "Filosofía",
+     "total": 14
     },
     {
-     "curso": "Economía",
-     "total": 2
+     "curso": "Razonamiento Lógico",
+     "total": 13
+    },
+    {
+     "curso": "Razonamiento Matemático",
+     "total": 8
+    },
+    {
+     "curso": "Razonamiento Verbal",
+     "total": 6
+    },
+    {
+     "curso": "Trigonometría",
+     "total": 5
     }
    ],
    "muestras": [
@@ -2841,6 +2800,23 @@
      "tema": "Reacciones químicas",
      "subtema": "Clasificación de reacciones",
      "examen": "UNSA 2024-II SOC"
+    },
+    {
+     "texto": "Para conocer las ideas políticas de los pensadores y académicos europeos a mediados del siglo XVIII, debemos revisar:",
+     "opciones": [
+      "La Enciclopedia",
+      "El espíritu de las leyes",
+      "La Carta Magna",
+      "La Declaración Universal de Derechos Humanos",
+      "El contrato social"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "A mediados del siglo xviii, en el contexto de la crítica al antiguo régimen feudal y absolutista en Francia, apareció la Enciclopedia. Esta publicación, en varios tomos, se caracterizaba por explicar los diversos conocimientos de la época y de los grandes pensadores europeos. Publicada en 1751, la Enciclopedia contó con la participación de casi 160 colaboradores entre los que destacan Rousseau, Montesquieu y Voltaire. En sus páginas destacan grandes ideas revolucionarias para la época.",
+     "curso": "Historia",
+     "tema": "HISTORIA UNIVERSAL",
+     "subtema": "1.5. La Edad Moderna: Absolutismo monárquico",
+     "examen": "UNSA 2024-I SOC"
     },
     {
      "texto": "La arquitecta Kelly se aleja caminando de un poste cuya luminaria está a 8 m por arriba del suelo. Si ella tiene una estatura de 1,6 m, ¿cuánto mide la sombra de la arquitecta cuando está a 10 m del poste?",
@@ -2871,7 +2847,7 @@
      "correcta": 1,
      "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNSA/UNSA-2024-II-BIO/P49.webp",
      "justificacion": "El texto se fundamenta en la exposición de una relación de causa-consecuencia, puessto que se vincula el agotamiento extenso de la capa de ozono con diversas consecuencias negativas para los organismos vivos. Por ejemplo, al no filtrar los peligrosos rayos UV, el debilitamiento de la capa de ozono provoca el exterminio del plancton que sostiene la vida oceánica. Por lo tanto, la estructura causa-consecuencia es la base de la exposición desarrollada por el autor.",
-     "curso": "Razonamiento Verbal",
+     "curso": "Comprensión Lectora",
      "tema": "Comprensión global",
      "subtema": "Determinar el tema del texto",
      "examen": "UNSA 2024-II BIO"
@@ -2888,10 +2864,27 @@
      "correcta": 3,
      "imagen": null,
      "justificacion": "El antónimo de la palabra subrayada en la oración analizada es magnánimo. En efecto, el vocablo roñoso alude a la persona mezquina y falto de generosidad o nobleza. Por tanto, su antónimo contextual es magnánimo, ya que esta palabra refiere a la persona que es generosa y desprendida.",
-     "curso": "Comunicación",
-     "tema": "VIII. Semántica y lexicología",
+     "curso": "Lenguaje",
+     "tema": "Semántica y lexicología",
      "subtema": "Relaciones semánticas: Antonimia",
      "examen": "UNSA 2024-I SOC"
+    },
+    {
+     "texto": "En el enunciado: \"La universidad se orienta a la investigación, en sus aulas generalmente se revela la disidencia epistémica, el cuestionamiento inteligente y la tolerancia. La rebeldía no se funda en la intransigencia, sino en postulados racionales\". Los antónimos de las palabras subrayadas, respectivamente, son:",
+     "opciones": [
+      "abstiene - empatía - transacción",
+      "oculta - sumisión - indulgencia",
+      "obstruye - parsimonia - irreverencia",
+      "calla - osadía - tolerancia",
+      "opaca - apatía - obnubilación"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Los antónimos de las palabras revela, rebeldía e intransigencia son respectivamente oculta, sumisión e indulgencia. De acuerdo con el texto, la palabra revela significa “evidenciar algo”, en ese sentido, lo opuesto será ocultar o esconder. El término rebeldía, en el texto, se entiende como oponerse o dar un punto de vista distinto al de los demás, por eso, su antónimo es la palabra sumisión, es decir, acatar u obedecer lo dicho. En el texto, la palabra intransigencia se refiere a la actitud de no consentir lo racional o con lo que se piensa, por ello, su antónimo sería la palabra indulgencia que alude a conceder.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Relaciones semánticas básicas",
+     "subtema": "Identificar antonimia contextual",
+     "examen": "UNSA 2024-I BIO"
     },
     {
      "texto": "Lizbeth quiere ser feliz y ha encontrado en la imperturbabilidad el camino para lograrlo, sobre todo siendo insensible frente al sufrimiento y ante las opiniones de los demás. La idea anterior es propia de la escuela ética de los",
@@ -2905,7 +2898,7 @@
      "correcta": 4,
      "imagen": null,
      "justificacion": "Los estoicos consideran que el objetivo de la moral es conseguir la ataraxia (imperturbabilidad del alma), para ello deben practicar la apatía, ausencia de emociones, la razón humana debe adecuarse a los hechos determinados por la razón universal. Por ello, practican la aceptación del destino, es decir, de aquellos acontecimientos que no se pueden cambiar.",
-     "curso": "Psicología y Filosofía",
+     "curso": "Filosofía",
      "tema": "Ética",
      "subtema": "Ética",
      "examen": "UNSA 2024-I BIO"
@@ -2922,62 +2915,28 @@
      "correcta": 4,
      "imagen": null,
      "justificacion": "La causa más común de hipertensión no es el adel­ gazamiento de las arterias debido a la ateroesclerosis, sino que puede deberse a una variedad de factores, incluidos la genética, el estilo de vida y otros trastor­ nos médicos. La ateroesclerosis es un proceso que puede contribuir a la hipertensión, pero no es la causa principal.",
-     "curso": "Biología y Anatomía",
+     "curso": "Biología",
      "tema": "Sistemas en los seres vivos",
      "subtema": "Sistema humano: sistema circulatorio",
      "examen": "UNSA 2024-II BIO"
-    },
-    {
-     "texto": "Un estudiante de ingeniería eléctrica diseña una balanza de brazos como se muestra en la figura. El punto de apoyo está en el centro de la barra horizontal; la masa del objeto $A$ es de 5,0 kg y la de la esfera superior es 1,0 kg; la esfera inferior es fija y dista de la superior 30 cm. Se les comunica carga eléctrica de igual valor, pero de signo contrario a las esferas. Determine el valor de esas cargas para que el sistema esté en equilibrio $(g=10 \\, \\text{m/s}^2)$.",
-     "opciones": [
-      "$2,0 \\times 10^{-4} \\, \\text{C}$",
-      "$4,0 \\times 10^{-4} \\, \\text{C}$",
-      "$4,0 \\times 10^{-5} \\, \\text{C}$",
-      "$2,0 \\times 10^{-5} \\, \\text{C}$",
-      "$4,0 \\times 10^{-6} \\, \\text{C}$"
-     ],
-     "correcta": 3,
-     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNSA/UNSA-2024-II-ING/P37.webp",
-     "justificacion": "30 cm L L Fg barra Fg =50N Usamos. T=50N T=50N Fg =10N Q Q2 FEL FEL 50L = 10L + FEL (L) ΣM =ΣM 40 = FEL = 40 = ∴ Q = 2×10-5 C K |Q1| |Q2| d2 9×109 Q . Q (3 . 10-1)2",
-     "curso": "Física",
-     "tema": "Electricidad",
-     "subtema": "Electrostática: Carga eléctrica, Ley de Coulomb",
-     "examen": "UNSA 2024-II ING"
-    },
-    {
-     "texto": "Determine el conjunto de valores de $ k $ para que $\\displaystyle E = \\begin{bmatrix} 1 & 1 & 2 \\\\ 2 & k & 0 \\\\ 0 & -2 & k \\end{bmatrix}$ sea invertible",
-     "opciones": [
-      "$\\mathbb{R} - \\{-2; 4\\}$",
-      "$\\mathbb{R}$",
-      "$\\mathbb{R} - \\{4\\}$",
-      "$\\langle 0, +\\infty \\rangle$",
-      "$\\{4\\}$"
-     ],
-     "correcta": 0,
-     "imagen": null,
-     "justificacion": "Para que E sea invertible, la determinante de E debe ser diferente de cero: |E|≠0. 1 1 2 2 0 0 2 0 k k − ≠ Por Sairus 1 1 2 1 1 2 0 2 0 2 0 2 0 8 0 0 2 0 2 k k k k k − − = + − ( )− + + ( )≠ (+) (+) (+) (–) (–) (–) → k2–2k–8≠0 (k – 4)(k+2)≠0 k≠4 ∧ k≠–2 ∴ k∈R–{–2; 4}",
-     "curso": "Álgebra",
-     "tema": "X. Sistemas de ecuaciones",
-     "subtema": "Sistemas de ecuaciones lineales: con dos variables, con tres variables",
-     "examen": "UNSA 2024-I ING"
     }
    ]
   },
   {
    "anio": "2023",
-   "total": 360,
+   "total": 353,
    "examenes": [
     {
      "examen": "UNSA 2023-I BIO",
-     "total": 60
+     "total": 58
     },
     {
      "examen": "UNSA 2023-I ING",
-     "total": 60
+     "total": 58
     },
     {
      "examen": "UNSA 2023-I SOC",
-     "total": 60
+     "total": 59
     },
     {
      "examen": "UNSA 2023-II BIO",
@@ -2985,17 +2944,17 @@
     },
     {
      "examen": "UNSA 2023-II ING",
-     "total": 60
+     "total": 59
     },
     {
      "examen": "UNSA 2023-II SOC",
-     "total": 60
+     "total": 59
     }
    ],
    "cursos": [
     {
-     "curso": "Comunicación",
-     "total": 54
+     "curso": "Lenguaje",
+     "total": 51
     },
     {
      "curso": "Aritmética",
@@ -3010,52 +2969,60 @@
      "total": 30
     },
     {
-     "curso": "Razonamiento Matemático",
-     "total": 29
-    },
-    {
-     "curso": "Razonamiento Verbal",
-     "total": 28
-    },
-    {
-     "curso": "Literatura",
-     "total": 24
-    },
-    {
-     "curso": "Psicología y Filosofía",
-     "total": 24
+     "curso": "Comprensión Lectora",
+     "total": 23
     },
     {
      "curso": "Química",
-     "total": 24
+     "total": 23
     },
     {
-     "curso": "Educación Cívica",
-     "total": 21
+     "curso": "Literatura",
+     "total": 23
     },
     {
      "curso": "Física",
      "total": 21
     },
     {
-     "curso": "Biología y Anatomía",
+     "curso": "Educación Cívica",
+     "total": 21
+    },
+    {
+     "curso": "Razonamiento Matemático",
      "total": 20
+    },
+    {
+     "curso": "Biología",
+     "total": 20
+    },
+    {
+     "curso": "Psicología",
+     "total": 15
     },
     {
      "curso": "Álgebra",
      "total": 10
     },
     {
+     "curso": "Filosofía",
+     "total": 9
+    },
+    {
      "curso": "Geometría",
      "total": 8
     },
     {
-     "curso": "Trigonometría",
-     "total": 2
+     "curso": "Razonamiento Verbal",
+     "total": 7
     },
     {
-     "curso": "Economía",
-     "total": 1
+     "curso": "Razonamiento Lógico",
+     "total": 6
+    },
+    {
+     "curso": "Trigonometría",
+     "total": 2
     }
    ],
    "muestras": [
@@ -3105,10 +3072,27 @@
      "correcta": 2,
      "imagen": null,
      "justificacion": "Where do people buy food? (¿Dónde compra la gente la comida?) In the grocery store (en la tienda de comestibles). En el texto se menciona: Everyone shops for food at the grocery store (Todos compran comida en la tienda de comestibles).",
-     "curso": "Comunicación",
+     "curso": "Lenguaje",
      "tema": "Vocabulario funcional",
      "subtema": "Compras y alimentos",
      "examen": "UNSA 2023-I BIO"
+    },
+    {
+     "texto": "La problemática abordada pertenece al cambio",
+     "opciones": [
+      "del conocimiento científico.",
+      "del progreso de la tecnología.",
+      "de la política.",
+      "de la bioética.",
+      "de la justicia social."
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "La problemática abordada pertenece al campo de la bioética. El autor destaca que el desarrollo de la ciencia debe ir de la mano con el respeto de la dignidad humana. En suma, la ciencia supone un gran poder que no debe ser monopolizado por unos cuantos, para evitar ello es necesario un diálogo constante y abierto con todos los hombres.",
+     "curso": "Comprensión Lectora",
+     "tema": "Comprensión global",
+     "subtema": "Identificar la idea principal",
+     "examen": "UNSA 2023-II BIO"
     },
     {
      "texto": "El Fe es un elemento que tiene la propiedad de corroverse con mucha facilidad cuando se expone a la humedad. En el sulfato ferroso se produce una reacción redox cuya reacción se denota por $ \\text{Fe}^{+2} \\rightarrow \\text{Fe}^{+3} $. Determine el equivalente gramo del sulfato ferroso. (Masa atómica: $ \\text{Fe} = 56 $; $ \\text{S} = 32 $; $ \\text{O} = 16 $).",
@@ -3128,6 +3112,23 @@
      "examen": "UNSA 2023-I ING"
     },
     {
+     "texto": "Los lípidos forman un grupo amplio de sustancias diversas, cuya característica principal es que no se disuelven en agua, aunque sí en solventes orgánicos. Se clasifican en tres grupos principales: simple, complejos y esteroides. Una característica de los lípidos complejos es:",
+     "opciones": [
+      "Se componen de cuatro anillos de carbono fusionados, unidos a distintos grupos funcionales.",
+      "Un ejemplo de lípido que pertenece a este grupo es el omega – 3.",
+      "A este grupo pertenecen los aceites, las grasas y las ceras.",
+      "Además de carbono, hidrógeno y oxígeno, contienen otros elementos.",
+      "Un ejemplo de lípido complejo es el colesterol."
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Los lípidos son biomoléculas orgánicas ternarias compuestas de C, H y O. Pueden clasificarse en: • Simples: Están formados, en su estructura, por C, H y O; entre estos lípidos tenemos a los céridos y glicéridos. • Complejos: Formados por C, H y O, además de otros elementos como P y N; entre estos tenemos a los fosfolípidos y glucolípidos. • Esteroides: Uno de los más importantes es el colesterol, que es precursora de la vitamina D, bilis, hormonas sexuales, etc.",
+     "curso": "Biología",
+     "tema": "Base química de la vida",
+     "subtema": "Biomoléculas orgánicas: lípidos",
+     "examen": "UNSA 2023-II BIO"
+    },
+    {
      "texto": "La argumentación moral sirve para justificar nuestros juicios y actos morales. Existen varias estrategias argumentativas. Si Eneida empuja a un niño fuera de la pista por temor a que sea atropellado, y así evita el daño, estaría justificando su acto apelando",
      "opciones": [
       "a la autonomía.",
@@ -3139,7 +3140,7 @@
      "correcta": 4,
      "imagen": null,
      "justificacion": "Como estrategia argumentativa, Eneida justifica el empujar al niño por el hecho de ayudarlo, para evitar que sufra un accidente. De ahí que es en base a una referencia, a un hecho.",
-     "curso": "Psicología y Filosofía",
+     "curso": "Filosofía",
      "tema": "Ética",
      "subtema": "Acto moral. Valores y antivalores. Dilemas éticos",
      "examen": "UNSA 2023-II SOC"
@@ -3160,50 +3161,16 @@
      "tema": "HISTORIA DEL PERÚ",
      "subtema": "La República del Perú (Siglo XIX): Caudillismo",
      "examen": "UNSA 2023-II ING"
-    },
-    {
-     "texto": "En el texto, intuición se opone a",
-     "opciones": [
-      "a científico",
-      "conciencia",
-      "científico",
-      "subjetividad",
-      "razón"
-     ],
-     "correcta": 0,
-     "imagen": null,
-     "justificacion": "En el texto, la intuición se opone a acientífico. El autor alega que la intuición ejerce un rol fundamental en el quehacer científico, vale decir, la intuición es científica y no acientífica. Gracias a la intuición, el científico puede elegir un tema de investigación mejor que otro.",
-     "curso": "Razonamiento Verbal",
-     "tema": "Vocabulario en contexto",
-     "subtema": "Deducir el significado de palabras por el contexto del texto",
-     "examen": "UNSA 2023-I ING"
-    },
-    {
-     "texto": "Eliana está formulando un proyecto participativo. En este momento, se encuentra recolectando y analizando información de diversas fuentes que le permitan explicar el tema que eligió. También analiza las políticas públicas existentes para resolverlo. ¿En qué etapa de su proyecto se encuentra?",
-     "opciones": [
-      "Ejecución del proyecto participativo",
-      "Diseño del proyecto participativo",
-      "Identificación y selección del asunto público",
-      "Evaluación y reflexión del proyecto participativo",
-      "Indagación y sistematización de la información"
-     ],
-     "correcta": 4,
-     "imagen": null,
-     "justificacion": "Los proyectos participativos son una estrategia que promueven el ejercicio de la ciudadanía, y se realiza en proponer, ejecutar y evaluar acciones seleccionadas que responden a fines encaminados a solucionar un asunto público. Tenemos algunas fases: I. Identificación y selección del asunto público (el problema). II. Indagación y sistematización de la información (recolectar y analizar la información y también lo político). III. Diseño del proyecto participativo (planificar las acciones). IV. Ejecución del proyecto participativo (ejecutar actividades del plan de acción). V. Evaluación del proyecto participativo (evaluar los objetivos logrados).",
-     "curso": "Educación Cívica",
-     "tema": "Participación ciudadana y vida democrática",
-     "subtema": "Mecanismos de participación ciudadana",
-     "examen": "UNSA 2023-I SOC"
     }
    ]
   },
   {
    "anio": "2022",
-   "total": 299,
+   "total": 294,
    "examenes": [
     {
      "examen": "UNSA 2022-I BIO",
-     "total": 50
+     "total": 49
     },
     {
      "examen": "UNSA 2022-I ING",
@@ -3211,15 +3178,15 @@
     },
     {
      "examen": "UNSA 2022-I SOC",
-     "total": 49
+     "total": 47
     },
     {
      "examen": "UNSA 2022-II BIO",
-     "total": 50
+     "total": 49
     },
     {
      "examen": "UNSA 2022-II ING",
-     "total": 50
+     "total": 49
     },
     {
      "examen": "UNSA 2022-II SOC",
@@ -3232,19 +3199,19 @@
      "total": 41
     },
     {
-     "curso": "Psicología y Filosofía",
-     "total": 33
+     "curso": "Lenguaje",
+     "total": 28
     },
     {
-     "curso": "Comunicación",
-     "total": 31
+     "curso": "Psicología",
+     "total": 21
     },
     {
-     "curso": "Razonamiento Verbal",
-     "total": 26
+     "curso": "Comprensión Lectora",
+     "total": 20
     },
     {
-     "curso": "Biología y Anatomía",
+     "curso": "Biología",
      "total": 20
     },
     {
@@ -3256,15 +3223,11 @@
      "total": 18
     },
     {
-     "curso": "Educación Cívica",
-     "total": 17
-    },
-    {
      "curso": "Física",
      "total": 17
     },
     {
-     "curso": "Razonamiento Matemático",
+     "curso": "Educación Cívica",
      "total": 17
     },
     {
@@ -3280,12 +3243,28 @@
      "total": 12
     },
     {
+     "curso": "Filosofía",
+     "total": 12
+    },
+    {
      "curso": "Geometría",
      "total": 11
     },
     {
+     "curso": "Razonamiento Matemático",
+     "total": 9
+    },
+    {
+     "curso": "Razonamiento Verbal",
+     "total": 9
+    },
+    {
      "curso": "Trigonometría",
      "total": 5
+    },
+    {
+     "curso": "Razonamiento Lógico",
+     "total": 3
     }
    ],
    "muestras": [
@@ -3301,7 +3280,7 @@
      "correcta": 2,
      "imagen": null,
      "justificacion": "Según el texto, se infiere que los comités de ética surgen del paciente como agente moral de derechos. El texto nos informa que desde el desarrollo de la tecnología médica se ve al paciente como un agente moral con derechos, lo cual puede traer conflictos éticos en los tratamientos propuestos. Es por esta razón que se implementa los comités multidisciplinarios para poder evaluar de forma prudente y óptima las decisiones médicas.",
-     "curso": "Razonamiento Verbal",
+     "curso": "Comprensión Lectora",
      "tema": "Comprensión inferencial",
      "subtema": "Inferir información no explícita",
      "examen": "UNSA 2022-II BIO"
@@ -3335,7 +3314,7 @@
      "correcta": 0,
      "imagen": null,
      "justificacion": "Una comunicación vía chat o cibercharla de la época en que vivimos es de tipo indirecta (a distancia), bidireccional (participan dos o más personas que intercambian roles), visuográfica (escrita), oral (incluye audio de voz). Además, ahora podemos enviar emoticones para mostrar nuestro estado de ánimo, así como diversos archivos (fotos, documentos, videos, etc).",
-     "curso": "Comunicación",
+     "curso": "Lenguaje",
      "tema": "Comunicación y lenguaje",
      "subtema": "Comunicación: concepto, elementos de la comunicación",
      "examen": "UNSA 2022-II ING"
@@ -3358,23 +3337,6 @@
      "examen": "UNSA 2022-I ING"
     },
     {
-     "texto": "Un ingeniero civil pensó en hacer unos planos en 30 días, pero se enfermó, tardando 20 días más por trabajar 2 horas menos cada día. ¿Cuántas horas diarias trabajó?",
-     "opciones": [
-      "1",
-      "4",
-      "2",
-      "5",
-      "3"
-     ],
-     "correcta": 4,
-     "imagen": null,
-     "justificacion": "Nos piden el número de horas diarias que trabajó. De los datos: N.o de horas diarias N.o de días x x – 2 30 50 +20 – 2 IP Se cumple que 50(x – 2)=30x 5x – 10=3x → x=5 Por lo tanto, trabajó x – 2 horas: 5 – 2=3.",
-     "curso": "Razonamiento Matemático",
-     "tema": "Magnitudes y proporcionalidad",
-     "subtema": "Deducir situaciones de variación directa e inversa",
-     "examen": "UNSA 2022-I SOC"
-    },
-    {
      "texto": "Relacione la procedencia de cada bebida. a. cerveza b. chicha c. vodka d. ron e. sake 1. cebada 2. maíz 3. patatas 4. caña de azúcar 5. arroz Marque la alternativa correcta.",
      "opciones": [
       "a - 1",
@@ -3392,38 +3354,55 @@
      "examen": "UNSA 2022-I SOC"
     },
     {
-     "texto": "La resistencia indígena realizada por los incas de Vilcabamba tuvo como propósito fundamental",
+     "texto": "Una fábrica dispone de 4 máquinas al 60% de su rendimiento para producir 1600 envases cada 7 días trabajando 10 horas diarias. Si se desean producir 3200 envases en 5 días, trabajando 6 horas diarias, ¿cuántas máquinas al 80% de su rendimiento se necesitan?",
      "opciones": [
-      "restablecer el Tahuantinsuyo.",
-      "restablecer el poder político de Manco Inca y Sayri Túpac.",
-      "eliminar la extirpación de idolatrías.",
-      "restablecer los privilegios de la nobleza incaica.",
-      "colocar a Tito Cusi Yupanqui como soberano inca."
+      "12",
+      "10",
+      "8",
+      "15",
+      "14"
      ],
-     "correcta": 0,
+     "correcta": 4,
      "imagen": null,
-     "justificacion": "Los hermanos del inca derrocado, Huáscar, apoyaron a los españoles que mataron a Atahualpa. Manco Inca (huascarista) hizo entrar a los españoles al Cusco; tiempo después, los españoles iniciaron el saqueo de tesoros en aquella ciudad. Manco Inca, al darse cuenta de que los incas estaban perdiendo el poder a manos de los españoles, inicia una gran resistencia militar tomando como base de operaciones a Vilcabamba. El objetivo era derrotar a los españoles y restablecer el Tahuantinsuyo.",
-     "curso": "Historia",
-     "tema": "La Conquista y el Virreinato",
-     "subtema": "Conquista del Perú: expediciones, resistencia indígena.",
-     "examen": "UNSA 2022-I BIO"
+     "justificacion": "Se tiene lo siguiente como dato respecto a la producción de una fábrica: N.° de máq. Rendim. N.° de envases N.° de días N.° de h/d 4 60% 1600 7 10 n 80% 3200 5 6 Evaluamos las magnitudes. N.° de máq. Rendimiento N.° de días N.° de envases N.° de h/d IP DP IP IP → N.° de máq. rendim. N.° de días N.° de h/d N.° de enva ( )( )( )( ) ses cte. ( ) = Reemplazamos los valores del cuadro. 4 60 7 10 1600 80 5 6 3200 1 2 1 × × × = × × × % % n 70=n×5 ∴ n=14",
+     "curso": "Aritmética",
+     "tema": "Magnitudes y proporcionalidad",
+     "subtema": "Regla de tres compuesta",
+     "examen": "UNSA 2022-I ING"
     },
     {
-     "texto": "En los organismos multicelulares, la mitosis es el tipo de división de las células somáticas responsables del crecimiento y reparación tisular. Por razones didácticas se divide en 4 etapas: profase, metaphase, anafase y telofase. En la anafase:",
+     "texto": "La teoría de la deriva de los continentes y la tectónica de placas sirve actualmente para explicar:",
      "opciones": [
-      "Se reconstituye la envoltura nuclear.",
-      "Los centrómeros se dividen y las cromátidas hermanas se separan.",
-      "Se separan las células formadas.",
-      "Se inicia la condensación de la cromatina.",
-      "Los cromosomas se ordenan en la región ecuatorial de la célula."
+      "El origen de los movimientos tectónicos",
+      "El origen de la corteza terrestre y la existencia de sismos repentinos",
+      "El origen del núcleo terrestre y la estructura de la tierra",
+      "El origen de la Cordillera de los Andes y la existencia de sismos",
+      "El origen de los movimientos orogénicos y los procesos de construcción y destrucción de los paisajes"
      ],
-     "correcta": 1,
+     "correcta": 3,
      "imagen": null,
-     "justificacion": "La anafase es la tercera fase de la mitosis en donde los centrosomas se encuentran en los polos y los cromosomas se separan. Las cromátidas hermanas son, entonces, desplazadas de forma equitativa hacia los polos opuestos de la célula en división por el huso mitótico o acromático, para que cada célula hija herede una copia de cada cromosoma.",
-     "curso": "Biología y Anatomía",
-     "tema": "Reproducción y desarrollo",
-     "subtema": "Ciclo celular. Mitosis y meiosis",
-     "examen": "UNSA 2022-II ING"
+     "justificacion": "La teoría tectónica de placas afirma que la corteza de la Tierra está formada por un enorme mosaico de placas que se desplazan sobre el manto fluido (astenósfera). Dado que las placas se desplazan sobre la superficie finita de la Tierra, estas interaccionan unas con otras a lo largo de sus fronteras o límites, provocando intensas deformaciones en la corteza y litósfera de la Tierra, lo que da lugar a la formación de cadenas de montañas, como los Andes y los Alpes. El contacto por fricción entre los límites de las placas es responsable también de la mayor parte de los terremotos.",
+     "curso": "Geografía",
+     "tema": "Geografía física: estructura y dinámica de la Tierra",
+     "subtema": "Teoría de las placas tectónicas",
+     "examen": "UNSA 2022-II BIO"
+    },
+    {
+     "texto": "Si $\\displaystyle 2x-1 = x-2 \\quad \\text{y} \\quad x+3 = 3x-1$ halle $\\displaystyle \\triangle (7)$",
+     "opciones": [
+      "4",
+      "7",
+      "5",
+      "2",
+      "8"
+     ],
+     "correcta": 0,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNSA/UNSA-2022-I-ING/P20.webp",
+     "justificacion": "Nos piden el resultado de 7 De los datos 2x – 1 =x – 2 (I) x+3 =3x–1 (II) Analizando lo pedido ∴ 7 = 11 =6 – 2=4 reemplazando en (II) para x=4 reemplazando en (I) para x=6",
+     "curso": "Álgebra",
+     "tema": "Sistemas de ecuaciones",
+     "subtema": "Sistemas de ecuaciones lineales con dos variables",
+     "examen": "UNSA 2022-I ING"
     }
    ]
   }

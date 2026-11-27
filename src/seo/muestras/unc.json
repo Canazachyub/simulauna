@@ -1,0 +1,2728 @@
+{
+ "universidad": "unc",
+ "total": 942,
+ "conImagen": 111,
+ "examenes": 33,
+ "anioMin": "2022",
+ "anioMax": "2025",
+ "cursos": [
+  {
+   "curso": "Matemáticas",
+   "slug": "matematicas",
+   "total": 268,
+   "temas": [
+    {
+     "tema": "Funciones trigonométricas",
+     "total": 12
+    },
+    {
+     "tema": "Circunferencia trigonométrica",
+     "total": 11
+    },
+    {
+     "tema": "Ecuaciones trigonométricas",
+     "total": 9
+    },
+    {
+     "tema": "Operaciones fundamentales",
+     "total": 8
+    },
+    {
+     "tema": "Ecuación cuadrática",
+     "total": 8
+    },
+    {
+     "tema": "Funciones",
+     "total": 6
+    },
+    {
+     "tema": "Polinomios",
+     "total": 6
+    },
+    {
+     "tema": "Esfera",
+     "total": 6
+    },
+    {
+     "tema": "Regla de interés",
+     "total": 5
+    },
+    {
+     "tema": "Teoría de conjuntos",
+     "total": 5
+    },
+    {
+     "tema": "Reducción al primer cuadrante",
+     "total": 5
+    },
+    {
+     "tema": "Razones trigonométricas de un ángulo en",
+     "total": 5
+    },
+    {
+     "tema": "Lógica proposicional",
+     "total": 4
+    },
+    {
+     "tema": "Sistemas de ecuaciones lineales",
+     "total": 4
+    },
+    {
+     "tema": "Ecuación irracional",
+     "total": 4
+    },
+    {
+     "tema": "Valor absoluto",
+     "total": 4
+    },
+    {
+     "tema": "Relaciones métricas en la circunferencia",
+     "total": 4
+    },
+    {
+     "tema": "Funciones trigonométricas inversas",
+     "total": 4
+    },
+    {
+     "tema": "Números decimales",
+     "total": 3
+    },
+    {
+     "tema": "Regla de mezcla",
+     "total": 3
+    },
+    {
+     "tema": "Razones y proporciones",
+     "total": 3
+    },
+    {
+     "tema": "Teoría de divisibilidad",
+     "total": 3
+    },
+    {
+     "tema": "División de polinomios",
+     "total": 3
+    },
+    {
+     "tema": "Logaritmos",
+     "total": 3
+    },
+    {
+     "tema": "Sistema de ecuaciones",
+     "total": 3
+    },
+    {
+     "tema": "Función biyectiva",
+     "total": 3
+    },
+    {
+     "tema": "Radicales dobles",
+     "total": 3
+    },
+    {
+     "tema": "Conjuntos",
+     "total": 3
+    },
+    {
+     "tema": "Ecuación polinomial",
+     "total": 3
+    },
+    {
+     "tema": "Fracciones parciales",
+     "total": 3
+    },
+    {
+     "tema": "Áreas",
+     "total": 3
+    },
+    {
+     "tema": "Geometría analítica",
+     "total": 3
+    },
+    {
+     "tema": "Geometría del espacio",
+     "total": 3
+    },
+    {
+     "tema": "Triángulos",
+     "total": 3
+    },
+    {
+     "tema": "Proporcionalidad y semejanza",
+     "total": 3
+    },
+    {
+     "tema": "Razones trigonométricas de ángulos agudos",
+     "total": 3
+    },
+    {
+     "tema": "Identidades fundamentales",
+     "total": 3
+    },
+    {
+     "tema": "Razones trigonométricas de un ángulo agudo",
+     "total": 3
+    },
+    {
+     "tema": "Ángulos verticales",
+     "total": 3
+    },
+    {
+     "tema": "Razones trigonométricas de un ángulo",
+     "total": 3
+    },
+    {
+     "tema": "Razones trigonométricas de ángulos",
+     "total": 3
+    },
+    {
+     "tema": "Numeración",
+     "total": 2
+    },
+    {
+     "tema": "Teoría de numeración",
+     "total": 2
+    },
+    {
+     "tema": "Razonamiento deductivo",
+     "total": 2
+    },
+    {
+     "tema": "Cortes y estacas",
+     "total": 2
+    },
+    {
+     "tema": "Sumatoria",
+     "total": 2
+    },
+    {
+     "tema": "Radicación",
+     "total": 2
+    },
+    {
+     "tema": "Sistemas de ecuaciones",
+     "total": 2
+    },
+    {
+     "tema": "Función logarítmica",
+     "total": 2
+    },
+    {
+     "tema": "Inecuación cuadrática",
+     "total": 2
+    },
+    {
+     "tema": "Ecuación exponencial",
+     "total": 2
+    },
+    {
+     "tema": "Series numéricas",
+     "total": 2
+    },
+    {
+     "tema": "Teoría de exponentes",
+     "total": 2
+    },
+    {
+     "tema": "Ecuaciones irracionales",
+     "total": 2
+    },
+    {
+     "tema": "Productos notables",
+     "total": 2
+    },
+    {
+     "tema": "Inecuación con valor absoluto",
+     "total": 2
+    },
+    {
+     "tema": "Situaciones algebráicas",
+     "total": 2
+    },
+    {
+     "tema": "Inecuación fraccionaria",
+     "total": 2
+    },
+    {
+     "tema": "Ecuación bicuadrada",
+     "total": 2
+    },
+    {
+     "tema": "Triángulo",
+     "total": 2
+    },
+    {
+     "tema": "Razonamiento geométrico",
+     "total": 2
+    },
+    {
+     "tema": "Cuadriláteros",
+     "total": 2
+    },
+    {
+     "tema": "Cilindro",
+     "total": 2
+    },
+    {
+     "tema": "Prisma regular y Piramide regular",
+     "total": 2
+    },
+    {
+     "tema": "Área de regiones triangulares",
+     "total": 2
+    },
+    {
+     "tema": "Polígono regular",
+     "total": 2
+    },
+    {
+     "tema": "Congruencia de triángulos",
+     "total": 2
+    },
+    {
+     "tema": "Polígonos",
+     "total": 2
+    },
+    {
+     "tema": "Psicotécnico",
+     "total": 2
+    },
+    {
+     "tema": "RESOLUCIÓN de triángulos oblicuángulos.",
+     "total": 2
+    },
+    {
+     "tema": "Sistemas de medidas angulares",
+     "total": 2
+    },
+    {
+     "tema": "Transformaciones trigonométricas",
+     "total": 2
+    },
+    {
+     "tema": "Promedios",
+     "total": 1
+    },
+    {
+     "tema": "Situaciones aritméticas",
+     "total": 1
+    },
+    {
+     "tema": "Cuatro operaciones",
+     "total": 1
+    },
+    {
+     "tema": "Razones",
+     "total": 1
+    },
+    {
+     "tema": "Problema sobre edades",
+     "total": 1
+    },
+    {
+     "tema": "Magnitudes proporcionales",
+     "total": 1
+    },
+    {
+     "tema": "Lógica de clases",
+     "total": 1
+    },
+    {
+     "tema": "Análisis combinatorio",
+     "total": 1
+    },
+    {
+     "tema": "Inecuación polinomial",
+     "total": 1
+    },
+    {
+     "tema": "Regla de la mezcla",
+     "total": 1
+    },
+    {
+     "tema": "Triángulos rectángulos notables",
+     "total": 1
+    },
+    {
+     "tema": "Figuras inscritas",
+     "total": 1
+    },
+    {
+     "tema": "Área de regiones cuadrangulares",
+     "total": 1
+    },
+    {
+     "tema": "Figuras inscritas y circunscritas",
+     "total": 1
+    },
+    {
+     "tema": "Circunferencia",
+     "total": 1
+    },
+    {
+     "tema": "Conjunto convexo y no convexo",
+     "total": 1
+    },
+    {
+     "tema": "Áreas de regiones cuadrangulares",
+     "total": 1
+    },
+    {
+     "tema": "Teorema de Pithot",
+     "total": 1
+    },
+    {
+     "tema": "Clasificación de triángulos",
+     "total": 1
+    },
+    {
+     "tema": "Poliedros regulares",
+     "total": 1
+    },
+    {
+     "tema": "Teorema de Poncelet",
+     "total": 1
+    },
+    {
+     "tema": "Área de regiones planas",
+     "total": 1
+    },
+    {
+     "tema": "Razones trigonométricas de un ángulo agudo.",
+     "total": 1
+    },
+    {
+     "tema": "Resolución de triángulos oblicuángulos.",
+     "total": 1
+    },
+    {
+     "tema": "Área de un sector circular",
+     "total": 1
+    },
+    {
+     "tema": "Resolución de triángulos oblicuángulos",
+     "total": 1
+    }
+   ],
+   "examenes": 29,
+   "muestras": [
+    {
+     "texto": "El rango de la siguiente función $h(x)=-\\sqrt{16-x^{2}}$ es:",
+     "opciones": [
+      "$[-4;0]$",
+      "$[4;+\\infty\\rangle$",
+      "$[4;0]$",
+      "$\\langle-\\infty;-4]$",
+      "$[-4;4]$"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Hallemos el dominio. 16 2 − ∈ x R ↔ 0 ≤ 16 – x2 x2 ≤ 16 |x| ≤ 4 – 4 ≤ x ≤ 4 Hallemos su rango. Como – 4 ≤ x ≤ 4 0 ≤ x2 ≤ 16 0 ≥ – x2 ≥ –16 16 ≥ 16 – x2 ≥ 0 4 16 0 2 ≥ − ≥ x − ≤− − ≤ ( ) 4 16 0 2 x f x al cuadrado × (–1) × (–1) +16 ∴ Ranf=[– 4; 0]",
+     "curso": "Matemáticas",
+     "tema": "Funciones",
+     "subtema": null,
+     "examen": "UNC 2022 2022-I - mod D"
+    },
+    {
+     "texto": "¿Qué valor debe tener \"Z\" para que la siguiente igualdad sea una identidad? $\\displaystyle \\frac{1}{Z}=\\frac{\\sen x}{1+\\cos x}+\\frac{\\sen x}{1-\\cos x}$",
+     "opciones": [
+      "$\\dfrac{1}{2}\\sen x$",
+      "$\\dfrac{1}{3}\\cos x$",
+      "$\\dfrac{1}{4}\\csc x$",
+      "$\\dfrac{1}{2}\\sec x$",
+      "$\\dfrac{1}{3}\\sen x\\cos x$"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "1 1 1 Z x x x x = + + − sen cos sen cos 1 1 1 Z x x x x x x x x = − + + + − sen sen cos sen sen cos ( cos )( cos ) 1 2 1 2 Z x x = − sen cos 1 2 2 Z x x = sen sen ∴ Z x = 1 2 sen",
+     "curso": "Matemáticas",
+     "tema": "Identidades fundamentales",
+     "subtema": null,
+     "examen": "UNC 2022 2022-II - mod D"
+    },
+    {
+     "texto": "Calcular $m \\cdot n$, sabiendo que el sistema: $\\displaystyle \\begin{cases} (2m-1)x+4y=n+1 & \\text{(1)} \\\\ 2x-2y=m & \\text{(2)} \\end{cases}$ admite infinitas soluciones.",
+     "opciones": [
+      "-2",
+      "2",
+      "3",
+      "-3",
+      "-1"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "( ) ...( ) 2 1 4 1 1 2 2 m x y n x y m − + = + − =    Como el sistema tiene solución única, se cumple 2 1 2 4 2 1 m n m − = −= + • 2 1 2 2 m− = − • n m + = − 1 2 2m–1= –4 n+1=–2m m= −3 2 n+ = − −     1 2 3 2 n=2 ∴ mn= −     = − 3 2 2 3 ( )",
+     "curso": "Matemáticas",
+     "tema": "Sistema de ecuaciones",
+     "subtema": null,
+     "examen": "UNC 2023 2023-II - mod A"
+    },
+    {
+     "texto": "Hallar el valor de x en la ecuación: $4^x - 2^x = 56$",
+     "opciones": [
+      "1/2",
+      "1/3",
+      "1",
+      "2",
+      "3"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "(2x)2 – (2x)=56 (2x)2 – (2x) – 56=0 2x 7 2x – 8 (2x+7)(2x – 8)=0 2x+7=0 ∨ 2x – 8=0 2 7 x = − absurdo ∨ 2 8 3 x x = = ∴ x=3",
+     "curso": "Matemáticas",
+     "tema": "Ecuación exponencial",
+     "subtema": null,
+     "examen": "UNC 2022 2022-II - mod E"
+    },
+    {
+     "texto": "En una circunferencia de radio 12 m se traza una cuerda PQ, siendo la medida del arco PQ=60°. Hallar la longitud del arco PQ.",
+     "opciones": [
+      "4π m",
+      "6π m",
+      "8π m",
+      "5π m",
+      "7π m"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Nos piden LPQ  . 12 60° P Q Dato: mPQ =60° Sabemos: LPQ =(mPQ )·(R) LPQ = ° ( )⋅( ) 60 12 3 π LPQ =    ⋅( ) π 3 12 ∴ LPQ =4p m",
+     "curso": "Matemáticas",
+     "tema": "Circunferencia",
+     "subtema": null,
+     "examen": "UNC 2023 2023-I - mod A"
+    },
+    {
+     "texto": "Hallar el valor de $(m+1)^{2}$, si la ecuación $mx^{2}-4x+4(2-m)=0$ tiene solución única.",
+     "opciones": [
+      "1",
+      "4",
+      "9",
+      "0",
+      "16"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Se tiene mx2–4x+4(2–m)=0 Como tiene solución única (–4)2 – 4m[4(2 – m)] = 0 16 – 16m(2 – m) = 0 1 = 2m – m2 m2 – 2m+1 = 0 (m – 1)2 = 0 m = 1 ∆ = 0 ∴ (m + 1)2 = (1 + 1)2 = 4",
+     "curso": "Matemáticas",
+     "tema": "Ecuación cuadrática",
+     "subtema": null,
+     "examen": "UNC 2023 2023-II - mod A"
+    }
+   ]
+  },
+  {
+   "curso": "Ciencia, Tecnología y Ambiente",
+   "slug": "ciencia-tecnologia-y-ambiente",
+   "total": 253,
+   "temas": [
+    {
+     "tema": "Ecología",
+     "total": 23
+    },
+    {
+     "tema": "Fuerza magnética",
+     "total": 13
+    },
+    {
+     "tema": "Estática",
+     "total": 8
+    },
+    {
+     "tema": "Botánica",
+     "total": 7
+    },
+    {
+     "tema": "Calorimetría",
+     "total": 7
+    },
+    {
+     "tema": "Fenómenos térmicos",
+     "total": 7
+    },
+    {
+     "tema": "Vectores",
+     "total": 7
+    },
+    {
+     "tema": "Nomenclatura inorgánica",
+     "total": 6
+    },
+    {
+     "tema": "Materia",
+     "total": 6
+    },
+    {
+     "tema": "Genética",
+     "total": 5
+    },
+    {
+     "tema": "Política ambiental",
+     "total": 5
+    },
+    {
+     "tema": "Aminoácidos",
+     "total": 5
+    },
+    {
+     "tema": "Análisis dimensional",
+     "total": 5
+    },
+    {
+     "tema": "Fuerza eléctrica",
+     "total": 5
+    },
+    {
+     "tema": "Zoología",
+     "total": 4
+    },
+    {
+     "tema": "Biología celular",
+     "total": 4
+    },
+    {
+     "tema": "Reacciones químicas",
+     "total": 4
+    },
+    {
+     "tema": "Tabla periódica",
+     "total": 4
+    },
+    {
+     "tema": "Equilibrio químico",
+     "total": 4
+    },
+    {
+     "tema": "Química nuclear",
+     "total": 4
+    },
+    {
+     "tema": "Funciones nitrogenadas",
+     "total": 4
+    },
+    {
+     "tema": "Reacción química",
+     "total": 4
+    },
+    {
+     "tema": "Electrodinámica",
+     "total": 4
+    },
+    {
+     "tema": "Hidrostática",
+     "total": 4
+    },
+    {
+     "tema": "Cinemática",
+     "total": 4
+    },
+    {
+     "tema": "Campo eléctrico",
+     "total": 4
+    },
+    {
+     "tema": "Ciclo celular",
+     "total": 3
+    },
+    {
+     "tema": "Contaminación ambiental",
+     "total": 3
+    },
+    {
+     "tema": "Evolución",
+     "total": 3
+    },
+    {
+     "tema": "Soluciones",
+     "total": 3
+    },
+    {
+     "tema": "Estado gaseoso",
+     "total": 3
+    },
+    {
+     "tema": "Cálculos en química",
+     "total": 3
+    },
+    {
+     "tema": "Ácido - debil",
+     "total": 3
+    },
+    {
+     "tema": "Dinámica",
+     "total": 3
+    },
+    {
+     "tema": "Electrostática",
+     "total": 3
+    },
+    {
+     "tema": "Electromagnetismo",
+     "total": 3
+    },
+    {
+     "tema": "Energía",
+     "total": 3
+    },
+    {
+     "tema": "Energía mecánica",
+     "total": 3
+    },
+    {
+     "tema": "Desarrollo embrionario",
+     "total": 2
+    },
+    {
+     "tema": "Contaminación atmosférica",
+     "total": 2
+    },
+    {
+     "tema": "Áreas naturales protegidas",
+     "total": 2
+    },
+    {
+     "tema": "Sistema endocrino",
+     "total": 2
+    },
+    {
+     "tema": "Desarrollo sostenible",
+     "total": 2
+    },
+    {
+     "tema": "Bioquímica",
+     "total": 2
+    },
+    {
+     "tema": "Genética no mendeliana",
+     "total": 2
+    },
+    {
+     "tema": "Ciclo celular eucariota",
+     "total": 2
+    },
+    {
+     "tema": "Estequiometría",
+     "total": 2
+    },
+    {
+     "tema": "Configuración electrónica",
+     "total": 2
+    },
+    {
+     "tema": "Estructura atómica",
+     "total": 2
+    },
+    {
+     "tema": "Enlace químico",
+     "total": 2
+    },
+    {
+     "tema": "Hidrocarburos",
+     "total": 2
+    },
+    {
+     "tema": "Carbohidratos",
+     "total": 2
+    },
+    {
+     "tema": "Enlace covalente",
+     "total": 2
+    },
+    {
+     "tema": "Potencia mecánica",
+     "total": 2
+    },
+    {
+     "tema": "Segunda condición de equilibrio",
+     "total": 2
+    },
+    {
+     "tema": "Conservación de la energía",
+     "total": 2
+    },
+    {
+     "tema": "Dinámica rectilínea",
+     "total": 2
+    },
+    {
+     "tema": "Trabajo mecánico",
+     "total": 2
+    },
+    {
+     "tema": "Impulso",
+     "total": 2
+    },
+    {
+     "tema": "Escalas termométricas",
+     "total": 2
+    },
+    {
+     "tema": "Bioquímica (ácidos nucleicos)",
+     "total": 1
+    },
+    {
+     "tema": "Citogenética",
+     "total": 1
+    },
+    {
+     "tema": "Origen de la vida",
+     "total": 1
+    },
+    {
+     "tema": "Sistema nervioso humano",
+     "total": 1
+    },
+    {
+     "tema": "Citología",
+     "total": 1
+    },
+    {
+     "tema": "Biotecnología",
+     "total": 1
+    },
+    {
+     "tema": "Sistema nervioso animal",
+     "total": 1
+    },
+    {
+     "tema": "Histología humana",
+     "total": 1
+    },
+    {
+     "tema": "Histología vegetal",
+     "total": 1
+    },
+    {
+     "tema": "Enfermedades infectocontagiosas",
+     "total": 1
+    },
+    {
+     "tema": "Sistema sensorial",
+     "total": 1
+    },
+    {
+     "tema": "Funciones oxigenadas",
+     "total": 1
+    },
+    {
+     "tema": "Química orgánica",
+     "total": 1
+    },
+    {
+     "tema": "Electrólisis",
+     "total": 1
+    },
+    {
+     "tema": "Lípidos",
+     "total": 1
+    },
+    {
+     "tema": "Radiación",
+     "total": 1
+    }
+   ],
+   "examenes": 32,
+   "muestras": [
+    {
+     "texto": "En las figuras se muestran cuatro conductores rectos, paralelos e infinitos por los cuales circulan corrientes eléctricas respectivas. Señalar la verdad o falsedad de las afirmaciones realizadas: I. Los conductores 1 y 2 se repelen, mientras que los conductores 3 y 4 se atraen. II. Los conductores 1 y 2 se atraen, mientras que los conductores 3 y 4 se repelen. III. Ningún par de conductores experimentan interacción magnética.<br><img src=\"https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNC/UNC-2025-2025-I-MOD-B-1L95Dx/P61_2.webp\">",
+     "opciones": [
+      "VVV",
+      "FVF",
+      "VFF",
+      "FVV",
+      "FFV"
+     ],
+     "correcta": 1,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNC/UNC-2025-2025-I-MOD-B-1L95Dx/P61.webp",
+     "justificacion": "Primero, usamos la regla de la mano derecha para determinar el campo magnético asociado a cada conductor. Luego, empleamos la regla de la mano izquierda para determinar la dirección de la fuerza magnética. I1 B2 B1 B4 B3 (1) I2 (2) I3 (3) I4 (4) FM FM FM FM     A partir de lo anterior, determinamos que (1) y (2) se atraen, mientras que (3) y (4) se repelen. Por lo tanto, la alternativa correcta es FVF.",
+     "curso": "Ciencia, Tecnología y Ambiente",
+     "tema": "Fuerza magnética",
+     "subtema": null,
+     "examen": "UNC 2025 2025-I MOD B__1L95Dx"
+    },
+    {
+     "texto": "La relación de las masas de 2 isótopos es 8/5 y la diferencia de sus neutrones es 6. ¿Cuál es la suma de las masas?",
+     "opciones": [
+      "22",
+      "20",
+      "24",
+      "28",
+      "26"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Sean los isótopos E A1 Z #n1=A1–Z E A2 Z #n2=A2–Z Nos piden A1+A2 • Consideramos que el número de masa(A)=masa. Condiciones 1. (A1–Z) – (A2 – Z)=6 A1– A1 =6 ...(a) 2. A A A A 1 2 1 2 8 5 8 5 = → = En (a) 8 5 6 2 2 A A − = → A2=10 En (a) A1=6+A2=6+10=16 Por lo tanto, A1+A2=10+16=26.",
+     "curso": "Ciencia, Tecnología y Ambiente",
+     "tema": "Estructura atómica",
+     "subtema": null,
+     "examen": "UNC 2023 2023-I - mod A"
+    },
+    {
+     "texto": "¿Cuántos niveles tiene un átomo de Z=29?",
+     "opciones": [
+      "5",
+      "3",
+      "4",
+      "6",
+      "2"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Nos piden el número de niveles que posee el átomo de cobre (Z=29). Realizamos la distribución electrónica del átomo de cobre. En un átomo neutro: # e=Z Si Z=29= # electrones 29 18 2 9 18 1 10 4 3 4 Cu: Ar d Ar s 3d corrigiendo [ ]  → [ ] s Por lo tanto, el átomo de cobre posee 4 niveles.",
+     "curso": "Ciencia, Tecnología y Ambiente",
+     "tema": "Configuración electrónica",
+     "subtema": null,
+     "examen": "UNC 2023 2023-I - mod A"
+    },
+    {
+     "texto": "Calcular el cambio de temperatura que experimenta 25 g de aluminio al perde 220 J de calor. ($C_{e(\\text{Al})}=880\\text{ J/kg }^\\circ\\text{C}$)",
+     "opciones": [
+      "$10\\,^\\circ\\text{C}$",
+      "$-10\\,^\\circ\\text{C}$",
+      "$50\\,^\\circ\\text{C}$",
+      "$-50\\,^\\circ\\text{C}$",
+      "$-80\\,^\\circ\\text{C}$"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Se tiene Q=Ce m DT – 220=880(0,025)DT DT= –10 °C",
+     "curso": "Ciencia, Tecnología y Ambiente",
+     "tema": "Fenómenos térmicos",
+     "subtema": null,
+     "examen": "UNC 2022 2022-II - mod A"
+    },
+    {
+     "texto": "Determinar el empuje que experimenta el cuerpo que se muestra si $\\rho_1=800 \\text{ kg/m}^3$ y $\\rho_2=1200 \\text{ kg/m}^3$",
+     "opciones": [
+      "102 kN",
+      "110 kN",
+      "104 kN",
+      "112 kN",
+      "108 kN"
+     ],
+     "correcta": 3,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNC/UNC-2022-2022-II-mod-E/P39.webp",
+     "justificacion": "Piden E1+E2. F E1 E2 E1+E2=r1 g Vs1+r2 g Vs2 E1+E2=800(10)(2)+1200(10)(8) ∴ E1+E2=112 000 N",
+     "curso": "Ciencia, Tecnología y Ambiente",
+     "tema": "Hidrostática",
+     "subtema": null,
+     "examen": "UNC 2022 2022-II - mod E"
+    },
+    {
+     "texto": "Enlace covalente entre el grupo carboxílico (-COOH) de un aminoácido y el grupo amino (-$\\mathrm{NH_2}$) de otro aminoácido, se denomina:",
+     "opciones": [
+      "Enlace covalente no polar",
+      "Enlace carboxiamoniaco",
+      "enlace carboxiamido",
+      "enlace peptídico",
+      "enlace proteico"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Nos piden identificar el nombre del enlace entre dos aminioácidos. Escribimos el proceso químico entre dos aminoácidos (1 y 2). H2N H H R R OH H C C OH + O N C C H O Aminoácido 1 Aminoácido 2 R H2N +H2O H R OH H C C O N C C H O → enlace peptídico Por lo tanto, el nombre del enlace entre los dos aminioácidos es el enlace peptídico.",
+     "curso": "Ciencia, Tecnología y Ambiente",
+     "tema": "Aminoácidos",
+     "subtema": null,
+     "examen": "UNC 2023 2023-I - mod A"
+    }
+   ]
+  },
+  {
+   "curso": "Comunicación",
+   "slug": "comunicacion",
+   "total": 132,
+   "temas": [
+    {
+     "tema": "Oraciones incompletas",
+     "total": 5
+    },
+    {
+     "tema": "Clasicismo griego",
+     "total": 5
+    },
+    {
+     "tema": "El costumbrismo",
+     "total": 4
+    },
+    {
+     "tema": "Conectores lógicos",
+     "total": 3
+    },
+    {
+     "tema": "La comunicación",
+     "total": 3
+    },
+    {
+     "tema": "Uso de marcadores textuales",
+     "total": 3
+    },
+    {
+     "tema": "Conjunción",
+     "total": 3
+    },
+    {
+     "tema": "Adverbio",
+     "total": 3
+    },
+    {
+     "tema": "Preposición",
+     "total": 3
+    },
+    {
+     "tema": "Adjetivo",
+     "total": 3
+    },
+    {
+     "tema": "El modernismo peruano",
+     "total": 3
+    },
+    {
+     "tema": "Narrativa hispanoamericana",
+     "total": 3
+    },
+    {
+     "tema": "Literatura medieval",
+     "total": 3
+    },
+    {
+     "tema": "Renacimiento",
+     "total": 3
+    },
+    {
+     "tema": "Uso de grafías",
+     "total": 2
+    },
+    {
+     "tema": "Morfología",
+     "total": 2
+    },
+    {
+     "tema": "El artículo",
+     "total": 2
+    },
+    {
+     "tema": "Accidentes del sustantivo",
+     "total": 2
+    },
+    {
+     "tema": "Uso del pronombre",
+     "total": 2
+    },
+    {
+     "tema": "Artículo",
+     "total": 2
+    },
+    {
+     "tema": "Planos de lenguaje",
+     "total": 2
+    },
+    {
+     "tema": "Etimología",
+     "total": 2
+    },
+    {
+     "tema": "Clasificación del verbo",
+     "total": 2
+    },
+    {
+     "tema": "Grafía",
+     "total": 2
+    },
+    {
+     "tema": "Comunicación humana",
+     "total": 2
+    },
+    {
+     "tema": "Literatura hispanoamericana",
+     "total": 2
+    },
+    {
+     "tema": "Literatura contemporánea",
+     "total": 2
+    },
+    {
+     "tema": "Barroco español",
+     "total": 2
+    },
+    {
+     "tema": "El boom latinoamericano",
+     "total": 2
+    },
+    {
+     "tema": "Literatura de la Emancipación",
+     "total": 2
+    },
+    {
+     "tema": "Siglo de Oro español",
+     "total": 2
+    },
+    {
+     "tema": "Narrativa hispanoamericana contemporánea",
+     "total": 2
+    },
+    {
+     "tema": "Poesía hispanoamericana contemporánea",
+     "total": 2
+    },
+    {
+     "tema": "Generación del 98",
+     "total": 2
+    },
+    {
+     "tema": "Romanticismo español",
+     "total": 2
+    },
+    {
+     "tema": "El posmodernismo peruano",
+     "total": 2
+    },
+    {
+     "tema": "La preposición",
+     "total": 1
+    },
+    {
+     "tema": "El sustantivo",
+     "total": 1
+    },
+    {
+     "tema": "La conjunción",
+     "total": 1
+    },
+    {
+     "tema": "Tilde enfática",
+     "total": 1
+    },
+    {
+     "tema": "La oración compuesta coordinada",
+     "total": 1
+    },
+    {
+     "tema": "El pronombre",
+     "total": 1
+    },
+    {
+     "tema": "Conjunciones",
+     "total": 1
+    },
+    {
+     "tema": "El sujeto",
+     "total": 1
+    },
+    {
+     "tema": "El Adverbio",
+     "total": 1
+    },
+    {
+     "tema": "Acentuación",
+     "total": 1
+    },
+    {
+     "tema": "Determinantes",
+     "total": 1
+    },
+    {
+     "tema": "Uso de la coma",
+     "total": 1
+    },
+    {
+     "tema": "Sintaxis",
+     "total": 1
+    },
+    {
+     "tema": "Formación de palabras",
+     "total": 1
+    },
+    {
+     "tema": "El lenguaje",
+     "total": 1
+    },
+    {
+     "tema": "Conjunciones coordinantes",
+     "total": 1
+    },
+    {
+     "tema": "Concordancia nominal",
+     "total": 1
+    },
+    {
+     "tema": "Compuesta subordinada",
+     "total": 1
+    },
+    {
+     "tema": "Proposición subordinada",
+     "total": 1
+    },
+    {
+     "tema": "Signos de puntuación",
+     "total": 1
+    },
+    {
+     "tema": "Dequeísmo",
+     "total": 1
+    },
+    {
+     "tema": "Literatura de la emancipación",
+     "total": 1
+    },
+    {
+     "tema": "Géneros, especies, autores y obras",
+     "total": 1
+    },
+    {
+     "tema": "La generación del 98",
+     "total": 1
+    },
+    {
+     "tema": "Narrativa contemporánea",
+     "total": 1
+    },
+    {
+     "tema": "Literatura moderna",
+     "total": 1
+    },
+    {
+     "tema": "Realismo peruano: Manuel González Prada",
+     "total": 1
+    },
+    {
+     "tema": "Literatura española: la generación del 27",
+     "total": 1
+    },
+    {
+     "tema": "Lírica de la Edad de Oro española",
+     "total": 1
+    },
+    {
+     "tema": "Teatro de la Edad de Oro española",
+     "total": 1
+    },
+    {
+     "tema": "El Romanticismo hispanoamericano",
+     "total": 1
+    },
+    {
+     "tema": "La generación del 50",
+     "total": 1
+    },
+    {
+     "tema": "Neoclasicismo europeo",
+     "total": 1
+    },
+    {
+     "tema": "Teatro griego",
+     "total": 1
+    },
+    {
+     "tema": "Literatura de la Conquista",
+     "total": 1
+    },
+    {
+     "tema": "La nueva narrativa hispanoamericana",
+     "total": 1
+    },
+    {
+     "tema": "Literatura española",
+     "total": 1
+    },
+    {
+     "tema": "realismo europeo",
+     "total": 1
+    },
+    {
+     "tema": "El realismo",
+     "total": 1
+    },
+    {
+     "tema": "La literatura de la Conquista",
+     "total": 1
+    }
+   ],
+   "examenes": 23,
+   "muestras": [
+    {
+     "texto": "¿Qué movimiento literario se asocia comúnmente con la obra de Günter Grass?",
+     "opciones": [
+      "realismo mágico",
+      "existencialismo",
+      "grupo 47",
+      "surrealismo",
+      "expresionismo"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Günter Grass perteneció al Grupo 47 porque fue uno de los escritores más destacados de este círculo literario, que surgió en Alemania después de la Segunda Guerra Mundial. El Grupo 47 fue una comunidad de escritores e intelectuales alemanes que, entre 1947 y 1967, buscaban renovar la literatura alemana tras el nazismo y promover una escritura crítica, realista y comprometida con la sociedad.",
+     "curso": "Comunicación",
+     "tema": "Narrativa hispanoamericana contemporánea",
+     "subtema": null,
+     "examen": "UNC 2025 2025-I MOD C__1-g4AU"
+    },
+    {
+     "texto": "Completar el siguiente párrafo: La dictadura sale debilitada, ha perdido todo asomo de legitimidad, la condición indispensable para gobernar con estabilidad.",
+     "opciones": [
+      "aunque - aún",
+      "empero - todavía",
+      "porque - y",
+      "pues - es decir",
+      "porque - empero"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "La oración se vuelve precisa y comprensible al completarse con los siguientes conectores: pues y es decir. El primer espacio se completa con un conector causal (pues) que explica el motivo de la debilidad de una dictadura. El segundo espacio se completa con un conector aclarativo (es decir) que precisa el sentido del concepto legitimidad.",
+     "curso": "Comunicación",
+     "tema": "Conectores lógicos",
+     "subtema": null,
+     "examen": "UNC 2022 2022-I - mod A"
+    },
+    {
+     "texto": "Marcar la opción en la que el adjetivo es un modificador directo del núcleo del sujeto.",
+     "opciones": [
+      "El río discurre por el valle.",
+      "El Puente de los Suspiros: un lindo lugar.",
+      "La casa museo alberga cuadros de Sabogal.",
+      "La ciudad jardín tiene bellas piletas.",
+      "La bermeja amapola se mueve movida por el viento."
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "El adjetivo es la palabra que señala una característica del sustantivo o nombre. Puede cumplir la función de modificador directo; para ello, acompaña a un sustantivo. Por ejemplo, caballo veloz o rojiza tierra. Nos piden determinar un adjetivo que funcione como MD del núcleo del sujeto. Entonces, primero identificamos el sujeto en La bermeja amapola se mueve movida por el viento. ¿Quién se mueve? La respuesta es La bermeja amapola. El ajetivo bermeja significa ‘de color rojo’.",
+     "curso": "Comunicación",
+     "tema": "Adjetivo",
+     "subtema": null,
+     "examen": "UNC 2025 2025-I MOD B"
+    },
+    {
+     "texto": "La última obra de Miguel de Cervantes Saavedra, considerada como novela bizantina y publicada póstumamente en Madrid en 1617, es",
+     "opciones": [
+      "La Galatea.",
+      "Novelas Ejemplares.",
+      "Viaje del Parnaso.",
+      "Los Trabajos de Persiles y Segismunda.",
+      "El Canto de Calíope."
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Cervantes escribió en los tres géneros más importantes: novela, poesía y teatro. La novela bizantina publicada póstumamente es Los trabajos de Persiles y Segismunda. Cuenta las peripecias del príncipe Persiles y la princesa Segismunda, dos enamorados que emprenden hacia el sur con falsas identidades; fingen ser hermanos para escapar del príncipe Magsimino. Por otro lado, La Galatea es una novela pastoril, campestre, con historia de amores de pastores. Dentro de esta novela se encuentra un himno “El canto de Calíope”. Mientras que Novelas ejemplares es un conjunto de novelas cortas de diferentes estilos. Viaje del Parnaso es un libro de poesía.",
+     "curso": "Comunicación",
+     "tema": "Barroco español",
+     "subtema": null,
+     "examen": "UNC 2022 2022-II - mod A"
+    },
+    {
+     "texto": "Personaje de Cien años de soledad que promovió 32 levantamientos armados y los perdió todos:",
+     "opciones": [
+      "Aureliano José",
+      "Gerinaldo Márquez",
+      "Aureliano Buendía",
+      "Mauricio Babilonia",
+      "Apolinar Moscote"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "La obra Cien años de soledad, del colombiano Gabriel García Márquez, es una novela en la cual se cuenta la historia de las siete generaciones de la familia Buendía en el pueblo imaginario de Macondo. En esta novela, se recurre al narrador omnisciente (en tercera persona), al tiempo cíclico (se repite hechos y nombres), al realismo mágico (mezcla hechos reales y fantásticos) y a la hipérbole (se relata hechos exagerados). Un ejemplo de esta última característica lo apreciamos en el siguiente fragmento que cuenta lo vivido por el coronel Aureliano Buendía: Módulo A El coronel Aureliano Buendía promovió treinta y dos levantamientos armados y los perdió todos. Tuvo diecisiete hijos varones de diecisiete mujeres distintas, que fueron exterminados uno tras otro en una sola noche, antes de que el mayor cumpliera treinta y cinco años. Escapó a catorce atentados, a setenta y tres emboscadas y a un pelotón de fusilamiento. Sobrevivió a una carga de estricnina en el café que habría bastado para matar a un caballo.",
+     "curso": "Comunicación",
+     "tema": "El boom latinoamericano",
+     "subtema": null,
+     "examen": "UNC 2023 2023-I - mod A"
+    },
+    {
+     "texto": "Acerca de la comunicación, ¿cuál de las siguientes alternativas es falsa?",
+     "opciones": [
+      "Permite transmitir información.",
+      "Un receptor puede convertirse en emisor.",
+      "Es exclusivamente humana.",
+      "Requiere un código.",
+      "Puede haber varios emisores."
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "La comunicación es un proceso social mediante el cual se transmite una información entre el emisor, quien envía el mensaje, y el receptor, quien recibe el mensaje. Existen comunicación humana y comunicación no humana (entre animales). En ambos tipos de comunicación, es necesario el uso de un código de tipo verbal, gestual, acústico, olfativo, etc. También existen tipos de emisores y clases de receptores. En la pregunta, nos piden identificar una idea que es falsa acerca de la comunicación.",
+     "curso": "Comunicación",
+     "tema": "La comunicación",
+     "subtema": null,
+     "examen": "UNC 2023 2023-II - mod A"
+    }
+   ]
+  },
+  {
+   "curso": "Sociales y Cívicos",
+   "slug": "sociales-y-civicos",
+   "total": 101,
+   "temas": [
+    {
+     "tema": "Poblamiento americano",
+     "total": 6
+    },
+    {
+     "tema": "Prosperidad Falaz",
+     "total": 4
+    },
+    {
+     "tema": "Invasión del Tahuantinsuyo",
+     "total": 4
+    },
+    {
+     "tema": "Modelos de mercado",
+     "total": 4
+    },
+    {
+     "tema": "Áreas naturales protegidas",
+     "total": 3
+    },
+    {
+     "tema": "Epistemología",
+     "total": 3
+    },
+    {
+     "tema": "Disciplinas filosóficas",
+     "total": 3
+    },
+    {
+     "tema": "Desarrollo de la inteligencia",
+     "total": 3
+    },
+    {
+     "tema": "Socialización",
+     "total": 3
+    },
+    {
+     "tema": "Personalidad",
+     "total": 3
+    },
+    {
+     "tema": "Clasificación de las ciencias",
+     "total": 3
+    },
+    {
+     "tema": "Roma",
+     "total": 2
+    },
+    {
+     "tema": "Virreinato del Perú",
+     "total": 2
+    },
+    {
+     "tema": "Intermedio Tardío",
+     "total": 2
+    },
+    {
+     "tema": "Mar Peruano",
+     "total": 2
+    },
+    {
+     "tema": "Mar peruano",
+     "total": 2
+    },
+    {
+     "tema": "Geografía política",
+     "total": 2
+    },
+    {
+     "tema": "Tectónica de placas",
+     "total": 2
+    },
+    {
+     "tema": "Demanda",
+     "total": 2
+    },
+    {
+     "tema": "Presupuesto público",
+     "total": 2
+    },
+    {
+     "tema": "Acuerdos de integración",
+     "total": 2
+    },
+    {
+     "tema": "Motivación",
+     "total": 2
+    },
+    {
+     "tema": "Niveles del conocimiento",
+     "total": 2
+    },
+    {
+     "tema": "Ética",
+     "total": 2
+    },
+    {
+     "tema": "Desarrollo humano",
+     "total": 2
+    },
+    {
+     "tema": "Resistencia andina",
+     "total": 1
+    },
+    {
+     "tema": "Comunidad Primitiva",
+     "total": 1
+    },
+    {
+     "tema": "Segundo Desarrollo Regional",
+     "total": 1
+    },
+    {
+     "tema": "Fenicia",
+     "total": 1
+    },
+    {
+     "tema": "Mesopotamia",
+     "total": 1
+    },
+    {
+     "tema": "Antropogénesis",
+     "total": 1
+    },
+    {
+     "tema": "Primer desarrollo regional: Nasca",
+     "total": 1
+    },
+    {
+     "tema": "Formativo Andino: Chavín",
+     "total": 1
+    },
+    {
+     "tema": "Vertiente hidrográfica del Amazonas",
+     "total": 1
+    },
+    {
+     "tema": "Ocho regiones naturales",
+     "total": 1
+    },
+    {
+     "tema": "Vertiente Hidrográfica del Amazonas",
+     "total": 1
+    },
+    {
+     "tema": "Geósfera",
+     "total": 1
+    },
+    {
+     "tema": "Ciencia geográfica",
+     "total": 1
+    },
+    {
+     "tema": "Geografía Política",
+     "total": 1
+    },
+    {
+     "tema": "Minería",
+     "total": 1
+    },
+    {
+     "tema": "Vertiente del Pacifico",
+     "total": 1
+    },
+    {
+     "tema": "Hidrósfera",
+     "total": 1
+    },
+    {
+     "tema": "Economía",
+     "total": 1
+    },
+    {
+     "tema": "Tributos",
+     "total": 1
+    },
+    {
+     "tema": "Sistema financiero",
+     "total": 1
+    },
+    {
+     "tema": "La ciencia económica",
+     "total": 1
+    },
+    {
+     "tema": "Integración económica",
+     "total": 1
+    },
+    {
+     "tema": "Políticas económicas",
+     "total": 1
+    },
+    {
+     "tema": "Empresa",
+     "total": 1
+    },
+    {
+     "tema": "Filosofía política",
+     "total": 1
+    },
+    {
+     "tema": "Escuelas psicológicas",
+     "total": 1
+    },
+    {
+     "tema": "Disciplinas Filosóficas",
+     "total": 1
+    },
+    {
+     "tema": "Aprendizaje",
+     "total": 1
+    },
+    {
+     "tema": "Teorías de la inteligencia",
+     "total": 1
+    },
+    {
+     "tema": "Procesos afectivos",
+     "total": 1
+    },
+    {
+     "tema": "Introducción a la filosofía",
+     "total": 1
+    },
+    {
+     "tema": "Axiología",
+     "total": 1
+    },
+    {
+     "tema": "Historia de la psicología",
+     "total": 1
+    },
+    {
+     "tema": "Pensamiento",
+     "total": 1
+    }
+   ],
+   "examenes": 21,
+   "muestras": [
+    {
+     "texto": "Señalar la característica que no corresponde al hombre prehistórico del Paleolítico.",
+     "opciones": [
+      "Consume sus alimentos crudos",
+      "Descubrimiento del fuego",
+      "La construcción de palafitos",
+      "Vive en cuevas o cavernas",
+      "Practica la magia y la hechicería"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "El Paleolítico fue una etapa en la que el hombre vivió de la caza, pesca y recolección; es decir, tuvo una economía de subsistencia, basada en la depredación de la naturaleza. Producto de esto, vivían en las cavernas, habitadas temporalmente. No podían ser sedentarios, pues constantemente estaban desplazándose de un lugar a otro para conseguir sus alimentos. Posteriormente, durante el Neolítico, el hombre se vuelve sedentario y empieza a construir sus primeras viviendas, los palafitos.",
+     "curso": "Sociales y Cívicos",
+     "tema": "Comunidad Primitiva",
+     "subtema": null,
+     "examen": "UNC 2023 2023-I - mod A"
+    },
+    {
+     "texto": "El psicólogo que estudió el comportamiento humano, según el orden de nacimiento de los hijos, es:",
+     "opciones": [
+      "Lev Vygotsky",
+      "William James",
+      "Iván Pavlov",
+      "William Wundt",
+      "Alfred Adler"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Alfred Adler, fundador de la psicología individual, es el psicólogo que destacó la importancia del orden de nacimiento en la formación de la personalidad. Su teoría postula que la posición de un niño en la familia (primogénito, segundo, menor, hijo único) influye profundamente en su desarrollo psicológico y estilo de vida. Adler observó que el primogénito, a menudo, se siente desplazado por la llegada de un hermano, lo que puede generar sentimientos de celos y una necesidad de recuperar la atención de los padres. Por su parte, el hijo del medio a menudo se siente “aplastado” y lucha por destacar, mientras que el hijo menor puede ser el más mimado y desarrollar un fuerte sentido de dependencia. El resto de los psicólogos mencionados (Vygotsky, James, Pavlov y Wundt) son reconocidos por otras teorías. Vygotsky por el desarrollo sociocultural, James por el funcionalismo, Pavlov por el condicionamiento clásico y Wundt por el estructuralismo.",
+     "curso": "Sociales y Cívicos",
+     "tema": "Personalidad",
+     "subtema": null,
+     "examen": "UNC 2025 2025-I MOD B"
+    },
+    {
+     "texto": "Reemplazó como inca del Tanhuantinsuyo a Túpac Huallpa, siendo coronado por Pizarro en Sacsawara, Cusco.",
+     "opciones": [
+      "Toparpa",
+      "Tito Cusi Yupanqui",
+      "Manco Inca",
+      "Sairi Túpac",
+      "Túpac Amaru I"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "En 1532 Francisco Pizarro ordenó la ejecución del Inca Atahualpa y se alió con el bando de los huascaristas. Luego de eso, coronó como nuevo emperador incaico a Tupac Hualpa, a quien los españoles llamaron Toparpa. Este noble indígena resultó muerto, luego de un ataque dirigido por los generales de Atahualpa. Tras este hecho, la Corona incaica pasó a manos de Manco Inca, hermano de Túpac Hualpa, quien dirigió a los españoles al Cusco y, posteriormente, tuvo que enfrentarlos a causa de los saqueos propiciados por los invasores extranjeros.",
+     "curso": "Sociales y Cívicos",
+     "tema": "Invasión del Tahuantinsuyo",
+     "subtema": null,
+     "examen": "UNC 2022 2022-II - mod C"
+    },
+    {
+     "texto": "La región Ica es bastante árida y las lluvias son escasas. Por ello, en la cultura Nazca, para proveerse de agua, construyeron:",
+     "opciones": [
+      "galerías filtrantes",
+      "camellones",
+      "chacras hundidas",
+      "cochas",
+      "napas freáticas"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "La cultura Nasca existió entre los años 100 al 600 d. n. e. Se ubicó en la costa sur peruana, en el departamento de Ica, en la provincia de Nasca. Fue descubierto por Max Uhle. Destacaron por su fina cerámica polícroma con asa puente (son considerados los mejores del Perú antiguo) y por sus geoglifos o líneas de Nasca con imágenes de animales diversos y otras figuras enormes. Para obtener agua del desierto escarbaron hasta la napa freática a 20 o 30 metros de profundidad, construyendo acueductos subterráneos o galerías filtrantes, y así aumentar la producción agrícola. Cayeron bajo el dominio del Imperio Wari.",
+     "curso": "Sociales y Cívicos",
+     "tema": "Primer desarrollo regional: Nasca",
+     "subtema": null,
+     "examen": "UNC 2023 2023-II - mod C"
+    },
+    {
+     "texto": "El saber filosófico implica un conjunto de actitudes como ser:",
+     "opciones": [
+      "observador- inquisidor",
+      "meditativo - reflexivo",
+      "veraz - imparcial",
+      "honesto - ético",
+      "analítico - crítico"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "A diferencia de otras actitudes humanas, la filosófica evidencia una capacidad de crítica, de reflexión y problematización.",
+     "curso": "Sociales y Cívicos",
+     "tema": "Introducción a la filosofía",
+     "subtema": null,
+     "examen": "UNC 2023 2023-II - mod A"
+    },
+    {
+     "texto": "Manifestaciones culturales en las que los habitantes Chimús son considerados como los más grandes de América Precolombina.",
+     "opciones": [
+      "agricultura y ganadería",
+      "metalurgia y arquitectura",
+      "cerámica y escultura",
+      "arte lítico y pintura",
+      "textilería y orfebrería"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "La civilización chimú alcanzó un alto grado de avance en el trabajo y moldeo de metales (metalurgia). Célebres son sus tumis o cuchillos ceremoniales. Dentro de los restos que han dejado, destacan los que fueron elaborados de metales preciosos (orfebrería). Otro ámbito del conocimiento en que destacaron fue la arquitectura, la cual tiene como máximo aporte la ciudad de abode de Chan Chan, con espectaculares frisos de barro. Nota No es un consenso que los chimú fueron los más grandes arquitectos del Perú prehispánico. Para muchos autores, los incas y Tiahuanaco fueron los más destacados en arquitectura.",
+     "curso": "Sociales y Cívicos",
+     "tema": "Segundo Desarrollo Regional",
+     "subtema": null,
+     "examen": "UNC 2023 2023-I - mod A"
+    }
+   ]
+  },
+  {
+   "curso": "Razonamiento Matemático",
+   "slug": "razonamiento-matematico",
+   "total": 98,
+   "temas": [
+    {
+     "tema": "Lógica proposicional",
+     "total": 19
+    },
+    {
+     "tema": "Psicotécnico",
+     "total": 11
+    },
+    {
+     "tema": "Lógica de clases",
+     "total": 8
+    },
+    {
+     "tema": "Razonamiento geométrico",
+     "total": 5
+    },
+    {
+     "tema": "Análisis combinatorio",
+     "total": 5
+    },
+    {
+     "tema": "Situaciones geométricas",
+     "total": 4
+    },
+    {
+     "tema": "Situaciones aritméticas",
+     "total": 4
+    },
+    {
+     "tema": "Planteo de ecuaciones",
+     "total": 4
+    },
+    {
+     "tema": "Interpretación de gráficos estadísticos",
+     "total": 3
+    },
+    {
+     "tema": "Distribuciones numéricas",
+     "total": 3
+    },
+    {
+     "tema": "El tanto por ciento",
+     "total": 2
+    },
+    {
+     "tema": "Desigualdades",
+     "total": 2
+    },
+    {
+     "tema": "Numeración",
+     "total": 2
+    },
+    {
+     "tema": "Tanto por ciento",
+     "total": 2
+    },
+    {
+     "tema": "Ecuaciones",
+     "total": 2
+    },
+    {
+     "tema": "Perímetros y áreas",
+     "total": 2
+    },
+    {
+     "tema": "Razonamiento deductivo",
+     "total": 2
+    },
+    {
+     "tema": "Sucesiones literales",
+     "total": 1
+    },
+    {
+     "tema": "Funciones",
+     "total": 1
+    },
+    {
+     "tema": "Triángulo",
+     "total": 1
+    },
+    {
+     "tema": "Áreas",
+     "total": 1
+    },
+    {
+     "tema": "Promedios",
+     "total": 1
+    },
+    {
+     "tema": "Operaciones matemáticas",
+     "total": 1
+    },
+    {
+     "tema": "Medida de tendencia central",
+     "total": 1
+    },
+    {
+     "tema": "Estadística",
+     "total": 1
+    },
+    {
+     "tema": "Relación de tiempo",
+     "total": 1
+    },
+    {
+     "tema": "Analogías numéricas",
+     "total": 1
+    },
+    {
+     "tema": "Problemas sobre conjuntos",
+     "total": 1
+    },
+    {
+     "tema": "Situaciones algebraicas",
+     "total": 1
+    },
+    {
+     "tema": "Numerales",
+     "total": 1
+    },
+    {
+     "tema": "Situaciones algebráicas",
+     "total": 1
+    },
+    {
+     "tema": "Conjuntos",
+     "total": 1
+    },
+    {
+     "tema": "Problema sobre edades",
+     "total": 1
+    },
+    {
+     "tema": "Teoría de numeración",
+     "total": 1
+    },
+    {
+     "tema": "Teoría de conjuntos",
+     "total": 1
+    }
+   ],
+   "examenes": 24,
+   "muestras": [
+    {
+     "texto": "Sean las proposiciones: $p: \\forall x \\in \\mathbb{R}: x^2 > 0$ $q: \\forall x \\in \\mathbb{R}: x^2 \\geq 0$ $r: \\exists x \\in \\mathbb{R}: x^2 + 1 = 0$ $s: \\exists x \\in \\mathbb{R}: x^2 - 1 = 0$ El valor de verdad de la expresión: $\\displaystyle [\\neg(\\neg p \\leftrightarrow q) \\rightarrow (\\neg r \\land \\neg s)]$ es:",
+     "opciones": [
+      "falsa",
+      "verdadera",
+      "tautología",
+      "contradicción",
+      "válida"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Para determinar el valor de verdad de las proposiciones planteadas, partiremos de la siguiente propiedad en los números reales (R). x 2 0 ≥ x ∈ para todo p: ∀∈ > → x x : 2 0 p=Falso (F) q: ∀∈ ≥ → x x : 2 0 q= Verdadero (V) r: ∃∈ + = → x x : 2 1 0 r=F no existe x ∈ que cumpla la igualdad s: ∃∈ −= → x x : 2 1 0 s=V Si existe al menos un x ∈ que cumple la igualdad Hallamos el valor de verdad de la expresión:      ( ) ( ) ( ) ( ) ( ) p q r s V V V F V F F F V ↔ → ∧ [ ] ↔ → ∧ [ ] → [ ] → = Por lo tanto, el valor de verdad de la expresión pedida es verdadera.",
+     "curso": "Razonamiento Matemático",
+     "tema": "Teoría de conjuntos",
+     "subtema": null,
+     "examen": "UNC 2025 2025-I MOD E__1R-sS6"
+    },
+    {
+     "texto": "Hallar el valor de verdad de las proposiciones: I. $(0^{\\circ}=1)\\leftrightarrow(-5<-10)$ II. $(1+1\\neq 1)\\rightarrow(\\sqrt{2}=2)$ III. $(\\log 100=2)\\Delta\\left(\\operatorname{sen}\\dfrac{\\pi}{6}=\\dfrac{1}{2}\\right)$",
+     "opciones": [
+      "FVF",
+      "FFV",
+      "VFV",
+      "VVF",
+      "VFF"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Nos piden el valor de verdad de las proposiciones dadas. Analizando cada proposición obtenemos: I. Verdadero 0 1 5 10 0 = ( )↔−< − ( )≡ F F V II. Falso 1 1 1 2 2 + ≠ ( )→ = ( )≡ V F F III. Falso log sen 100 2 6 1 2 = ( ) =    ≡ V V F ∆ π Por lo tanto, los valores son VFF.",
+     "curso": "Razonamiento Matemático",
+     "tema": "Lógica proposicional",
+     "subtema": null,
+     "examen": "UNC 2022 2022-I - mod E"
+    },
+    {
+     "texto": "Hallar el valor de $x$ que satisface la siguiente ecuación: $\\displaystyle 2 \\left[ 4 - 3 \\left( x - \\frac{x - 1}{3} \\right) - x \\right] = x + 1$",
+     "opciones": [
+      "$\\frac{7}{5}$",
+      "$\\frac{2}{5}$",
+      "$\\frac{1}{7}$",
+      "$\\frac{2}{7}$",
+      "$\\frac{5}{7}$"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Nos piden el valor de x. De la ecuación: 2 4 3 1 3 1 − − −    −    = + x x x x 8 6 1 3 2 1 − − −    − = + x x x x 8 – 6x+2(x–1)– 2x=x+1 8 – 6x+2x – 2 – 2x=x+1 6 – 6x=x+1 5=7x ∴ x = 5 7",
+     "curso": "Razonamiento Matemático",
+     "tema": "Ecuaciones",
+     "subtema": null,
+     "examen": "UNC 2023 2023-I - mod D"
+    },
+    {
+     "texto": "El siguiente gráfico muestra las notas de un alumno del 5.° grado de secundaria, obtenidas cada mes: ¿En qué porcentaje bajó su nota en setiembre, con respecto al mes de mayo?",
+     "opciones": [
+      "21,43 %",
+      "24,23 %",
+      "25,33 %",
+      "26,67 %",
+      "27,56 %"
+     ],
+     "correcta": 0,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNC/UNC-2022-2022-II-mod-C/P8.webp",
+     "justificacion": "Nos piden el porcentaje de disminución de la nota. De la gráfica disminuye 3 puntos mayo septiembre 14 11 ∴ variación porcentual= 3 14 100 21 43 × = % , %",
+     "curso": "Razonamiento Matemático",
+     "tema": "Interpretación de gráficos estadísticos",
+     "subtema": null,
+     "examen": "UNC 2022 2022-II - mod C"
+    },
+    {
+     "texto": "La media aritmética de un grupo de 38 números es 10, la de otros 14 números es 11 y la media aritmética de otros 200 números es 12; hallar la semisuma del total de números que conforman esos tres grupos de números.",
+     "opciones": [
+      "1568",
+      "1467",
+      "1846",
+      "2034",
+      "3000"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Nos piden la semisuma del total de números. De los datos: Grupo 1 suma=10×38 38 números x1=10 Grupo 2 suma=11×14 14 números x2=11 Grupo 3 suma=12×200 200 números x3=12 suma total=10×38+11×14+12×200=2934 ∴ semisuma= 2934 2 =1467",
+     "curso": "Razonamiento Matemático",
+     "tema": "Promedios",
+     "subtema": null,
+     "examen": "UNC 2022 2022-II - mod C"
+    },
+    {
+     "texto": "Hallar el valor de $x$ que completa correctamente la sucesión: $-15, -6, -3, -1, 1, x$",
+     "opciones": [
+      "$\\frac{11}{3}$",
+      "10",
+      "$-\\frac{11}{3}$",
+      "$\\frac{1}{3}$",
+      "$\\frac{5}{3}$"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Nos piden el número que completa la sucesión. +9 +3 +2 +2 –15; –6; –3; –1; 1; x 8 3 + 1 3 × 2 3 × 3 3 × 4 3 × ∴ x = + = 1 8 3 11 3",
+     "curso": "Razonamiento Matemático",
+     "tema": "Psicotécnico",
+     "subtema": null,
+     "examen": "UNC 2023 2023-I - mod A"
+    }
+   ]
+  },
+  {
+   "curso": "Razonamiento Verbal",
+   "slug": "razonamiento-verbal",
+   "total": 90,
+   "temas": [
+    {
+     "tema": "Analogías",
+     "total": 8
+    },
+    {
+     "tema": "Comprensión lectora",
+     "total": 7
+    },
+    {
+     "tema": "Comprensión de lectura",
+     "total": 7
+    },
+    {
+     "tema": "Conectores lógicos",
+     "total": 7
+    },
+    {
+     "tema": "Eliminación de oraciones",
+     "total": 6
+    },
+    {
+     "tema": "Uso de transpositores",
+     "total": 6
+    },
+    {
+     "tema": "Compresión lectora",
+     "total": 5
+    },
+    {
+     "tema": "Plan de redacción",
+     "total": 3
+    },
+    {
+     "tema": "Sinonimia contextual",
+     "total": 3
+    },
+    {
+     "tema": "Análisis pragmático del texto",
+     "total": 3
+    },
+    {
+     "tema": "Tipos de texto según la ubicación de la idea",
+     "total": 3
+    },
+    {
+     "tema": "Hiperonimia, hiponimia, cohiponimia",
+     "total": 3
+    },
+    {
+     "tema": "Antonimia contextual",
+     "total": 2
+    },
+    {
+     "tema": "Organización del texto: idea principal e ideas",
+     "total": 2
+    },
+    {
+     "tema": "Eliminación por redundancia",
+     "total": 2
+    },
+    {
+     "tema": "Inclusión y exclusión",
+     "total": 2
+    },
+    {
+     "tema": "Oraciones incompletas",
+     "total": 2
+    },
+    {
+     "tema": "Inclusión de enunciado",
+     "total": 2
+    },
+    {
+     "tema": "Inclusión",
+     "total": 2
+    },
+    {
+     "tema": "Exclusión",
+     "total": 2
+    },
+    {
+     "tema": "Sinónimo contextual",
+     "total": 2
+    },
+    {
+     "tema": "Término excluido",
+     "total": 1
+    },
+    {
+     "tema": "Eliminación por impertinencia",
+     "total": 1
+    },
+    {
+     "tema": "Uso de marcadores textuales",
+     "total": 1
+    },
+    {
+     "tema": "Psicotécnico",
+     "total": 1
+    },
+    {
+     "tema": "Sinónimos",
+     "total": 1
+    },
+    {
+     "tema": "Marcadores textuales",
+     "total": 1
+    },
+    {
+     "tema": "Relaciones de inclusión",
+     "total": 1
+    },
+    {
+     "tema": "Teoría de la comunicación",
+     "total": 1
+    },
+    {
+     "tema": "Ubicación de la idea principal",
+     "total": 1
+    },
+    {
+     "tema": "Semántica",
+     "total": 1
+    },
+    {
+     "tema": "Exclusión de enunciado",
+     "total": 1
+    }
+   ],
+   "examenes": 14,
+   "muestras": [
+    {
+     "texto": "Localizar en el texto la idea principal y determinar qué tipo de párrafo es por su ubicación. Texto base. Se entiende por libertad a aquella capacidad de autodeterminación de la voluntad, que permite a los seres humanos actuar como deseen. En tal sentido, suele ser denominada libertad individual. El término libertad se vincula a la soberanía de su país en la vertiente de “libertad nacional”. Aunque desde esta perspectiva tradicional, la libertad puede ser civil o política, el concepto moderno incluye un conjunto general de derechos individuales, como la igualdad de oportunidades o el derecho a la educación. Pese a todas estas particularidades históricas se conserva aquella parte esencial de su definición que afirma que libertad es la autonomía de la voluntad a partir de la cual el hombre actúa como mejor le venga en gana.",
+     "opciones": [
+      "encuadrado",
+      "paralelo",
+      "analizante",
+      "alternado-centrado",
+      "sinterizante"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "El tipo de párrafo propuesto, por la ubicación de la idea principal, es ENCUADRADO. Un texto encua­ drado, también conocido como texto Analizante- Sintetizante, presenta su idea principal al principio y al final del texto. La idea principal del texto señala que “la libertad es la capacidad de autodeterminación de la voluntad, que permite a los seres humanos actuar como deseen.” Esto se repite al final del texto, pero con otras palabras.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Compresión lectora",
+     "subtema": null,
+     "examen": "UNC 2022 2022-I - mod E"
+    },
+    {
+     "texto": "Elegir el par de palabras que expresan mejor una relación similar a la que se expresa en la premisa. FÉMUR : HUESO::",
+     "opciones": [
+      "molar : dentadura",
+      "tiroides : glándula",
+      "pino : arboleda",
+      "célula : tejido",
+      "dedo : mano"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "El par análogo de la premisa del ejercicio es tiroides: glándula. En el par base se observa la relación género-especie. Por tanto, así como el fémur es una especie de hueso, de forma semejante, la tiroides es una especie de glándula.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Analogías",
+     "subtema": null,
+     "examen": "UNC 2023 2023-II - mod A"
+    },
+    {
+     "texto": "Señalar el mejor plan de redacción de acuerdo al título. Consecuencia de un acto negligente I. Un joven motociclista conduce a excesiva velocidad. II. Chofer imprudente que conduce una combi blanca invade el carril de dicho motociclista. III. Impacto de choque entre ambos vehículos. IV. Muerte inmediata del joven motociclista. V. Fuga del chofer imprudente que conducía una combi blanca.",
+     "opciones": [
+      "V-III-IV-I-II",
+      "I-II-III-IV-V",
+      "I-IV-V-III-II",
+      "II-III-IV-I-V",
+      "I-V-IV-II-III"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "El orden correcto de los enunciados es I - II - III - IV - V. El tema central del ejercicio es la consecuencia de un acto negligente. El ordenamiento inicia con la primera y segunda oración que plantean la imprudencia de un motociclista y un chofer; luego siguen la tercera y la cuarta oración que explican el brutal choque entre los imprudentes y la muerte del motociclista. El ordenamiento finaliza, denunciando la fuga del chofer imprudente de la escena del accidente.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Plan de redacción",
+     "subtema": null,
+     "examen": "UNC 2023 2023-I - mod A"
+    },
+    {
+     "texto": "Un estudio señala que el orden de nacimiento no influye en la personalidad, pero sí en la inteligencia, ya que los primogénitos pasan más tiempo con sus padres y los tienen solo para ellos, lo que podría hacer que su estimulación sea mayor. Del texto anterior se puede deducir que:",
+     "opciones": [
+      "Los primogénitos son más creativos que los otros hermanos.",
+      "Los bebés huérfanos de ambos padres no tienen mucha inteligencia.",
+      "La presencia de los padres podría incentivar la inteligencia del primogénito.",
+      "Los hermanos menores pueden ser tan inteligentes como el mayor.",
+      "La personalidad y la inteligencia solo se estimulan en los primeros años de vida."
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Del texto se puede deducir que la presencia de los padres podría incentivar la inteligencia del primogénito. El texto señala que el orden de nacimiento de los hijos influye en la inteligencia. El primogénito, primer hijo, tiene la atención de los padres solo para él, mientras que al nacer un segundo hijo se entiende que la atención será compartida. Por tanto, el primero recibe más estímulo que el segundo y, con ello, podría ser más inteligente que su hermano menor.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Comprensión lectora",
+     "subtema": null,
+     "examen": "UNC 2023 2023-II - mod A"
+    },
+    {
+     "texto": "Completar el texto adecuadamente: No hay profesión más noble que la enseñanza. Un gran maestro es un gran artista, ............... su medio no es el lienzo, ............... el alma humana.",
+     "opciones": [
+      "es decir - por consiguiente",
+      "pero - sino",
+      "por el contrario - es decir",
+      "en efecto - además",
+      "pese a que - por ende"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Los conectores que completarían el enunciado son pero y sino. En la oración se menciona que la docencia es la profesión más noble. Luego se compara la labor del maestro con la del artista. A continuación, se coloca un conector adversativo (pero) para indicar que, a diferencia del pintor, el docente no trabaja en un lienzo. Por último, se coloca otro adversativo (sino) para indicar que dicho trabajo se realiza en el alma humana.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Conectores lógicos",
+     "subtema": null,
+     "examen": "UNC 2023 2023-I - mod A"
+    },
+    {
+     "texto": "Las ARTES ESCÉNICAS incluyen por intensión a:",
+     "opciones": [
+      "teatro, danza, mimo, ópera, circo",
+      "cine, oratoria, conciertos, teatro",
+      "danza, cine, gastronomía, pintura",
+      "escenografía, coreografía, ópera, teatro",
+      "coreografia, luminotecnia, títeres, ballet"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Las ARTES ESCÉNICAS incluyen por intensión a teatro, danza, mimo, ópera y circo. Las artes escénicas son manifestaciones artísticas que se representan en vivo y que conectan al artista con su público. En este caso, la definición por intensión se refiere a las características esenciales que definen una categoría. Tanto el teatro, la danza, la ópera, el circo y el mimo son disciplinas centrales y universalmente reconocidas como parte de las artes escénicas, cumpliendo así con el criterio de “intensión” al reflejar su naturaleza esencial.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Sinonimia contextual",
+     "subtema": null,
+     "examen": "UNC 2025 2025-I MOD C__1-g4AU"
+    }
+   ]
+  }
+ ],
+ "anios": [
+  {
+   "anio": "2025",
+   "total": 292,
+   "examenes": [
+    {
+     "examen": "UNC 2025 2025-I MOD A",
+     "total": 85
+    },
+    {
+     "examen": "UNC 2025 2025-I MOD A__1AXj-P",
+     "total": 7
+    },
+    {
+     "examen": "UNC 2025 2025-I MOD A__1y7JCB",
+     "total": 3
+    },
+    {
+     "examen": "UNC 2025 2025-I MOD B",
+     "total": 40
+    },
+    {
+     "examen": "UNC 2025 2025-I MOD B__1JGZn8",
+     "total": 1
+    },
+    {
+     "examen": "UNC 2025 2025-I MOD B__1L95Dx",
+     "total": 3
+    },
+    {
+     "examen": "UNC 2025 2025-I MOD C",
+     "total": 11
+    },
+    {
+     "examen": "UNC 2025 2025-I MOD C__1-g4AU",
+     "total": 84
+    },
+    {
+     "examen": "UNC 2025 2025-I MOD C__1FgHAJ",
+     "total": 2
+    },
+    {
+     "examen": "UNC 2025 2025-I MOD D",
+     "total": 16
+    },
+    {
+     "examen": "UNC 2025 2025-I MOD D__1GzLfS",
+     "total": 1
+    },
+    {
+     "examen": "UNC 2025 2025-I MOD E",
+     "total": 7
+    },
+    {
+     "examen": "UNC 2025 2025-I MOD E__1R-sS6",
+     "total": 32
+    }
+   ],
+   "cursos": [
+    {
+     "curso": "Matemáticas",
+     "total": 81
+    },
+    {
+     "curso": "Ciencia, Tecnología y Ambiente",
+     "total": 79
+    },
+    {
+     "curso": "Comunicación",
+     "total": 44
+    },
+    {
+     "curso": "Sociales y Cívicos",
+     "total": 33
+    },
+    {
+     "curso": "Razonamiento Verbal",
+     "total": 29
+    },
+    {
+     "curso": "Razonamiento Matemático",
+     "total": 26
+    }
+   ],
+   "muestras": [
+    {
+     "texto": "En las figuras se muestran cuatro conductores rectos, paralelos e infinitos por los cuales circulan corrientes eléctricas respectivas. Fig. a I1 I2 Fig. b I3 I4 Señalar la verdad o falsedad de las afirmaciones realizadas: I. Los conductores 1 y 2 se repelen, mientras que los conductores 3 y 4 se atraen. II. Los conductores 1 y 2 se atraen, mientras que los conductores 3 y 4 se repelen. III. Ningún par de conductores experimentan interacción magnética.<br><img src=\"https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNC/UNC-2025-2025-I-MOD-B/P61_2.webp\">",
+     "opciones": [
+      "VVV",
+      "FVF",
+      "VFF",
+      "FVV",
+      "FFV"
+     ],
+     "correcta": 1,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNC/UNC-2025-2025-I-MOD-B/P61.webp",
+     "justificacion": "Primero, usamos la regla de la mano derecha para determinar el campo magnético asociado a cada conductor. Luego, empleamos la regla de la mano izquierda para determinar la dirección de la fuerza magnética. I1 B2 B1 B4 B3 (1) I2 (2) I3 (3) I4 (4) FM FM FM FM     A partir de lo anterior, determinamos que (1) y (2) se atraen, mientras que (3) y (4) se repelen. Por lo tanto, la alternativa correcta es FVF.",
+     "curso": "Ciencia, Tecnología y Ambiente",
+     "tema": "Fuerza magnética",
+     "subtema": null,
+     "examen": "UNC 2025 2025-I MOD B"
+    },
+    {
+     "texto": "Identificar la cantidad de adverbios que presenta la siguiente oración: La delicada secretaria caminaba lentamente desde ayer, pues ella se tropezó con la puerta de allá, cuando iba a salir a una reunión.",
+     "opciones": [
+      "uno",
+      "dos",
+      "tres",
+      "cuatro",
+      "cinco"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Los adverbios son palabras invariables que modifican al verbo e indica tiempo, modo, lugar, cantidad, afirmación, negación y duda. Pasamos a subrayar los adverbios del texto planteado: Módulo C La delicada secretaria caminaba lentamente desde ayer, pues ella se tropezó con la puerta de allá, cuando iba a salir a una reunión.",
+     "curso": "Comunicación",
+     "tema": "Artículo",
+     "subtema": null,
+     "examen": "UNC 2025 2025-I MOD C__1-g4AU"
+    },
+    {
+     "texto": "¿Cuál es el conjunto solución de: $ \\left( \\frac{1}{2} \\right)^{|x-5|} < \\left( \\frac{1}{32} \\right) $?",
+     "opciones": [
+      "$ (-\\infty; 0) \\cup (10; +\\infty) $",
+      "$ (-\\infty; 0) $",
+      "$ (-\\infty; 0) \\cup (5; +\\infty) $",
+      "$ (-\\infty; 0) \\cup (7; +\\infty) $",
+      "$ (7; +\\infty) $"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "De la inecuación 1 2 1 32 1 2 1 2 5 5 5     < →    <     − − x x Como 0 1 2 1 < = < b → |x – 5|>5 → x – 5< – 5 ∨ x – 5>5 x<0 ∨ x>10 ∴ CS= 〈– ∞; 0〉 ∪ 〈10; + ∞〉",
+     "curso": "Matemáticas",
+     "tema": "Valor absoluto",
+     "subtema": null,
+     "examen": "UNC 2025 2025-I MOD A__1y7JCB"
+    },
+    {
+     "texto": "Los procesos cognitivos se dividen en básicos y superiores. En las siguientes alternativas señalar cuál NO es un proceso cognitivo básico.",
+     "opciones": [
+      "Sensación",
+      "Pensamiento",
+      "Memoria",
+      "Percepción",
+      "Atención"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "El pensamiento es un proceso psíquico superior que implica la capacidad de manipular información, formar conceptos, resolver problemas, razonar y tomar decisiones de manera consciente y estructurada. A diferencia de los procesos cognitivos básicos (como la sensación o la percepción) que se enfocan en la recepción e interpretación inicial de estímulos; el pensamiento opera a un nivel más complejo, integrando múltiples funciones mentales y adaptándose a situaciones novedosas. Mediante la abstracción trabaja con conceptos no tangibles como la justicia, la libertad; y mediante el razonamiento infiere conclusiones a partir de premisas que a su vez están implicados en la resolución de problemas, la creatividad y el pensamiento crítico.",
+     "curso": "Sociales y Cívicos",
+     "tema": "Personalidad",
+     "subtema": null,
+     "examen": "UNC 2025 2025-I MOD C__1-g4AU"
+    },
+    {
+     "texto": "En la serie: A; A; B; C; E; H; ..., indicar la letra que sigue.",
+     "opciones": [
+      "M",
+      "P",
+      "O",
+      "N",
+      "Q"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Nos piden la letra que sigue. Sea la serie: Sucesión de Fibonacci A ; A ; B ; C ; E ; H ; M 1 1 2 3 5 8 13 Por lo tanto, la letra que sigue es la M.",
+     "curso": "Razonamiento Matemático",
+     "tema": "Conjuntos",
+     "subtema": null,
+     "examen": "UNC 2025 2025-I MOD C__1-g4AU"
+    },
+    {
+     "texto": "¿Cuál de las siguientes oraciones es impertinente en el siguiente conjunto de ideas? I. Los docentes pueden usar inteligencia artificial para personalizar la enseñanza. II. Los chatbots ayudan a los estudiantes a resolver dudas en línea. III. La inteligencia artificial permite analizar el rendimiento académico de los alumnos. IV. Muchos museos exhiben obras de arte de distintas épocas con inteligencia artificial. V. Algunas plataformas educativas utilizan inteligencia artificial para recomendar ejercicios.",
+     "opciones": [
+      "I",
+      "II",
+      "III",
+      "IV",
+      "V"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Del análisis del ejercicio, se concluye que la oración IV es impertinente del conjunto de ideas planteadas. La mayoría de oraciones desarrolla como tema central las ventajas de la aplicación de la inteligencia artificial en el ámbito educativo. Por tanto, se elimina la oración IV, pues plantea un asunto distinto e impertinente: El uso de la inteligencia artificial en los museos.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Analogías",
+     "subtema": null,
+     "examen": "UNC 2025 2025-I MOD C__1-g4AU"
+    }
+   ]
+  },
+  {
+   "anio": "2023",
+   "total": 354,
+   "examenes": [
+    {
+     "examen": "UNC 2023 2023-I - mod A",
+     "total": 84
+    },
+    {
+     "examen": "UNC 2023 2023-I - mod B",
+     "total": 46
+    },
+    {
+     "examen": "UNC 2023 2023-I - mod C",
+     "total": 15
+    },
+    {
+     "examen": "UNC 2023 2023-I - mod D",
+     "total": 21
+    },
+    {
+     "examen": "UNC 2023 2023-I - mod E",
+     "total": 9
+    },
+    {
+     "examen": "UNC 2023 2023-II - mod A",
+     "total": 90
+    },
+    {
+     "examen": "UNC 2023 2023-II - mod B",
+     "total": 36
+    },
+    {
+     "examen": "UNC 2023 2023-II - mod C",
+     "total": 22
+    },
+    {
+     "examen": "UNC 2023 2023-II - mod D",
+     "total": 18
+    },
+    {
+     "examen": "UNC 2023 2023-II - mod E",
+     "total": 13
+    }
+   ],
+   "cursos": [
+    {
+     "curso": "Matemáticas",
+     "total": 110
+    },
+    {
+     "curso": "Ciencia, Tecnología y Ambiente",
+     "total": 95
+    },
+    {
+     "curso": "Comunicación",
+     "total": 47
+    },
+    {
+     "curso": "Razonamiento Matemático",
+     "total": 35
+    },
+    {
+     "curso": "Sociales y Cívicos",
+     "total": 35
+    },
+    {
+     "curso": "Razonamiento Verbal",
+     "total": 32
+    }
+   ],
+   "muestras": [
+    {
+     "texto": "En la figura, el cuerpo de masa $ M $ se mueve sin rozamiento, desde $ A $ hasta $ B $, bajo la acción de las fuerzas $ F_1 = 20 \\text{ N} $ y $ F_2 = 8 \\text{ N} $, en 12 segundos. Determine el impulso neto que recibe $ M $ durante su movimiento.",
+     "opciones": [
+      "100 N·s",
+      "125 N·s",
+      "144 N·s",
+      "150 N·s",
+      "180 N·s"
+     ],
+     "correcta": 2,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNC/UNC-2023-2023-II-mod-B/P56.webp",
+     "justificacion": "R F =20 N 1 F =8 N 2 12 s Módulo B Se tiene I F t R R   = ∆ I R = − ( )( ) 20 8 12 I R = ⋅ 144 N s",
+     "curso": "Ciencia, Tecnología y Ambiente",
+     "tema": "Impulso",
+     "subtema": null,
+     "examen": "UNC 2023 2023-II - mod B"
+    },
+    {
+     "texto": "Dada la proposición: $ p: \\exists x \\in U / x + 5 = 12 \\rightarrow x < 6 $, $ U = \\{4; 5; 6; 7; 8; 9\\} $ ¿Cuál es su negación?",
+     "opciones": [
+      "$ \\forall x \\in U, x + 5 \\neq 12 \\rightarrow x < 6 $",
+      "$ \\forall x \\in U, x + 5 = 12 \\land x \\leqslant 6 $",
+      "$ \\forall x \\in U, x + 5 = 12 \\lor x < 6 $",
+      "$ \\forall x \\in U, x + 5 = 12 \\rightarrow x < 6 $",
+      "$ \\exists x \\in U / x + 5 \\neq 12 \\rightarrow x < 6 $"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Recuerde que ∼∃ x ∈ A/p(x) ≡ ∀ x ∈ A; ∼p(x) Además p → q ≡ ∼p ∨ q Antes de realizar la negación de p, damos forma de p. p: ∃ x ∈ U/x+5=12 → x < 6 p: ∃ x ∈ U/∼(x+5=12) ∨ x < 6 p: ∃ x ∈ U/x+5≠12 ∨ x < 6 ∼p: ∀ x ∈ U/∼(x+5≠12) ∧ ∼(x < 6) ∼p: ∀ x ∈ U/x+5=12 ∧ x  6 Por lo tanto, la negación de p es ∀ x ∈ U: x+5=12 ∧ x  6",
+     "curso": "Matemáticas",
+     "tema": "Lógica proposicional",
+     "subtema": null,
+     "examen": "UNC 2023 2023-II - mod A"
+    },
+    {
+     "texto": "¿Cuántos números impares de la forma: $a\\left(\\frac{a}{2}\\right)b(b+6)c$, existen?",
+     "opciones": [
+      "320",
+      "100",
+      "80",
+      "160",
+      "200"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Se tiene a a b b c 2 6     + ( ) 2 4 6 8 4 0 1 2 3 4 0 1 2 3  10 × × cantidad de numerales    = Hallamos la cantidad de valores que toma cada variable diferente. Por lo tanto, la cantidad de numerales es 160.",
+     "curso": "Razonamiento Matemático",
+     "tema": "Numeración",
+     "subtema": null,
+     "examen": "UNC 2023 2023-I - mod A"
+    },
+    {
+     "texto": "El siguiente fragmento es parte de la Divina comedia que da inicio a: «Por mí se va a la ciudad del llanto; por mí se va al eterno dolor; por mí se va hacia la raza condenada: la justicia animó a mi sublime arquitecto; me hizo la divina potestad, la suprema sabiduría y el primer amor. Antes que yo no hubo nada creado, a excepción de lo eterno, y yo duro eternamente. ¡Oh vosotros los que entráis, abandonad toda esperanza!». Vi escrito estas palabras con caracteres negros en el dintel de una puerta, por lo cual exclamé [...].",
+     "opciones": [
+      "la violencia.",
+      "la lujuria.",
+      "la ciudad de Dite.",
+      "el ingreso al infierno.",
+      "la traición."
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "La Divina comedia es un poema épico compuesto por Dante Alighieri en el siglo XIV. Presenta tres partes: Infierno, Purgatorio y Paraíso. El Infierno está dividido en nueve círculos; en el canto III el personaje, quien es el mismo autor, narra la entrada al Infierno donde leyó unas palabras de color oscuro escritas en lo alto de una puerta y continuó con su viaje por este reino de ultratumba, teniendo como guía al poeta latino Virgilio.",
+     "curso": "Comunicación",
+     "tema": "Literatura medieval",
+     "subtema": null,
+     "examen": "UNC 2023 2023-II - mod B"
+    },
+    {
+     "texto": "Aporte cultural trascendental que la antigua cultura Fenicia ha hecho a la sociedad contemporánea es",
+     "opciones": [
+      "la letra de cambio que facilita el comercio.",
+      "la numeración llamada arábiga.",
+      "el vidrio transparente.",
+      "la educación rigurosa y la obediencia.",
+      "el alfabeto fonético de 22 signos."
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Los fenicios fueron los más grandes navegantes y comerciales del mundo antiguo. Esta civilización desarrolló el alfabeto fonético de 22 signos. Aunque el alfabeto tiene sus antecedentes en la adaptación fonética de la escritura jeroglífica egipcia, se le atribuye a los fenicios este logro. Para este pueblo comerciante, fue vital conseguir el inventariado de productos de manera más ágil y rápida.",
+     "curso": "Sociales y Cívicos",
+     "tema": "Fenicia",
+     "subtema": null,
+     "examen": "UNC 2023 2023-I - mod C"
+    },
+    {
+     "texto": "Señalar la alternativa que se puede eliminar por estar incluida en alguna de las otras cuatro: I. La Federación Internacional de Fútbol Asociación (FIFA) se fundó en Francia en 1904. II. La sede actual de la FIFA se encuentra en Zúrich y cuenta con más países que la ONU. III. Se encarga de organizar los mundiales de fútbol masculino y femenino. IV. También organiza los torneos olímpicos de fútbol. V. La FIFA es la mayor federación de balompié del mundo.",
+     "opciones": [
+      "IV",
+      "I",
+      "V",
+      "III",
+      "II"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "La oración que se puede eliminar por estar incluida en alguna de las otras cuatro es la V. Nos referimos a una inclusión cuando un enunciado se puede sobreentender en la información de otro u otros. En este caso, el texto trata sobre la Federación Internacional de Fútbol Asociación (FIFA), encargada de organizar mundiales y torneos olímpicos; es decir, se sobrentiende que es la mayor federación de fútbol del mundo.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Eliminación de oraciones",
+     "subtema": null,
+     "examen": "UNC 2023 2023-II - mod A"
+    }
+   ]
+  },
+  {
+   "anio": "2022",
+   "total": 296,
+   "examenes": [
+    {
+     "examen": "UNC 2022 2022-I - mod A",
+     "total": 56
+    },
+    {
+     "examen": "UNC 2022 2022-I - mod B",
+     "total": 40
+    },
+    {
+     "examen": "UNC 2022 2022-I - mod C",
+     "total": 26
+    },
+    {
+     "examen": "UNC 2022 2022-I - mod D",
+     "total": 21
+    },
+    {
+     "examen": "UNC 2022 2022-I - mod E",
+     "total": 13
+    },
+    {
+     "examen": "UNC 2022 2022-II - mod A",
+     "total": 56
+    },
+    {
+     "examen": "UNC 2022 2022-II - mod B",
+     "total": 29
+    },
+    {
+     "examen": "UNC 2022 2022-II - mod C",
+     "total": 23
+    },
+    {
+     "examen": "UNC 2022 2022-II - mod D",
+     "total": 13
+    },
+    {
+     "examen": "UNC 2022 2022-II - mod E",
+     "total": 19
+    }
+   ],
+   "cursos": [
+    {
+     "curso": "Ciencia, Tecnología y Ambiente",
+     "total": 79
+    },
+    {
+     "curso": "Matemáticas",
+     "total": 77
+    },
+    {
+     "curso": "Comunicación",
+     "total": 41
+    },
+    {
+     "curso": "Razonamiento Matemático",
+     "total": 37
+    },
+    {
+     "curso": "Sociales y Cívicos",
+     "total": 33
+    },
+    {
+     "curso": "Razonamiento Verbal",
+     "total": 29
+    }
+   ],
+   "muestras": [
+    {
+     "texto": "Calcular el cambio de temperatura que experimenta 25 g de aluminio al perde 220 J de calor. ($C_{e(Al)}=880$ J/kg °C)",
+     "opciones": [
+      "10 °C",
+      "−10 °C",
+      "50 °C",
+      "−50 °C",
+      "−80 °C"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Se tiene Q=Ce m DT – 220=880(0,025)DT DT= –10 °C",
+     "curso": "Ciencia, Tecnología y Ambiente",
+     "tema": "Fenómenos térmicos",
+     "subtema": null,
+     "examen": "UNC 2022 2022-II - mod E"
+    },
+    {
+     "texto": "En la figura adjunta, T es punto de tangencia si $\\overline{BC}=4$ m y $\\overline{AB}=6$ m. Hallar la longitud de $R$.",
+     "opciones": [
+      "15 m",
+      "12 m",
+      "14 m",
+      "16 m",
+      "10 m"
+     ],
+     "correcta": 1,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNC/UNC-2022-2022-I-mod-D/P42.webp",
+     "justificacion": "R R 6 m 4 m C T B A R–4 R+6 R Por teorema de la tangente R R R 2 4 6 = − ( ) + ( ) R R R 2 2 2 24 = + − → 24=2R ∴ R=12",
+     "curso": "Matemáticas",
+     "tema": "Relaciones métricas en la circunferencia",
+     "subtema": null,
+     "examen": "UNC 2022 2022-I - mod D"
+    },
+    {
+     "texto": "En la figura, calcular la medida del ángulo $x$, si se sabe que $\\overline{BC}=\\overline{AB}$, $\\overline{BM}=\\overline{BN}$",
+     "opciones": [
+      "$18^{\\circ}$",
+      "$20^{\\circ}$",
+      "$15^{\\circ}$",
+      "$10^{\\circ}$",
+      "$12^{\\circ}$"
+     ],
+     "correcta": 2,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNC/UNC-2022-2022-I-mod-B/P2.webp",
+     "justificacion": "Nos piden la medida del ángulo x. De los datos y la gráfica a α α x+α x+α x a B 30° M C N A Datos: BC=AB y BM=BN Del triángulo ABM, por ángulo exterior a+30°=(x+a)+x 30=2x ∴ x=15°",
+     "curso": "Razonamiento Matemático",
+     "tema": "Triángulo",
+     "subtema": null,
+     "examen": "UNC 2022 2022-I - mod B"
+    },
+    {
+     "texto": "¿Cuál de las siguientes oraciones presenta una proposición coordinada disyuntiva?",
+     "opciones": [
+      "La amé y no me arrepiento.",
+      "Tomarás este dinero e irá a comprar.",
+      "No soy pero puedo serlo.",
+      "Aquí todos te estiman y te engrien.",
+      "Es muy sabio, mas no comparte su sabiduría."
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "La oración compuesta es aquella que presenta dos proposiciones del mismo nivel sintáctico. Presenta dos tipos: yuxtapuesta (unidas con signos de puntuación) y conjuntivas (unidas con conjunciones coordinadas: copulativas, disyuntivas, adversativas, explicativas, ilativas y distributivas). A continuación, identificamos los tipos de proposiciones en las siguientes oraciones: – La amé y no me arrepiento. (adversativa, la y equivale a pero) – Tomarás este dinero e irá a comprar. (copulativa) – No soy pero puedo serlo. (adversativa) – Aquí todos te estiman y te engríen. (disyuntiva, la y puede usarse indistintamente en enumeraciones equivalentes a una ejemplificación que no agota todas las posibilidades: Aquí todos te estiman y/o te engríen). – Es muy sabio, mas no comparte su sabiduría. (adversativa)",
+     "curso": "Comunicación",
+     "tema": "La oración compuesta coordinada",
+     "subtema": null,
+     "examen": "UNC 2022 2022-I - mod B"
+    },
+    {
+     "texto": "Reemplazó como inca del Tanhuantinsuyo a Túpac Huallpa, siendo coronado por Pizarro en Sacsawara, Cusco.",
+     "opciones": [
+      "Toparpa",
+      "Tito Cusi Yupanqui",
+      "Manco Inca",
+      "Sairí Túpac",
+      "Túpac Amaru I"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "En 1532 Francisco Pizarro ordenó la ejecución del Inca Atahualpa y se alió con el bando de los huascaristas. Luego de eso, coronó como nuevo emperador incaico a Tupac Hualpa, a quien los españoles llamaron Toparpa. Este noble indígena resultó muerto, luego de un ataque dirigido por los generales de Atahualpa. Tras este hecho, la Corona incaica pasó a manos de Manco Inca, hermano de Túpac Hualpa, quien dirigió a los españoles al Cusco y, posteriormente, tuvo que enfrentarlos a causa de los saqueos propiciados por los invasores extranjeros.",
+     "curso": "Sociales y Cívicos",
+     "tema": "Invasión del Tahuantinsuyo",
+     "subtema": null,
+     "examen": "UNC 2022 2022-II - mod B"
+    },
+    {
+     "texto": "Elegir el mejor resumen del siguiente texto: El positivismo en América Latina no fue la ideología de una burguesía liberal interesada en el progreso industrial y social como en Europa, sino de una oli- garquía de grandes terratenientes. En cierto modo, fue una mixtificación, un engaño, más aun, un auto- engaño. Al mismo tiempo, fue una crítica radical de la religión y de la ideología tradicional. El positivismo hizo tabla rasa lo mismo de la mitología cristiana que de la filosofía racionalista. PAZ, Octavio. Los hijos del limo.",
+     "opciones": [
+      "El progreso social e industrial en Latinoamérica no fue posible debido a la importación del positivismo europeo.",
+      "El positivismo tuvo diferentes tratamientos en los continentes debido al protagonismo de la burguesía liberal.",
+      "A diferencia de Europa, en Latinoamérica, el positivismo sí pudo criticar la mitología cristiana y la filosofía racionalista.",
+      "Los grandes terratenientes utilizaron el positivismo para cuestionar la religión y la ideología tradicional.",
+      "El positivismo latinoamericano fue desnaturalizado, a nivel teórico y práctico, debido al sector social que lo adoptó."
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "El mejor resumen para el texto es señalar que el positivismo latinoamericano fue desnaturalizado, a nivel teórico y práctico, debido al sector social que lo adoptó. El texto presenta como tema al positivismo latinoamericano y nos señala que se diferencia del europeo, el cual fue adoptado por la burguesía liberal. En Latinoamérica, fue la oligarquía terrateniente la que lo adoptó y, con ello, tergiversaron su visión llegando al punto de ponerla en contra de la religión y la filosofía racionalista.",
+     "curso": "Razonamiento Verbal",
+     "tema": "Compresión lectora",
+     "subtema": null,
+     "examen": "UNC 2022 2022-I - mod D"
+    }
+   ]
+  }
+ ]
+}

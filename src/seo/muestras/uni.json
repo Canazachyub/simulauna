@@ -1,0 +1,4026 @@
+{
+ "universidad": "uni",
+ "total": 1315,
+ "conImagen": 156,
+ "examenes": 25,
+ "anioMin": "2022",
+ "anioMax": "2025",
+ "cursos": [
+  {
+   "curso": "Razonamiento Verbal (Prueba 1)",
+   "slug": "razonamiento-verbal-prueba-1",
+   "total": 288,
+   "temas": [
+    {
+     "tema": "Comprensión de lectura",
+     "total": 32
+    },
+    {
+     "tema": "Antonimia contextual",
+     "total": 31
+    },
+    {
+     "tema": "Plan de redacción",
+     "total": 27
+    },
+    {
+     "tema": "Información eliminada",
+     "total": 27
+    },
+    {
+     "tema": "Coherencia y cohesión textual",
+     "total": 21
+    },
+    {
+     "tema": "Precisión léxica",
+     "total": 19
+    },
+    {
+     "tema": "Conectores lógicos",
+     "total": 17
+    },
+    {
+     "tema": "Definiciones",
+     "total": 15
+    },
+    {
+     "tema": "Inclusión de información",
+     "total": 12
+    },
+    {
+     "tema": "Inclusión de enunciados",
+     "total": 10
+    },
+    {
+     "tema": "Inclusión de enunciado",
+     "total": 10
+    },
+    {
+     "tema": "Analogía",
+     "total": 9
+    },
+    {
+     "tema": "Analogías",
+     "total": 8
+    },
+    {
+     "tema": "Definición",
+     "total": 7
+    },
+    {
+     "tema": "Comprensión lectora",
+     "total": 7
+    },
+    {
+     "tema": "Cohesión textual",
+     "total": 5
+    },
+    {
+     "tema": "Información prescindible",
+     "total": 4
+    },
+    {
+     "tema": "Conectores lógico-textuales",
+     "total": 4
+    },
+    {
+     "tema": "Conectores lógico - textuales",
+     "total": 3
+    },
+    {
+     "tema": "Coherencia textual",
+     "total": 2
+    },
+    {
+     "tema": "Precisión léxica en contexto",
+     "total": 2
+    },
+    {
+     "tema": "Comprensión lectora - Compatibilidad",
+     "total": 1
+    },
+    {
+     "tema": "Comprensión lectora - Inferencia",
+     "total": 1
+    },
+    {
+     "tema": "Comprensión lectora - Incompatibilidad",
+     "total": 1
+    },
+    {
+     "tema": "Plan de Redacción",
+     "total": 1
+    },
+    {
+     "tema": "Lógica proposicional",
+     "total": 1
+    },
+    {
+     "tema": "Secuencia vocálica",
+     "total": 1
+    },
+    {
+     "tema": "antonimia contextual",
+     "total": 1
+    },
+    {
+     "tema": "Conectores lógicos - textuales",
+     "total": 1
+    },
+    {
+     "tema": "Oración compuesta subordinada adverbial",
+     "total": 1
+    },
+    {
+     "tema": "Relaciones semánticas",
+     "total": 1
+    },
+    {
+     "tema": "La coma",
+     "total": 1
+    },
+    {
+     "tema": "Vicios del lenguaje",
+     "total": 1
+    },
+    {
+     "tema": "Conector lógico - textual",
+     "total": 1
+    },
+    {
+     "tema": "Conector lógico - textual",
+     "total": 1
+    },
+    {
+     "tema": "Coherencia y Cohesión textual",
+     "total": 1
+    }
+   ],
+   "examenes": 8,
+   "muestras": [
+    {
+     "texto": "ANALOGÍA Seleccione la opción que mantiene una relación concordante con el par base escrito en mayúscula. RESOLUCIÓN : NORMA:::",
+     "opciones": [
+      "raíz : planta",
+      "impuesto : tributo",
+      "lengua : cauqui",
+      "lacónico : escueto",
+      "nevado : Huascarán"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "A) raíz : planta B) impuesto : tributo C) lengua : cauqui D) lacónico : escueto E) nevado : Huascarán RESOLUCIÓN Tema: Analogía La opción que mantiene una relación concordante con el par base es impuesto: tributo. En efecto, tanto en el par base como en la alternativa mencionada se observa una relación de especie-género. De este modo se puede afirma que así como la resolución es una especie de norma, de forma semejante, el impuesto es una especie de tributo.",
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "tema": "Analogía",
+     "subtema": null,
+     "examen": "UNI 2023 AAH 2023-1"
+    },
+    {
+     "texto": "Elija la opción que, al insertarse en los espacios en blanco, dé sentido coherente y preciso al texto. La responsabilidad social empresarial se centra en las dimensiones éticas, legales, filantrópicas, .............. sociales .............., en las últimas décadas, se enfoca también en el aspecto ambiental y económico. .............., toda empresa formal debe buscar un equilibrio que sea beneficioso por la comunidad, el medioambiente y su propia productividad.",
+     "opciones": [
+      "o - Pero - Por consiguiente",
+      "y - Asimismo - Consecuentemente",
+      "asimismo - Mas - Por ende",
+      "así - Por lo tanto - O sea",
+      "así como - Más bien - Por supuesto"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "La opción que, al insertarse en los espacios en blanco, da sentido coherente y preciso al texto es la siguiente: Asimismo - Mas - Por ende. En el primer espacio debe ir un conector copulativo (asimismo) para agregar otra dimensión de la responsabilidad social empresarial; en el segundo espacio debe ir un conector adversativo (mas) para destacar el contraste entre lo teórico y lo desarrollado en la práctica en las últimas décadas; finalmente, el último espacio debe completarse con un conector consecutivo (por ende) para resaltar la función de la empresa que conjuga el éxito económico con el bienestar social y ambiental.",
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "tema": "Conector lógico - textual",
+     "subtema": null,
+     "examen": "UNI 2023 AAH 2023-2"
+    },
+    {
+     "texto": "Elija la alternativa que se ajusta a la siguiente definición: examinar, inquirir y averiguar cuidadosamente algo y sus circunstancias.",
+     "opciones": [
+      "Soslayar",
+      "Prescribir",
+      "Escudriñar",
+      "Fustigar",
+      "Embelesar"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "La definición propuesta corresponde a la palabra escudriñar. Según el DRAE, escudriñar significa examinar, inquirir y averiguar cuidadosamente algo y sus circunstancias. Tal como se presenta en la definición propuesta.",
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "tema": "Definiciones",
+     "subtema": null,
+     "examen": "UNI 2022 AAH (T)"
+    },
+    {
+     "texto": "Elija la opción que, al insertarse en los espacios en blanco, dé sentido coherente y preciso al texto. El índice de contaminación en la av. Abancay es el más alto de Lima; ................... la mayoría de transeúntes de esta zona son potenciales sujetos cancerosos. ................... este supuesto, las autoridades no actúan preventivamente, ................... permiten la circulación de automóviles obsoletos.",
+     "opciones": [
+      "así que - En contraste a - antes bien",
+      "en consecuencia - A pesar de - más aún",
+      "por lo que - En consecuencia - es decir",
+      "entonces - Aun así - en cambio",
+      "por tanto - No obstante - por el contrario"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Las alternativas que mantienen el sentido coherente y preciso al insertarse en los espacios en blanco son en consecuencia, a pesar de y más aún. El primer espacio en blanco requiere de un conector de consecuencia (en consecuencia). El segundo espacio precisa de un conector concesivo (a pesar de), mientras que el tercer espacio en blanco necesita un conector aditivo (más aún). Además, el uso de los signos de puntuación son una guía hacia la respuesta correcta.",
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "tema": "Conectores lógico-textuales",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2"
+    },
+    {
+     "texto": "Elija la oración que no es pertinente o es redundante con el contenido global del texto. I. Existen diferentes ramas del Derecho, como el Penal, Civil, Comercial, Tributario, entre otros. II. En el ámbito penal, cuando hay una acción contraria al orden jurídico de un país, corresponde imponer una sanción denominada pena. III. La pena es la reacción de un sistema jurídico ante un crimen y tiene diversas funciones: castigar al responsable, hacer justicia a las víctimas afectadas, entre otras. IV. Cuando la pena no se aplica, todo este sistema se pone en riesgo y se multiplican los peligros en la vida pública. V. Eso explica la necesidad de hacer que los delincuentes rindan cuentas ante las autoridades y la urgencia por atraparlos cuando se fugan.",
+     "opciones": [
+      "I",
+      "II",
+      "III",
+      "IV",
+      "V"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "La oración que no es pertinente se ubica en el enunciado I: “Existen diferentes ramas del Derecho, como el Penal, Civil, Comercial, Tributario, entre otros”. El tema central del texto aborda a la pena como mecanismo de sanción dentro del ámbito penal. El enunciado II presenta el tema. El enunciado III discurre sobre las funciones de la pena. Los enunciados IV y V plantean las consecuencias de la no aplicación de una pena y lo necesario que resulta aplicarla. El enunciado I gira en torno a las diversas ramas del derecho, por lo tanto, se elimina este por el criterio de disociación.",
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "tema": "Información eliminada",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_AAH"
+    },
+    {
+     "texto": "Elija el enunciado que, al insertarse en el espacio en blanco, cohesione adecuadamente el sentido global del texto. I. El país que logra incrementar en diez puntos porcentuales la cobertura de saneamiento reduce la pobreza. II. El Perú tiene aproximadamente 31,7 millones de habitantes. III. De estos, el 10,6% y el 25,5% no tienen acceso al agua y saneamiento, respectivamente. IV. Estos porcentajes se elevan a 37,8% y 75% en el ámbito rural. V. ...........................................",
+     "opciones": [
+      "Se registra, por eso, los mayores niveles de pobreza y de necesidades básicas insatisfechas.",
+      "Se registra, por ello, un menor nivel de pobreza y de necesidades básicas insatisfechas.",
+      "Se registra los mayores niveles de pobreza, pero sin necesidades básicas insatisfechas.",
+      "No se registra, por lo tanto, ningún problema social en este ámbito.",
+      "Solo se registra problemas de cobertura de servicios telefónicos."
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "El enunciado que, al insertarse en el espacio en blanco, cohesiona adecuadamente el sentido glo­ bal del texto es el siguiente: Se registra, por eso, los mayores niveles de pobreza y de necesidades insatisfechas. Este enunciado se integra al texto porque expresa la conclusión final del mismo. En efecto, las primeras oraciones plantean datos sobre la carencia de servicios básicos en el país, mientras que la última oración concluye la gravedad de la precariedad e insatisfacción de los peruanos.",
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "tema": "Inclusión de enunciados",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2"
+    }
+   ]
+  },
+  {
+   "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+   "slug": "razonamiento-logico-matematico-prueba-1",
+   "total": 219,
+   "temas": [
+    {
+     "tema": "Operaciones matemáticas",
+     "total": 36
+    },
+    {
+     "tema": "Suficiencia de datos",
+     "total": 35
+    },
+    {
+     "tema": "Psicotécnico",
+     "total": 27
+    },
+    {
+     "tema": "Lógica proposicional",
+     "total": 18
+    },
+    {
+     "tema": "Interpretación de gráficos estadísticos",
+     "total": 14
+    },
+    {
+     "tema": "Razonamiento deductivo",
+     "total": 13
+    },
+    {
+     "tema": "Planteo de ecuaciones",
+     "total": 10
+    },
+    {
+     "tema": "Situaciones aritméticas",
+     "total": 6
+    },
+    {
+     "tema": "Ordenamiento de información",
+     "total": 5
+    },
+    {
+     "tema": "Situaciones lógicas",
+     "total": 4
+    },
+    {
+     "tema": "Conteo de figuras",
+     "total": 4
+    },
+    {
+     "tema": "Sucesiones",
+     "total": 4
+    },
+    {
+     "tema": "Ecuaciones diofánticas",
+     "total": 3
+    },
+    {
+     "tema": "Análisis e interpretación de gráficos estadísticos",
+     "total": 3
+    },
+    {
+     "tema": "Interpretación de gráficos y tablas",
+     "total": 3
+    },
+    {
+     "tema": "Análisis e interpretación de gráficas y tablas",
+     "total": 3
+    },
+    {
+     "tema": "Arreglos numéricos",
+     "total": 2
+    },
+    {
+     "tema": "Lógica de clases",
+     "total": 2
+    },
+    {
+     "tema": "Gráficos estadísticos",
+     "total": 2
+    },
+    {
+     "tema": "Análisis e interpretación de gráficos",
+     "total": 2
+    },
+    {
+     "tema": "Ordenamiento temporal",
+     "total": 2
+    },
+    {
+     "tema": "Interpretación de tablas estadísticas",
+     "total": 1
+    },
+    {
+     "tema": "Operadores matemáticos",
+     "total": 1
+    },
+    {
+     "tema": "Razonamiento inductivo",
+     "total": 1
+    },
+    {
+     "tema": "Psicotécnico - Distribución numérica",
+     "total": 1
+    },
+    {
+     "tema": "Razonamiento abstracto",
+     "total": 1
+    },
+    {
+     "tema": "Análisis de gráficos y tablas",
+     "total": 1
+    },
+    {
+     "tema": "Tanto por ciento",
+     "total": 1
+    },
+    {
+     "tema": "Suficiencia de datos.",
+     "total": 1
+    },
+    {
+     "tema": "Problemas sobre parentescos",
+     "total": 1
+    },
+    {
+     "tema": "Problemas sobre edades",
+     "total": 1
+    },
+    {
+     "tema": "Probabilidades",
+     "total": 1
+    },
+    {
+     "tema": "Lazos familiares",
+     "total": 1
+    },
+    {
+     "tema": "Secuencia de datos",
+     "total": 1
+    },
+    {
+     "tema": "Áreas de regiones poligonales",
+     "total": 1
+    },
+    {
+     "tema": "Relación de parentesco",
+     "total": 1
+    },
+    {
+     "tema": "Calendarios",
+     "total": 1
+    },
+    {
+     "tema": "Análisis e interpretación de gráficos es­",
+     "total": 1
+    },
+    {
+     "tema": "Distribuciones numéricas",
+     "total": 1
+    },
+    {
+     "tema": "Certezas",
+     "total": 1
+    }
+   ],
+   "examenes": 8,
+   "muestras": [
+    {
+     "texto": "Calcule el valor de X+Y en:",
+     "opciones": [
+      "19",
+      "20",
+      "24",
+      "30",
+      "32"
+     ],
+     "correcta": 0,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2023-AAH-2023-1/P8.webp",
+     "justificacion": "Nos piden el valor de X+Y. De los datos, se observa la siguiente relación. a×b+c a b c Luego • X=4×3+1 → X=13 • 16=5×2+Y → Y=6 ∴ X+Y=13+6=19",
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "tema": "Psicotécnico",
+     "subtema": null,
+     "examen": "UNI 2023 AAH 2023-1"
+    },
+    {
+     "texto": "Se desea conocer si en un campeonato de fútbol de 3 equipos a una sola ronda ha habido un campeón. Para ello, se cuenta con las siguientes dos informaciones: I. Uno de los equipos empató sus dos partidos. II. Uno de los equipos tuvo más goles a favor que en contra. ¿Cuál de las siguientes afirmaciones es correcta?",
+     "opciones": [
+      "Solo es suficiente la información I.",
+      "Solo es suficiente la información II.",
+      "Se necesita ambas informaciones.",
+      "Cada información por separado es suficiente.",
+      "Falta información."
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Nos piden determinar qué datos son necesarios para saber si en el campeonato hubo un campeón. Tenemos el siguiente dato: Son 3 equipos que juegan una sola ronda. A (vs) B A (vs) C B (vs) C Dato I: Uno de los equipos empató sus 2 partidos. A (vs) B A (vs) C B (vs) C = = No se determina si hay campeón, falta saber si en el último partido hay ganador. Dato II: Uno de los equipos tuvo más goles a favor que en contra. No se determina si hay campeón, no se conoce en que tantos partidos hubieron ganadores. Dato I + Dato II: A (vs) B A (vs) C B (vs) C = = ≠ aquí habrá un ganador, el campeón",
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "tema": "Suficiencia de datos",
+     "subtema": null,
+     "examen": "UNI 2023 AAH 2023-1"
+    },
+    {
+     "texto": "Se tiene ocho libros de diferentes cursos, los cuales deben ser colocados en una bolsa. Determine la cantidad de maneras diferentes en las cuales se pueden embolsar tres libros, si en dicha bolsa solo caben tres libros.",
+     "opciones": [
+      "52",
+      "56",
+      "58",
+      "60",
+      "62"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Nos piden el número de formas de ubicar 3 libros en una bolsa. Dato: En total son 8 libros y debemos elegir 3. Aplicamos C3 8 8 3 8 3 8 7 6 5 3 5 8 7 6 3 2 1 56 = − ( ) = × × × × = × × × × = ! ! ! ! ! ! Por lo tanto, existen 56 formas.",
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "tema": "Situaciones aritméticas",
+     "subtema": null,
+     "examen": "UNI 2025 2025-2_AAH"
+    },
+    {
+     "texto": "El siguiente pictograma representa el número de viviendas construidas en Lima durante los años del 2018 al 2020. En base a ello, señale la alternativa que presenta la secuencia correcta después de determinar si la proposición es verdadera (V) o falsa (F). | Número total de viviendas construidas en Lima | |------------------------------------------------| | =20 000 viviendas | | 2018 | 2019 | 2020 | |------|------|------| | 8 | 5 | 2 | I. El porcentaje de disminución de viviendas del año 2018 al 2020 es del 28,67% aproximadamente. II. El total de viviendas construidas entre los años 2018 a 2020 es de 320 000. III. El número de viviendas construido el 2020 es la mitad de las construidas el 2018.",
+     "opciones": [
+      "FVV",
+      "FFV",
+      "VFV",
+      "FFF",
+      "FVF"
+     ],
+     "correcta": 1,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2022-AAH-M/P7.webp",
+     "justificacion": "Nos piden la secuencia correcta de verdad (V) o falsedad (F). De los datos, tenemos lo siguiente: Número total de viviendas construidas en Lima. En 2018 En 2019 En 2020 mil mil 7 20 000 5 20 000 140 100 ( ) ( ) 3 20 000 1 2 20 000 70 ( ) ( ) + mil En las operaciones I. El porcentaje de disminución de 2018 a 2020 es 28.67% (F). 2018 2020 140 70 mil mil → % % Dismimución = − × 140 70 140 100 Aptitud Académica y Humanidades Turno Mañana II. Total de vivienda es 320 000 (F). 140 mil+100 mil+70 mil=310 mil≠320 000 III. Número de viviendas en 2020 es la mitad que en 2018 (V). 2018 2020 140 70 mil mil → 70 1 2 140 mil mil = ( )",
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "tema": "Análisis e interpretación de gráficos estadísticos",
+     "subtema": null,
+     "examen": "UNI 2022 AAH (M)"
+    },
+    {
+     "texto": "Un número capicúa es un entero positivo que representa lo mismo cuando se lee de derecha a izquierda o izquierda a derecha. Por ejemplo 151 es un número capicúa. Indique la suma de dígitos del mayor número capicúa, que es menor de 200 y que además es igual a la suma de tres enteros consecutivos.",
+     "opciones": [
+      "8",
+      "9",
+      "10",
+      "11",
+      "12"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Nos piden el mayor número. Dato: capicúa menor que 200 → 191 181 171 161  Es suma de tres consecutivos=(n –1)+n+(n+1) El número pedido es=3n → n.o pedido es múltiplo de 3. 191 → 1+9+1=11≠ 3˚ 181 → 1+8+1=10≠ 3˚ 171 → 1+7+1=9= 3˚ Por lo tanto, el número máximo que cumple las condiciones es 171 → suma de dígitos=1+7+1=9",
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "tema": "Razonamiento deductivo",
+     "subtema": null,
+     "examen": "UNI 2023 AAH 2023-1"
+    },
+    {
+     "texto": "La siguiente gráfica muestra la cantidad de alumnos que se inscriben por décadas en una universidad. En base a ello señale la alternativa que presenta la ecuación correcta después de determinar si la proposición es verdadera (V) o falsa (F). I. El mayor incremento de matrículas se dio en la década de 1980 a 1990. II. En el año 2020 se inscribieron 75% más de alumnos que hace 50 años. III. Si la matrícula se incrementa entre 2020 y 2030 en el mismo porcentaje en el que decreció entre 1970 y 1980, entonces se espera que el número de matriculados en 2030 sea 7875.",
+     "opciones": [
+      "VFV",
+      "VVV",
+      "FVF",
+      "FVV",
+      "VFF"
+     ],
+     "correcta": 1,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2023-AAH-2023-1/P4.webp",
+     "justificacion": "Nos piden la secuencia correcta de verdad y falsedad. Pasamos los datos de la gráfica a una tabla: 1970 4 – 0,5 +1,5 +0,5 +0,5 +1 1980 3,5 1990 5 2000 5,5 2010 2020 6,5 7 Años Miles Por lo tanto, la figura siguiente es",
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "tema": "Interpretación de gráficos estadísticos",
+     "subtema": null,
+     "examen": "UNI 2023 AAH 2023-1"
+    }
+   ]
+  },
+  {
+   "curso": "Humanidades (Prueba 1)",
+   "slug": "humanidades-prueba-1",
+   "total": 170,
+   "temas": [
+    {
+     "tema": "Present simple",
+     "total": 6
+    },
+    {
+     "tema": "Lógica proposicional",
+     "total": 5
+    },
+    {
+     "tema": "Semántica",
+     "total": 3
+    },
+    {
+     "tema": "Filosofía antigua",
+     "total": 2
+    },
+    {
+     "tema": "Actualidad",
+     "total": 2
+    },
+    {
+     "tema": "Filosofía moderna",
+     "total": 2
+    },
+    {
+     "tema": "Signo de puntuación",
+     "total": 2
+    },
+    {
+     "tema": "Bases biológicas del psiquismo",
+     "total": 2
+    },
+    {
+     "tema": "Recursos naturales",
+     "total": 2
+    },
+    {
+     "tema": "Comunidad primitiva",
+     "total": 2
+    },
+    {
+     "tema": "Pensamiento",
+     "total": 2
+    },
+    {
+     "tema": "Los incas",
+     "total": 2
+    },
+    {
+     "tema": "Ocho regiones naturales",
+     "total": 2
+    },
+    {
+     "tema": "Cartografía",
+     "total": 2
+    },
+    {
+     "tema": "Guerra del salitre",
+     "total": 2
+    },
+    {
+     "tema": "Cuentas nacionales",
+     "total": 2
+    },
+    {
+     "tema": "Producción",
+     "total": 2
+    },
+    {
+     "tema": "La coma",
+     "total": 2
+    },
+    {
+     "tema": "Oración compuesta coordinada",
+     "total": 2
+    },
+    {
+     "tema": "Áreas naturales protegidas",
+     "total": 2
+    },
+    {
+     "tema": "Doctrinas económicas",
+     "total": 2
+    },
+    {
+     "tema": "Oncenio de Leguía",
+     "total": 2
+    },
+    {
+     "tema": "Bases de la percepción",
+     "total": 2
+    },
+    {
+     "tema": "La tragedia griega",
+     "total": 1
+    },
+    {
+     "tema": "La psicología como ciencia",
+     "total": 1
+    },
+    {
+     "tema": "La acentuación escrita",
+     "total": 1
+    },
+    {
+     "tema": "Past simple and present perfect",
+     "total": 1
+    },
+    {
+     "tema": "Actualidad - Congreso",
+     "total": 1
+    },
+    {
+     "tema": "Los árabes y el Islam",
+     "total": 1
+    },
+    {
+     "tema": "Trabajo - Mercado laboral",
+     "total": 1
+    },
+    {
+     "tema": "Los signos de puntuación",
+     "total": 1
+    },
+    {
+     "tema": "Modernismo hispanoamericano",
+     "total": 1
+    },
+    {
+     "tema": "Guerra del Salitre",
+     "total": 1
+    },
+    {
+     "tema": "Tributos",
+     "total": 1
+    },
+    {
+     "tema": "Poder Ejecutivo",
+     "total": 1
+    },
+    {
+     "tema": "Ciencia Geográfica",
+     "total": 1
+    },
+    {
+     "tema": "Vocabulary",
+     "total": 1
+    },
+    {
+     "tema": "Roma",
+     "total": 1
+    },
+    {
+     "tema": "Inflación",
+     "total": 1
+    },
+    {
+     "tema": "Hidrografía",
+     "total": 1
+    },
+    {
+     "tema": "Revolución rusa",
+     "total": 1
+    },
+    {
+     "tema": "Filosofía moderna: positivismo",
+     "total": 1
+    },
+    {
+     "tema": "Past Simple",
+     "total": 1
+    },
+    {
+     "tema": "Filosofía antigua: periodo cosmológico",
+     "total": 1
+    },
+    {
+     "tema": "Hidrósfera",
+     "total": 1
+    },
+    {
+     "tema": "La vacunación en el Perú (actualidad)",
+     "total": 1
+    },
+    {
+     "tema": "Producción y factores productivos",
+     "total": 1
+    },
+    {
+     "tema": "Monarquías absolutistas",
+     "total": 1
+    },
+    {
+     "tema": "Géneros literarios",
+     "total": 1
+    },
+    {
+     "tema": "División de la economía",
+     "total": 1
+    },
+    {
+     "tema": "Modelos de mercado",
+     "total": 1
+    },
+    {
+     "tema": "Mar peruano",
+     "total": 1
+    },
+    {
+     "tema": "Romanticismo peruano",
+     "total": 1
+    },
+    {
+     "tema": "Present Progressive",
+     "total": 1
+    },
+    {
+     "tema": "Conflicto entre Rusia y Ucrania",
+     "total": 1
+    },
+    {
+     "tema": "Psicoanálisis",
+     "total": 1
+    },
+    {
+     "tema": "Fin de la Guerra Fría",
+     "total": 1
+    },
+    {
+     "tema": "Dinero",
+     "total": 1
+    },
+    {
+     "tema": "Economía",
+     "total": 1
+    },
+    {
+     "tema": "Introducción a la filosofía",
+     "total": 1
+    },
+    {
+     "tema": "Filosofía antigua: Platón",
+     "total": 1
+    },
+    {
+     "tema": "Desarrollo sostenible",
+     "total": 1
+    },
+    {
+     "tema": "Comunidad Primitiva",
+     "total": 1
+    },
+    {
+     "tema": "Antiguo Egipto",
+     "total": 1
+    },
+    {
+     "tema": "Filosofía de la Ilustración",
+     "total": 1
+    },
+    {
+     "tema": "Past Simple - Preposition of Time",
+     "total": 1
+    },
+    {
+     "tema": "Conditional - Modal Verb",
+     "total": 1
+    },
+    {
+     "tema": "Comparative",
+     "total": 1
+    },
+    {
+     "tema": "Future: be going to",
+     "total": 1
+    },
+    {
+     "tema": "Indigenismo",
+     "total": 1
+    },
+    {
+     "tema": "Renacimiento europeo",
+     "total": 1
+    },
+    {
+     "tema": "Indigenismo peruano",
+     "total": 1
+    },
+    {
+     "tema": "Teorías de la inteligencia",
+     "total": 1
+    },
+    {
+     "tema": "Teorías del aprendizaje",
+     "total": 1
+    },
+    {
+     "tema": "Empresa",
+     "total": 1
+    },
+    {
+     "tema": "Periodo cosmológico: Atomismo",
+     "total": 1
+    },
+    {
+     "tema": "Periodo cosmológico: Pitágoras",
+     "total": 1
+    },
+    {
+     "tema": "Oncenio",
+     "total": 1
+    },
+    {
+     "tema": "Virreinato del Perú",
+     "total": 1
+    },
+    {
+     "tema": "Superlative - Preposition of Place",
+     "total": 1
+    },
+    {
+     "tema": "Literatura de la Emancipación",
+     "total": 1
+    },
+    {
+     "tema": "Narrativa peruana contemporánea",
+     "total": 1
+    },
+    {
+     "tema": "Tragedia griega",
+     "total": 1
+    },
+    {
+     "tema": "Sílaba",
+     "total": 1
+    },
+    {
+     "tema": "Acentuación escrita",
+     "total": 1
+    },
+    {
+     "tema": "Secuencia vocálica",
+     "total": 1
+    },
+    {
+     "tema": "Relaciones semánticas",
+     "total": 1
+    },
+    {
+     "tema": "Distribución, consumo e inversión",
+     "total": 1
+    },
+    {
+     "tema": "Quantifiers",
+     "total": 1
+    },
+    {
+     "tema": "Future",
+     "total": 1
+    },
+    {
+     "tema": "Second Conditional",
+     "total": 1
+    },
+    {
+     "tema": "Mesopotamia",
+     "total": 1
+    },
+    {
+     "tema": "Formativo",
+     "total": 1
+    },
+    {
+     "tema": "Primer Militarismo",
+     "total": 1
+    },
+    {
+     "tema": "República Aristocrática",
+     "total": 1
+    },
+    {
+     "tema": "Memoria",
+     "total": 1
+    },
+    {
+     "tema": "Novela de la Edad de Oro",
+     "total": 1
+    },
+    {
+     "tema": "Barroco",
+     "total": 1
+    },
+    {
+     "tema": "Relieve costero",
+     "total": 1
+    },
+    {
+     "tema": "Balanza de pagos",
+     "total": 1
+    },
+    {
+     "tema": "Mayúscula",
+     "total": 1
+    },
+    {
+     "tema": "El sujeto",
+     "total": 1
+    },
+    {
+     "tema": "Filosofía moderna: Kant",
+     "total": 1
+    },
+    {
+     "tema": "Filosofía en el siglo XX: Popper",
+     "total": 1
+    },
+    {
+     "tema": "Población peruana",
+     "total": 1
+    },
+    {
+     "tema": "Circulación",
+     "total": 1
+    },
+    {
+     "tema": "Filosofía moderna: Immanuel Kant",
+     "total": 1
+    },
+    {
+     "tema": "Subject - Verb - Agreement",
+     "total": 1
+    },
+    {
+     "tema": "Present continuous",
+     "total": 1
+    },
+    {
+     "tema": "First conditional",
+     "total": 1
+    },
+    {
+     "tema": "Acentuación castellana",
+     "total": 1
+    },
+    {
+     "tema": "Signos de puntuación",
+     "total": 1
+    },
+    {
+     "tema": "Uso del verbo",
+     "total": 1
+    },
+    {
+     "tema": "Sexualidad",
+     "total": 1
+    },
+    {
+     "tema": "Técnicas narrativas",
+     "total": 1
+    },
+    {
+     "tema": "Boom latinoamericano",
+     "total": 1
+    },
+    {
+     "tema": "Narrativa contemporánea peruana",
+     "total": 1
+    },
+    {
+     "tema": "Edad Media",
+     "total": 1
+    },
+    {
+     "tema": "Ochenio de Odría",
+     "total": 1
+    },
+    {
+     "tema": "Uso de grafías",
+     "total": 1
+    },
+    {
+     "tema": "Conjugación verbal",
+     "total": 1
+    },
+    {
+     "tema": "Dequeísmo",
+     "total": 1
+    },
+    {
+     "tema": "Organismos financieros internacionales",
+     "total": 1
+    },
+    {
+     "tema": "Rol económico",
+     "total": 1
+    },
+    {
+     "tema": "Proceso económico",
+     "total": 1
+    },
+    {
+     "tema": "Teorías éticas",
+     "total": 1
+    },
+    {
+     "tema": "Karl Marx",
+     "total": 1
+    },
+    {
+     "tema": "Geografía política",
+     "total": 1
+    },
+    {
+     "tema": "Comunidad primitiva en el mundo",
+     "total": 1
+    },
+    {
+     "tema": "Comunidad primitiva en el Perú",
+     "total": 1
+    },
+    {
+     "tema": "Past simple",
+     "total": 1
+    },
+    {
+     "tema": "Verb+infinitive / Verb+gerund",
+     "total": 1
+    },
+    {
+     "tema": "Literatura quechua prehispánica",
+     "total": 1
+    },
+    {
+     "tema": "Medievalismo español",
+     "total": 1
+    },
+    {
+     "tema": "Siglo de Oro",
+     "total": 1
+    },
+    {
+     "tema": "Introducción a la lógica",
+     "total": 1
+    },
+    {
+     "tema": "Lógica predicativa",
+     "total": 1
+    }
+   ],
+   "examenes": 8,
+   "muestras": [
+    {
+     "texto": "Dadas las siguientes oraciones: I. Todos los interesados en inscribirse en el taller, deberán completar el formulario correspondiente, adjuntar una foto y presentar una copia de su DNI. II. Como te comentaba, Mariana, acabamos de contratar a una empresa consultora internacional que nos capacitará para mejorar la comunicación con los clientes. III. Mis compañeros llevarán los siguientes bocaditos: Alberto y Pedro, tostadas y quesos; Andrea y Paola, papas fritas, chifles y camotes; Claudia y José, alfajores. ¿Cuáles presentan una puntuación correcta?",
+     "opciones": [
+      "Solo I",
+      "Solo II",
+      "Solo III",
+      "I y II",
+      "II y III"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Los signos de puntuación son signos auxiliares que buscan dar coherencia, orden y sentido a los enunciados. Entre los principales, podemos mencionar a la coma, punto y coma, dos puntos. Pasamos a analizar cada enunciado propuesto en las alternativas. I. Incorrecta Todos los interesados en inscribirse en el taller, deberán completar el formulario correspondiente, adjuntar una foto y presentar una copia de su DNI. La primera coma es incorrecta, pues este signo no debe separar sujeto y predicado; en cambio, la segunda coma es correcta, pues enumera elementos comunes. II. Correcta Como te comentaba, Mariana, acabamos de contratar a una empresa consultora internacional que nos capacitará para mejorar la comunicación con los clientes. Es correcto el uso de las comas pues indica el vocativo. La oración no requiere otros signos, ya que presenta el orden lógico oracional. Aptitud Académica y Humanidades III. Correcta Mis compañeros llevarán los siguientes bocaditos: Alberto y Pedro, tostadas y quesos; Andrea y Paola, papas fritas, chifles y camotes; Claudia y José, alfajores. El uso de los dos puntos es correcto pues anuncia una enumeración. El uso de los puntos y comas es correcto pues está indicando las proposiciones de una oración compleja. El uso de las comas es correcto pues son elípticas, es decir, reemplazan al verbo “llevarán”.",
+     "curso": "Humanidades (Prueba 1)",
+     "tema": "Signo de puntuación",
+     "subtema": null,
+     "examen": "UNI 2022 2022-2 (AAH)"
+    },
+    {
+     "texto": "En relación a la verdad (V) o falsedad (F) de los siguientes enunciados sobre la obra de William Shakespeare, marque la alternativa que contiene la secuencia correcta. I. Romeo y Julieta es una tragedia. II. El rey Lear es un drama histórico. III. En el género lírico, está Sonetos. IV. Julio César es una comedia.",
+     "opciones": [
+      "VFFV",
+      "FFVV",
+      "FVFV",
+      "VFFF",
+      "VFVF"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "William Shakespeare es el dramaturgo inglés que tuvo influencia del Renacimiento y el Barroco europeo. Se caracterizó por la falta de originalidad temática, pero se destaca en la creación de arquetipos humanos. Pasamos a indicar el género y especie de las obras mencionadas de este autor. • Romeo y Julieta: tragedia • El rey Lear: tragedia • Sonetos: género lírico • Julio César: drama histórico",
+     "curso": "Humanidades (Prueba 1)",
+     "tema": "Renacimiento europeo",
+     "subtema": null,
+     "examen": "UNI 2023 AAH 2023-1"
+    },
+    {
+     "texto": "Complete the sentence with the correct answer. How long does it take ............... the nearest drugstore?",
+     "opciones": [
+      "to get",
+      "to getting",
+      "gets",
+      "go",
+      "to get to"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Complete the sentence with the correct answer (Completa la oración con la respuesta correcta). El enunciado empieza preguntando con la frase How long does it take… (¿Cúanto tiempo toma…). La pregunta debe continuar utilizando un segundo verbo, este otro verbo generalmente se coloca en la forma infinitiva y, de acuerdo a las posibles respuestas, el verbo es get. Dentro de este contexto, el verbo get significa ‘alcanzar, llegar’ dándole mucha movilidad al verbo; por lo tanto, debemos complementarlo con la preposición to: How long does it take to get to the nearest drugstore? (¿Cuánto tiempo se tarda en llegar a la farmacia más cercana?)",
+     "curso": "Humanidades (Prueba 1)",
+     "tema": "Present simple",
+     "subtema": null,
+     "examen": "UNI 2025 2025-2_AAH"
+    },
+    {
+     "texto": "Señale usted la categoría literaria a la que pertenece la obra \"Los gallinazos sin plumas\" que describe la vida y la miseria imperante en la capital, así como las costumbres de esa época.",
+     "opciones": [
+      "un cuento",
+      "un tratado ecológico",
+      "una novela",
+      "un libro de ornitología",
+      "un artículo periodístico"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "El género narrativo es aquel que busca narrar una historia real o ficticia. Por lo tanto, presenta una trama con diversos elementos como el narrador, personajes, tiempo, espacio, etc. Entre las especies más destacadas en la actualidad, se menciona al cuento, forma narrativa breve que, durante la década de los 50 en el Perú, tuvo como máximo exponente a Julio Ramón Ribeyro con Los gallinazos sin plumas. Este relato representa, alegóricamente, la explotación infantil en un mundo urbano voraz y deshumanizante.",
+     "curso": "Humanidades (Prueba 1)",
+     "tema": "Géneros literarios",
+     "subtema": null,
+     "examen": "UNI 2022 AAH (M)"
+    },
+    {
+     "texto": "Analice las columnas y determine la correlación de las siguientes palabras: I. Antonimia II. Meronimia III. Sinonimia IV. Cohiponimia V. Hiperonimia 1. recto - curvo 2. Álgebra - Aritmética 3. suceso - acontecimiento 4. dedo - mano 5. vivienda - choza",
+     "opciones": [
+      "I2, II1, III4, IV5, V3",
+      "I5, II4, III3, IV2, V1",
+      "I1, II2, III3, IV4, V5",
+      "I1, II4, III5, IV3, V2",
+      "I1, II4, III3, IV2, V5"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Las relaciones semánticas que presentan las palabras son las siguientes: - Antonimia: oposición de significado: recto - curvo - Meronimia: parte - todo: dedo - mano - Sinonimia: significados parecidos: suceso - acontecimiento - Cohiponimia: especie - especie: Álgebra - Aritmética - Hiperonimia: género - especie: vivienda - choza",
+     "curso": "Humanidades (Prueba 1)",
+     "tema": "Relaciones semánticas",
+     "subtema": null,
+     "examen": "UNI 2023 AAH 2023-2"
+    },
+    {
+     "texto": "Dadas las siguientes proposiciones respecto al Virreinato del Perú I. España estableció un monopolio comercial con sus colonias. II. El transporte marítimo lo realizaban solo los barcos de guerra. III. El Tribunal del Consulado de Lima reguló el flujo comercial de la colonia. ¿Cuáles son correctas?",
+     "opciones": [
+      "solo I",
+      "solo II",
+      "solo III",
+      "I y II",
+      "I y III"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "El Virreinato del Perú se estableció en 1542 por orden de Carlos I de España, mediante las Nuevas Leyes de Indias. Desde sus inicios, tuvo un carácter monopólico; es decir, solo España podría aprovechar el intercambio comercial con sus colonias. El monopolio comercial estaba bajo la responsabilidad de la Casa de Contratación de Sevilla. Por otro lado, el Tribunal del Consulado de Lima era el ente que regulaba el flujo comercial desde el Perú colonial hacia España.",
+     "curso": "Humanidades (Prueba 1)",
+     "tema": "Virreinato del Perú",
+     "subtema": null,
+     "examen": "UNI 2023 AAH 2023-2"
+    }
+   ]
+  },
+  {
+   "curso": "Física (Prueba 3)",
+   "slug": "fisica-prueba-3",
+   "total": 156,
+   "temas": [
+    {
+     "tema": "Termodinámica",
+     "total": 8
+    },
+    {
+     "tema": "Hidrostática",
+     "total": 7
+    },
+    {
+     "tema": "Electrodinámica",
+     "total": 7
+    },
+    {
+     "tema": "Fenómenos térmicos",
+     "total": 6
+    },
+    {
+     "tema": "Ondas mecánicas",
+     "total": 5
+    },
+    {
+     "tema": "Óptica geométrica",
+     "total": 4
+    },
+    {
+     "tema": "Vectores",
+     "total": 4
+    },
+    {
+     "tema": "MRU",
+     "total": 4
+    },
+    {
+     "tema": "Electrostática",
+     "total": 4
+    },
+    {
+     "tema": "Gravitación universal",
+     "total": 4
+    },
+    {
+     "tema": "Dinámica",
+     "total": 3
+    },
+    {
+     "tema": "MCU",
+     "total": 3
+    },
+    {
+     "tema": "Física moderna",
+     "total": 3
+    },
+    {
+     "tema": "Péndulo simple",
+     "total": 3
+    },
+    {
+     "tema": "Electromagnetismo",
+     "total": 3
+    },
+    {
+     "tema": "Inducción electromagnética",
+     "total": 2
+    },
+    {
+     "tema": "Capacitores",
+     "total": 2
+    },
+    {
+     "tema": "Dinámica circunferencial",
+     "total": 2
+    },
+    {
+     "tema": "Circuitos eléctricos",
+     "total": 2
+    },
+    {
+     "tema": "Potencia mecánica",
+     "total": 2
+    },
+    {
+     "tema": "Gravitación",
+     "total": 2
+    },
+    {
+     "tema": "OEM",
+     "total": 2
+    },
+    {
+     "tema": "Choques",
+     "total": 2
+    },
+    {
+     "tema": "Movimiento armónico simple",
+     "total": 2
+    },
+    {
+     "tema": "Análisis dimensional",
+     "total": 2
+    },
+    {
+     "tema": "Cinemática",
+     "total": 1
+    },
+    {
+     "tema": "Relación trabajo y energía mecánica",
+     "total": 1
+    },
+    {
+     "tema": "Oscilaciones mecánicas",
+     "total": 1
+    },
+    {
+     "tema": "Resistencia equivalente",
+     "total": 1
+    },
+    {
+     "tema": "Movimiento relativo",
+     "total": 1
+    },
+    {
+     "tema": "Lentes",
+     "total": 1
+    },
+    {
+     "tema": "MCUV",
+     "total": 1
+    },
+    {
+     "tema": "Estado líquido",
+     "total": 1
+    },
+    {
+     "tema": "Ondas electromagnéticas",
+     "total": 1
+    },
+    {
+     "tema": "Conservación de la cantidad de movimiento",
+     "total": 1
+    },
+    {
+     "tema": "Cuantización de la energía",
+     "total": 1
+    },
+    {
+     "tema": "Fuerza magnética",
+     "total": 1
+    },
+    {
+     "tema": "Conservación de la energía",
+     "total": 1
+    },
+    {
+     "tema": "Movimiento circunferencial uniformemente",
+     "total": 1
+    },
+    {
+     "tema": "Dinámica lineal",
+     "total": 1
+    },
+    {
+     "tema": "Hidrocarburo aromático",
+     "total": 1
+    },
+    {
+     "tema": "MRUV",
+     "total": 1
+    },
+    {
+     "tema": "M.R.U",
+     "total": 1
+    },
+    {
+     "tema": "MAS",
+     "total": 1
+    },
+    {
+     "tema": "Refracción",
+     "total": 1
+    },
+    {
+     "tema": "Hidrocarburo alifático",
+     "total": 1
+    },
+    {
+     "tema": "Sistemas dispersos",
+     "total": 1
+    },
+    {
+     "tema": "Inducción magnética",
+     "total": 1
+    },
+    {
+     "tema": "Potencial eléctrico",
+     "total": 1
+    },
+    {
+     "tema": "Campo eléctrico",
+     "total": 1
+    },
+    {
+     "tema": "Espejos esféricos",
+     "total": 1
+    },
+    {
+     "tema": "Impulso y Cantidad de movimiento",
+     "total": 1
+    },
+    {
+     "tema": "Estática",
+     "total": 1
+    },
+    {
+     "tema": "Movimiento parabólico de caída libre (MPCL)",
+     "total": 1
+    },
+    {
+     "tema": "MPCL",
+     "total": 1
+    },
+    {
+     "tema": "Dinámica rectilínea",
+     "total": 1
+    },
+    {
+     "tema": "Potencia eléctrica",
+     "total": 1
+    },
+    {
+     "tema": "Relación trabajo-energía",
+     "total": 1
+    },
+    {
+     "tema": "Impulso y cantidad de movimiento",
+     "total": 1
+    },
+    {
+     "tema": "Calorimetría",
+     "total": 1
+    },
+    {
+     "tema": "Efecto fotoeléctrico",
+     "total": 1
+    },
+    {
+     "tema": "Óptica: lentes",
+     "total": 1
+    },
+    {
+     "tema": "Electromagnetismo - fuerza magnética",
+     "total": 1
+    },
+    {
+     "tema": "Óptima: refracción",
+     "total": 1
+    },
+    {
+     "tema": "Energía",
+     "total": 1
+    },
+    {
+     "tema": "Polímeros",
+     "total": 1
+    }
+   ],
+   "examenes": 8,
+   "muestras": [
+    {
+     "texto": "Un cable rectilíneo de 16 cm de longitud se encuentra en un campo magnético constante homogéneo de 7 mT. Calcule aproximadamente, en mA, la corriente eléctrica que fluye por el cable si la fuerza máxima es de 0,021 N.",
+     "opciones": [
+      "18,75",
+      "38,00",
+      "48,00",
+      "28,25",
+      "58,25"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Se tiene Fm B I De F BI m = senθ F BI máx máx sen = =  θ 1  0,021=7×10–3×I×16×10–2 ∴ I=18,75 A",
+     "curso": "Física (Prueba 3)",
+     "tema": "Fuerza magnética",
+     "subtema": null,
+     "examen": "UNI 2022 2022-2 - FyQ"
+    },
+    {
+     "texto": "Respecto a los sistemas dispersos que pueden producirse en sistemas químicos, indique la secuencia correcta luego de confirmar si las proposiciones son verdaderas (V) o falsas (F): I. Las suspensiones no se sedimentan. II. Las soluciones no dispersan la luz. III. Los coloides dispersan la luz.",
+     "opciones": [
+      "FVV",
+      "VVV",
+      "FFF",
+      "VFF",
+      "VVF"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Los sistemas dispersos (mezclas) se clasifican según el tamaño de las partículas dispersas y de ciertas características: en suspensión, coloide y solución. I. Falsa Las suspensiones al reposar las partículas disper­ sas (tamaño mayor a 1000 nm) sedimentan por acción de la gravedad. II. Verdadera Las soluciones cuyas partículas dispersas son átomos, iones, moléculas (tamaño menor a 1 nm) no permiten la dispersión de la luz. III. Verdadera Los coloides (partícula coloidal), cuyo tamaño está comprendido entre 1 nm a 1000 nm, estas dispersan la luz (efecto Tyndall).",
+     "curso": "Física (Prueba 3)",
+     "tema": "Sistemas dispersos",
+     "subtema": null,
+     "examen": "UNI 2022 FQ (T)"
+    },
+    {
+     "texto": "Cuatro resistencias de 2Ω, 8Ω, 3Ω y 6Ω son conectadas en paralelo, y estas a su vez en paralelo a una batería ideal. Calcule en V, la fuerza electromotriz de la batería, si en la resistencia de 6Ω la corriente es de 2 A.",
+     "opciones": [
+      "4",
+      "2",
+      "8",
+      "6",
+      "12"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "6 Ω 3 Ω 8 Ω 2 Ω 2 A V Todas las resistencias están al mismo voltaje, igual al voltaje de la fuente. Para la resistencia de 6Ω: V=IR V=2(6) → V=12 V",
+     "curso": "Física (Prueba 3)",
+     "tema": "Circuitos eléctricos",
+     "subtema": null,
+     "examen": "UNI 2022 2022-2 - FyQ"
+    },
+    {
+     "texto": "En la figura calcule en $N$, la tensión de la cuerda que une $m_1$ y $m_2$, si $m_1=10 \\, \\text{kg}$, $m_2=20 \\, \\text{kg}$, $F=20 \\, \\text{N}$ y no existe fricción entre $m_2$ y la superficie. Considere que la polea y la cuerda son ideales. $g=9,81 \\, \\text{m/s}^2$",
+     "opciones": [
+      "26,03",
+      "29,43",
+      "54,26",
+      "68,09",
+      "72,06"
+     ],
+     "correcta": 4,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2023-EX-UNI-FQ-2023-2/P15.webp",
+     "justificacion": "1 2 F=20 N T T a a Fg=98,1 N a2=a1 F m F m R R ( ) ( ) 2 2 1 1 = T T − = − 20 20 98 1 10 , ∴ T=72,06 N",
+     "curso": "Física (Prueba 3)",
+     "tema": "Dinámica",
+     "subtema": null,
+     "examen": "UNI 2023 EX_UNI_FQ_2023-2"
+    },
+    {
+     "texto": "En el circuito mostrado, calcule aproximadamente, en A, la corriente que fluye través de la resistencia $R$, que es igual a 5 Ω.",
+     "opciones": [
+      "0,27",
+      "0,17",
+      "0,47",
+      "0,57",
+      "0,77"
+     ],
+     "correcta": 4,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2022-FQ-T/P8.webp",
+     "justificacion": "8 Ω 8 Ω 5 Ω 8 Ω 8 Ω 15 V 5 V i1 1 i2 2 Usamos la 2.a ley de Kirchoff. ∑V=∑IR Malla 1 5=21i1+5i2 Malla 2 15=21i2+5i1 20=26(i1+i2) i i R 1 2 20 26 + = corriente que pasa por  i1+i2=0,77 A",
+     "curso": "Física (Prueba 3)",
+     "tema": "Electrodinámica",
+     "subtema": null,
+     "examen": "UNI 2022 FQ (T)"
+    },
+    {
+     "texto": "Un trozo de madera con $0,60 \\, \\text{m}$ de largo, $0,25 \\, \\text{m}$ de ancho y $0,08 \\, \\text{m}$ de espesor, cuya densidad es $600 \\, \\text{kg/m}^3$, flota parcialmente en la superficie del agua. Determine aproximadamente el volumen (en unidades de $10^{-4} \\, \\text{m}^3$) de un trozo de plomo ($\\rho_{\\text{plomo}} = 11300 \\, \\text{kg/m}^3$) que debe sujetarse en la base de la madera para hundirla de modo que la cara superior de la madera se encuentre al mismo nivel del agua. Considere: $\\rho_{\\text{agua}} = 1000 \\, \\text{kg/m}^3$",
+     "opciones": [
+      "3,2",
+      "3,9",
+      "4,7",
+      "5,6",
+      "6,7"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "VM = × × = × − 0 60 0 25 0 08 1 2 10 2 , , , , m3 plomo EPb EM msist.g Física y Química Del equilibrio E E m g M + = Pb sist. ρ ρ L M L Pb M Pb g g m m g V V + = + ( ) ρ ρ ρ ρ L M L Pb M M Pb Pb V V V V + = + · V V Pb L M Pb L M = − −     ρ ρ ρ ρ VPb = − −    × × − 1000 600 11300 1000 1 2 10 2 , ∴ VPb = × − 4 7 10 4 , m3",
+     "curso": "Física (Prueba 3)",
+     "tema": "Hidrostática",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_FQ"
+    }
+   ]
+  },
+  {
+   "curso": "Química (Prueba 3)",
+   "slug": "quimica-prueba-3",
+   "total": 132,
+   "temas": [
+    {
+     "tema": "Equilibrio químico",
+     "total": 9
+    },
+    {
+     "tema": "Nomenclatura inorgánica",
+     "total": 9
+    },
+    {
+     "tema": "Soluciones",
+     "total": 9
+    },
+    {
+     "tema": "Configuración electrónica",
+     "total": 6
+    },
+    {
+     "tema": "Materia",
+     "total": 6
+    },
+    {
+     "tema": "Contaminación ambiental",
+     "total": 6
+    },
+    {
+     "tema": "Estequiometría",
+     "total": 5
+    },
+    {
+     "tema": "Química orgánica",
+     "total": 5
+    },
+    {
+     "tema": "Electrólisis",
+     "total": 5
+    },
+    {
+     "tema": "Tabla periódica moderna",
+     "total": 5
+    },
+    {
+     "tema": "Estado gaseoso",
+     "total": 4
+    },
+    {
+     "tema": "Cálculos en química",
+     "total": 3
+    },
+    {
+     "tema": "Equilibrio iónico",
+     "total": 2
+    },
+    {
+     "tema": "Propiedades periódicas",
+     "total": 2
+    },
+    {
+     "tema": "Sistemas dispersos",
+     "total": 2
+    },
+    {
+     "tema": "Enlace químico",
+     "total": 2
+    },
+    {
+     "tema": "Hidrocarburos",
+     "total": 2
+    },
+    {
+     "tema": "Reacción química",
+     "total": 2
+    },
+    {
+     "tema": "Gases",
+     "total": 2
+    },
+    {
+     "tema": "Electroquímica",
+     "total": 2
+    },
+    {
+     "tema": "Celdas galvánicas",
+     "total": 1
+    },
+    {
+     "tema": "Fuerzas intermoleculares",
+     "total": 1
+    },
+    {
+     "tema": "Modelos Atómicos",
+     "total": 1
+    },
+    {
+     "tema": "Mezcla gaseosa",
+     "total": 1
+    },
+    {
+     "tema": "Celda galvánica",
+     "total": 1
+    },
+    {
+     "tema": "Enlace covalente",
+     "total": 1
+    },
+    {
+     "tema": "Corrosión",
+     "total": 1
+    },
+    {
+     "tema": "Cálculo en química",
+     "total": 1
+    },
+    {
+     "tema": "Teorías de ácidos y bases",
+     "total": 1
+    },
+    {
+     "tema": "Acido-base",
+     "total": 1
+    },
+    {
+     "tema": "Compuestos aromáticos",
+     "total": 1
+    },
+    {
+     "tema": "Estado sólido",
+     "total": 1
+    },
+    {
+     "tema": "Ácido-base",
+     "total": 1
+    },
+    {
+     "tema": "Ácido - Base",
+     "total": 1
+    },
+    {
+     "tema": "Polaridad de moléculas",
+     "total": 1
+    },
+    {
+     "tema": "Propiedades periódicas de los elementos",
+     "total": 1
+    },
+    {
+     "tema": "Ácidos y Bases",
+     "total": 1
+    },
+    {
+     "tema": "Enlace iónico",
+     "total": 1
+    },
+    {
+     "tema": "Esctructura atómica actual",
+     "total": 1
+    },
+    {
+     "tema": "Aromáticos",
+     "total": 1
+    },
+    {
+     "tema": "Números cuánticos",
+     "total": 1
+    },
+    {
+     "tema": "Funciones oxigenadas",
+     "total": 1
+    },
+    {
+     "tema": "Teorías ácido-base",
+     "total": 1
+    },
+    {
+     "tema": "Ácidos y bases",
+     "total": 1
+    },
+    {
+     "tema": "Materiales modernos",
+     "total": 1
+    },
+    {
+     "tema": "Autoionización de agua",
+     "total": 1
+    },
+    {
+     "tema": "Geometría molecular y polaridad de",
+     "total": 1
+    },
+    {
+     "tema": "Estructura electrónica",
+     "total": 1
+    },
+    {
+     "tema": "Reacciones químicas",
+     "total": 1
+    },
+    {
+     "tema": "Funciones Oxigenados",
+     "total": 1
+    }
+   ],
+   "examenes": 8,
+   "muestras": [
+    {
+     "texto": "Según la distribución de los elementos químicos en la tabla periódica, ¿cuántas de las siguientes propiedades periódicas aumentan conforme aumenta el número atómico en un periodo? I. electronegatividad II. afinidad electrónica III. potencial de ionización IV. carácter no metálico",
+     "opciones": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Las propiedades químicas de los elementos químicos varían de forma periódica a lo largo de la tabla periódica. En general, podemos plantear el siguiente esquema para visualizar la variación periódica de las propiedades químicas. Z Aumenta Según las flechas, aumenta lo siguiente: • energía de ionización • afinidad electrónica • electronegatividad • carácter no metálico",
+     "curso": "Química (Prueba 3)",
+     "tema": "Propiedades periódicas",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_FQ"
+    },
+    {
+     "texto": "En la construcción de un laboratorio de química, encontramos diferentes materiales; por ejemplo, hormigón, clavos de acero, alambres de cobre, agua y andamios de aluminio. Respecto al texto, determine si la proposición es verdadera (V) o falsa (F). I. Se mencionan 3 sustancias y 2 mezclas. II. El agua, $\\mathrm{H_2O}$, es una sustancia heterogénea. III. El cobre y el aluminio son sustancias elementales. Marque la secuencia correcta.",
+     "opciones": [
+      "VFV",
+      "FFV",
+      "VFF",
+      "VVV",
+      "FFF"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "I. Verdadero Mezclas: hormigón y acero Sustancias: alambres de cobre, andamios de aluminio y agua II. Falso El H2O es una sustancia homogénea. III. Verdadero El cobre (Cu) y aluminio (Al) son sustancias simples o elementales.",
+     "curso": "Química (Prueba 3)",
+     "tema": "Materia",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_FQ"
+    },
+    {
+     "texto": "¿Cuál de las siguientes alternativas es correcta?",
+     "opciones": [
+      "El radio aniónico siempre es menor que el radio del átomo original.",
+      "Todas las afinidades electrónicas son exotérmicas y llevan signo negativo.",
+      "La energía de ionización es la energía necesaria para arrancar un electrón de un átomo de un compuesto sólido, y convertirlo en un catión.",
+      "El radio catiónico siempre es menor que el radio del átomo original.",
+      "La electronegatividad es la energía que se debe aplicar a un átomo para atraer a un electrón hacia sí mismo."
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "químicos • Nos piden la alternativa correcta. • Analizamos cada proposición (alternativa). a. Incorrecta Radio aniónico > Radio atómico (del átomo neutro) b. Incorrecta En general, la afinidad electrónica es exotérmica, pero a algunos elementos como los del grupo IIA les corresponde la afinidad electrónica endotérmica. c. Incorrecta La energía de ionización se calcula para el átomo libre en fase gaseosa. d. Correcta Radio catiónico < Radio atómico (del átomo neutro) e. Incorrecta La electronegatividad es la fuerza relativa del núcleo para atraer electrones que participan en el enlace.",
+     "curso": "Química (Prueba 3)",
+     "tema": "Propiedades periódicas de los elementos",
+     "subtema": null,
+     "examen": "UNI 2023 FyQ 2023-1"
+    },
+    {
+     "texto": "¿Cuál de las siguientes alternativas es correcta?",
+     "opciones": [
+      "El $\\mathrm{BaF_2}$ presenta dos enlaces covalentes.",
+      "La fórmula del hidróxido de aluminio es $\\mathrm{Al(OH)_3}$",
+      "Un óxido básico se forma por la unión entre un no metal y oxígeno.",
+      "El $\\mathrm{CO_2}$ presenta cuatro enlaces iónicos.",
+      "El cloruro de calcio es una sal terciaria."
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "• Nos piden marcar la alternativa incorrecta. • Analizamos cada proposición (alternativa). A) Incorrecta BaF2: el bario se une por enlace iónico. B) Correcta A(OH)3: hidróxido de aluminio (el aluminio posee EO=+3) C) Incorrecta Metal+O2 → óxido básico D) Incorrecta En CO2, los átomos se unen por enlace covalente. E) Incorrecta CaCl2 es una sal haloidea binaria.",
+     "curso": "Química (Prueba 3)",
+     "tema": "Nomenclatura inorgánica",
+     "subtema": null,
+     "examen": "UNI 2023 FyQ 2023-1"
+    },
+    {
+     "texto": "Algunas penicilinas comunes son la amoxicilina y la penicilina G, cuyas estructuras se presentan a continuación: Dadas las siguientes proposiciones respecto a las estructuras mostradas: I. En una estructura aparece la función alcohol y en la otra no. II. En ambas estructuras aparece la función aldehído. III. Una estructura contiene una amina primaria y la otra no. Indique la alternativa correcta.<br><img src=\"https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2025-2025-1-FQ/P28_2.webp\">",
+     "opciones": [
+      "solo I",
+      "solo II",
+      "solo III",
+      "I y II",
+      "I, II y III"
+     ],
+     "correcta": 2,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2025-2025-1-FQ/P28.webp",
+     "justificacion": "Nos piden indicar la alternativa que contenga las proposiciones correctas respecto de los grupos funcionales que conforman la amoxilina y la penicilina G. Física y Química I. Incorrecta Para ser una función alcohol, el grupo funcio­ nal hidroxilo debe estar unido a un carbono saturado (con orbitales híbridos sp3). C H H O H sp3 Como se observa, este no se presenta en ninguna estructura. II. Incorrecta La función aldehído contiene el grupo carbonilo en un carbono extremo. C H O CHO <> Este no se presenta en ninguna estructura. III. Correcta La amina primaria (R – NH2) se presenta solo en la estructura de la amoxicilina. CH NH2",
+     "curso": "Química (Prueba 3)",
+     "tema": "Química orgánica",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_FQ"
+    },
+    {
+     "texto": "Se tiene una solución de cloruro de sodio en agua al 11,7 % masa (DSol=1,15 g/mL). Calcule la concentración en mol/L. Masa molar (g/mol): Na=23, Cl=35,5",
+     "opciones": [
+      "1,00",
+      "1,17",
+      "1,80",
+      "2,30",
+      "3,50"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "La molaridad (M) es una unidad de concentración que se define como el número de moles de soluto disuelto en un litro de la solución. Se puede calcular de dos formas: M n V = sto sol o M D m M = 10 sto sto sto % NaCl H2O % msto=11,7% Msto=58,5 g/mol Dsol=1,15 g/mL Entonces M M = × × → = 10 1 15 11 7 58 5 2 30 , , , , mol/L",
+     "curso": "Química (Prueba 3)",
+     "tema": "Soluciones",
+     "subtema": null,
+     "examen": "UNI 2023 FyQ 2023-1"
+    }
+   ]
+  },
+  {
+   "curso": "Trigonometría (Prueba 2)",
+   "slug": "trigonometria-prueba-2",
+   "total": 97,
+   "temas": [
+    {
+     "tema": "Resolución de triángulos oblicuángulos",
+     "total": 11
+    },
+    {
+     "tema": "Funciones trigonométricas",
+     "total": 8
+    },
+    {
+     "tema": "Funciones trigonométricas inversas",
+     "total": 8
+    },
+    {
+     "tema": "Ecuaciones trigonométricas",
+     "total": 8
+    },
+    {
+     "tema": "Razones trigonométricas de un ángulo agudo",
+     "total": 3
+    },
+    {
+     "tema": "Identidades trigonométricas fundamentales",
+     "total": 3
+    },
+    {
+     "tema": "Reducción al primer cuadrante",
+     "total": 2
+    },
+    {
+     "tema": "Circunferencia trigonométrica",
+     "total": 2
+    },
+    {
+     "tema": "Programación lineal",
+     "total": 2
+    },
+    {
+     "tema": "Sistemas de medidas angulares",
+     "total": 2
+    },
+    {
+     "tema": "Transformaciones trigonométricas",
+     "total": 2
+    },
+    {
+     "tema": "Circunferencia",
+     "total": 1
+    },
+    {
+     "tema": "Relaciones métricas",
+     "total": 1
+    },
+    {
+     "tema": "Longitud de arco de circunferencia",
+     "total": 1
+    },
+    {
+     "tema": "Sistema de medición angular",
+     "total": 1
+    },
+    {
+     "tema": "Identidades trigonométricas del ángulo triple",
+     "total": 1
+    },
+    {
+     "tema": "Series",
+     "total": 1
+    },
+    {
+     "tema": "Inecuaciones de grado superior",
+     "total": 1
+    },
+    {
+     "tema": "Sistema de ecuaciones lineales",
+     "total": 1
+    },
+    {
+     "tema": "Determinantes",
+     "total": 1
+    },
+    {
+     "tema": "Funciones",
+     "total": 1
+    },
+    {
+     "tema": "Ecuación logarítmica",
+     "total": 1
+    },
+    {
+     "tema": "Sistema de medidas angulares",
+     "total": 1
+    },
+    {
+     "tema": "Razones trigonométricas de un ángulo en",
+     "total": 1
+    },
+    {
+     "tema": "Introducción a la geometría analítica",
+     "total": 1
+    },
+    {
+     "tema": "Razones trigonométricas de ángulos notables",
+     "total": 1
+    },
+    {
+     "tema": "Sistemas de medición angular",
+     "total": 1
+    },
+    {
+     "tema": "Funciones trigonométricas directas",
+     "total": 1
+    },
+    {
+     "tema": "Rotación de ejes",
+     "total": 1
+    },
+    {
+     "tema": "Razones trigonométricas de un ángulo",
+     "total": 1
+    },
+    {
+     "tema": "Identidades trigonométricas",
+     "total": 1
+    },
+    {
+     "tema": "Transformación de coordenadas",
+     "total": 1
+    },
+    {
+     "tema": "Ángulo en posición normal",
+     "total": 1
+    },
+    {
+     "tema": "Sucesiones cónicas",
+     "total": 1
+    },
+    {
+     "tema": "Razón trigonométrica de un ángulo agudo",
+     "total": 1
+    },
+    {
+     "tema": "Identidades de ángulos compuestos",
+     "total": 1
+    },
+    {
+     "tema": "Área de un sector circular",
+     "total": 1
+    }
+   ],
+   "examenes": 9,
+   "muestras": [
+    {
+     "texto": "Determine el conjunto solución de la siguiente ecuación trigonométrica: $2\\operatorname{sen}(x)(1-\\cos(2x))+\\operatorname{sen}(2x)\\cos(x)=1-\\cos(2x)$",
+     "opciones": [
+      "$x=(2n+1)\\frac{\\pi}{2}$, $n\\in\\mathbb{Z}$",
+      "$x=(2n-1)\\pi$, $n\\in\\mathbb{Z}$",
+      "$x=n\\frac{\\pi}{2}$, $n\\in\\mathbb{Z}$",
+      "$x=n\\pi$, $n\\in\\mathbb{Z}$",
+      "$x=2n\\pi$, $n\\in\\mathbb{Z}$"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "2senx(2sen2x)+2senxcos2x=2sen2x 2sen3x+senxcos2x – sen2x=0 senx(2sen2x+cos2x – senx)=0 senx(1+sen2x – senx)=0 senx senx −    +    = 1 2 3 4 0 2 → senx=0 ∴ x=nπ; n∈Z",
+     "curso": "Trigonometría (Prueba 2)",
+     "tema": "Ecuaciones trigonométricas",
+     "subtema": null,
+     "examen": "UNI 2022 2022-2 (Mat)"
+    },
+    {
+     "texto": "El dominio de la función $f$ definida por $\\displaystyle f(x) = \\arccos\\left(\\frac{x^2 - 6}{5}\\right) + \\arcsen(2x - 3)$ es",
+     "opciones": [
+      "$[1; 2]$",
+      "$[1; 1,4]$",
+      "$[1; 1,8]$",
+      "$[1; 2,2]$",
+      "$[1; 1,6]$"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "f x x x ( )= −    + − ( ) arccos 2 6 5 2 3 arcsen i) –1≤2x – 3≤1 → 1≤x≤2 … (I) ii) −≤ − ≤ ≤ ≤ 1 6 5 1 1 11 2 2 x x → x ∈− −  ∪  11 1 1 11 ; ; … (II) Intersectamos I y II Se obtiene 1≤x≤2 ∴ Dom( f )=[1; 2]",
+     "curso": "Trigonometría (Prueba 2)",
+     "tema": "Funciones trigonométricas inversas",
+     "subtema": null,
+     "examen": "UNI 2022 Mat (T)"
+    },
+    {
+     "texto": "Dado el siguiente sistema de ecuaciones lineales: $\\displaystyle \\begin{aligned} & 2x + 3y - 5z = 33 \\\\ & -3x + y + 2z = -11 \\\\ & x + 2y + 4z = -8 \\end{aligned}$ Halle el valor de $ x + y + z $.",
+     "opciones": [
+      "$-1$",
+      "0",
+      "$-2$",
+      "2",
+      "1"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Dado el sistema 2 3 5 33 3 2 11 2 4 8 x y z x y z x y z + − = − + + = − + + = −    (I) (II) (III) Se pide hallar x+y+z. Eliminamos x: (I): 2x+3y – 5z=33 (III)×(– 2): – 2x – 4y – 8z=16 – y – 13z=49 + (II): – 3x+y+2z= –11 (III)×3: 3x + 6y + 12z= – 24 7y + 14z = – 35 y+2z = – 5 + Sumamos las ecuaciones obtenidas. – y – 13z=49 + y+ 2z= – 5 –11z=44 → z=– 4 Luego: y+2(– 4)=–5 → y=3 Reemplazamos en la ecuación (III). x+2(3)+4(– 4)= – 8 → x=2 ∴ x+y+z=2+3+(– 4)=1",
+     "curso": "Trigonometría (Prueba 2)",
+     "tema": "Sistema de ecuaciones lineales",
+     "subtema": null,
+     "examen": "UNI 2022 2022-2 (Mat)"
+    },
+    {
+     "texto": "En la figura mostrada, el punto O es el centro de los sectores circulares AOB, COD y EOF, OA=R, BC=DE=r, y las longitudes de los arcos son $ L_1 = 6r $, $ L_3 = 10r $. Calcule el valor de la medida del ángulo θ en radianes.",
+     "opciones": [
+      "1",
+      "$\\frac{3}{2}$",
+      "2",
+      "$\\frac{5}{2}$",
+      "3"
+     ],
+     "correcta": 2,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2023-EX-UNI-MAT-2023-2/P36.webp",
+     "justificacion": "Nos piden el valor de la medida del ángulo θ en radianes. Dato O A B C D E F θ θ θ L1 L3 r r R R R+r R+2r • L1=6r → θR=6r • L3=θ(R+2r) → 10r=θ(R+2r) 10 2 4 2 2 6 r R r r r r = + → = → = θ θ θ θ ",
+     "curso": "Trigonometría (Prueba 2)",
+     "tema": "Longitud de arco de circunferencia",
+     "subtema": null,
+     "examen": "UNI 2023 EX_UNI_MAT_2023-2"
+    },
+    {
+     "texto": "La suma de $\\displaystyle \\sum_{i=1}^{\\infty}\\left(\\frac{1}{4}\\right)^{i}+\\sum_{i=0}^{\\infty}\\left(\\frac{3}{4}\\right)^{i}$ es:",
+     "opciones": [
+      "$\\frac{13}{3}$",
+      "$\\frac{11}{3}$",
+      "$\\frac{19}{3}$",
+      "$\\frac{8}{3}$",
+      "$\\frac{17}{3}$"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Calculamos cada serie geométrica. • 1 4 1 4 1 4 1 4 1 2 3    = +    +    + = +∞ ∑ i i ... × 1 4 × 1 4 razón geométrica = − = 1 4 1 1 4 1 3 • 3 4 1 3 4 3 4 3 4 0 2 3    = + +    +    + = +∞ ∑ i i .. × 3 4 × 3 4 × 3 4 razón geométrica = − = 1 1 3 4 4 ∴ 1 3 4 13 3 + =",
+     "curso": "Trigonometría (Prueba 2)",
+     "tema": "Series",
+     "subtema": null,
+     "examen": "UNI 2022 2022-2 (Mat)"
+    },
+    {
+     "texto": "Se define $ f: \\mathbb{R} \\rightarrow \\mathbb{R} $ mediante la regla de correspondencia $\\displaystyle f(x) = 2\\sin(\\cos(x)) + 2\\operatorname{vers}(\\cos(x)) + 2\\operatorname{cov}(\\cos(x)) - 1$ Determine el rango de $ f $.",
+     "opciones": [
+      "$[1; 2 - 3\\cos(1)]$",
+      "$[1; 2 + 3\\cos(1)]$",
+      "$[1; 2 + \\cos(1)]$",
+      "$[1; 3 + \\cos(1)]$",
+      "$[1; 3 - 2\\cos(1)]$"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "f(x)=2sen(cosx)+2(1– cos(cosx))+ 2(1–sen(cosx))–1 Al reducir se obtiene f(x)=3 – 2cos(cosx) Se conoce –1≤cosx≤1, hacemos el cambio q=cosx, entonces f(x)=g(q)=3 – 2cosq Y X cos 1 cos(–1) 1 –1 θ donde –1≤q ≤1 Del gráfico cos1≤ cosq ≤1 –2cos1≥ – 2cosq ≥ – 2 Sumamos 3. 3 – 2cos1≥f(x)≥1 Por lo tanto, el rango de f será [1; 3 – 2cos(1)].",
+     "curso": "Trigonometría (Prueba 2)",
+     "tema": "Funciones trigonométricas",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_MAT"
+    }
+   ]
+  },
+  {
+   "curso": "Geometría (Prueba 2)",
+   "slug": "geometria-prueba-2",
+   "total": 88,
+   "temas": [
+    {
+     "tema": "Circunferencia",
+     "total": 6
+    },
+    {
+     "tema": "Polígonos",
+     "total": 5
+    },
+    {
+     "tema": "Prisma",
+     "total": 5
+    },
+    {
+     "tema": "Áreas",
+     "total": 4
+    },
+    {
+     "tema": "Pirámide",
+     "total": 3
+    },
+    {
+     "tema": "Relaciones métricas",
+     "total": 3
+    },
+    {
+     "tema": "Cilindro",
+     "total": 2
+    },
+    {
+     "tema": "Tronco de prisma",
+     "total": 2
+    },
+    {
+     "tema": "Secciones cónicas",
+     "total": 2
+    },
+    {
+     "tema": "Segmentos",
+     "total": 2
+    },
+    {
+     "tema": "Poliedros",
+     "total": 2
+    },
+    {
+     "tema": "Poliedros regulares",
+     "total": 2
+    },
+    {
+     "tema": "Geometría del espacio",
+     "total": 2
+    },
+    {
+     "tema": "Aplicaciones de la congruencia",
+     "total": 2
+    },
+    {
+     "tema": "Ángulo diedro",
+     "total": 2
+    },
+    {
+     "tema": "Triángulos notables",
+     "total": 2
+    },
+    {
+     "tema": "Geometría analítica",
+     "total": 2
+    },
+    {
+     "tema": "Tronco de cono",
+     "total": 1
+    },
+    {
+     "tema": "Puntos notables",
+     "total": 1
+    },
+    {
+     "tema": "Triángulos",
+     "total": 1
+    },
+    {
+     "tema": "Nociones preliminares de la geometría",
+     "total": 1
+    },
+    {
+     "tema": "Proyección ortogonal sobre un plano (geo­",
+     "total": 1
+    },
+    {
+     "tema": "Áreas de regiones poligonales",
+     "total": 1
+    },
+    {
+     "tema": "Proporcionalidad",
+     "total": 1
+    },
+    {
+     "tema": "Cono de revolución",
+     "total": 1
+    },
+    {
+     "tema": "Tetraedro regular",
+     "total": 1
+    },
+    {
+     "tema": "Distancia entre dos rectas alabeadas",
+     "total": 1
+    },
+    {
+     "tema": "Áreas circulares",
+     "total": 1
+    },
+    {
+     "tema": "Posiciones relativas en la circunferencia -",
+     "total": 1
+    },
+    {
+     "tema": "Polígonos regulares",
+     "total": 1
+    },
+    {
+     "tema": "Cilindro de revolución",
+     "total": 1
+    },
+    {
+     "tema": "Polígono regular",
+     "total": 1
+    },
+    {
+     "tema": "Proporcionalidad de segmentos",
+     "total": 1
+    },
+    {
+     "tema": "Polígono",
+     "total": 1
+    },
+    {
+     "tema": "Cono",
+     "total": 1
+    },
+    {
+     "tema": "Longitud de arco",
+     "total": 1
+    },
+    {
+     "tema": "Ángulo triedro",
+     "total": 1
+    },
+    {
+     "tema": "Esfera y superficie esférica",
+     "total": 1
+    },
+    {
+     "tema": "Conjunto convexo",
+     "total": 1
+    },
+    {
+     "tema": "Superficie esférica",
+     "total": 1
+    },
+    {
+     "tema": "Posición entre recta y plano",
+     "total": 1
+    },
+    {
+     "tema": "Prisma y pirámide",
+     "total": 1
+    },
+    {
+     "tema": "Proporcionalidad y semejanza",
+     "total": 1
+    },
+    {
+     "tema": "Áreas de regiones planas",
+     "total": 1
+    },
+    {
+     "tema": "Área de un sector circular",
+     "total": 1
+    },
+    {
+     "tema": "Esfera",
+     "total": 1
+    },
+    {
+     "tema": "Ángulos",
+     "total": 1
+    }
+   ],
+   "examenes": 9,
+   "muestras": [
+    {
+     "texto": "De la figura mostrada: se tiene que $\\overline{BD}$ es bisectriz del ángulo $ABE$ y $\\overline{BE}$ es bisectriz del ángulo $ABC$. Si $x + y + z = 70$, determine el valor de $xy + z$.",
+     "opciones": [
+      "204",
+      "100",
+      "202",
+      "200",
+      "102"
+     ],
+     "correcta": 2,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2022-2022-2-Mat/P26.webp",
+     "justificacion": "Nos piden xy+z. Dato: x+y+z=70 B C E D x y z 21n 4n 70 10n 4 β β A 10 15 β 2 β 2 Por teorema de la bisectriz interior ABE: AD DE = → 10 4 AD=10n DE=4n ABC: 14 10 15 21 2 3 n EC EC n = → = AC=10n+4n+21n=70 → n=2 x=20; y=8; z=42 xy+z=20×8+42 ∴ xy+z=202 Nota El triángulo ABC no cumple con el teorema de existencia, lo cual lo hace absurdo.",
+     "curso": "Geometría (Prueba 2)",
+     "tema": "Proporcionalidad",
+     "subtema": null,
+     "examen": "UNI 2022 2022-2 (Mat)"
+    },
+    {
+     "texto": "En la figura la medida del arco $\\overparen{ANE}$ es $184^\\circ$ y la medida del arco $\\overparen{BFD}$ es $124^\\circ$. Halle la medida del arco $\\overparen{BMD}$, en grados sexagesimales.",
+     "opciones": [
+      "62",
+      "58",
+      "80",
+      "60",
+      "72"
+     ],
+     "correcta": 3,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2022-Mat-T/P27.webp",
+     "justificacion": "Nos piden mBMD x = . Datos: mANE = ° 184 ; mBFD = ° 124 N 184° 124° x F M B A E D C 62° Por  inscrito, mBCD=62° Por  exterior, 62 184 2 ° = °−x ∴ x=60° Observación  incrito exterior X θ θ 2θ α X= 2 α θ −",
+     "curso": "Geometría (Prueba 2)",
+     "tema": "Circunferencia",
+     "subtema": null,
+     "examen": "UNI 2022 Mat (T)"
+    },
+    {
+     "texto": "En un tronco de pirámide de bases paralelas, las áreas de las bases son 4 $\\text{m}^{2}$ y 25 $\\text{m}^{2}$. Si la longitud de la altura del tronco es 3 m, calcule la longitud (en m) de la altura de la mayor pirámide que se obtiene al prolongar las aristas laterales de dicho tronco.",
+     "opciones": [
+      "5",
+      "6",
+      "7",
+      "8",
+      "9"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Nos piden h. A 3 2k h–3 D V B h C F E 25 m2 4 m2 5k ABC ∼ DEF Por relación de áreas A A ABC DEF BC FE = = ( ) ( ) 4 25 2 2 BC FE = 2 5 Luego h h k k − = 3 5 2 2h=5h –15 ∴ h=5",
+     "curso": "Geometría (Prueba 2)",
+     "tema": "Pirámide",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2__1939In"
+    },
+    {
+     "texto": "El volumen del sólido limitado por un prisma regular $ ABC-PQR $ es $ \\frac{27}{4}\\sqrt{2} $ $\\text{u}^{3}$ y en la base $ PQR $ se ubica el punto $ O $. Calcule el volumen (en $\\text{u}^{3}$) del sólido limitado por el tetraedro regular $ OABC $.",
+     "opciones": [
+      "$ \\frac{3}{2}\\sqrt{2} $",
+      "$ 2\\sqrt{2} $",
+      "$ 3\\sqrt{2} $",
+      "$ \\frac{9}{4}\\sqrt{2} $",
+      "$ 4\\sqrt{2} $"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Piden el volumen del tetraedro OABC: vOABC S P B h O R A C Q • v h OABC = × S 3 (I) v h ABC PQR − = × S (II) Reemplazamos (II) en (I) v v PQR OABC ABC = − 1 3 • Pero vABC PQR − = 27 4 2 ∴ vOABC = 9 2 4",
+     "curso": "Geometría (Prueba 2)",
+     "tema": "Prisma y pirámide",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_MAT"
+    },
+    {
+     "texto": "Desde el centro de dos circunferencias concéntricas se trazan dos segmentos de rectas, el primero intersecta a las circunferencias en los puntos A y B, mientras que el segundo segmento las intersecta en los puntos C y D. Si los radios de las circunferencias están en la razón de 1 a 2 y la suma de sus cuadrados es 5. Determine el perímetro del trapecio circular, sabiendo que el ángulo que forman los segmentos es de π/3.",
+     "opciones": [
+      "4+π",
+      "1+π",
+      "3+π",
+      "4−π",
+      "2+π"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Longitud de arco Nos piden 2p . π/3 2r r r r r r C O A B D Dato: r 2+(2r)2=5 r =1 Sabemos que 2p =AB+BD +CD+AC Del gráfico AB=r, AB=1 CD=r, CD=1 BD = π 3     · 2r, BD = 2 3 p AC = π 3     · r, AC = p 3 Reemplazamos. 2p =1 2 3 1 3 + + + π π ∴ 2p =2+p",
+     "curso": "Geometría (Prueba 2)",
+     "tema": "Posiciones relativas en la circunferencia -",
+     "subtema": null,
+     "examen": "UNI 2022 Mat (M)"
+    },
+    {
+     "texto": "Se quiere fabricar una tolva para granos en forma de cono truncado y compuesto de 11 anillos metálicos como se muestra en la figura. Halle la longitud total del metal necesario para fabricar los anillos.",
+     "opciones": [
+      "228$\\pi$",
+      "231$\\pi$",
+      "234$\\pi$",
+      "237$\\pi$",
+      "240$\\pi$"
+     ],
+     "correcta": 1,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2024-2024-2-1939In/P11.webp",
+     "justificacion": "Nos piden L. L: longitud del alambre 18 3 r1=3 r2=3+k r3=3+2k . . . r11=3+10k=18 10k=15 r1+r2+r3+ ... +r11=33+55k L=2pr1+2pr2+2pr3+ ... +2pr11 L=2p(r1+r2+r3+ ... +r11) L=2p(33+55k)=p[66+11(10k)] 15 ∴ L=231p",
+     "curso": "Geometría (Prueba 2)",
+     "tema": "Cono",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2__1939In"
+    }
+   ]
+  },
+  {
+   "curso": "Aritmética (Prueba 2)",
+   "slug": "aritmetica-prueba-2",
+   "total": 75,
+   "temas": [
+    {
+     "tema": "Operaciones fundamentales",
+     "total": 6
+    },
+    {
+     "tema": "Razones y proporciones",
+     "total": 6
+    },
+    {
+     "tema": "Regla de mezcla",
+     "total": 6
+    },
+    {
+     "tema": "Regla de interés",
+     "total": 5
+    },
+    {
+     "tema": "Estadística",
+     "total": 5
+    },
+    {
+     "tema": "Probabilidades",
+     "total": 4
+    },
+    {
+     "tema": "Teoría de divisibilidad",
+     "total": 4
+    },
+    {
+     "tema": "Números racionales",
+     "total": 4
+    },
+    {
+     "tema": "MCD y MCM",
+     "total": 3
+    },
+    {
+     "tema": "Promedios",
+     "total": 3
+    },
+    {
+     "tema": "Teoría de conjuntos",
+     "total": 3
+    },
+    {
+     "tema": "Potenciación",
+     "total": 3
+    },
+    {
+     "tema": "Magnitudes proporcionales",
+     "total": 2
+    },
+    {
+     "tema": "Clasificación de los números enteros",
+     "total": 2
+    },
+    {
+     "tema": "Teoría de numeración",
+     "total": 2
+    },
+    {
+     "tema": "Potenciación y radicación",
+     "total": 1
+    },
+    {
+     "tema": "Potenciación y Radicación",
+     "total": 1
+    },
+    {
+     "tema": "Números avales",
+     "total": 1
+    },
+    {
+     "tema": "Regla de descuento",
+     "total": 1
+    },
+    {
+     "tema": "Mínimo común múltiplo",
+     "total": 1
+    },
+    {
+     "tema": "Teoría de la divisibilidad",
+     "total": 1
+    },
+    {
+     "tema": "Estadística descriptiva",
+     "total": 1
+    },
+    {
+     "tema": "Clasificación de los enteros positivos",
+     "total": 1
+    },
+    {
+     "tema": "Números decimales",
+     "total": 1
+    },
+    {
+     "tema": "Análisis combinatorio",
+     "total": 1
+    },
+    {
+     "tema": "Numeros racionales",
+     "total": 1
+    },
+    {
+     "tema": "Numeración",
+     "total": 1
+    },
+    {
+     "tema": "Interés compuesto",
+     "total": 1
+    },
+    {
+     "tema": "Divisibilidad",
+     "total": 1
+    },
+    {
+     "tema": "Proporciones",
+     "total": 1
+    },
+    {
+     "tema": "Cuatro operaciones",
+     "total": 1
+    }
+   ],
+   "examenes": 8,
+   "muestras": [
+    {
+     "texto": "Se mezclan cantidades diferentes de dos tipos de arroz (tipo 1 y tipo 2). El de tipo 1 es de 3,80 soles el kilogramo, mientras que el de tipo 2 es de 2,30 soles el kilogramo. De ello se obtiene 100 kg de arroz de 2,90 soles el kilogramo como precio de mezcla. Determine la cantidad (en kilogramos) del tipo 1 y del tipo 2 que se debe mezclar.",
+     "opciones": [
+      "25 y 75",
+      "20 y 80",
+      "40 y 60",
+      "60 y 40",
+      "80 y 20"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Teniendo en cuenta los datos del problema, elaboramos el siguiente gráfico: arroz tipo 1 arroz tipo 2 mezcla S/3,80 S/2,30 Pm=S/2,90 a kg b kg 100 kg Gana S/0,60. Pierde S/0,90. Recordando que pérdida aparente ganancia aparente = tenemos lo siguiente: 0,9(a)=0,6(b) a b K K = 2 3 Además, sabemos que a+b=100 5K=100 → K=20 donde a=40 y b=60 Por lo tanto, las cantidades son 40 kg y 60 kg.",
+     "curso": "Aritmética (Prueba 2)",
+     "tema": "Regla de mezcla",
+     "subtema": null,
+     "examen": "UNI 2025 2025-2_MAT"
+    },
+    {
+     "texto": "En una proporción geométrica continua, los términos y la razón son números enteros positivos. La diferencia del primer antecedente con el doble del segundo antecedente es 30. Determine la menor diferencia positiva de los consecuentes.",
+     "opciones": [
+      "6",
+      "7",
+      "8",
+      "9",
+      "10"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Del enunciado: a b b c k a b c k = = { }⊂ + ; ; ; Z Es lo mismo que ck cc ck c k 2 = = Dato: a b ck ck c k k − = − = − ( )= 2 30 2 30 2 30 2 10×3 × 1 2 × 5 × 3 Cumplen para 2 porporciones: 90 30 30 10 3 50 10 10 2 5 = = = = ; Piden la menor diferencia positiva de los consecuentes Caso I: 30 – 10=20 Caso II: 10 – 2=8",
+     "curso": "Aritmética (Prueba 2)",
+     "tema": "Razones y proporciones",
+     "subtema": null,
+     "examen": "UNI 2023 EX_UNI_MAT_2023-2"
+    },
+    {
+     "texto": "En seis sábados consecutivos, un operador de grúa recibió 9, 7, 11, 10, 13 y 7 llamadas de servicio. Calcule aproximadamente la desviación estándar de la muestra.",
+     "opciones": [
+      "2,12",
+      "2,14",
+      "2,16",
+      "2,18",
+      "2,22"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "• a b c d 1 2 3 4 13 = o a b c d 0 0 0 0 10 2 0 3 0 4 13 1 4 3 1 4 3 1 + = −−− o a b c d 0 0 0 0 13 1 13 + − ( ) = o o a b c d 0 0 0 10 13 1 39 10 × = + + ÷ ( ) o a b c d 0 0 0 13 4 = + o • a b c d x y 2 3 4 13 3 2 = + o a b c d x y 0 0 0 2 0 3 0 4 0 13 3 2 +   = + o –4 –1 –3 1 4 3 13 4 13 7 13 3 2 o o o + ( )+ − ( )     = + x y 13 3 13 3 2 o o −     = + x y 10 13 3 2 x y = + o Hallamos los restos potenciales de 10 respecto al módulo 13. 100=13+1 o 106+5=13+4 o o 106+4=13+3 o o 106+3=13+12 o o 106+2=13+9 o o 106+1=13+10 o o 106=13+1 o o 101=13+10 o 102=13+9 o 103=13+12 o 104=13+3 o 105=13+4 o 106=13+1 o G=6 Se observa lo siguiente: x2y=6 4 o + Evaluamos: x2ymín=124 ∴ x+y=1+4=5",
+     "curso": "Aritmética (Prueba 2)",
+     "tema": "Teoría de divisibilidad",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2__1939In"
+    },
+    {
+     "texto": "Marta invierte 16000 soles al 20% durante cinco años. Si el interés se acumula continuamente, entonces el monto acumulado al final (en soles), es aproximadamente (Use el valor $ e = 2,71828 $)",
+     "opciones": [
+      "43495,88",
+      "43493,68",
+      "43491,58",
+      "43492,48",
+      "43490,78"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Piden el monto acumulado al realizar una inversión. Recuerde que para calcular el monto en interés continuo usamos M=C·er%×t donde M: monto C: capital e: exponente natural r%: tasa de interés t: tiempo de imposición Deben estar en las mismas unidades. De los datos, tenemos C=S/16000 r%=20% anual → M=16000×e20%×5 t=5 años M=16000×(e)100% M=16000×(e) M=16000×(2,71828) M=43492,48 Por lo tanto, el monto obtenido por Marta es 43492,48",
+     "curso": "Aritmética (Prueba 2)",
+     "tema": "Regla de interés",
+     "subtema": null,
+     "examen": "UNI 2022 Mat (M)"
+    },
+    {
+     "texto": "Si se cumple que $S = 54 + 5454 + 545454 + \\ldots + \\underbrace{545454\\ldots54}_{54 \\text{ cifras}}$, halle la suma de las dos cifras de menor orden de $S$.",
+     "opciones": [
+      "$6$",
+      "$8$",
+      "$9$",
+      "$10$",
+      "$13$"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Del dato: S = + + + + 54 5454 545454 545454 2 cifras 4 cifras 6 cifras ... ...54 54 cifras Analizando la cantidad de cada sumando, se deduce que la cantidad de sumandos es 27. Escribimos los sumandos en forma vertical. 54...545454 ...58 545454 5454 54 + ... 27 sumandos 10 14 Las 2 cifras de menor orden de S Unidades 4×27=108 Decenas 5×27+10=145 lleva queda lleva queda Por lo tanto, la suma de cifras de menor orden de S es 13.",
+     "curso": "Aritmética (Prueba 2)",
+     "tema": "Operaciones fundamentales",
+     "subtema": null,
+     "examen": "UNI 2023 MAT 2023-1"
+    },
+    {
+     "texto": "Calcule el menor valor de $a + b + c$ sabiendo que $abcabc + (24)abc$ es un cuadrado perfecto.",
+     "opciones": [
+      "9",
+      "10",
+      "7",
+      "11",
+      "17"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Por dato: abcabc+24(abc)=k2 (k∈N) abc×103+abc+24×abc=k2 Descomponemos por bloques el primer número. 1025×abc=k2 Esta es la forma de abc para que el producto sea cuadrado perfecto. 52×41×abc=k2 41×m2 (m∈N) Entonces abc=41×m2 • abc=41×22=164 → a+b+c=11 • abc=41×32=369 → a+b+c=18 • abc=41×42=656 → a+b+c=17 Por lo tanto, el menor valor de a+b+c es 11.",
+     "curso": "Aritmética (Prueba 2)",
+     "tema": "Potenciación y radicación",
+     "subtema": null,
+     "examen": "UNI 2022 2022-2 (Mat)"
+    }
+   ]
+  },
+  {
+   "curso": "Álgebra (Prueba 2)",
+   "slug": "algebra-prueba-2",
+   "total": 71,
+   "temas": [
+    {
+     "tema": "Programación lineal",
+     "total": 6
+    },
+    {
+     "tema": "Matrices",
+     "total": 4
+    },
+    {
+     "tema": "Función lineal",
+     "total": 3
+    },
+    {
+     "tema": "Polinomios",
+     "total": 3
+    },
+    {
+     "tema": "Logaritmos",
+     "total": 3
+    },
+    {
+     "tema": "Funciones",
+     "total": 3
+    },
+    {
+     "tema": "Series",
+     "total": 2
+    },
+    {
+     "tema": "Inecuaciones",
+     "total": 2
+    },
+    {
+     "tema": "Sucesiones",
+     "total": 2
+    },
+    {
+     "tema": "Radicación",
+     "total": 2
+    },
+    {
+     "tema": "Composición de funciones",
+     "total": 2
+    },
+    {
+     "tema": "Sistemas de ecuaciones",
+     "total": 2
+    },
+    {
+     "tema": "Inecuación irracional",
+     "total": 2
+    },
+    {
+     "tema": "Función logarítmica",
+     "total": 1
+    },
+    {
+     "tema": "Sistema de ecuaciones lineales",
+     "total": 1
+    },
+    {
+     "tema": "Ecuación irracional",
+     "total": 1
+    },
+    {
+     "tema": "Expresiones irracionales",
+     "total": 1
+    },
+    {
+     "tema": "Inecuación cuadrática",
+     "total": 1
+    },
+    {
+     "tema": "Matrices y determinantes",
+     "total": 1
+    },
+    {
+     "tema": "Series numéricas",
+     "total": 1
+    },
+    {
+     "tema": "Ecuación cuadrática",
+     "total": 1
+    },
+    {
+     "tema": "Números complejos",
+     "total": 1
+    },
+    {
+     "tema": "División algebraica",
+     "total": 1
+    },
+    {
+     "tema": "Inecuación fraccionaria",
+     "total": 1
+    },
+    {
+     "tema": "Función exponencial y logarítmica",
+     "total": 1
+    },
+    {
+     "tema": "Ecuación lineal",
+     "total": 1
+    },
+    {
+     "tema": "Conjuntos numéricos",
+     "total": 1
+    },
+    {
+     "tema": "Lógica proposicional",
+     "total": 1
+    },
+    {
+     "tema": "Determinantes",
+     "total": 1
+    },
+    {
+     "tema": "Ecuación bicuadrada",
+     "total": 1
+    },
+    {
+     "tema": "Inecuación exponencial",
+     "total": 1
+    },
+    {
+     "tema": "Función cuadrática",
+     "total": 1
+    },
+    {
+     "tema": "Sistema de ecuaciones",
+     "total": 1
+    },
+    {
+     "tema": "Determinante",
+     "total": 1
+    },
+    {
+     "tema": "Inecuación con valor absoluto",
+     "total": 1
+    },
+    {
+     "tema": "Inecuaciones irracionales",
+     "total": 1
+    },
+    {
+     "tema": "Gráfica de funciones",
+     "total": 1
+    },
+    {
+     "tema": "Sistema no lineal",
+     "total": 1
+    }
+   ],
+   "examenes": 9,
+   "muestras": [
+    {
+     "texto": "Sean las matrices $A=\\begin{bmatrix}1 & 0 \\\\ -2 & 1 \\\\ -1 & 3\\end{bmatrix}$ y $B=\\begin{bmatrix}1 & 0 & 8 \\\\ -3 & 1 & -2\\end{bmatrix}$. Calcule $\\text{Det}(A\\cdot B)$.",
+     "opciones": [
+      "$-2$",
+      "$-1$",
+      "0",
+      "1",
+      "2"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "A B ⋅ = − −        − −     1 0 2 1 1 3 1 0 8 3 1 2 A B ⋅ = − − − −         1 0 8 5 1 18 10 3 14 Det A B ⋅ ( )= − − − − 1 0 8 5 1 18 10 3 14 C3 – 8C1: 1 0 0 5 1 22 10 3 66 − − Las dos últimas columnas son proporcionales. ∴ Det(A·B)=0",
+     "curso": "Álgebra (Prueba 2)",
+     "tema": "Matrices y determinantes",
+     "subtema": null,
+     "examen": "UNI 2023 EX_UNI_MAT_2023-2"
+    },
+    {
+     "texto": "Algunos científicos afirman que el promedio de la temperatura de la superficie de la Tierra está subiendo constantemente. El promedio de la temperatura de la superficie de la Tierra lo han modelado como sigue: $T = 0,02t + 15,0$ donde $T$ es la temperatura en $^\\circ$C y $t$ en años desde 1950. Por lo tanto, se puede pronosticar que la temperatura promedio en $^\\circ$C de la superficie de la Tierra en el año 2050 será",
+     "opciones": [
+      "15",
+      "14",
+      "18",
+      "16",
+      "17"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Desde 1950 a 2050 hay 100 años → t=100 Como T=0,02 t+15,0 T=0,02(100)+15 T=2+15 ∴ T=17",
+     "curso": "Álgebra (Prueba 2)",
+     "tema": "Función lineal",
+     "subtema": null,
+     "examen": "UNI 2022 Mat (M)"
+    },
+    {
+     "texto": "Dado el sistema $\\displaystyle 2x_1 + 3x_2 + 10x_3 = 1$ $\\displaystyle -2x_1 + 2x_2 + 12x_3 = 2$ $\\displaystyle 4x_1 + x_2 - 2x_3 = -1$ Determine cuál de las siguientes expresiones paramétricas representa al conjunto solución: I. $ x_1 = -\\frac{2}{5} - t $ $\\displaystyle x_2 = -\\frac{13}{5} + 2t$ $\\displaystyle x_3 = -5t; \\quad t \\in \\mathbb{R}$ II. $ x_1 = -\\frac{2}{5} + t $ $\\displaystyle x_2 = \\frac{8}{5} - t$ $\\displaystyle x_3 = -5t + 1; \\quad t \\in \\mathbb{R}$ III. $ x_1 = -\\frac{2}{5} + \\frac{8}{5}t $ $\\displaystyle x_2 = \\frac{3}{5} - \\frac{22}{5}t$ $\\displaystyle x_3 = t; \\quad t \\in \\mathbb{R}$ Indique la alternativa correcta.",
+     "opciones": [
+      "solo I",
+      "solo II",
+      "solo III",
+      "I y II",
+      "II y III"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Se deduce que ecuación 2+ecuación 3=ecuación 1 Entonces, el sistema es equivalente. − + + = + − = − 2 2 12 2 4 2 1 1 2 3 1 2 3 x x x x x x − + = − − + = − = − x x x x x x x x 1 2 3 1 2 3 1 3 1 6 4 2 1 5 8 2 x x 1 3 8 5 2 5 = − Reemplazamos este valor en –x1+x2=1–6x3 − −    + = − 8 5 2 5 1 6 3 2 3 x x x –8x3+2+5x2=5–30x3 x x 2 3 3 5 22 5 = − Por lo tanto, si x3=t, entonces x t 1 2 5 8 5 = − + x t 2 3 5 22 5 = −",
+     "curso": "Álgebra (Prueba 2)",
+     "tema": "Sistemas de ecuaciones",
+     "subtema": null,
+     "examen": "UNI 2025 2025-2_MAT"
+    },
+    {
+     "texto": "Del sistema de ecuaciones $\\displaystyle \\begin{cases} x^2 + 2x - a = 0 \\\\ x^2 + x + b = 0 \\end{cases}$ Sea $ r $ una raíz común y sabiendo que $ a + b = 3 $, entonces el módulo de la suma de las otras raíces es",
+     "opciones": [
+      "9",
+      "7",
+      "3",
+      "5",
+      "0"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Reemplazamos la raíz común. r a b r a b −− = ↔ = + 0 dato=3  r2+2r – a=0 r2+r+b=0 – • En la primera ecuación x2+2x – a=0 de raíces 3 y a Por Cardano 3+a = – 2 ↔ a = – 5 • En la segunda ecuación x2+x+b=0 de raíces 3 y b Por Cardano 3+b = –1 ↔ b = – 4 ∴ |a+b|=9",
+     "curso": "Álgebra (Prueba 2)",
+     "tema": "Ecuación cuadrática",
+     "subtema": null,
+     "examen": "UNI 2022 Mat (M)"
+    },
+    {
+     "texto": "Halle el conjunto solución de la siguiente inecuación $\\displaystyle 1 + \\frac{-15 - 8x}{x^2 + 8x + 15} \\leq 0$",
+     "opciones": [
+      "$(-7, -3) \\cup \\{0\\}$",
+      "$(-∞, -5) \\cup [-3, 0]$",
+      "$(-5, -2) \\cup \\{0\\}$",
+      "$(-5, -3) \\cup \\{0\\}$",
+      "$(-5, -1) \\cup \\{0\\}$"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Se tiene 1 15 8 8 15 0 2 + − − + + ≤ x x x Operando x x x 2 2 8 15 0 + + ≤ Factorizando x x x 2 3 5 0 + ( ) + ( ) ≤ Aplicando teoremas 1 3 5 0 0 x x x + ( ) + ( ) ≤ = , → (x+3)(x+5)≤0, x=0, x≠ – 3, x≠ – 5 –5 –3 0 + + ∴ CS= 〈– 5, – 3〉 ∪ {0}",
+     "curso": "Álgebra (Prueba 2)",
+     "tema": "Inecuación fraccionaria",
+     "subtema": null,
+     "examen": "UNI 2022 Mat (T)"
+    },
+    {
+     "texto": "Considerese las matrices de 2×2. A=$\\begin{pmatrix}1 & -1 \\\\ 1 & 0\\end{pmatrix}$, B=$\\begin{pmatrix}0 & -1 \\\\ 1 & -1\\end{pmatrix}$ Calcule la suma de los elementos de la matriz $C=A^6+B^3$.",
+     "opciones": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Como A A = −    → = −     −    = − −     1 1 1 0 1 1 1 0 1 1 1 0 0 1 1 1 2 → A A A I 3 2 0 1 1 1 1 1 1 0 1 0 0 1 = ⋅ = − −     −    = − −    = − Como A I A A I I 3 6 3 2 2 = − → =( ) = − ( ) = Matemática Academia CÉSAR VALLEJO",
+     "curso": "Álgebra (Prueba 2)",
+     "tema": "Matrices",
+     "subtema": null,
+     "examen": "UNI 2023 MAT 2023-1"
+    }
+   ]
+  },
+  {
+   "curso": "Actualidad (Prueba 1)",
+   "slug": "actualidad-prueba-1",
+   "total": 15,
+   "temas": [
+    {
+     "tema": "Actualidad",
+     "total": 10
+    },
+    {
+     "tema": "Actualidad (externalidades negativas)",
+     "total": 1
+    },
+    {
+     "tema": "Poder legislativo",
+     "total": 1
+    },
+    {
+     "tema": "Guerra entre Rusia y Ucrania",
+     "total": 1
+    },
+    {
+     "tema": "Lógica: funciones del lenguaje",
+     "total": 1
+    },
+    {
+     "tema": "Lógica predicativa: proposiciones cate­",
+     "total": 1
+    }
+   ],
+   "examenes": 4,
+   "muestras": [
+    {
+     "texto": "La guerra entre Ucrania y Rusia afecta mundialmente a la",
+     "opciones": [
+      "salud.",
+      "seguridad.",
+      "cultura.",
+      "legislación.",
+      "igualdad"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "La guerra entre Rusia y Ucrania tiene impacto en la seguridad mundial por las siguientes razones: • Grave riesgo de expansión del conflicto en los países fronterizos con Rusia, tales como Bielorrusia, Moldavia y los países bálticos. • Amenazas reiteradas del presidente ruso, Vladimir Putin, de utilizar arsenal nuclear contra los países de la OTAN que están apoyando con armamento a Ucrania. • Riesgo de accidentes nucleares, ya que Rusia tiene una gran cantidad de ojivas y centrales nucleares que podrían ser dañadas con la expansión del conflicto.",
+     "curso": "Actualidad (Prueba 1)",
+     "tema": "Guerra entre Rusia y Ucrania",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_AAH"
+    },
+    {
+     "texto": "¿Cómo se denominará al nuevo Ministerio que se creará en el Perú?",
+     "opciones": [
+      "Ministerio de Inversiones",
+      "Ministerio de Infraestructura",
+      "Ministerio de Ciencia y Tecnología",
+      "Ministerio de Estructura Civil",
+      "Ministerio de Estructura de Obras"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "En su último mensaje a la nación, un acto protocolar por fiestas patrias, la actual presidenta del Perú, Dina Boluarte, anunció que con el objetivo de promover el desarrollo económico se emprendería la creación de un nuevo ministerio denominado Ministerio de Infraestructura.",
+     "curso": "Actualidad (Prueba 1)",
+     "tema": "Actualidad",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2"
+    },
+    {
+     "texto": "El actual presidente del Parlamento peruano es el congresista",
+     "opciones": [
+      "Eduardo Salhuana.",
+      "Gustavo Adrianzén.",
+      "Patricia Chirinos.",
+      "Hernando Guerra García.",
+      "Josué Gutiérrez."
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "El poder legislativo reside en el Congreso de la República y tiene como funciones principales brindar normas y ejercer el derecho de control político. Su presidente es elegido por el pleno de forma anual por un periodo de 1 año. En la actualidad, para este periodo 2024 - 2025, con 95 votos a favor ha sido electo Eduardo Salhuana Cavides del partido Alianza para el Progreso.",
+     "curso": "Actualidad (Prueba 1)",
+     "tema": "Poder legislativo",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2"
+    },
+    {
+     "texto": "Identifique la fórmula de la siguiente proposición categórica: \"Ningún deportista peruano es drogadicto\".",
+     "opciones": [
+      "Algún S es P.",
+      "Ningún S es P.",
+      "Ningún S no es P.",
+      "Algún S no es P.",
+      "Todo S es P."
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "góricas Existen cuatro proposiciones categóricas: Todo S es P (universal afirmativa), Ningún S es P (universal negativa), Algún S es P (particular afirmativa) y, por último, Algún S no es P (particular negativa). La proposición “Ningún deportista peruano es drogadicto” es equivalente a una proposición categórica universal negativa (Ningún S es P).",
+     "curso": "Actualidad (Prueba 1)",
+     "tema": "Lógica predicativa: proposiciones cate­",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_AAH"
+    },
+    {
+     "texto": "Uno de los desastres ecológicos más graves ocurridos en Lima en los últimos tiempos lo ocasionó la empresa Repsol, derramó petróleo en el terminal Multiboyas N.° 2 de la refinería La Pampilla, en Ventanilla; la marea del combustible llegó a Chancay, luego de pasar por los distritos de Santa Rosa y Ancón. Según el Organismo de Evaluación y Fiscalización Ambiental - OEFA, la cantidad inicial de barriles de petróleo derramado por Repsol fue de",
+     "opciones": [
+      "6200.",
+      "6500.",
+      "5800.",
+      "6000.",
+      "7000."
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "El pasado 15 de enero del 2022, a raíz del derrame de petróleo del buque carguero italiano Mare Doricum de propiedad de la empresa española Repsol en la playa de Ventanilla (Callao), se generó uno de los daños ecológicos mas grandes ocurrido en nuestro país. Inicialmente, la empresa le atribuyó la responsabilidad del derrame al oleaje que se generó tras el terremoto causado por la erupción volcánica en Tonga, aunque luego se habrían detectado fallas en su sistema de descarga. Las aguas contaminadas se llegaron a expandir a lugares como Ancón y Santa Rosa al norte de Lima. Asimismo, luego se expandió hacia algunas provincias como Huaral, Chancay y Aucallama. Las consecuencias generadas por este desastre no solo afectaron a la diversidad de especies marinas, sino también generó pérdidas económicas a la población que vive de la extracción y venta de productos marinos, pues la demanda de pescado bajó considerablemente. La OEFA (Organismo de Evaluación y Fiscalización Ambiental) indicó inicialmente que la cantidad de barriles derramados era aproximadamente 6000; no obstante, después de varios estudios, al 31 de enero, el Gobierno ha señalado que la cantidad podría llegar a 11 900 barriles.",
+     "curso": "Actualidad (Prueba 1)",
+     "tema": "Actualidad (externalidades negativas)",
+     "subtema": null,
+     "examen": "UNI 2022 AAH (M)"
+    },
+    {
+     "texto": "De las siguientes opciones, establezca cuál de ellas expresa el lenguaje en función informativa:",
+     "opciones": [
+      "¡Cuándo llegaremos a esa cumbre!",
+      "El agua contiene sales minerales.",
+      "Nunca te arrepientes de tus acciones.",
+      "Obedezca las recomendaciones de sus padres.",
+      "Espero que ya llegue el verano."
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "En lógica se estudian tres funciones del lenguaje: para describir el mundo (informativa), para dar órdenes o realizar pedidos (directiva o apelativa) y, por último, para expresar nuestras emociones y sentimientos (expresiva). El agua contiene sales minerales es un enunciado aseverativo que posee valor veritativo (puede ser verdadero y falso) y nos informa acerca del mundo. Por ello podemos afirmar que cumple la función informativa.",
+     "curso": "Actualidad (Prueba 1)",
+     "tema": "Lógica: funciones del lenguaje",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_AAH"
+    }
+   ]
+  },
+  {
+   "curso": "Nociones de Cálculo Diferencial (Prueba 2)",
+   "slug": "nociones-de-calculo-diferencial-prueba-2",
+   "total": 4,
+   "temas": [
+    {
+     "tema": "Relaciones métricas - Semejanza",
+     "total": 1
+    },
+    {
+     "tema": "Sucesiones",
+     "total": 1
+    },
+    {
+     "tema": "Sucesiones reales",
+     "total": 1
+    },
+    {
+     "tema": "Polígonos regulares",
+     "total": 1
+    }
+   ],
+   "examenes": 4,
+   "muestras": [
+    {
+     "texto": "Dada la siguiente sucesión (donde [x] máximo entero de x). $\\displaystyle x_n = \\left\\lfloor \\frac{n(-1)^n}{e^n} \\right\\rfloor$ ¿Cuál de las siguientes afirmaciones es verdadera con respecto a $ x_n $?",
+     "opciones": [
+      "Es constante a partir de cierto $ n $.",
+      "Es decreciente.",
+      "No es convergente.",
+      "Es creciente.",
+      "Converge a 0."
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Analizaremos para valores de n en la sucesión xn. • n=10: x e 10 10 10 0 0004 0 = = = , ... • n=11: x e 11 11 11 0 0001 1 = − = − = − , ... • n=12: x e 12 12 12 0 = = • n=13: x e 13 13 13 1 = − = − . . . Entonces la sucesión (xn) tiene 2 puntos límites: 0 ∨ –1 Por lo tanto, (xn) no converge.",
+     "curso": "Nociones de Cálculo Diferencial (Prueba 2)",
+     "tema": "Sucesiones",
+     "subtema": null,
+     "examen": "UNI 2022 Mat (T)"
+    },
+    {
+     "texto": "Sea $ f: \\mathbb{R} \\rightarrow \\mathbb{R} $, una función definida por $\\displaystyle f(x) = x^3 + 2x + 1$ y la sucesión $ a_n = \\frac{n+1}{n} $. Determine el valor de convergencia de la sucesión $ \\{f(a_n)\\} $.",
+     "opciones": [
+      "1",
+      "3",
+      "4",
+      "5",
+      "6"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Nos piden determinar el valor de convergencia de la sucesión f an ( ) { }, es decir, lím n n f a →+∞( ). Como f es una función polinomial, se cumple que lím lím n n n n n f a a a →+∞ →+∞ ( )= + + ( ) 3 2 1 = + + →+∞ →+∞ lím lím n n n n a a 3 2 1 = +     +    + →+∞ →+∞ lím lím n n n n n n 1 2 1 1 3 =1+2+1 =4 Por lo tanto, el valor de convergencia de la sucesión f an ( ) { } es 4.",
+     "curso": "Nociones de Cálculo Diferencial (Prueba 2)",
+     "tema": "Sucesiones reales",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_MAT"
+    },
+    {
+     "texto": "En una circunferencia $ C $, se inscribe un polígono regular $ ABCDEF $. Por el punto $ A $ se traza una recta tangente $ \\mathscr{L} $ a la circunferencia $ C $. Las proyecciones ortogonales de los puntos $ B $ y $ E $ sobre la recta $ \\mathscr{L} $ son $ B' $ y $ E' $, respectivamente. Halle el valor de $ \\frac{BB'}{EE'} $.",
+     "opciones": [
+      "$ \\frac{1}{6} $",
+      "$ \\frac{1}{5} $",
+      "$ \\frac{1}{4} $",
+      "$ \\frac{1}{3} $",
+      "$ \\frac{1}{2} $"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Piden: BB EE ' ' k k B A E F D C B' E' 2k 2k 2k 30° L Se tienen arcos congruentes que miden 60°. → mBAB’=30°, CE// y mCEF=90° → la proyectante EE’ contiene a F. Luego BB EE k k ' ' = 3 ∴ BB EE ' ' = 1 3",
+     "curso": "Nociones de Cálculo Diferencial (Prueba 2)",
+     "tema": "Polígonos regulares",
+     "subtema": null,
+     "examen": "UNI 2025 2025-2_MAT"
+    },
+    {
+     "texto": "Los lados de un triángulo ABC inscrito en una circunferencia miden: AB=12, AC=10 y BC=8 Por B se traza una recta tangente a la circunferencia que corta a la prolongación del lado AC en M. Redondee el valor de BM.",
+     "opciones": [
+      "27",
+      "12",
+      "14",
+      "10",
+      "9"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Nos piden BM. A 10 12 8 2k θ θ α 3k C M B ABM ∼ BCM BM AM = = → 8 12 2 3 2 3 BM=2k AM=3k Teorema de la tangente (2k)2=(3k)(3k – 10) k=6 ∴ BM=12",
+     "curso": "Nociones de Cálculo Diferencial (Prueba 2)",
+     "tema": "Relaciones métricas - Semejanza",
+     "subtema": null,
+     "examen": "UNI 2022 2022-2 (Mat)"
+    }
+   ]
+  }
+ ],
+ "anios": [
+  {
+   "anio": "2025",
+   "total": 310,
+   "examenes": [
+    {
+     "examen": "UNI 2025 2025-1_AAH",
+     "total": 94
+    },
+    {
+     "examen": "UNI 2025 2025-1_FQ",
+     "total": 40
+    },
+    {
+     "examen": "UNI 2025 2025-1_MAT",
+     "total": 40
+    },
+    {
+     "examen": "UNI 2025 2025-2_AAH",
+     "total": 96
+    },
+    {
+     "examen": "UNI 2025 2025-2_MAT",
+     "total": 40
+    }
+   ],
+   "cursos": [
+    {
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "total": 72
+    },
+    {
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "total": 57
+    },
+    {
+     "curso": "Humanidades (Prueba 1)",
+     "total": 50
+    },
+    {
+     "curso": "Geometría (Prueba 2)",
+     "total": 22
+    },
+    {
+     "curso": "Física (Prueba 3)",
+     "total": 21
+    },
+    {
+     "curso": "Aritmética (Prueba 2)",
+     "total": 20
+    },
+    {
+     "curso": "Química (Prueba 3)",
+     "total": 19
+    },
+    {
+     "curso": "Álgebra (Prueba 2)",
+     "total": 18
+    },
+    {
+     "curso": "Trigonometría (Prueba 2)",
+     "total": 18
+    },
+    {
+     "curso": "Actualidad (Prueba 1)",
+     "total": 11
+    },
+    {
+     "curso": "Nociones de Cálculo Diferencial (Prueba 2)",
+     "total": 2
+    }
+   ],
+   "muestras": [
+    {
+     "texto": "Elija el término que, al sustituir la palabra subrayada, exprese el significado opuesto de la oración. El uso de la fuerza por parte de los agentes del orden en contra de los comerciantes informales provocó satisfacción en buena parte de la opinión pública.",
+     "opciones": [
+      "enfado",
+      "enojo",
+      "indignación",
+      "rabia",
+      "cólera"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "La alternativa que, al sustituir el término subrayado, expresa el sentido opuesto a satisfacción es indignación. El término satisfacción se refiere a tener alegría, placer o gusto. En el contexto de la oración, es una parte de la opinión pública la que se siente satisfecha por el uso de la fuerza por parte de los agentes del orden hacia los comerciantes informales. Por esta razón, el antónimo debe ser indignación (enojo, ira o enfado vehemente contra una persona o contra sus actos, o sea, hacia los agentes del orden).",
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "tema": "Antonimia contextual",
+     "subtema": null,
+     "examen": "UNI 2025 2025-2_AAH"
+    },
+    {
+     "texto": "Con respecto a los tipos de mercados, indique la secuencia correcta después de determinar si la proposición es verdadera (V) o falsa (F): I. En el mercado formal se cumplen las disposiciones legales y tributarias. II. La minería formal se comercializa en el mercado negro. III. El narcotráfico es propio del mercado ilegal.",
+     "opciones": [
+      "FVV",
+      "VFF",
+      "VFV",
+      "FFV",
+      "VVF"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Los mercados son un elemento importante dentro de la circulación de mercancías entre empresas y familias. Se definen como aquellas situaciones donde interactúan unidades de consumo y de producción para establecer intercambio a través de los precios. El mercado es formal cuando cumple las exigen­ cias de la ley, sea esto control de calidad, sani­ dad, licencias, normas tributarias, entre otras. Lo contrario es el mercado informal, que no cumple con las exigencias debidas. Así mismo, el mercado ilegal ocurre cuando lo que se comercializa allí son objetos prohibidos por la ley. Por ejemplo, el tráfico de armas, la venta de droga, el tráfico de órganos, entre otros. El mercado negro se genera a raíz de la intervención del Estado tratando de controlar los precios, lo cual genera acaparamiento de productos y elevación de los precios.",
+     "curso": "Humanidades (Prueba 1)",
+     "tema": "Circulación",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_AAH"
+    },
+    {
+     "texto": "En un triángulo $ ABC $, $ \\overline{BM} $ es una mediana, $ AB = BM $, $ AB = 6 $ cm y $ AC = 12 $ cm. Calcule la longitud (en cm) de $ \\overline{BC} $.",
+     "opciones": [
+      "$ 2\\sqrt{6} $",
+      "$ 3\\sqrt{3} $",
+      "$ 6\\sqrt{3} $",
+      "$ \\sqrt{23} $",
+      "$ 2\\sqrt{23} $"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Piden longitud de BC. 60° 60° 6 6 30° 6 B 6 12 A M C Dato BM: mediana → AM=MC=6 Luego mBAM=2mBCM=60° Entonces ABC: notable de 30° y 60° \\ BC=6 3",
+     "curso": "Geometría (Prueba 2)",
+     "tema": "Triángulos notables",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_MAT"
+    },
+    {
+     "texto": "Un profesor tiene dos hijos: Juan, el mayor, que en el 2020 cumplió la edad de tres veces W, y su hijo menor Luis, que nació en ZWWW. Si cada letra representa un dígito, determine la suma de los dígitos del año en que nació Juan.",
+     "opciones": [
+      "21",
+      "22",
+      "24",
+      "27",
+      "28"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Nos piden la suma de dígitos del año de naci­ miento de Juan. De los datos: ZWWW 2020 Juan (mayor) Hijo (menor) 3W 0 Como W=0, entonces Z=1; W=9 Luego 2020 Juan Hijo menor 27 6 0 1999 – 21 años → Juan nació 1996 – 6=1993 → 1+9+9+3 = 22 Por lo tanto, la suma de dígitos del año de nacimiento es 22.",
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "tema": "Razonamiento deductivo",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_AAH"
+    },
+    {
+     "texto": "El flujo de calor a través de una sección transversal de un tabique (área de la sección $1 \\text{ m}^2$) es de 1000 W, en régimen estacionario. Si la distribución de la temperatura en función de su espesor es la mostrada en la figura, determine aproximadamente el valor de su conductividad térmica (en W/m °C).",
+     "opciones": [
+      "0,12",
+      "0,28",
+      "0,35",
+      "1,12",
+      "2,31"
+     ],
+     "correcta": 1,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2025-2025-1-FQ/P7.webp",
+     "justificacion": "Piden el valor de K (conductividad). E A=1 m2 500 °C 150 °C 0,1 m=L Aplicamos: P KA t K = = ( ) − ( ) − ∆ L 1000 1 500 150 10 1 Despejamos y operamos ∴ K=0,28",
+     "curso": "Física (Prueba 3)",
+     "tema": "Calorimetría",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_FQ"
+    },
+    {
+     "texto": "Tres amigas llegan al cine y se van a sentar juntas; Miguel y Roberto son amigos, van al mismo cine y también se van a sentar juntas; simultáneamente llegaron cinco personas desconocidas. El único espacio libre que queda es una fila de 10 butacas y todos se sientan en dicha fila. ¿Cuál es la probabilidad de que las tres amigas se sienten juntas y a la vez Miguel y Roberto también se sienten juntas?",
+     "opciones": [
+      "$\\frac{1}{60}$",
+      "$\\frac{2}{60}$",
+      "$\\frac{3}{60}$",
+      "$\\frac{4}{60}$",
+      "$\\frac{5}{60}$"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "De los datos tenemos • 3 amigas • Miguel, Roberto • 5 personas desconocidas Total=10 personas Donde el experimento aleatorio (e) es e: ubicar a las 10 personas en una fila de 10 butacas → Total casos del e=P(10) Total casos del e=10! ← n(Ω) Además, sea el evento A definido por A: Las 10 personas se ubiquen de tal forma que las 3 amigas se sienten juntas así como Miguel y Roberto también se sienten juntos. A1 A1 A1 P1 P2 P3 P4 P5 M R juntos juntas Ax: Amiga Py: Persona desconocida n(A)=P(7)×P(3)×P(2) n(A)=7!×3!×2! Finalmente P n A n A ( ) = ( ) Ω ( ) = × × 7 3 2 10 ! ! ! ! ∴ P A ( ) = 1 60",
+     "curso": "Aritmética (Prueba 2)",
+     "tema": "Probabilidades",
+     "subtema": null,
+     "examen": "UNI 2025 2025-1_MAT"
+    },
+    {
+     "texto": "Para las futuras elecciones generales a realizarse el 9 de abril del 2026, se han inscrito, en el plazo establecido, alianzas electorales que deben ser autorizadas por el Jurado Nacional de Elecciones. ¿Cuántas alianzas electorales se han inscrito?",
+     "opciones": [
+      "2",
+      "3",
+      "4",
+      "5",
+      "6"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "En cumplimiento del cronograma electoral, cinco alianzas electorales presentaron ante el Jurado Nacional de Elecciones (JNE) su solicitud de inscripción para participar en las Elecciones Generales 2026, dentro del plazo previsto por la normativa vigente. Estas fueron: • Unidad Nacional, integrada por el Partido Popular Cristiano (PPC), el Partido Unidad y Paz y el Partido Político Peruanos Unidos: ¡Somos Libres! • Alianza Electoral Ahora Nación, conformada por Ahora Nación (AN) y Salvemos al Perú • Fuerza y Libertad, compuesta por Fuerza Moderna y Batalla Perú • Venceremos, integrada por el Partido Político Popular Voces del Pueblo y Nuevo Perú por el Buen Vivir • Frente de los Trabajadores y Emprendedores, que reúne a Primero la Gente y al Partido de los Trabajadores y Emprendedores",
+     "curso": "Actualidad (Prueba 1)",
+     "tema": "Actualidad",
+     "subtema": null,
+     "examen": "UNI 2025 2025-2_AAH"
+    },
+    {
+     "texto": "En las gráficas mostradas, escriba $ h $ en función de $ x $, $ l $ en función de $ y $. Indique el valor de verdad (V) o falsedad (F) de las siguientes proposiciones: I. $ h $ es máximo para $ x = \\frac{3}{2} $ II. $ h + l = -3 + 3x - x^2 + \\frac{y}{3} + \\sqrt{9 - y} $ III. $ h $ es una función inyectiva Marque la secuencia correcta.",
+     "opciones": [
+      "VVV",
+      "VVF",
+      "FVV",
+      "FVF",
+      "VFV"
+     ],
+     "correcta": 1,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2025-2025-2-MAT/P12.webp",
+     "justificacion": "Del gráfico 1: h=6x – x2 – 3x h= – x2+3x (a) Del gráfico 2: y=6x – x2 y= –(x – 3)2+9 (x – 3)2=9 – y x y − = − 3 9 x y = − − 3 9 ...; x∈[0; 3] De la función lineal y=3x → x y = 1 3 → = − − −  = − + − 1 3 3 9 1 3 3 9 y y y y (b) I. Verdadera En (a) 3 2 máximo 0 3 X Y II. Verdadera Sumamos (a) y (b) h x x y y + = −+ + + + −  3 3 1 3 9 2 III. Falsa Del gráfico en (I)",
+     "curso": "Álgebra (Prueba 2)",
+     "tema": "Gráfica de funciones",
+     "subtema": null,
+     "examen": "UNI 2025 2025-2_MAT"
+    }
+   ]
+  },
+  {
+   "anio": "2024",
+   "total": 253,
+   "examenes": [
+    {
+     "examen": "UNI 2024 2024-2",
+     "total": 95
+    },
+    {
+     "examen": "UNI 2024 2024-2__1939In",
+     "total": 39
+    },
+    {
+     "examen": "UNI 2024 2024-2__1Ew4KF",
+     "total": 39
+    },
+    {
+     "examen": "UNI 2024 FQ 2024-1",
+     "total": 40
+    },
+    {
+     "examen": "UNI 2024 MAT 2024-1",
+     "total": 40
+    }
+   ],
+   "cursos": [
+    {
+     "curso": "Física (Prueba 3)",
+     "total": 46
+    },
+    {
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "total": 40
+    },
+    {
+     "curso": "Química (Prueba 3)",
+     "total": 33
+    },
+    {
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "total": 30
+    },
+    {
+     "curso": "Trigonometría (Prueba 2)",
+     "total": 29
+    },
+    {
+     "curso": "Humanidades (Prueba 1)",
+     "total": 22
+    },
+    {
+     "curso": "Geometría (Prueba 2)",
+     "total": 22
+    },
+    {
+     "curso": "Álgebra (Prueba 2)",
+     "total": 18
+    },
+    {
+     "curso": "Aritmética (Prueba 2)",
+     "total": 10
+    },
+    {
+     "curso": "Actualidad (Prueba 1)",
+     "total": 3
+    }
+   ],
+   "muestras": [
+    {
+     "texto": "Calcule la razón $ f_2 / f_1 $ entre las frecuencias de dos ondas electromagnéticas armónicas que se propagan en el vacío, cuyas longitudes de onda son $ \\lambda_1 = 5,0 \\, \\mu\\text{m} $ y $ \\lambda_2 = 5,0 \\, \\text{nm} $, respectivamente.",
+     "opciones": [
+      "10",
+      "$ 10^2 $",
+      "$ 10^3 $",
+      "$ 10^4 $",
+      "$ 10^5 $"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Se pide: f2/f1 (a) Toda OEM que se propaga en el vacío presenta la misma rapidez de propagación. v1=v2 f1λ1=λ2f2 → f f 2 1 1 2 6 9 5 10 5 10 = = × × − − λ λ ∴ f f 2 1 3 10 =",
+     "curso": "Física (Prueba 3)",
+     "tema": "OEM",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2__1Ew4KF"
+    },
+    {
+     "texto": "Elija la opción que, al insertarse en los espacios dejados, dé un sentido coherente al enunciado. ................... algunos economistas sostienen que el Perú viene creciendo en estos últimos años, ello no llega a los sectores pobres. ................... esta parte de la población rechaza tales afirmaciones.",
+     "opciones": [
+      "A pesar que - No obstante",
+      "Aun cuando - Por eso",
+      "Si bien - A fin de que",
+      "Si - Pues",
+      "Ni - Ni"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Los conectores que mantienen el sentido coherente y preciso al insertarse en los espacios en blanco son aun cuando y por eso. El primer espacio en blanco necesita de un conector concesivo (aun cuando). El segundo espacio precisa de un conector consecutivo (por eso).",
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "tema": "Conectores lógico-textuales",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2"
+    },
+    {
+     "texto": "Si $ t = t^2 + 1 $, determine el valor de $ z^2 $, en: $ z = 290 $",
+     "opciones": [
+      "0",
+      "$ \\frac{1}{2} $",
+      "1",
+      "2",
+      "3"
+     ],
+     "correcta": 4,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2024-2024-2/P21.webp",
+     "justificacion": "Nos piden el valor de z2. De la definición t =t2+1 Luego z =290=172+1 z =17=42+1 z =4= 32+1 z = 3 ∴ z2= 32=3",
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "tema": "Operaciones matemáticas",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2"
+    },
+    {
+     "texto": "Calcule el grado de ionización de una solución de ácido nitroso, $\\mathrm{HNO_2}$(ac) 0,2 M. Dato: Ka($\\mathrm{HNO_2}$) = 4,5×$10^{-4}$",
+     "opciones": [
+      "0,0095",
+      "0,0200",
+      "0,0475",
+      "0,1000",
+      "0,2000"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Se pide el grado de ionización (a) de una solución de HNO2 0,2 m. HNO2(ac) 0,2 m Ka= 4,5×10−4 Es un ácido débil y se oiniza parcialmente en medio acuoso. ∴ α α α = = × = − K C a a 4 5 10 0 2 0 0475 4 , , ,",
+     "curso": "Química (Prueba 3)",
+     "tema": "Equilibrio iónico",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2__1Ew4KF"
+    },
+    {
+     "texto": "Sea la función $\\displaystyle f(x) = [2x - 3] \\quad x \\in \\mathbb{R}$ y el conjunto $\\displaystyle \\left\\{ x \\in \\mathbb{R} \\mid -3\\pi \\leq f(x) \\leq \\frac{100}{3} \\right\\} = [a, b].$ Considerando que: $\\displaystyle ([x] = n \\in \\mathbb{Z} \\iff n \\leq x < n + 1)$ Halle $ a + 2b $.",
+     "opciones": [
+      "32",
+      "33",
+      "34",
+      "35",
+      "36"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "– 3π ≤ [2x - 3]<100 3 – 9,42 [2x - 3]∈{– 9; – 8; – 7; ... ; 33} → – 9≤ 2x – 3<34 – 6≤2x<37 – 3≤x< 37 2 a b ∴ a+2b=34",
+     "curso": "Álgebra (Prueba 2)",
+     "tema": "Inecuaciones",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2__1939In"
+    },
+    {
+     "texto": "Elija el enunciado que posee un significado denotativo.",
+     "opciones": [
+      "Correr por las mañanas ayuda a quemar grasa.",
+      "El orador locuaz ganó el corazón del público.",
+      "Los hermanos Ruiz nos dieron una mano ese día.",
+      "El río Cañete es adecuado para realizar canotaje.",
+      "La renuncia del ministro corría de boca en boca."
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "La semántica es una disciplina lingüística que estudia el significado de las palabras. La imagen conceptual o significado puede ser de dos tipos: 1. Denotativo (objetivo, real, directo) Ejemplos: - El río Cañete es adecuado para realizar canotaje. 2. Connotativo (subjetivo, irreal, figurado) Ejemplos: - Correr por las mañanas ayuda a quemar grasa. (bajar de peso) - El orador locuaz ganó el corazón del público. (tener confianza) - Los hermanos Ruiz nos dieron una mano ese día. (ayuda) - La renuncia del ministro corría de boca en boca. (propagarse una noticia)",
+     "curso": "Humanidades (Prueba 1)",
+     "tema": "Semántica",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2"
+    },
+    {
+     "texto": "Calcule el valor de: $\\displaystyle \\tan\\left(\\frac{\\pi}{4} - \\arccot(3)\\right).$",
+     "opciones": [
+      "$-\\frac{1}{2}$",
+      "$\\frac{1}{2}$",
+      "1",
+      "$\\frac{3}{2}$",
+      "2"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Nos piden el valor de E = −     tan arccot π 4 3 Sea a = arccot3 → cota = 3 → tanα = 1 3 E E E = −     = − + = − + ⋅ tan tan tan tan tan π α π α π α 4 4 1 4 1 1 3 1 1 1 3 ∴ E = 1 2",
+     "curso": "Trigonometría (Prueba 2)",
+     "tema": "Funciones trigonométricas inversas",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2__1939In"
+    },
+    {
+     "texto": "En un triángulo rectángulo, de perímetro 40 u y área 60 $\\text{u}^{2}$. Calcule la diferencia de las longitudes (en u) de los catetos.",
+     "opciones": [
+      "3",
+      "5",
+      "7",
+      "9",
+      "11"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Piden a - b r b a c = 17 2P=a+b+c=40 Del dato 2P=40 y A =60 A =pr → 60=20r → r=3 Teorema de Poncelet a+b=c+2(3) 40 - c=c+6 → c=17 a+b=23 y ab=120 → a=15 y b=8 ∴ a - b=7",
+     "curso": "Geometría (Prueba 2)",
+     "tema": "Áreas",
+     "subtema": null,
+     "examen": "UNI 2024 2024-2__1939In"
+    }
+   ]
+  },
+  {
+   "anio": "2023",
+   "total": 349,
+   "examenes": [
+    {
+     "examen": "UNI 2023 AAH 2023-1",
+     "total": 95
+    },
+    {
+     "examen": "UNI 2023 AAH 2023-2",
+     "total": 95
+    },
+    {
+     "examen": "UNI 2023 EX_UNI_FQ_2023-2",
+     "total": 40
+    },
+    {
+     "examen": "UNI 2023 EX_UNI_MAT_2023-2",
+     "total": 40
+    },
+    {
+     "examen": "UNI 2023 FyQ 2023-1",
+     "total": 40
+    },
+    {
+     "examen": "UNI 2023 MAT 2023-1",
+     "total": 39
+    }
+   ],
+   "cursos": [
+    {
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "total": 84
+    },
+    {
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "total": 60
+    },
+    {
+     "curso": "Humanidades (Prueba 1)",
+     "total": 46
+    },
+    {
+     "curso": "Física (Prueba 3)",
+     "total": 40
+    },
+    {
+     "curso": "Química (Prueba 3)",
+     "total": 40
+    },
+    {
+     "curso": "Trigonometría (Prueba 2)",
+     "total": 22
+    },
+    {
+     "curso": "Aritmética (Prueba 2)",
+     "total": 20
+    },
+    {
+     "curso": "Álgebra (Prueba 2)",
+     "total": 19
+    },
+    {
+     "curso": "Geometría (Prueba 2)",
+     "total": 18
+    }
+   ],
+   "muestras": [
+    {
+     "texto": "¿Cuál es la fórmula química del compuesto formado por la unión electrostática de los iones aluminio y sulfuro?",
+     "opciones": [
+      "$\\mathrm{AlS_3}$",
+      "$\\mathrm{Al_3S_2}$",
+      "$\\mathrm{Al_2(SO_4)_3}$",
+      "$\\mathrm{Al_2S_3}$",
+      "$\\mathrm{Al_3(SO_4)_2}$"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Nos piden determinar la fórmula química del compuesto formado por los iones Aluminio (Al3+) y sulfuro (S2–). Tener presente que todo compuesto es neutro. 2Al3++3 S2– → Al2 S3",
+     "curso": "Química (Prueba 3)",
+     "tema": "Nomenclatura inorgánica",
+     "subtema": null,
+     "examen": "UNI 2023 FyQ 2023-1"
+    },
+    {
+     "texto": "Elija el término que, al sustituir la palabra subrayada, expresa el sentido opuesto de la oración. Usualmente, algunos integrantes de un equipo de trabajo concuerdan en propuestas académicas.",
+     "opciones": [
+      "disienten",
+      "confabulan",
+      "contribuyen",
+      "disciernen",
+      "armonizan"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "El antónimo contextual de la palabra resaltada en la oración es disienten, pues el término disentir alude a estar en desacuerdo con la opinión de una persona.",
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "tema": "Antonimia contextual",
+     "subtema": null,
+     "examen": "UNI 2023 AAH 2023-2"
+    },
+    {
+     "texto": "Un tren que viaja por unos rieles rectos, con rapidez constante de 60 km/h, atraviesa un túnel de 180 m. Desde que la parte delantera del tren ingresa en el túnel hasta que la cola del tren sale de él transcurren 15 s. Calcule en m, la longitud del tren.",
+     "opciones": [
+      "40",
+      "50",
+      "60",
+      "70",
+      "80"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "P P 60 km/h 15 s L 180 m Para la parte posterior del tren: d=vt L+ = ×     180 60 5 18 15 ∴ L=70 m",
+     "curso": "Física (Prueba 3)",
+     "tema": "MRU",
+     "subtema": null,
+     "examen": "UNI 2023 FyQ 2023-1"
+    },
+    {
+     "texto": "Complete the sentence. The Lake Titicaca is the ............. lake located ............. Peru at 4000 meters above mean sea level.",
+     "opciones": [
+      "bigger / off",
+      "bigger / at",
+      "most big / in",
+      "bigest / in",
+      "biggest / in"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Se debe completar la oración usando las palabras correctas. En la primera parte se está comparando el lago Titicaca en relación a todos los demás lagos del Perú, con respecto al tamaño; por lo tanto, se debe usar la forma superlativa del adjetivo biggest. En la segunda parte de la oración, que menciona la ubicación del lago, usaremos la preposición in. The Lake Titicaca is the biggest lake located in Peru at 4000 meters above mean sea level. (El lago Titicaca es el lago más grande del Perú a 400 metros sobre el nivel del mar).",
+     "curso": "Humanidades (Prueba 1)",
+     "tema": "Superlative - Preposition of Place",
+     "subtema": null,
+     "examen": "UNI 2023 AAH 2023-2"
+    },
+    {
+     "texto": "En un triángulo $ABC$, recto en $B$, el punto $N$ pertenece a la hipotenusa. Si $AN = AB$ y $CN = NB$, calcule la medida del ángulo $BAC$ (en grados sexagesimales).",
+     "opciones": [
+      "60",
+      "75",
+      "53",
+      "45",
+      "37"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Nos piden x. Por dato el BNC es isósceles. → mNBC=mNCB=q b x a C B A N b a θ θ 2θ 2θ En el BNC por ángulo exterior → mANB=2q El BAN isósceles → mANB=mABN=2q En el vértice B 2q +q =90° q =30° En el ABC x+q =90° x+30°=90° ∴ x=60",
+     "curso": "Geometría (Prueba 2)",
+     "tema": "Triángulos",
+     "subtema": null,
+     "examen": "UNI 2023 EX_UNI_MAT_2023-2"
+    },
+    {
+     "texto": "El siguiente polígono muestra la cantidad de puntos de un jugador de básquet por juego desde 2012 a 2017. Calcule el porcentaje aproximado de incremento en el periodo de 6 años mostrado.",
+     "opciones": [
+      "18%",
+      "20,4%",
+      "22,2%",
+      "23,2%",
+      "23,6%"
+     ],
+     "correcta": 2,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNI/UNI-2023-AAH-2023-2/P21.webp",
+     "justificacion": "Nos piden el porcentaje aproximado de incremento en los 6 años mostrados. Aptitud Académica y Humanidades Academia CÉSAR VALLEJO Dato 2: la hamburguesa vegetariana no está en la butaca 2 y se encuentra entre dos personas. → la hamburguesa vegetariana está en 5. 1 2 3 4 5 6 huevos fritos y sopa entre dos butacas hamb. veg.",
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "tema": "Interpretación de gráficos estadísticos",
+     "subtema": null,
+     "examen": "UNI 2023 AAH 2023-2"
+    },
+    {
+     "texto": "¿Cuántos números $\\overline{24XY}$ son divisibles entre 3 y al dividirlos entre 5 el residuo es 3?",
+     "opciones": [
+      "$6$",
+      "$7$",
+      "$8$",
+      "$9$",
+      "$10$"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Del dato: 24xy 5+3 ° 3° Por criterio del 5 24xy=5+3 ° 3 8 2 posibles valores Por criterio del 3 Si y=3 Si y=8 24x3=3 o 2+4+x+3=3 o 9+x=3 o 3 o +x=3 o x=3 o x: 0; 3; 6 ,9 24x8=3 o 2+4+x+8=3 o 14+x=3 o 3 o +2+x=3 o x=3 o – 2 x: 1; 4; 7 Existen 4 números que cumplen las condiciones Existen 3 números que cumplen las condiciones Por lo tanto, existen 7 números que cumplen las condiciones.",
+     "curso": "Aritmética (Prueba 2)",
+     "tema": "Teoría de divisibilidad",
+     "subtema": null,
+     "examen": "UNI 2023 MAT 2023-1"
+    },
+    {
+     "texto": "Sea $ F = (a; b) $ el foco de la parábola $ P $ de ecuación: $\\displaystyle x^2 - 2xy + y^2 - 8x - 16y + 64 = 0$ Calcule: $ a + b $.",
+     "opciones": [
+      "8",
+      "2",
+      "6",
+      "4",
+      "10"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Piden a+b. Dato: F=(a; b) es el foco de la parábola x2 – 2xy+y2 – 8x –16y+64=0 (*) Hallamos el ángulo de rotación. cot 2 1 1 2 0 θ= − = − − = A C B q=45º Matemática Academia CÉSAR VALLEJO Usamos x x y x x y = − → = − 'cos 'sen ' ' θ θ 2 y x y y x y = + → = + 'sen 'cos ' ' θ θ 2 Reemplazamos en la ecuación (*). (x – y)2 – 8x–16y+64=0 x y x y x y x y y ' ' ' ' ' ' ' ' − − +    − −    − +    + = 2 2 8 2 16 2 6 0 2 y y x ' ' ' 2 2 2 6 2 32 0 − − + = y x ' ' − ( ) = −     2 6 2 5 2 2 2 Vértice: 5 2 2 2 ; '; '    =( ) h k 4 6 2 3 2 2 p p = → = Foco: F h p k = + ( )=( ) ' ; ' ; 4 2 2 x' y' En el sistema original F=(a; b) a x y a = − = − → = ' ' 2 4 2 2 2 3 b x y b = + = + → = ' ' 2 4 2 2 2 5 ∴ a+b=8",
+     "curso": "Trigonometría (Prueba 2)",
+     "tema": "Rotación de ejes",
+     "subtema": null,
+     "examen": "UNI 2023 MAT 2023-1"
+    }
+   ]
+  },
+  {
+   "anio": "2022",
+   "total": 403,
+   "examenes": [
+    {
+     "examen": "UNI 2022 2022-2 (AAH)",
+     "total": 95
+    },
+    {
+     "examen": "UNI 2022 2022-2 (Mat)",
+     "total": 39
+    },
+    {
+     "examen": "UNI 2022 2022-2 - FyQ",
+     "total": 40
+    },
+    {
+     "examen": "UNI 2022 AAH (M)",
+     "total": 62
+    },
+    {
+     "examen": "UNI 2022 AAH (T)",
+     "total": 60
+    },
+    {
+     "examen": "UNI 2022 FQ (M)",
+     "total": 24
+    },
+    {
+     "examen": "UNI 2022 FQ (T)",
+     "total": 25
+    },
+    {
+     "examen": "UNI 2022 Mat (M)",
+     "total": 29
+    },
+    {
+     "examen": "UNI 2022 Mat (T)",
+     "total": 29
+    }
+   ],
+   "cursos": [
+    {
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "total": 92
+    },
+    {
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "total": 72
+    },
+    {
+     "curso": "Humanidades (Prueba 1)",
+     "total": 52
+    },
+    {
+     "curso": "Física (Prueba 3)",
+     "total": 49
+    },
+    {
+     "curso": "Química (Prueba 3)",
+     "total": 40
+    },
+    {
+     "curso": "Trigonometría (Prueba 2)",
+     "total": 28
+    },
+    {
+     "curso": "Geometría (Prueba 2)",
+     "total": 26
+    },
+    {
+     "curso": "Aritmética (Prueba 2)",
+     "total": 25
+    },
+    {
+     "curso": "Álgebra (Prueba 2)",
+     "total": 16
+    },
+    {
+     "curso": "Nociones de Cálculo Diferencial (Prueba 2)",
+     "total": 2
+    },
+    {
+     "curso": "Actualidad (Prueba 1)",
+     "total": 1
+    }
+   ],
+   "muestras": [
+    {
+     "texto": "Elija la alternativa que, al insertarse en el espacio, complete mejor la información global del texto. I. En su extenso libro acerca de la historia de las notaciones numéricas, Georges Ifrah (1998) muestra que, en la gran mayoría de las civilizaciones, los primeros tres números se denotaban inicialmente como en la notación romana, es decir, se repite el símbolo de la unidad tantas veces como fuera necesario. II. Y la mayoría, si no todas las civilizaciones, dejan de utilizar este sistema después del número 3. III. ……………………… IV. Hasta nuestros propios dígitos arábigos, aunque parezcan arbitrarios, derivan del mismo principio. V. Nuestro dígito 1 es una sola barra, y nuestros dígitos 2 y 3 en realidad se originaron a partir de dos o tres barras horizontales que se unieron progresivamente cuando se deformaron por la escritura manuscrita.",
+     "opciones": [
+      "Casi todas ellas han convenido en denotar los primeros tres o cuatro números con una cantidad idéntica de marcas, y los números siguientes con símbolos arbitrarios.",
+      "Docenas de sociedades humanas alrededor del mundo han adoptado paulatinamente la misma solución, es decir, el símbolo numérico representa la cantidad observada.",
+      "Los chinos, por ejemplo, denotan los números 1, 2 y 3 utilizando una, dos y tres barras horizontales; sin embargo, utilizan un símbolo radicalmente diferente para el número 4.",
+      "Únicamente los números arábigos de 4 en adelante pueden entonces, considerarse genuinamente arbitrarios, ya que no representan semejanza con la cantidad expresada.",
+      "Parece suficientemente claro que alinear diecinueve barritas para denotar el número 19 significaría imponerle una carga insoportable a la escritura y la lectura de números."
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "La oración faltante en el ejercicio es “Los chinos, por ejemplo, denotan los números 1, 2 y 3 utilizando una, dos y tres barras horizontales; sin embargo, utilizan un símbolo radicalmente diferente para el número 4”. En la oración antecedente, se explica que las civilizaciones dejan de usar la repetición de números a partir del número 3. Mientras que la oración consecuente, señala también ese cambio, pero en los dígitos arábigos. Por tanto, la oración faltante necesita ser un enunciado sobre una civilización y evidenciar el cambio a partir del número 3.",
+     "curso": "Razonamiento Verbal (Prueba 1)",
+     "tema": "Inclusión de enunciados",
+     "subtema": null,
+     "examen": "UNI 2022 AAH (M)"
+    },
+    {
+     "texto": "Una elipse con centro en el origen de coordenadas tiene como recta directriz $x + 2y - 6 = 0$. Si la longitud del eje mayor es el triple del eje menor, entonces la distancia entre los focos es",
+     "opciones": [
+      "$\\frac{32}{13}\\sqrt{5}$",
+      "$\\frac{32}{15}\\sqrt{5}$",
+      "$\\frac{32}{14}\\sqrt{5}$",
+      "$\\frac{32}{11}\\sqrt{5}$",
+      "$\\frac{32}{12}\\sqrt{5}$"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Nos piden 2c. Dato: 2a=3(2b) → a=3b L D: x+2y–6=0 Y X H 3 6 53°/2 O Del gráfico OH a e OH a e = =       = 6 5 6 5 a c a a c = → = 6 5 6 5 2 (*) a b c a a c 2 2 2 2 2 2 9 = + → = + → a c 2 2 9 8 = Reemplazamos en (*). 9 8 6 5 16 5 15 2 c c c = → = ∴ 2 32 5 15 c =",
+     "curso": "Geometría (Prueba 2)",
+     "tema": "Secciones cónicas",
+     "subtema": null,
+     "examen": "UNI 2022 Mat (T)"
+    },
+    {
+     "texto": "Si se tiene la siguiente sucesión: $-8; 2; -4; 4; 0; 6; X; Y$. Calcule el valor de $X + Y$.",
+     "opciones": [
+      "12",
+      "14",
+      "8",
+      "15",
+      "10"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Nos piden el valor de X+Y. En la sucesión – 8; 2; – 4; 4; 0; 6; X; Y +2 +4 +2 +4 +2 +4 → X=4; Y=8 ∴ X+Y=12",
+     "curso": "Razonamiento Lógico-Matemático (Prueba 1)",
+     "tema": "Psicotécnico",
+     "subtema": null,
+     "examen": "UNI 2022 AAH (T)"
+    },
+    {
+     "texto": "Se tiene una mezcla de agua con azúcar de concentración 0,75 gramos/litro que al agregar agua se obtiene un volumen de 1 litro de concentración 0,55 gramos/litro. Halle la cantidad de agua que se agregó en litros.",
+     "opciones": [
+      "3/15",
+      "1/15",
+      "5/15",
+      "2/15",
+      "4/15"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Se tiene: agua con azúcar 0,75 g/L n L (1–n) L 1 L 0,55 g/L 0 g/L gana concentración pierde concentración agua Aplicamos: Gan. Ap. de concentración Pérd. Ap. de concentración = → 0,55×(1 – n)=0,20×n 55×(1 – n)=20×n n= 11 15 Piden la cantidad de agua que se agregó: 1 1 11 15 4 15 − = − = n",
+     "curso": "Aritmética (Prueba 2)",
+     "tema": "Regla de mezcla",
+     "subtema": null,
+     "examen": "UNI 2022 2022-2 (Mat)"
+    },
+    {
+     "texto": "El mercurio es un elemento químico que ocasiona una gran contaminación ambiental en nuestro país debido a la presencia de la minería ilegal e informal. Indique los probables números cuánticos de uno de sus electrones más externos. Número atómico del mercurio=80",
+     "opciones": [
+      "n=5; l=4; m_l=+2; m_s=−1/2",
+      "n=7; l=2; m_l=+2; m_s=−1/2",
+      "n=6; l=0; m_l=0; m_s=−1/2",
+      "n=5; l=2; m_l=0; m_s=+1/2",
+      "n=4; l=3; m_l=+3; m_s=−1/2"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Nos piden indicar los probables números cuánticos de uno de sus electrones más externos (mayor nivel de energía) en el átomo de mercurio (Z=8). En el átomo, a cada electrón le corresponde 4 números cuánticos: e –: ( n ;  ; m y ms ) Por regla Por regla de Moeller de Hund Entonces electrones externos 80Hg: [54Xe] 6s2 4f14 5d10 n=6 y =0 El subnivel 6s2 es a la vez orbital 6s2 (m=0) ms= +1/2 ↑ ↓ ms= –1/2",
+     "curso": "Química (Prueba 3)",
+     "tema": "Configuración electrónica",
+     "subtema": null,
+     "examen": "UNI 2022 2022-2 - FyQ"
+    },
+    {
+     "texto": "Una de las capacidades que debe desarrollar el alumno UNI es el \"Pensamiento crítico\", ¿cuál es su antítesis?",
+     "opciones": [
+      "El sentido común",
+      "Los juicios científicos",
+      "La razón pura",
+      "La revisión y comprobación de las evidencias",
+      "La experiencia práctica"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Un alumno de la UNI que desarrolle el pensamiento crítico debe cultivar las siguientes cualidades: humildad (consciente de los límites de su conocimiento), autonomía (domina su propio proceso mental y de razonamiento), integridad (honesto y humilde), confianza en la razón (como algo que beneficiará a toda la sociedad al establecer verdades justas y certeras) e imparcialidad (adherirse a los estándares intelectuales a pesar de los intereses personales). Es decir, no debe ser una persona que acepta cualquier afirmación como válida, sino que la somete a un análisis riguroso; la antítesis sería aceptar el sentido común, lo que la mayoría acepta como verdadero o válido.",
+     "curso": "Humanidades (Prueba 1)",
+     "tema": "Pensamiento",
+     "subtema": null,
+     "examen": "UNI 2022 AAH (T)"
+    },
+    {
+     "texto": "Al incidir una onda electromagnética sobre una superficie metálica con periodo igual a $ 8 \\times 10^{-16} \\, \\text{s} $, el potencial de frenado de los electrones es de 2,1 V. Calcule aproximadamente el valor en eV, la función de trabajo. $ c = 3 \\times 10^8 \\, \\text{m/s} $ $ h = 6,63 \\times 10^{-34} \\, \\text{J.s} $ $ e = 1,6 \\times 10^{-19} \\, \\text{C} $",
+     "opciones": [
+      "3,07",
+      "6,58",
+      "1,58",
+      "5,58",
+      "2,58"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Se pide el valor aproximado de la función trabajo, en eV. ∼ ∼ ∼ ∼ ∼ v v fuente de luz alta frecuencia fotón Trad=8×10 –16 g → frad=0,125×1016 Hz Placa metálica fotoelectrón De la Ec de Eistein Efotón = f + Ec  h· frad=f +|qe–|·DV 6,63×10 –34·(0,125×1016)=f +(1,6×10 –19)(2,1) f = 2,528×10 –19 J eV J 1 1 6 10 19 , ×     − ∴ f = 1,58 eV",
+     "curso": "Física (Prueba 3)",
+     "tema": "Física moderna",
+     "subtema": null,
+     "examen": "UNI 2022 2022-2 - FyQ"
+    },
+    {
+     "texto": "Si $\\frac{\\sin^2 x}{1 + \\sin^2 x} + \\frac{\\cos^2 x}{1 + \\cos^2 x} = \\frac{1}{m}$, el valor de $\\displaystyle M = 3(\\sec^2 x + \\csc^2 x)$ es",
+     "opciones": [
+      "$3\\left(\\frac{1 - 2m}{m - 2}\\right)$",
+      "$\\left(\\frac{1 - 2m}{m - 2}\\right)$",
+      "$4\\left(\\frac{1 - 2m}{m - 2}\\right)$",
+      "$5\\left(\\frac{1 - 2m}{m - 2}\\right)$",
+      "$2\\left(\\frac{1 - 2m}{m - 2}\\right)$"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Piden M= 3(sec2x+csc2x). Dato: sen sen 2 2 2 2 1 1 1 x x x x m + + + = cos cos sen sen sen sen sen 2 2 2 2 2 2 2 2 2 2 1 x x x x x x x x x x + + + + + + = cos cos cos cos cos 1 m 1+2sen sen sen 2 2 2 2 2 2 2 1 2 1 2 x x x x m x x m m cos cos cos + = → = − − → sec csc 2 2 1 2 2 x x m m = − − Luego M x x x x = + ( )= ( ) 3 3 2 2 2 2 sec csc sec csc ∴ M m m = − −     3 1 2 2",
+     "curso": "Trigonometría (Prueba 2)",
+     "tema": "Identidades trigonométricas fundamentales",
+     "subtema": null,
+     "examen": "UNI 2022 Mat (T)"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,4980 @@
+{
+ "universidad": "unt",
+ "total": 2053,
+ "conImagen": 118,
+ "examenes": 27,
+ "anioMin": "2022",
+ "anioMax": "2025",
+ "cursos": [
+  {
+   "curso": "Biología / Química / Física",
+   "slug": "biologia-quimica-fisica",
+   "total": 462,
+   "temas": [
+    {
+     "tema": "Estequiometría",
+     "total": 15
+    },
+    {
+     "tema": "Ecología",
+     "total": 13
+    },
+    {
+     "tema": "Soluciones",
+     "total": 13
+    },
+    {
+     "tema": "Bioquímica",
+     "total": 11
+    },
+    {
+     "tema": "Termodinámica",
+     "total": 11
+    },
+    {
+     "tema": "Genética",
+     "total": 10
+    },
+    {
+     "tema": "Electrólisis",
+     "total": 10
+    },
+    {
+     "tema": "Cinemática",
+     "total": 10
+    },
+    {
+     "tema": "Funciones nitrogenadas",
+     "total": 9
+    },
+    {
+     "tema": "Respiración celular",
+     "total": 8
+    },
+    {
+     "tema": "Ciclo celular",
+     "total": 8
+    },
+    {
+     "tema": "Botánica",
+     "total": 8
+    },
+    {
+     "tema": "Nomenclatura inorgánica",
+     "total": 8
+    },
+    {
+     "tema": "Sistema endocrino",
+     "total": 7
+    },
+    {
+     "tema": "Evolución",
+     "total": 7
+    },
+    {
+     "tema": "Biología celular",
+     "total": 7
+    },
+    {
+     "tema": "Equilibrio químico",
+     "total": 7
+    },
+    {
+     "tema": "Funciones oxigenadas",
+     "total": 7
+    },
+    {
+     "tema": "Trabajo mecánico",
+     "total": 7
+    },
+    {
+     "tema": "Dinámica",
+     "total": 7
+    },
+    {
+     "tema": "Reacciones químicas",
+     "total": 6
+    },
+    {
+     "tema": "Enlace químico",
+     "total": 6
+    },
+    {
+     "tema": "Energía",
+     "total": 6
+    },
+    {
+     "tema": "Fotosíntesis",
+     "total": 5
+    },
+    {
+     "tema": "Citología",
+     "total": 5
+    },
+    {
+     "tema": "Sistema digestivo humano",
+     "total": 5
+    },
+    {
+     "tema": "Hidrostática",
+     "total": 5
+    },
+    {
+     "tema": "Hidrodinámica",
+     "total": 5
+    },
+    {
+     "tema": "Vectores",
+     "total": 5
+    },
+    {
+     "tema": "Origen de la vida",
+     "total": 4
+    },
+    {
+     "tema": "Sistema nervioso humano",
+     "total": 4
+    },
+    {
+     "tema": "Sistema endocrino humano",
+     "total": 4
+    },
+    {
+     "tema": "Reacción química",
+     "total": 4
+    },
+    {
+     "tema": "Hidrocarburos",
+     "total": 4
+    },
+    {
+     "tema": "MCU",
+     "total": 4
+    },
+    {
+     "tema": "MRUV",
+     "total": 4
+    },
+    {
+     "tema": "Dinámica circunferencial",
+     "total": 4
+    },
+    {
+     "tema": "Estática",
+     "total": 4
+    },
+    {
+     "tema": "Virología",
+     "total": 3
+    },
+    {
+     "tema": "Reproducción animal",
+     "total": 3
+    },
+    {
+     "tema": "Sistema cardiovascular humano",
+     "total": 3
+    },
+    {
+     "tema": "Sistema locomotor",
+     "total": 3
+    },
+    {
+     "tema": "Citogenética",
+     "total": 3
+    },
+    {
+     "tema": "Sistema circulatorio humano",
+     "total": 3
+    },
+    {
+     "tema": "Química orgánica",
+     "total": 3
+    },
+    {
+     "tema": "Ácido - base",
+     "total": 3
+    },
+    {
+     "tema": "Tabla periódica moderna",
+     "total": 3
+    },
+    {
+     "tema": "Química nuclear",
+     "total": 3
+    },
+    {
+     "tema": "Estado gaseoso",
+     "total": 3
+    },
+    {
+     "tema": "Hidrocarburo",
+     "total": 3
+    },
+    {
+     "tema": "Calorimetría",
+     "total": 3
+    },
+    {
+     "tema": "Electrodinámica",
+     "total": 3
+    },
+    {
+     "tema": "Óptica geométrica",
+     "total": 3
+    },
+    {
+     "tema": "Electromagnetismo",
+     "total": 3
+    },
+    {
+     "tema": "Gravitación universal",
+     "total": 3
+    },
+    {
+     "tema": "MPCL",
+     "total": 3
+    },
+    {
+     "tema": "MRU",
+     "total": 3
+    },
+    {
+     "tema": "Biología molecular",
+     "total": 2
+    },
+    {
+     "tema": "Evolucion",
+     "total": 2
+    },
+    {
+     "tema": "Histología humana",
+     "total": 2
+    },
+    {
+     "tema": "Sistema digestivo",
+     "total": 2
+    },
+    {
+     "tema": "Bioquímica: lípidos",
+     "total": 2
+    },
+    {
+     "tema": "Sistema reproductor humano",
+     "total": 2
+    },
+    {
+     "tema": "Respiracion celular",
+     "total": 2
+    },
+    {
+     "tema": "Histología vegetal",
+     "total": 2
+    },
+    {
+     "tema": "Célula procariota",
+     "total": 2
+    },
+    {
+     "tema": "Glúcidos",
+     "total": 2
+    },
+    {
+     "tema": "Sistema excretor humano",
+     "total": 2
+    },
+    {
+     "tema": "Sistema respiratorio humano",
+     "total": 2
+    },
+    {
+     "tema": "Célula eucariota",
+     "total": 2
+    },
+    {
+     "tema": "Meiosis",
+     "total": 2
+    },
+    {
+     "tema": "Calculos en química",
+     "total": 2
+    },
+    {
+     "tema": "Fuerzas intermoleculares",
+     "total": 2
+    },
+    {
+     "tema": "Configuración electrónica",
+     "total": 2
+    },
+    {
+     "tema": "Tabla periódica",
+     "total": 2
+    },
+    {
+     "tema": "Ácido-base",
+     "total": 2
+    },
+    {
+     "tema": "Reacción nuclear",
+     "total": 2
+    },
+    {
+     "tema": "Cálculos en química",
+     "total": 2
+    },
+    {
+     "tema": "Estructura atómica",
+     "total": 2
+    },
+    {
+     "tema": "Teoría atómica",
+     "total": 2
+    },
+    {
+     "tema": "Peso equivalente",
+     "total": 2
+    },
+    {
+     "tema": "Electrostática",
+     "total": 2
+    },
+    {
+     "tema": "Potencia mecánica",
+     "total": 2
+    },
+    {
+     "tema": "Ecuaciones dimensionales",
+     "total": 2
+    },
+    {
+     "tema": "Movimiento vertical de caída libre",
+     "total": 2
+    },
+    {
+     "tema": "Funciones",
+     "total": 2
+    },
+    {
+     "tema": "Sistema nervioso animal",
+     "total": 1
+    },
+    {
+     "tema": "Bioquímica (proteinas)",
+     "total": 1
+    },
+    {
+     "tema": "Sistema sensorial humano",
+     "total": 1
+    },
+    {
+     "tema": "Genética mendeliana",
+     "total": 1
+    },
+    {
+     "tema": "Sistema sensorial",
+     "total": 1
+    },
+    {
+     "tema": "Bioquímica - Lípidos",
+     "total": 1
+    },
+    {
+     "tema": "Sistema óseo",
+     "total": 1
+    },
+    {
+     "tema": "Taxonomía vegetal",
+     "total": 1
+    },
+    {
+     "tema": "Ciclo celular: Meiosis",
+     "total": 1
+    },
+    {
+     "tema": "Reproducción vegetal",
+     "total": 1
+    },
+    {
+     "tema": "Sistema inmunitario",
+     "total": 1
+    },
+    {
+     "tema": "Zoología",
+     "total": 1
+    },
+    {
+     "tema": "Sistema cardiovascular",
+     "total": 1
+    },
+    {
+     "tema": "Biotecnología",
+     "total": 1
+    },
+    {
+     "tema": "Histologia Humana",
+     "total": 1
+    },
+    {
+     "tema": "Atmósfera",
+     "total": 1
+    },
+    {
+     "tema": "Sistema osteomuscular",
+     "total": 1
+    },
+    {
+     "tema": "Ciclo celular eucariota",
+     "total": 1
+    },
+    {
+     "tema": "Fitohormonas",
+     "total": 1
+    },
+    {
+     "tema": "Virus",
+     "total": 1
+    },
+    {
+     "tema": "Áreas naturales protegidas",
+     "total": 1
+    },
+    {
+     "tema": "Célula procariotica",
+     "total": 1
+    },
+    {
+     "tema": "Bioquímica: acidos nucleicos",
+     "total": 1
+    },
+    {
+     "tema": "Sexualidad",
+     "total": 1
+    },
+    {
+     "tema": "Glucidos",
+     "total": 1
+    },
+    {
+     "tema": "Reproducción humana",
+     "total": 1
+    },
+    {
+     "tema": "Geometría molecular",
+     "total": 1
+    },
+    {
+     "tema": "Nomenclatura química inorgánica",
+     "total": 1
+    },
+    {
+     "tema": "Compuestos nitrogenados",
+     "total": 1
+    },
+    {
+     "tema": "Estructura electrónica",
+     "total": 1
+    },
+    {
+     "tema": "Estequiometría (cálculos químicos)",
+     "total": 1
+    },
+    {
+     "tema": "Solución",
+     "total": 1
+    },
+    {
+     "tema": "Funciones orgánicas oxigenadas",
+     "total": 1
+    },
+    {
+     "tema": "Alquenos",
+     "total": 1
+    },
+    {
+     "tema": "Radiación electromagnética",
+     "total": 1
+    },
+    {
+     "tema": "Estructura atómica actual",
+     "total": 1
+    },
+    {
+     "tema": "Propiedades químicas de alcano",
+     "total": 1
+    },
+    {
+     "tema": "Propiedades periódicas",
+     "total": 1
+    },
+    {
+     "tema": "Función oxigenada",
+     "total": 1
+    },
+    {
+     "tema": "Teoría ácido - base",
+     "total": 1
+    },
+    {
+     "tema": "Teoría ácido-base",
+     "total": 1
+    },
+    {
+     "tema": "Compuesto aromático",
+     "total": 1
+    },
+    {
+     "tema": "Compuesto orgánico",
+     "total": 1
+    },
+    {
+     "tema": "Esquilometría",
+     "total": 1
+    },
+    {
+     "tema": "Compuestos orgánicos oxigenados",
+     "total": 1
+    },
+    {
+     "tema": "Cálculos químicos (estequiometría)",
+     "total": 1
+    },
+    {
+     "tema": "Calculos químicos",
+     "total": 1
+    },
+    {
+     "tema": "Ácido-Base",
+     "total": 1
+    },
+    {
+     "tema": "Leyes de Kepler",
+     "total": 1
+    },
+    {
+     "tema": "Análisis vectorial",
+     "total": 1
+    },
+    {
+     "tema": "Transformadores",
+     "total": 1
+    },
+    {
+     "tema": "Potencial eléctrico",
+     "total": 1
+    },
+    {
+     "tema": "Momento de una fuerza",
+     "total": 1
+    },
+    {
+     "tema": "Conservación de la EM",
+     "total": 1
+    },
+    {
+     "tema": "Física moderna",
+     "total": 1
+    },
+    {
+     "tema": "Capacitores",
+     "total": 1
+    },
+    {
+     "tema": "Óptica",
+     "total": 1
+    },
+    {
+     "tema": "Movimiento parabólico",
+     "total": 1
+    },
+    {
+     "tema": "Relación entre el trabajo y la energía",
+     "total": 1
+    },
+    {
+     "tema": "Resistencia eléctrica",
+     "total": 1
+    },
+    {
+     "tema": "Flujo magnético",
+     "total": 1
+    },
+    {
+     "tema": "Dinámica rectilínea",
+     "total": 1
+    },
+    {
+     "tema": "Potencia eléctrica",
+     "total": 1
+    },
+    {
+     "tema": "Fuerza magnética",
+     "total": 1
+    },
+    {
+     "tema": "Óptima geométrica",
+     "total": 1
+    },
+    {
+     "tema": "Inducción magnética",
+     "total": 1
+    },
+    {
+     "tema": "Impulso y cantidad de movimiento",
+     "total": 1
+    },
+    {
+     "tema": "Movimiento rectilíneo uniforme",
+     "total": 1
+    },
+    {
+     "tema": "Magnetismo",
+     "total": 1
+    },
+    {
+     "tema": "Difracción",
+     "total": 1
+    },
+    {
+     "tema": "Circuitos eléctricos",
+     "total": 1
+    },
+    {
+     "tema": "Óptica física",
+     "total": 1
+    },
+    {
+     "tema": "MCV",
+     "total": 1
+    },
+    {
+     "tema": "Dilatación térmica",
+     "total": 1
+    },
+    {
+     "tema": "Cantidad de movimiento",
+     "total": 1
+    },
+    {
+     "tema": "Ondas electromagnéticas",
+     "total": 1
+    },
+    {
+     "tema": "Materia",
+     "total": 1
+    },
+    {
+     "tema": "Trabajo-Energía",
+     "total": 1
+    },
+    {
+     "tema": "Dinámica lineal",
+     "total": 1
+    },
+    {
+     "tema": "Conservación de la energía",
+     "total": 1
+    }
+   ],
+   "examenes": 26,
+   "muestras": [
+    {
+     "texto": "El número de $e^{-}$ desapareado que presenta el catión trivalente de hierro ($_{26}\\mathrm{Fe}^{3+}$) es",
+     "opciones": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Tenemos que 26Fe0: 1s2 2s2 2p6 3s2 3p6 4s2 3d6 26Fe3+: 1s2 2s2 2p6 3s2 3p6 3d5 ∴ n.o de e– desapareados=5",
+     "curso": "Biología / Química / Física",
+     "tema": "Configuración electrónica",
+     "subtema": null,
+     "examen": "UNT 2022 BIO 2022-I (area B)"
+    },
+    {
+     "texto": "La fórmula química del ácido ortofosfórico es:",
+     "opciones": [
+      "$ \\text{HPO}_2 $",
+      "$ \\text{H}_2\\text{P}_2\\text{O}_6 $",
+      "$ \\text{H}_3\\text{PO}_4 $",
+      "$ \\text{H}_4\\text{P}_2\\text{O}_5 $",
+      "$ \\text{H}_4\\text{P}_2\\text{O}_7 $"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Nos piden la fórmula del ácido ortofosfórico. E.O. P hipo...oso oso ico ( )= + + + 1 3 5    , , Como su estado de oxidación es impar, el prefijo orto usa 1 anhidrido + 3H2O P O H O H P O H PO 2 5 anhidrido carbonoso 2 6 2 8 3 4 ácido ortoforfóric + → → 3 o Por lo tanto, la fórmula es H3PO4.",
+     "curso": "Biología / Química / Física",
+     "tema": "Nomenclatura inorgánica",
+     "subtema": null,
+     "examen": "UNT 2025 BIO 2025-II - area B"
+    },
+    {
+     "texto": "El sistema mostrado en la figura presenta dos cuerpos, el bloque se encuentra sobre una superficie horizontal rugosa y una esfera colgando, ambos atados a cuerdas que se unen a un resorte, sometiendo al mismo en las condiciones que se muestra en la imagen. Si el bloque es de 25 kg y se encuentra en movimiento inminente. El valor de la deformación (en cm) del resorte de $ K = 40 \\, \\text{N/cm} $ si $ g = 10 \\, \\text{m/s}^2 $ es:",
+     "opciones": [
+      "1",
+      "3",
+      "5",
+      "10",
+      "15"
+     ],
+     "correcta": 2,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNT/UNT-2024-BIO-2024-II-area-B/P96.webp",
+     "justificacion": "fSmáx Fg=250 N Fe T T W fN=250 N 60° 30° W T Fe Para el bloque: T=fSmáx T=0,4(250) → T=100 N En el de fuerzas: Fe=200 N → 40x=200 → x=5 cm",
+     "curso": "Biología / Química / Física",
+     "tema": "Estática",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-II - area B"
+    },
+    {
+     "texto": "A las células del tejido conectivo que sintetizan anticuerpos se les denomina:",
+     "opciones": [
+      "osteocitos",
+      "mastocitos",
+      "adipocitos",
+      "plasmocitos",
+      "condrocitos"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Las células plasmáticas, o también conocidas como plasmocitos, son células inmunológicas que producen anticuerpos (inmunoglobulinas) que ayudan al organismo a atacar y destruir agentes infecciosos. Las células plasmáticas se encuentran principalmente en la médula ósea.",
+     "curso": "Biología / Química / Física",
+     "tema": "Virología",
+     "subtema": null,
+     "examen": "UNT 2022 2022-II - area D"
+    },
+    {
+     "texto": "Con el fin de verificar las leyes de la mecánica, en 1784, George Atwood inventó una máquina que consistía en dos masas $ m_A $ y $ m_B $ conectadas por una cuerda inelástica de masa despreciable que pasa por una polea ideal, como se muestra en la figura. Un estudiante de la Facultad de Física y Matemáticas de la UNT trata de recrear lo hecho por Atwood; para ello, suelta el bloque $ B $ de 4 kg, logrando determinar que el bloque $ A $ recorra 1 m. (desprecie todo rozamiento y considerar $ g = 10 \\, \\text{m/s}^2 $) El tiempo en segundos que midió el estudiante es:",
+     "opciones": [
+      "$ \\frac{\\sqrt{3}}{3} $",
+      "$ \\frac{\\sqrt{3}}{2} $",
+      "$ \\frac{\\sqrt{2}}{3} $",
+      "$ \\frac{2\\sqrt{3}}{3} $",
+      "$ \\frac{3\\sqrt{3}}{3} $"
+     ],
+     "correcta": 0,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNT/UNT-2024-BIO-2024-II-area-B/P98.webp",
+     "justificacion": "De: FR=ma B A T T a a 40 N 10 N Para A: T–10=(1)a + Para B: 40 – T=4a 30=5a → a=6 m/s2 Para (A): d V t a t = + 0 2 2 → 1 0 6 2 2 = + t → t = 3 3 s",
+     "curso": "Biología / Química / Física",
+     "tema": "Dinámica",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-II - area B"
+    },
+    {
+     "texto": "Es el mineralocorticoide más importante y que solo se produce en la zona glomerulosa de las glándulas suprarrenales:",
+     "opciones": [
+      "aldosterona",
+      "cortisol",
+      "andrógenos",
+      "estradiol",
+      "estrona"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "La aldosterona es el principal mineralocorticoide, una hormona que regula el equilibrio de sodio, potasio y agua en el organismo. Se produce exclusivamente en la zona glomerulosa de la corteza suprarrenal. Su función principal es aumentar la reabsorción de sodio y la excreción de potasio en los riñones, lo que contribuye a mantener la presión arterial y el volumen sanguíneo.",
+     "curso": "Biología / Química / Física",
+     "tema": "Sistema endocrino humano",
+     "subtema": null,
+     "examen": "UNT 2025 BIO 2025-II - area B"
+    }
+   ]
+  },
+  {
+   "curso": "Matemática",
+   "slug": "matematica",
+   "total": 454,
+   "temas": [
+    {
+     "tema": "Circuitos lógicos",
+     "total": 14
+    },
+    {
+     "tema": "Lógica proposicional",
+     "total": 13
+    },
+    {
+     "tema": "Análisis combinatorio",
+     "total": 12
+    },
+    {
+     "tema": "Magnitudes proporcionales",
+     "total": 11
+    },
+    {
+     "tema": "Situaciones geométricas",
+     "total": 11
+    },
+    {
+     "tema": "Teoría de divisibilidad",
+     "total": 10
+    },
+    {
+     "tema": "Funciones",
+     "total": 9
+    },
+    {
+     "tema": "Lógica de clases",
+     "total": 9
+    },
+    {
+     "tema": "Lógica cuantificacional",
+     "total": 9
+    },
+    {
+     "tema": "Numeración",
+     "total": 8
+    },
+    {
+     "tema": "Sucesiones",
+     "total": 8
+    },
+    {
+     "tema": "Ecuaciones",
+     "total": 8
+    },
+    {
+     "tema": "Operaciones matemáticas",
+     "total": 7
+    },
+    {
+     "tema": "Planteo de ecuaciones",
+     "total": 7
+    },
+    {
+     "tema": "Tanto por ciento",
+     "total": 7
+    },
+    {
+     "tema": "Conteo de figuras",
+     "total": 7
+    },
+    {
+     "tema": "Productos notables",
+     "total": 7
+    },
+    {
+     "tema": "Función lineal",
+     "total": 7
+    },
+    {
+     "tema": "Segmentos",
+     "total": 7
+    },
+    {
+     "tema": "Áreas",
+     "total": 7
+    },
+    {
+     "tema": "Teoría de conjuntos",
+     "total": 6
+    },
+    {
+     "tema": "Ecuación de la circunferencia",
+     "total": 6
+    },
+    {
+     "tema": "Resolución de triángulos oblicuoángulos",
+     "total": 6
+    },
+    {
+     "tema": "Razones",
+     "total": 5
+    },
+    {
+     "tema": "Razonamiento geométrico",
+     "total": 5
+    },
+    {
+     "tema": "Razones trigonométricas de un ángulo agudo",
+     "total": 5
+    },
+    {
+     "tema": "Formalización",
+     "total": 5
+    },
+    {
+     "tema": "Implicaciones lógicas",
+     "total": 5
+    },
+    {
+     "tema": "Silogismos",
+     "total": 5
+    },
+    {
+     "tema": "Verdad formal",
+     "total": 5
+    },
+    {
+     "tema": "Probabilidades",
+     "total": 4
+    },
+    {
+     "tema": "Regla del tanto por ciento",
+     "total": 4
+    },
+    {
+     "tema": "Áreas de regiones cuadrangulares",
+     "total": 4
+    },
+    {
+     "tema": "Progresión aritmética",
+     "total": 4
+    },
+    {
+     "tema": "Inecuaciones",
+     "total": 4
+    },
+    {
+     "tema": "Geometría analítica",
+     "total": 4
+    },
+    {
+     "tema": "Logaritmos",
+     "total": 4
+    },
+    {
+     "tema": "Área de regiones cuadrangulares",
+     "total": 4
+    },
+    {
+     "tema": "Proposiciones lógicas",
+     "total": 4
+    },
+    {
+     "tema": "Series",
+     "total": 3
+    },
+    {
+     "tema": "Regla de interés",
+     "total": 3
+    },
+    {
+     "tema": "Proporciones",
+     "total": 3
+    },
+    {
+     "tema": "Razonamiento inductivo",
+     "total": 3
+    },
+    {
+     "tema": "Situaciones algebraicas",
+     "total": 3
+    },
+    {
+     "tema": "Polinomios",
+     "total": 3
+    },
+    {
+     "tema": "Secciones cónicas",
+     "total": 3
+    },
+    {
+     "tema": "Relaciones binarias",
+     "total": 3
+    },
+    {
+     "tema": "Cuadriláteros",
+     "total": 3
+    },
+    {
+     "tema": "Ecuación de la elipse",
+     "total": 3
+    },
+    {
+     "tema": "Razones trigonométricas de ángulos",
+     "total": 3
+    },
+    {
+     "tema": "Pensamiento y lenguaje",
+     "total": 3
+    },
+    {
+     "tema": "Inducción lógica",
+     "total": 3
+    },
+    {
+     "tema": "Concepto y término",
+     "total": 3
+    },
+    {
+     "tema": "Estadística descriptiva",
+     "total": 3
+    },
+    {
+     "tema": "MCD - MCM",
+     "total": 2
+    },
+    {
+     "tema": "Comparación de magnitudes",
+     "total": 2
+    },
+    {
+     "tema": "Tanto por cuanto",
+     "total": 2
+    },
+    {
+     "tema": "Problemas sobre edades",
+     "total": 2
+    },
+    {
+     "tema": "Promedios",
+     "total": 2
+    },
+    {
+     "tema": "Series numéricas",
+     "total": 2
+    },
+    {
+     "tema": "Sistema de medidas angulares",
+     "total": 2
+    },
+    {
+     "tema": "Fracciones",
+     "total": 2
+    },
+    {
+     "tema": "Operaciones fundamentales",
+     "total": 2
+    },
+    {
+     "tema": "Gráfica de funciones",
+     "total": 2
+    },
+    {
+     "tema": "Funciones reales",
+     "total": 2
+    },
+    {
+     "tema": "División de polinomios",
+     "total": 2
+    },
+    {
+     "tema": "Ecuación de la parábola",
+     "total": 2
+    },
+    {
+     "tema": "Factorización",
+     "total": 2
+    },
+    {
+     "tema": "Parábola",
+     "total": 2
+    },
+    {
+     "tema": "Ecuaciones cúbicas",
+     "total": 2
+    },
+    {
+     "tema": "Geometría analítica (ecuación de la circunferencia)",
+     "total": 2
+    },
+    {
+     "tema": "Clasificación de triángulos",
+     "total": 2
+    },
+    {
+     "tema": "Ecuación de la recta",
+     "total": 2
+    },
+    {
+     "tema": "Cónicas (elipse)",
+     "total": 2
+    },
+    {
+     "tema": "Áreas y perímetros",
+     "total": 2
+    },
+    {
+     "tema": "Reducción al primer cuadrante",
+     "total": 2
+    },
+    {
+     "tema": "Equivalencias lógicas",
+     "total": 2
+    },
+    {
+     "tema": "Circuito lógico",
+     "total": 2
+    },
+    {
+     "tema": "Permutación",
+     "total": 2
+    },
+    {
+     "tema": "Divisibilidad",
+     "total": 1
+    },
+    {
+     "tema": "Magnitudes",
+     "total": 1
+    },
+    {
+     "tema": "Números avales",
+     "total": 1
+    },
+    {
+     "tema": "Habilidad operativa",
+     "total": 1
+    },
+    {
+     "tema": "Problemas sobre móviles",
+     "total": 1
+    },
+    {
+     "tema": "Serie",
+     "total": 1
+    },
+    {
+     "tema": "Teoría de la divisibilidad",
+     "total": 1
+    },
+    {
+     "tema": "Situaciones aritméticas",
+     "total": 1
+    },
+    {
+     "tema": "Sistemas de medidas angulares",
+     "total": 1
+    },
+    {
+     "tema": "Razones y proporciones",
+     "total": 1
+    },
+    {
+     "tema": "Leyes de exponentes",
+     "total": 1
+    },
+    {
+     "tema": "Sistema de ecuaciones",
+     "total": 1
+    },
+    {
+     "tema": "Función cuadrática",
+     "total": 1
+    },
+    {
+     "tema": "Planteo de inecuaciones",
+     "total": 1
+    },
+    {
+     "tema": "División algebraica",
+     "total": 1
+    },
+    {
+     "tema": "Máximos y mínimos",
+     "total": 1
+    },
+    {
+     "tema": "Intervalos",
+     "total": 1
+    },
+    {
+     "tema": "Sistema de ecuaciones no lineales del sistema",
+     "total": 1
+    },
+    {
+     "tema": "Sistema de ecuaciones no lineales",
+     "total": 1
+    },
+    {
+     "tema": "Inecuación polinomiales",
+     "total": 1
+    },
+    {
+     "tema": "Sistemas de ecuaciones lineales",
+     "total": 1
+    },
+    {
+     "tema": "Cociente notable",
+     "total": 1
+    },
+    {
+     "tema": "Dirección de polinomios",
+     "total": 1
+    },
+    {
+     "tema": "Proporcionalidad",
+     "total": 1
+    },
+    {
+     "tema": "Desigualdades",
+     "total": 1
+    },
+    {
+     "tema": "Relaciones",
+     "total": 1
+    },
+    {
+     "tema": "Esfera (sólidos geométricos)",
+     "total": 1
+    },
+    {
+     "tema": "Recorridos eulerianos",
+     "total": 1
+    },
+    {
+     "tema": "Relaciones métricas en la circunferencia",
+     "total": 1
+    },
+    {
+     "tema": "Sólidos geométricos",
+     "total": 1
+    },
+    {
+     "tema": "Semejanza de triángulos",
+     "total": 1
+    },
+    {
+     "tema": "Relación de áreas de regiones cuadrangulares",
+     "total": 1
+    },
+    {
+     "tema": "Pirámide regular",
+     "total": 1
+    },
+    {
+     "tema": "Cono de revolución",
+     "total": 1
+    },
+    {
+     "tema": "Elipse",
+     "total": 1
+    },
+    {
+     "tema": "Perímetros",
+     "total": 1
+    },
+    {
+     "tema": "Ángulos",
+     "total": 1
+    },
+    {
+     "tema": "Perímetros y áreas",
+     "total": 1
+    },
+    {
+     "tema": "Prisma regular",
+     "total": 1
+    },
+    {
+     "tema": "Triángulos (triángulos isósceles)",
+     "total": 1
+    },
+    {
+     "tema": "Triángulos",
+     "total": 1
+    },
+    {
+     "tema": "Áreas de regiones sombreadas",
+     "total": 1
+    },
+    {
+     "tema": "Relaciones métricas en triángulos oblicuángulos",
+     "total": 1
+    },
+    {
+     "tema": "Prisma recto",
+     "total": 1
+    },
+    {
+     "tema": "Triángulo rectángulo notable",
+     "total": 1
+    },
+    {
+     "tema": "Geometría analítica (distancia entre dos puntos)",
+     "total": 1
+    },
+    {
+     "tema": "Geometría analítica (pendiente de la recta)",
+     "total": 1
+    },
+    {
+     "tema": "Geometría analítica (punto medio de un",
+     "total": 1
+    },
+    {
+     "tema": "Cilindro",
+     "total": 1
+    },
+    {
+     "tema": "Cuadrilátero",
+     "total": 1
+    },
+    {
+     "tema": "Introducción a la geometría analítica",
+     "total": 1
+    },
+    {
+     "tema": "Esfera",
+     "total": 1
+    },
+    {
+     "tema": "Puntos notables",
+     "total": 1
+    },
+    {
+     "tema": "Cónicas-Hipérbola",
+     "total": 1
+    },
+    {
+     "tema": "Cónicas elipse",
+     "total": 1
+    },
+    {
+     "tema": "Cónica circunferencia",
+     "total": 1
+    },
+    {
+     "tema": "Sistemas de medición angular",
+     "total": 1
+    },
+    {
+     "tema": "Identidades trigonométricas fundamentales",
+     "total": 1
+    },
+    {
+     "tema": "Identidades trigonométricas",
+     "total": 1
+    },
+    {
+     "tema": "Identidades trigonométricas de ángulos",
+     "total": 1
+    },
+    {
+     "tema": "Ángulos verticales",
+     "total": 1
+    },
+    {
+     "tema": "Razones trigonométricas de ángulos agudos",
+     "total": 1
+    },
+    {
+     "tema": "Sumatoria",
+     "total": 1
+    },
+    {
+     "tema": "Lógica clásica",
+     "total": 1
+    },
+    {
+     "tema": "Falacias no formales",
+     "total": 1
+    },
+    {
+     "tema": "Proposiciones categóricas",
+     "total": 1
+    },
+    {
+     "tema": "Series notables",
+     "total": 1
+    },
+    {
+     "tema": "El tanto por cuanto",
+     "total": 1
+    },
+    {
+     "tema": "Modelos funcionales",
+     "total": 1
+    },
+    {
+     "tema": "Concepto",
+     "total": 1
+    },
+    {
+     "tema": "Formalización y equivalencias",
+     "total": 1
+    },
+    {
+     "tema": "Lazos familiares",
+     "total": 1
+    },
+    {
+     "tema": "Rutas y trayectorias",
+     "total": 1
+    },
+    {
+     "tema": "Lógica clasial",
+     "total": 1
+    },
+    {
+     "tema": "Lógica tradicional",
+     "total": 1
+    },
+    {
+     "tema": "Concepto-Término",
+     "total": 1
+    },
+    {
+     "tema": "Ecuaciones exponenciales",
+     "total": 1
+    },
+    {
+     "tema": "Reparto proporcional",
+     "total": 1
+    },
+    {
+     "tema": "Teoría lógica",
+     "total": 1
+    },
+    {
+     "tema": "Falacias",
+     "total": 1
+    },
+    {
+     "tema": "El signo",
+     "total": 1
+    },
+    {
+     "tema": "Proposiciones",
+     "total": 1
+    },
+    {
+     "tema": "Lógica y Ciencia",
+     "total": 1
+    },
+    {
+     "tema": "Falacia formales",
+     "total": 1
+    },
+    {
+     "tema": "Razonamiento deductivo",
+     "total": 1
+    },
+    {
+     "tema": "Sumatorias",
+     "total": 1
+    },
+    {
+     "tema": "Principios de conteo",
+     "total": 1
+    },
+    {
+     "tema": "Formalización y equivalencia",
+     "total": 1
+    },
+    {
+     "tema": "Falacias lógicas",
+     "total": 1
+    },
+    {
+     "tema": "MRU",
+     "total": 1
+    }
+   ],
+   "examenes": 27,
+   "muestras": [
+    {
+     "texto": "Las edades de 3 personas que postulan a la UNT, vía CEPUNT, a la carrera de Ingeniería Agroindustrial, son: A, B y C años, dichos valores coinciden respectivamente con las raíces $x_{1}$, $x_{2}$ y $x_{3}$ de la ecuación: $6x^3-11x^2-3x+2=0$ El valor de: T=1/$x_{1}$+1/$x_{2}$+1/$x_{3}$ es:",
+     "opciones": [
+      "5/2",
+      "4/5",
+      "3/2",
+      "2/3",
+      "5/4"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Usaremos el teorema de Cardano: 6x3 –11x2 – 3x+2=0 + – + – • x1x2+x1x3+x2x3=− = − 3 6 1 2 • x1x2x3=− = − 2 6 1 3 Piden T x x x x x x x x x x x x = + + = + + 1 1 1 1 2 3 3 2 1 3 1 2 1 2 3 ∴ T = − − = 1 2 1 3 3 2",
+     "curso": "Matemática",
+     "tema": "Ecuaciones cúbicas",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-II - area A"
+    },
+    {
+     "texto": "Si $ n(P(A)) = 64 $, $ n(P(B)) = 16 $ y $ n(P(A \\cap B)) = 4 $; entonces el $ n(P(A \\cup B)) $ es:",
+     "opciones": [
+      "256",
+      "246",
+      "236",
+      "216",
+      "206"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "• n(P(A))=64 → 2n(A)=26 → n(A)=6 • n(P(B))=16 → 2n(B)=24 → n(B)=4 • n(P(A ∩ B))=4 → 2n(A ∩ B)=22 → n(A ∩ B)=2 Graficando A(6) B(4) 4 2 2 Piden ∴ n P A B n A B ∪ ( ) ∪ ( )  = = = 2 2 256 8",
+     "curso": "Matemática",
+     "tema": "Teoría de conjuntos",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-I - area A"
+    },
+    {
+     "texto": "Si la función $ f: \\mathbb{R} \\rightarrow \\mathbb{R} $ es definida por: $\\displaystyle f(x) = \\left[ x + 5a \\left[ x + 5a \\left[ x + 5a + [x + ...]^{1/2} \\right]^{1/2} \\right]^{1/2} \\right]^{1/2}$ donde $ a > 0 $, entonces la expresión simplificada de $ f(x) $ es:<br><img src=\"https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNT/UNT-2022-BIO-2022-I-area-C/P40_2.webp\"><br><img src=\"https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNT/UNT-2022-BIO-2022-I-area-C/P40_3.webp\"><br><img src=\"https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNT/UNT-2022-BIO-2022-I-area-C/P40_4.webp\"><br><img src=\"https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNT/UNT-2022-BIO-2022-I-area-C/P40_5.webp\"><br><img src=\"https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNT/UNT-2022-BIO-2022-I-area-C/P40_6.webp\">",
+     "opciones": [
+      "$\\frac{5a + \\sqrt{20a^2 + 4x}}{2}$",
+      "$\\frac{5a + \\sqrt{21a^2 + 4x}}{2}$",
+      "$\\frac{5a + \\sqrt{23a^2 + 4x}}{2}$",
+      "$\\frac{5a + \\sqrt{24a^2 + 4x}}{2}$",
+      "$\\frac{5a + \\sqrt{25a^2 + 4x}}{2}$"
+     ],
+     "correcta": 4,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNT/UNT-2022-BIO-2022-I-area-C/P40.webp",
+     "justificacion": "f x a x a x a x f x ( ) = + + + ( ) 5 5 5 ... f x af x x ( ) ( ) = +5 ; sea y=f(x) y x ay = +5 y2=x+5ay y2 – 5ay – x=0 Por fórmula general y a a x = ± + 5 25 4 2 2 (pero y > 0 por ser una raíz cuadrada) ∴ y f a a x x = = + + ( ) 5 25 4 2 2",
+     "curso": "Matemática",
+     "tema": "Funciones reales",
+     "subtema": null,
+     "examen": "UNT 2022 BIO 2022-I (area C)"
+    },
+    {
+     "texto": "Son conceptos con relación de inclusión total: 1. manzana - fruta 2. paleontólogo - historia 3. piña - espinas 4. lince - félido 5. mantequilla - manjarblanco Son ciertas:",
+     "opciones": [
+      "1, 2 y 3",
+      "1, 3 y 4",
+      "2, 3 y 5",
+      "1 y 4",
+      "2 y 3"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Las proposiciones tipo A tienen la forma Todo S es P, donde S se refiere a la clase sujetos y P, a la clase predicados. Este tipo de proposiciones tienen la denominación de universal afirmativa, ya que afirman que hay una relación de inclusión entre las dos clases. Lo que significa que la inclusión es completa o universal; es decir, que todos los miembros de S son también miembros de P o están incluidos en P. Por ello, podemos decir Toda manzana es una fruta y Todo lince es un félido.",
+     "curso": "Matemática",
+     "tema": "Proposiciones categóricas",
+     "subtema": null,
+     "examen": "UNT 2022 BIO 2022-I (area B)"
+    },
+    {
+     "texto": "De la fórmula: $ Op = Ph \\rightarrow p $; y de los siguientes términos: \"obligatorio\", \"prohibido\", \"facultativo\" y \"permisible\"; Se afirma que: 1. Es parte de la lógica deóntica. 2. Es parte de la lógica de proposiciones no analizadas. 3. Es parte de la lógica difusa. 4. Forma parte de los trabajos de W. Leibniz. 5. Tiene que ver con la comprensión de conceptos normativos. Son infaliblemente inciertas, salvo",
+     "opciones": [
+      "1 y 2",
+      "2, 3 y 4",
+      "solo 1 y 5",
+      "1, 4 y 5",
+      "3 y 5"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Nos piden características de lógica deóntica. 1. Verdadero 2. Falso 3. Falso 4. Falso 5. Verdadero",
+     "curso": "Matemática",
+     "tema": "Teoría lógica",
+     "subtema": null,
+     "examen": "UNT 2023 BIO 2023-I - area B"
+    },
+    {
+     "texto": "Si la base de un rectángulo aumenta en 20 % y el área no varía, es porque la altura disminuye en:",
+     "opciones": [
+      "$\\left(\\frac{38}{3}\\right)\\%$",
+      "28%",
+      "$\\left(\\frac{50}{3}\\right)\\%$",
+      "17%",
+      "16%"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Nos piden el porcentaje de disminución de la altura del rectángulo. Dato: La base aumenta en 20% y el área no varía. Consideramos convenientemente las dimensiones siguientes: 30ab 6b 5b = 5a 30ab altura la base aumenta 20% base altura base 6a Vemos que Porcentaje disminución de la altura = −    × 6 5 6 100 b b b % ∴ Porcentaje disminución de la altura = 50 3 %",
+     "curso": "Matemática",
+     "tema": "Áreas de regiones cuadrangulares",
+     "subtema": null,
+     "examen": "UNT 2022 BIO 2022-II - area C"
+    }
+   ]
+  },
+  {
+   "curso": "Literatura / Análisis del Discurso / Comunicología",
+   "slug": "literatura-analisis-del-discurso-comunicologia",
+   "total": 405,
+   "temas": [
+    {
+     "tema": "Sentido contextual",
+     "total": 13
+    },
+    {
+     "tema": "Cohesión textual",
+     "total": 11
+    },
+    {
+     "tema": "Plan de redacción",
+     "total": 9
+    },
+    {
+     "tema": "Comunicación",
+     "total": 9
+    },
+    {
+     "tema": "Polisemia",
+     "total": 9
+    },
+    {
+     "tema": "El párrafo",
+     "total": 9
+    },
+    {
+     "tema": "Narrativa barroca española",
+     "total": 8
+    },
+    {
+     "tema": "Boom latinoamericano",
+     "total": 6
+    },
+    {
+     "tema": "Pronombre",
+     "total": 6
+    },
+    {
+     "tema": "Adjetivo",
+     "total": 6
+    },
+    {
+     "tema": "Jerarquía textual",
+     "total": 6
+    },
+    {
+     "tema": "Géneros literarios",
+     "total": 5
+    },
+    {
+     "tema": "Tipología textual",
+     "total": 5
+    },
+    {
+     "tema": "Conectores lógicos",
+     "total": 5
+    },
+    {
+     "tema": "Figuras literarias",
+     "total": 4
+    },
+    {
+     "tema": "El boom latinoamericano",
+     "total": 4
+    },
+    {
+     "tema": "Indigenismo",
+     "total": 4
+    },
+    {
+     "tema": "Narrativa contemporánea",
+     "total": 4
+    },
+    {
+     "tema": "Medievalismo",
+     "total": 4
+    },
+    {
+     "tema": "Tragedia griega",
+     "total": 4
+    },
+    {
+     "tema": "Sinonimia",
+     "total": 4
+    },
+    {
+     "tema": "Término excluido",
+     "total": 4
+    },
+    {
+     "tema": "Acentuación escrita",
+     "total": 4
+    },
+    {
+     "tema": "Verboides",
+     "total": 4
+    },
+    {
+     "tema": "Niveles de lectura",
+     "total": 4
+    },
+    {
+     "tema": "Comprensión de textos",
+     "total": 4
+    },
+    {
+     "tema": "Completamiento de textos",
+     "total": 4
+    },
+    {
+     "tema": "Analogías",
+     "total": 4
+    },
+    {
+     "tema": "Inferencia",
+     "total": 4
+    },
+    {
+     "tema": "Compatibilidad",
+     "total": 4
+    },
+    {
+     "tema": "Narratología",
+     "total": 3
+    },
+    {
+     "tema": "Teoría literaria",
+     "total": 3
+    },
+    {
+     "tema": "Teatro del Siglo de Oro español",
+     "total": 3
+    },
+    {
+     "tema": "Oración compuesta",
+     "total": 3
+    },
+    {
+     "tema": "Formación de palabras",
+     "total": 3
+    },
+    {
+     "tema": "Sujeto",
+     "total": 3
+    },
+    {
+     "tema": "Concordancia gramatical",
+     "total": 3
+    },
+    {
+     "tema": "La imagen",
+     "total": 3
+    },
+    {
+     "tema": "Oración compuesta subordinada",
+     "total": 3
+    },
+    {
+     "tema": "El adjetivo",
+     "total": 3
+    },
+    {
+     "tema": "Etimología",
+     "total": 3
+    },
+    {
+     "tema": "Comprensión textual",
+     "total": 3
+    },
+    {
+     "tema": "Conceptualización",
+     "total": 3
+    },
+    {
+     "tema": "Literatura griega",
+     "total": 2
+    },
+    {
+     "tema": "Modernismo hispanoamericano",
+     "total": 2
+    },
+    {
+     "tema": "Poesía quechua",
+     "total": 2
+    },
+    {
+     "tema": "El vanguardismo europeo",
+     "total": 2
+    },
+    {
+     "tema": "Generación del 50",
+     "total": 2
+    },
+    {
+     "tema": "Romanticismo peruano",
+     "total": 2
+    },
+    {
+     "tema": "Romanticismo europeo",
+     "total": 2
+    },
+    {
+     "tema": "Literatura contemporánea",
+     "total": 2
+    },
+    {
+     "tema": "Vanguardismo europeo",
+     "total": 2
+    },
+    {
+     "tema": "Clasicismo griego",
+     "total": 2
+    },
+    {
+     "tema": "Poesía hispanoamericana contemporánea",
+     "total": 2
+    },
+    {
+     "tema": "Renacimiento inglés",
+     "total": 2
+    },
+    {
+     "tema": "Teoría literaria: géneros y especies",
+     "total": 2
+    },
+    {
+     "tema": "Narrativa contemporánea del 60",
+     "total": 2
+    },
+    {
+     "tema": "Clasicismo griego: tragedia",
+     "total": 2
+    },
+    {
+     "tema": "Barroco",
+     "total": 2
+    },
+    {
+     "tema": "Teatro español del Siglo de Oro",
+     "total": 2
+    },
+    {
+     "tema": "Vicios del lenguaje",
+     "total": 2
+    },
+    {
+     "tema": "Clases de signos",
+     "total": 2
+    },
+    {
+     "tema": "Palabras juntas y separadas",
+     "total": 2
+    },
+    {
+     "tema": "Accidentes del sustantivo",
+     "total": 2
+    },
+    {
+     "tema": "Clases de oración",
+     "total": 2
+    },
+    {
+     "tema": "Vicio del lenguaje",
+     "total": 2
+    },
+    {
+     "tema": "Raíces griegas y latinas",
+     "total": 2
+    },
+    {
+     "tema": "Homonimia",
+     "total": 2
+    },
+    {
+     "tema": "Sinonimia contextual",
+     "total": 2
+    },
+    {
+     "tema": "Textos incompletos",
+     "total": 2
+    },
+    {
+     "tema": "Variación lingüística",
+     "total": 2
+    },
+    {
+     "tema": "Clases de verbo",
+     "total": 2
+    },
+    {
+     "tema": "La coma",
+     "total": 2
+    },
+    {
+     "tema": "Palabras homófonas",
+     "total": 2
+    },
+    {
+     "tema": "Signo de puntuación",
+     "total": 2
+    },
+    {
+     "tema": "El verbo",
+     "total": 2
+    },
+    {
+     "tema": "Variedad sociolingüística",
+     "total": 2
+    },
+    {
+     "tema": "Oración bimembre",
+     "total": 2
+    },
+    {
+     "tema": "Oración compuesta coordinada",
+     "total": 2
+    },
+    {
+     "tema": "Artículo",
+     "total": 2
+    },
+    {
+     "tema": "Narrativa contemporánea peruana",
+     "total": 2
+    },
+    {
+     "tema": "Coherencia textual",
+     "total": 2
+    },
+    {
+     "tema": "La comunicación humana",
+     "total": 2
+    },
+    {
+     "tema": "Verbo copulativo",
+     "total": 2
+    },
+    {
+     "tema": "Estructura del párrafo",
+     "total": 2
+    },
+    {
+     "tema": "Ordenamiento de enunciados",
+     "total": 2
+    },
+    {
+     "tema": "Conceptualizaciones",
+     "total": 2
+    },
+    {
+     "tema": "Palabras homógrafas",
+     "total": 2
+    },
+    {
+     "tema": "Ordenamiento de enunciado",
+     "total": 2
+    },
+    {
+     "tema": "Término esencial",
+     "total": 2
+    },
+    {
+     "tema": "Clases de textos",
+     "total": 2
+    },
+    {
+     "tema": "Incompatibilidad",
+     "total": 2
+    },
+    {
+     "tema": "Comprensión explícita del texto",
+     "total": 2
+    },
+    {
+     "tema": "Simbolismo peruano",
+     "total": 1
+    },
+    {
+     "tema": "Literatura prehispánica",
+     "total": 1
+    },
+    {
+     "tema": "Realismo europeo",
+     "total": 1
+    },
+    {
+     "tema": "Literatura de la Conquista",
+     "total": 1
+    },
+    {
+     "tema": "El indigenismo y la generación del 50",
+     "total": 1
+    },
+    {
+     "tema": "El neoindigenismo",
+     "total": 1
+    },
+    {
+     "tema": "El indigenismo",
+     "total": 1
+    },
+    {
+     "tema": "William Shakespeare",
+     "total": 1
+    },
+    {
+     "tema": "Pablo Neruda",
+     "total": 1
+    },
+    {
+     "tema": "Generación perdida",
+     "total": 1
+    },
+    {
+     "tema": "Literatura contemporánea del siglo XX",
+     "total": 1
+    },
+    {
+     "tema": "Poesía vanguardista hispanoamericana",
+     "total": 1
+    },
+    {
+     "tema": "Métrica y figuras literarias",
+     "total": 1
+    },
+    {
+     "tema": "Enunciado excluido",
+     "total": 1
+    },
+    {
+     "tema": "Poesía peruana contemporánea",
+     "total": 1
+    },
+    {
+     "tema": "Nueva narrativa hispanoamericana",
+     "total": 1
+    },
+    {
+     "tema": "Indigenismo peruano",
+     "total": 1
+    },
+    {
+     "tema": "Nueva Narrativa Contemporánea",
+     "total": 1
+    },
+    {
+     "tema": "Poesía contemporánea peruana",
+     "total": 1
+    },
+    {
+     "tema": "Teatro colonial",
+     "total": 1
+    },
+    {
+     "tema": "Medievalismo europeo",
+     "total": 1
+    },
+    {
+     "tema": "Literatura quechua",
+     "total": 1
+    },
+    {
+     "tema": "Realismo peruano",
+     "total": 1
+    },
+    {
+     "tema": "Poesía de la generación del 50",
+     "total": 1
+    },
+    {
+     "tema": "Barroco inglés",
+     "total": 1
+    },
+    {
+     "tema": "Complemento del predicado",
+     "total": 1
+    },
+    {
+     "tema": "El adverbio",
+     "total": 1
+    },
+    {
+     "tema": "Los determinantes",
+     "total": 1
+    },
+    {
+     "tema": "Proceso formativo de palabras",
+     "total": 1
+    },
+    {
+     "tema": "Uso de grafías",
+     "total": 1
+    },
+    {
+     "tema": "La sílaba",
+     "total": 1
+    },
+    {
+     "tema": "Semiótica",
+     "total": 1
+    },
+    {
+     "tema": "Función del lenguaje",
+     "total": 1
+    },
+    {
+     "tema": "Secuencia vocálica",
+     "total": 1
+    },
+    {
+     "tema": "Adverbio",
+     "total": 1
+    },
+    {
+     "tema": "Ordenamiento del texto",
+     "total": 1
+    },
+    {
+     "tema": "Signos de puntuación",
+     "total": 1
+    },
+    {
+     "tema": "Comunicación humana",
+     "total": 1
+    },
+    {
+     "tema": "Semántica",
+     "total": 1
+    },
+    {
+     "tema": "Clase de verbo",
+     "total": 1
+    },
+    {
+     "tema": "Preposición",
+     "total": 1
+    },
+    {
+     "tema": "Clases de oraciones",
+     "total": 1
+    },
+    {
+     "tema": "Uso del gerundio",
+     "total": 1
+    },
+    {
+     "tema": "Paronimia",
+     "total": 1
+    },
+    {
+     "tema": "Clasificación de textos",
+     "total": 1
+    },
+    {
+     "tema": "La comunicación oral",
+     "total": 1
+    },
+    {
+     "tema": "Variaciones lingüísticas",
+     "total": 1
+    },
+    {
+     "tema": "Clases de sustantivo",
+     "total": 1
+    },
+    {
+     "tema": "Pluralización del sustantivo",
+     "total": 1
+    },
+    {
+     "tema": "Sintagma verbal: predicado",
+     "total": 1
+    },
+    {
+     "tema": "Concordancia nominal",
+     "total": 1
+    },
+    {
+     "tema": "Signo lingüístico",
+     "total": 1
+    },
+    {
+     "tema": "Comunicación audiovisual",
+     "total": 1
+    },
+    {
+     "tema": "El lenguaje",
+     "total": 1
+    },
+    {
+     "tema": "Uso de la preposición",
+     "total": 1
+    },
+    {
+     "tema": "Producción textual",
+     "total": 1
+    },
+    {
+     "tema": "Funciones del lenguaje",
+     "total": 1
+    },
+    {
+     "tema": "El pronombre",
+     "total": 1
+    },
+    {
+     "tema": "La oración",
+     "total": 1
+    },
+    {
+     "tema": "Lenguaje",
+     "total": 1
+    },
+    {
+     "tema": "Dequeísmo",
+     "total": 1
+    },
+    {
+     "tema": "Código paralingüístico",
+     "total": 1
+    },
+    {
+     "tema": "sustantivo",
+     "total": 1
+    },
+    {
+     "tema": "Morfología",
+     "total": 1
+    },
+    {
+     "tema": "Clases de verbos",
+     "total": 1
+    },
+    {
+     "tema": "Ortografía",
+     "total": 1
+    },
+    {
+     "tema": "Uso del adjetivo",
+     "total": 1
+    },
+    {
+     "tema": "variedades de la lengua",
+     "total": 1
+    },
+    {
+     "tema": "Preposiciones",
+     "total": 1
+    },
+    {
+     "tema": "Uso del paréntesis",
+     "total": 1
+    },
+    {
+     "tema": "Uso de la coma",
+     "total": 1
+    },
+    {
+     "tema": "Conector lógico",
+     "total": 1
+    },
+    {
+     "tema": "Mecanismos de cohesión",
+     "total": 1
+    },
+    {
+     "tema": "Clases de comunicación",
+     "total": 1
+    },
+    {
+     "tema": "Adjetivo calificativo",
+     "total": 1
+    },
+    {
+     "tema": "La coma: tipos",
+     "total": 1
+    },
+    {
+     "tema": "La comunicación",
+     "total": 1
+    },
+    {
+     "tema": "Inferencia textual",
+     "total": 1
+    },
+    {
+     "tema": "Niveles del lenguaje",
+     "total": 1
+    },
+    {
+     "tema": "Usos de la comilla",
+     "total": 1
+    },
+    {
+     "tema": "Sustantivo y adjetivo",
+     "total": 1
+    },
+    {
+     "tema": "Clasificación semántica de la oración",
+     "total": 1
+    },
+    {
+     "tema": "Palabras invariables",
+     "total": 1
+    },
+    {
+     "tema": "Verbos no personales",
+     "total": 1
+    },
+    {
+     "tema": "Sustantivo",
+     "total": 1
+    },
+    {
+     "tema": "Función del párrafo",
+     "total": 1
+    },
+    {
+     "tema": "Modo verbal",
+     "total": 1
+    },
+    {
+     "tema": "Series verbales",
+     "total": 1
+    },
+    {
+     "tema": "Homofonía",
+     "total": 1
+    },
+    {
+     "tema": "Clases de texto",
+     "total": 1
+    },
+    {
+     "tema": "Completamiento de texto",
+     "total": 1
+    },
+    {
+     "tema": "Estructura de la palabra",
+     "total": 1
+    },
+    {
+     "tema": "Estructura del texto",
+     "total": 1
+    },
+    {
+     "tema": "Inducción",
+     "total": 1
+    }
+   ],
+   "examenes": 27,
+   "muestras": [
+    {
+     "texto": "En relación al texto se plantea lo siguiente: 1. Hay una oración que presenta una proposición subordinada adjetiva. 2. El sujeto en la primera oración es Mario Vargas Llosa. 3. En la segunda oración, el sujeto es compuesto, pasivo y complejo. 4. La última oración tiene O.D. 5. En la primera oración hay doble O.I. De acuerdo a la sintaxis, son enunciados correctos:",
+     "opciones": [
+      "1, 2 y 4",
+      "2, 3 y 5",
+      "2, 3 y 4",
+      "1, 4 y 5",
+      "1, 2 y 3"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "ÓN El adjetivo en grado comparativo es el que compara un adjetivo para dos elementos. Existen los comparativos de superioridad, igualdad e inferioridad. Por ejemplo: • Juan es más estudioso que Luis. (superioridad) • Juan es tan estudioso como Luis. (igualdad) • Juan es menos estudioso que Luis. (i",
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "tema": "Adjetivo",
+     "subtema": null,
+     "examen": "UNT 2025 2025-I - area D"
+    },
+    {
+     "texto": "Sobre el contexto de la obra, podemos afirmar que:",
+     "opciones": [
+      "Tiene una gran influencia del Racionalismo francés.",
+      "El Cristianismo tiene gran importancia en la sociedad de la época.",
+      "Las creencias religiosas son extremadamente cuestionadas.",
+      "Es una época de gran desarrollo tecnológico",
+      "La fe de los ciudadanos es sumamente contradictoria."
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "En Fuenteovejuna, se muestra las relaciones políticas y sociales de los campesinos y el señor feudal. Ade­ más, se hace alusión a la época de la monarquía de los Reyes Católicos. Es decir, la obra se contextualiza en la época de finales de la Edad Media y comienzos de la Edad Moderna. En España, el pensamiento teocéntrico y la influencia del Clero era bastante marcada.",
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "tema": "Teatro del Siglo de Oro español",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-II - area A"
+    },
+    {
+     "texto": "El personaje aludido es:",
+     "opciones": [
+      "Aureliano Segundo.",
+      "José Arcadio, el gitano",
+      "Aureliano Buendía",
+      "José Arcadio II",
+      "Arcadio"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Cien años de soledad, de Gabriel García Márquez, es la novela representativa del realismo mágico cuyas temáticas giran en torno a la soledad, el incesto, la guerra civil, entre otros temas. El fragmento citado, alude a Aureliano Buendía, quien conoce a un personaje que quiere rescatarla de su abuela quien la prostituye para ganarse la vida.",
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "tema": "Boom latinoamericano",
+     "subtema": null,
+     "examen": "UNT 2024 2024-II - area D"
+    },
+    {
+     "texto": "GOLPE: HEMATOMA:",
+     "opciones": [
+      "avalancha: ruido",
+      "cazador: liebre",
+      "crimen: delito",
+      "incendio: siniestro",
+      "corte: herida"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Las palabras golpe: hematoma están en la relación causa - efecto, ya que el golpe produce el hematoma (moretón). El único par de palabras que tiene la misma relación es corte: herida. Corte entendido como el daño y la herida como la consecuencia del daño sobre la piel, por ejemplo.",
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "tema": "Analogías",
+     "subtema": null,
+     "examen": "UNT 2023 BIO 2023-I - area B"
+    },
+    {
+     "texto": "Se han empleado verbos compuestos en: 1. Hemos aprendido mucho hoy. 2. Tengo ganas de tomar un helado. 3. He traído muchos caramelos. 4. Conjugaré bien los verbos. 5. Has estudiado mucho. Son ciertas:",
+     "opciones": [
+      "3, 4 y 5",
+      "1, 3 y 5",
+      "2, 3 y 5",
+      "1, 2 y 3",
+      "1, 2 y 4"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "El verbo es una palabra que se puede conjugar en las tres personas gramaticales (por ejemplo, amo, amas, ama), que puede ser de forma simple o compuesta. Un verbo simple es una sola palabra: canto, cantas, canta; en cambio, el verbo de tiempo compuesto está conformado por dos unidades: he cantado, has cantado, ha cantado; o había cantado, habías cantado, había cantado. Estas formas compuestas pueden estar en forma singular o plural. Siempre se exigirá el verbo auxiliar haber y el participio pasado -ado, -ido, -to, -so, -cho. Esto se evidencia en hemos aprendido, he traído y has estudiado.",
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "tema": "El verbo",
+     "subtema": null,
+     "examen": "UNT 2024 2024-I - area D"
+    },
+    {
+     "texto": "La variedad ............... distingue los sociolectos, utilizados por estratos sociales; en cambio, la variedad ............... se refiere a las variaciones funcionales, estilísticas o registros en su uso. Los espacios son completados con los siguientes términos:",
+     "opciones": [
+      "diacrónica - diastrática",
+      "diastrática - diafásica",
+      "diatópica - diastrática",
+      "diafásica - diastrática",
+      "diacrónica - diatópica"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Las variaciones lingüísticas se determinan por factores geográficos, sociales, etc., y presenta varios tipos. En ese sentido, la variación diastrática (sociolecto) se da por niveles socioculturales o estratos sociales; la variación diafásica es una modalidad del habla que depende de la elección del emisor según la situación comunicativa o elementos funcionales, estilísticos o registros.",
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "tema": "Variaciones lingüísticas",
+     "subtema": null,
+     "examen": "UNT 2023 BIO 2023-I - area A"
+    }
+   ]
+  },
+  {
+   "curso": "Historia / Geografía / Economía",
+   "slug": "historia-geografia-economia",
+   "total": 285,
+   "temas": [
+    {
+     "tema": "Clima",
+     "total": 8
+    },
+    {
+     "tema": "Producción",
+     "total": 8
+    },
+    {
+     "tema": "Agregados económicos",
+     "total": 8
+    },
+    {
+     "tema": "Inflación",
+     "total": 8
+    },
+    {
+     "tema": "Empresa",
+     "total": 7
+    },
+    {
+     "tema": "Geografía política",
+     "total": 6
+    },
+    {
+     "tema": "Doctrinas económicas",
+     "total": 6
+    },
+    {
+     "tema": "Grecia",
+     "total": 5
+    },
+    {
+     "tema": "Tributos",
+     "total": 5
+    },
+    {
+     "tema": "Dinero",
+     "total": 5
+    },
+    {
+     "tema": "Modelos de mercado",
+     "total": 5
+    },
+    {
+     "tema": "Comercio exterior",
+     "total": 5
+    },
+    {
+     "tema": "Costos de producción",
+     "total": 5
+    },
+    {
+     "tema": "Guerra Fría",
+     "total": 4
+    },
+    {
+     "tema": "Revolución rusa",
+     "total": 4
+    },
+    {
+     "tema": "Ciencia geográfica",
+     "total": 4
+    },
+    {
+     "tema": "Atmósfera",
+     "total": 4
+    },
+    {
+     "tema": "Geografía mundial",
+     "total": 4
+    },
+    {
+     "tema": "Población peruana",
+     "total": 4
+    },
+    {
+     "tema": "Sistema bancario",
+     "total": 4
+    },
+    {
+     "tema": "Demanda",
+     "total": 4
+    },
+    {
+     "tema": "Virreinato del Perú",
+     "total": 3
+    },
+    {
+     "tema": "Revolución francesa",
+     "total": 3
+    },
+    {
+     "tema": "Incas",
+     "total": 3
+    },
+    {
+     "tema": "Década de los 80 en el Perú",
+     "total": 3
+    },
+    {
+     "tema": "Universo",
+     "total": 3
+    },
+    {
+     "tema": "Relieve costero",
+     "total": 3
+    },
+    {
+     "tema": "Áreas naturales protegidas",
+     "total": 3
+    },
+    {
+     "tema": "Geodinámica externa",
+     "total": 3
+    },
+    {
+     "tema": "Necesidades",
+     "total": 3
+    },
+    {
+     "tema": "Ciclos económicos",
+     "total": 3
+    },
+    {
+     "tema": "Sistema financiero",
+     "total": 3
+    },
+    {
+     "tema": "Presupuesto público",
+     "total": 3
+    },
+    {
+     "tema": "Comunidad primitiva en el Perú",
+     "total": 2
+    },
+    {
+     "tema": "Corrientes libertadoras",
+     "total": 2
+    },
+    {
+     "tema": "Roma",
+     "total": 2
+    },
+    {
+     "tema": "Nuevo Orden Mundial",
+     "total": 2
+    },
+    {
+     "tema": "Primer Civilismo",
+     "total": 2
+    },
+    {
+     "tema": "Revolución cubana",
+     "total": 2
+    },
+    {
+     "tema": "Primer Desarrollo Regional",
+     "total": 2
+    },
+    {
+     "tema": "Gobierno de las Fuerzas Armadas",
+     "total": 2
+    },
+    {
+     "tema": "República Aristocrática",
+     "total": 2
+    },
+    {
+     "tema": "Guerra del Salitre",
+     "total": 2
+    },
+    {
+     "tema": "Fujimorato",
+     "total": 2
+    },
+    {
+     "tema": "Evolución humana",
+     "total": 2
+    },
+    {
+     "tema": "Actividades económicas",
+     "total": 2
+    },
+    {
+     "tema": "Vertiente hidrográfica del Amazonas",
+     "total": 2
+    },
+    {
+     "tema": "Geósfera",
+     "total": 2
+    },
+    {
+     "tema": "Tectónica de placas",
+     "total": 2
+    },
+    {
+     "tema": "Área natural protegida",
+     "total": 2
+    },
+    {
+     "tema": "Teoría de la demanda",
+     "total": 2
+    },
+    {
+     "tema": "Costos de producción - Beneficio total",
+     "total": 2
+    },
+    {
+     "tema": "Teoría de costos",
+     "total": 2
+    },
+    {
+     "tema": "Bienes y servicios",
+     "total": 2
+    },
+    {
+     "tema": "División de la economía",
+     "total": 2
+    },
+    {
+     "tema": "Interés",
+     "total": 2
+    },
+    {
+     "tema": "Bienes",
+     "total": 2
+    },
+    {
+     "tema": "Crédito",
+     "total": 2
+    },
+    {
+     "tema": "Economía descriptiva",
+     "total": 2
+    },
+    {
+     "tema": "Conspiraciones criollas",
+     "total": 1
+    },
+    {
+     "tema": "Edad Media",
+     "total": 1
+    },
+    {
+     "tema": "Junta militar de 1962 y 1963",
+     "total": 1
+    },
+    {
+     "tema": "Invasión al Tahuantinsuyo",
+     "total": 1
+    },
+    {
+     "tema": "Series verbales",
+     "total": 1
+    },
+    {
+     "tema": "Organismos internacionales",
+     "total": 1
+    },
+    {
+     "tema": "Independencia de las Trece Colonias",
+     "total": 1
+    },
+    {
+     "tema": "Primera Revolución Industrial",
+     "total": 1
+    },
+    {
+     "tema": "Cruzadas",
+     "total": 1
+    },
+    {
+     "tema": "Intermedio temprano",
+     "total": 1
+    },
+    {
+     "tema": "Independencia de EE. UU.",
+     "total": 1
+    },
+    {
+     "tema": "Filosofía en el Perú",
+     "total": 1
+    },
+    {
+     "tema": "Resistencia andina",
+     "total": 1
+    },
+    {
+     "tema": "Imperialismo colonial",
+     "total": 1
+    },
+    {
+     "tema": "Prosperidad Falaz",
+     "total": 1
+    },
+    {
+     "tema": "Gobierno de Alberto Fujimori",
+     "total": 1
+    },
+    {
+     "tema": "Culturas pre incas.",
+     "total": 1
+    },
+    {
+     "tema": "Ochenio de Odría",
+     "total": 1
+    },
+    {
+     "tema": "Corrientes Libertadoras",
+     "total": 1
+    },
+    {
+     "tema": "Mochica",
+     "total": 1
+    },
+    {
+     "tema": "Cultura Mochica",
+     "total": 1
+    },
+    {
+     "tema": "Primera guerra mundial",
+     "total": 1
+    },
+    {
+     "tema": "Revolucion rusa",
+     "total": 1
+    },
+    {
+     "tema": "Actividades económicas (pesca)",
+     "total": 1
+    },
+    {
+     "tema": "Imperio Wari",
+     "total": 1
+    },
+    {
+     "tema": "Independencia de EE.UU.",
+     "total": 1
+    },
+    {
+     "tema": "Formativo Andino (Chavin)",
+     "total": 1
+    },
+    {
+     "tema": "Feudalismo",
+     "total": 1
+    },
+    {
+     "tema": "Las cruzadas",
+     "total": 1
+    },
+    {
+     "tema": "Comunidad primitiva",
+     "total": 1
+    },
+    {
+     "tema": "Defensa civil",
+     "total": 1
+    },
+    {
+     "tema": "Demografía",
+     "total": 1
+    },
+    {
+     "tema": "Sistema planetario solar",
+     "total": 1
+    },
+    {
+     "tema": "Recursos naturales",
+     "total": 1
+    },
+    {
+     "tema": "Vertiente Hidrográfica del Pacífico",
+     "total": 1
+    },
+    {
+     "tema": "Área Natural Protegida",
+     "total": 1
+    },
+    {
+     "tema": "Ocho regiones naturales",
+     "total": 1
+    },
+    {
+     "tema": "Organización territorial",
+     "total": 1
+    },
+    {
+     "tema": "Movimiento de traslación",
+     "total": 1
+    },
+    {
+     "tema": "Geodesia",
+     "total": 1
+    },
+    {
+     "tema": "Sistema Solar",
+     "total": 1
+    },
+    {
+     "tema": "Pesca",
+     "total": 1
+    },
+    {
+     "tema": "Relieve peruano",
+     "total": 1
+    },
+    {
+     "tema": "Vertiente del Pacifico",
+     "total": 1
+    },
+    {
+     "tema": "Hidrósfera",
+     "total": 1
+    },
+    {
+     "tema": "Mar peruano",
+     "total": 1
+    },
+    {
+     "tema": "Relieve mundial",
+     "total": 1
+    },
+    {
+     "tema": "Relieve amazónico",
+     "total": 1
+    },
+    {
+     "tema": "Hidrografía mundial",
+     "total": 1
+    },
+    {
+     "tema": "Actividades económicas (agricultura)",
+     "total": 1
+    },
+    {
+     "tema": "Líneas geodésicas",
+     "total": 1
+    },
+    {
+     "tema": "Gobiernos regionales y locales",
+     "total": 1
+    },
+    {
+     "tema": "Movimiento de rotación",
+     "total": 1
+    },
+    {
+     "tema": "Vertiente del Pacífico",
+     "total": 1
+    },
+    {
+     "tema": "Agricultura",
+     "total": 1
+    },
+    {
+     "tema": "Política económica",
+     "total": 1
+    },
+    {
+     "tema": "El trabajo",
+     "total": 1
+    },
+    {
+     "tema": "Clasificación de los bienes económicos",
+     "total": 1
+    },
+    {
+     "tema": "El desempleo",
+     "total": 1
+    },
+    {
+     "tema": "Producción en el corto plazo",
+     "total": 1
+    },
+    {
+     "tema": "Oferta de dinero",
+     "total": 1
+    },
+    {
+     "tema": "Método del gasto del PBI",
+     "total": 1
+    },
+    {
+     "tema": "Balanza de pagos",
+     "total": 1
+    },
+    {
+     "tema": "Teoría de mercado",
+     "total": 1
+    },
+    {
+     "tema": "La macroeconomía",
+     "total": 1
+    },
+    {
+     "tema": "Formas de salario",
+     "total": 1
+    },
+    {
+     "tema": "OCA",
+     "total": 1
+    },
+    {
+     "tema": "Población Económica Activa (PEA)",
+     "total": 1
+    },
+    {
+     "tema": "Ley de la oferta y demanda",
+     "total": 1
+    },
+    {
+     "tema": "Tasa de interés",
+     "total": 1
+    },
+    {
+     "tema": "Tipo de cambio",
+     "total": 1
+    },
+    {
+     "tema": "Análisis de la realidad económica",
+     "total": 1
+    },
+    {
+     "tema": "Equilibrio de mercado",
+     "total": 1
+    },
+    {
+     "tema": "Teoría económica",
+     "total": 1
+    },
+    {
+     "tema": "Costos",
+     "total": 1
+    },
+    {
+     "tema": "Proceso económico",
+     "total": 1
+    },
+    {
+     "tema": "Elasticidad precio de la demanda",
+     "total": 1
+    },
+    {
+     "tema": "Teoría de los bienes",
+     "total": 1
+    },
+    {
+     "tema": "Comercio Exterior",
+     "total": 1
+    },
+    {
+     "tema": "Trabajo",
+     "total": 1
+    },
+    {
+     "tema": "Indicadores económicos",
+     "total": 1
+    },
+    {
+     "tema": "Factores de producción",
+     "total": 1
+    },
+    {
+     "tema": "La producción",
+     "total": 1
+    }
+   ],
+   "examenes": 27,
+   "muestras": [
+    {
+     "texto": "Son acciones de gobierno, en materia política, de la Junta Militar liderada por el General Ricardo Pérez Godoy y General Nicolás Lindley:",
+     "opciones": [
+      "Estableció una alianza política con el APRA y aumentó el presupuesto del sector educativo.",
+      "Enunció como lema de su gobierno: \"Hechos y no palabras\" y además suprimió los subsidios a los alimentos de primera necesidad.",
+      "Convocó a elecciones presidenciales en el plazo de un año y con un nuevo padrón electoral.",
+      "Promulgó la Ley de Elecciones Municipales e hizo aumentar las exportaciones.",
+      "Estableció el Programa de Cooperación Popular y promulgó el Estatuto de la Libertad de Prensa."
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Ricardo Pérez Godoy y Nicolás Lindley establecieron un golpe institucional de las fuerzas armadas tras las elecciones presidenciales de 1962, en las cuales tuvo mayoría el APRA, con su líder Víctor Raúl Haya de la Torre. Los militares consideraron fraudulentas estas elecciones y decidieron tomar el poder temporalmente y convocar nuevas elecciones en el plazo de un año, con un nuevo padrón electoral.",
+     "curso": "Historia / Geografía / Economía",
+     "tema": "Junta militar de 1962 y 1963",
+     "subtema": null,
+     "examen": "UNT 2022 2022-II - area D"
+    },
+    {
+     "texto": "El clima subtropical de la costa peruana está determinado por el factor geográfico de:",
+     "opciones": [
+      "La ubicación tropical del Perú.",
+      "La corriente de El Niño.",
+      "La corriente peruana.",
+      "La cordillera de los Andes.",
+      "La corriente ecuatorial del norte."
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "La corriente peruana o de Humboldt se desplaza paralela a la costa, de sur a norte. Se caracteriza por sus bajas temperaturas que, en promedio, están entre los 13 y 14 ºC en invierno y entre 15 y 17 ºC en verano. A la altura de Punta Pariñas se dirige hacia el oeste, perdiéndose en el océano Pacífico. Ejerce influencia determinante sobre el clima subtropical árido de la costa centro-sur del Perú con cielos cubiertos de neblinas, ausencia de lluvias y temperaturas templadas durante el invierno.",
+     "curso": "Historia / Geografía / Economía",
+     "tema": "Clima",
+     "subtema": null,
+     "examen": "UNT 2025 BIO 2025-I - area A"
+    },
+    {
+     "texto": "Es considerado como el máximo organizador del Virreinato del Perú:",
+     "opciones": [
+      "Manuel Amat y Juniet",
+      "Fernando de Abascal",
+      "Francisco de Toledo",
+      "Pedro Fernández de Castro",
+      "Francisco Pizarro"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "En el año de 1542, el rey de España Carlos I de la dinastía Habsburgo, creó el virreinato del Perú en Sudamérica. Para ello desapareció las gobernaciones de Nueva Castilla (Pizarro) y Nueva Toledo (Almagro). También desaparecieron más de 500 encomiendas (tierras con indios a cargo de un conquistador). Los encomenderos que fueron los más perjudicados mataron al primer virrey del Perú Blasco Núñez de Vela, que venía a tomar posesión de su cargo y a organizarlo. Solo el quinto virrey, Francisco de Toledo, logró la máxima organización y consolidación virreinal.",
+     "curso": "Historia / Geografía / Economía",
+     "tema": "Virreinato del Perú",
+     "subtema": null,
+     "examen": "UNT 2023 BIO 2023-I - area A"
+    },
+    {
+     "texto": "La curva de costo marginal intercepta en su punto más bajo o mínimo a las siguientes curvas:",
+     "opciones": [
+      "Ingreso marginal y costo total",
+      "Ingreso medio y costo total medio",
+      "Costo fijo medio y costo total medio",
+      "Costo variable y costo total",
+      "Costo variable medio y costo total medio"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Los costos son los desembolsos monetarios en los cuales incurre una empresa al momento de producir bienes y servicios. Gráficamente, la curva de costo marginal es descendente en un tramo y luego tiende a elevarse a medida que se incrementan los niveles de producción; al momento de elevarse se cruza a la curva de costo variable medio en su punto más bajo, así como al costo total medio. CM CVMe CMe CM CMe CVMe CMe min. CVMe min. Q",
+     "curso": "Historia / Geografía / Economía",
+     "tema": "Costos",
+     "subtema": null,
+     "examen": "UNT 2024 2024-I - area D"
+    },
+    {
+     "texto": "El texto se refiere al principal monumento arquitectónico de la cultura griega:",
+     "opciones": [
+      "Templo de Zeus",
+      "El Partenón",
+      "Templo de Hefesto",
+      "Las Cariátides",
+      "Templo de Apolo Epicurias"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "En la colina de la Acrópolis, en la ciudad de Atenas, se encuentran los principales templos de esta polis. El Partenón, el Erecteyón, el Propileo y el Nike son los más importantes. El antiguo templo del Partenón fue destruido durante las guerras médicas, pero será reconstruido en el “siglo de Pericles”, incorporando columnas dóricas en su estructura. Su construcción fue realizada entre los años 447 al 438 a. n. e. También sirvió como almacén para los tesoros de los aliados de Atenas en la Liga de Delos. Este templo se debilitó y perdió prestigio después de las Guerras del Peloponeso.",
+     "curso": "Historia / Geografía / Economía",
+     "tema": "Grecia",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-II - area C"
+    },
+    {
+     "texto": "El fin de la Guerra Fría estuvo precedido por la: (1) caída del muro de Berlín (2) desintegración de la URSS (3) caída del capitalismo (4) vuelta de Rusia al capitalismo (5) lucha entre Alemania y Japón Son ciertas:",
+     "opciones": [
+      "1 y 2",
+      "1 y 4",
+      "2 y 3",
+      "3 y 4",
+      "4 y 5"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "La Guerra Fría llegó a su fin con la caída del sistema socialista en la URSS, que fue la superpotencia que rivalizó con EE. UU. por el predominio económico y político en el mundo. Esta superpotencia entró en una aguda crisis en los años 70 y 80 del siglo xx, motivo por el cual su gobernante Mijaíl Gorbachov emprendió un conjunto de reformas denominadas perestroika y glasnost. En ese contexto, en el año 1989 cayó el muro, la Alemania Oriental socialista fue absorbida por la Alemania Occidental capitalista y volvieron ser una sola Alemania. Dos años después se oficializaba la desintegración de la URSS.",
+     "curso": "Historia / Geografía / Economía",
+     "tema": "Guerra Fría",
+     "subtema": null,
+     "examen": "UNT 2022 2022-II - area D"
+    }
+   ]
+  },
+  {
+   "curso": "Desarrollo Personal",
+   "slug": "desarrollo-personal",
+   "total": 246,
+   "temas": [
+    {
+     "tema": "Desarrollo humano",
+     "total": 13
+    },
+    {
+     "tema": "Sexualidad",
+     "total": 13
+    },
+    {
+     "tema": "Procesos afectivos",
+     "total": 11
+    },
+    {
+     "tema": "Gnoseología",
+     "total": 10
+    },
+    {
+     "tema": "Epistemología",
+     "total": 10
+    },
+    {
+     "tema": "Percepción",
+     "total": 9
+    },
+    {
+     "tema": "Aprendizaje",
+     "total": 8
+    },
+    {
+     "tema": "Memoria",
+     "total": 7
+    },
+    {
+     "tema": "Proyecto de vida",
+     "total": 7
+    },
+    {
+     "tema": "Personalidad",
+     "total": 6
+    },
+    {
+     "tema": "Psicoanálisis",
+     "total": 6
+    },
+    {
+     "tema": "Adolescencia",
+     "total": 6
+    },
+    {
+     "tema": "Afectividad",
+     "total": 5
+    },
+    {
+     "tema": "Habilidades sociales",
+     "total": 5
+    },
+    {
+     "tema": "Filosofía antigua",
+     "total": 4
+    },
+    {
+     "tema": "Socialización",
+     "total": 4
+    },
+    {
+     "tema": "Problemas del conocimiento",
+     "total": 4
+    },
+    {
+     "tema": "Desarrollo humano - Factores de riesgo",
+     "total": 4
+    },
+    {
+     "tema": "Condicionamiento operante",
+     "total": 3
+    },
+    {
+     "tema": "Teorías de la personalidad",
+     "total": 3
+    },
+    {
+     "tema": "Filosofía moderna",
+     "total": 3
+    },
+    {
+     "tema": "Salud mental",
+     "total": 3
+    },
+    {
+     "tema": "Filosofía en el Perú",
+     "total": 3
+    },
+    {
+     "tema": "Conceptualización",
+     "total": 3
+    },
+    {
+     "tema": "Filosofía medieval",
+     "total": 3
+    },
+    {
+     "tema": "Métodos de la psicología",
+     "total": 3
+    },
+    {
+     "tema": "Introducción a la filosofía",
+     "total": 3
+    },
+    {
+     "tema": "Inteligencia",
+     "total": 3
+    },
+    {
+     "tema": "Falacias no formales",
+     "total": 2
+    },
+    {
+     "tema": "Historia de la filosofía",
+     "total": 2
+    },
+    {
+     "tema": "Hegel",
+     "total": 2
+    },
+    {
+     "tema": "Antropología filosófica",
+     "total": 2
+    },
+    {
+     "tema": "Desarrollo moral y actitudes",
+     "total": 2
+    },
+    {
+     "tema": "Problemas de la realidad",
+     "total": 2
+    },
+    {
+     "tema": "Marxismo",
+     "total": 2
+    },
+    {
+     "tema": "Salud sexual y reproductiva.",
+     "total": 2
+    },
+    {
+     "tema": "Salud sexual y reproductiva",
+     "total": 2
+    },
+    {
+     "tema": "Proyecto de vida y uso de tiempo",
+     "total": 2
+    },
+    {
+     "tema": "Inteligencia emocional",
+     "total": 2
+    },
+    {
+     "tema": "Poder Legislativo",
+     "total": 2
+    },
+    {
+     "tema": "Plan de vida",
+     "total": 2
+    },
+    {
+     "tema": "Doctrinas económicas",
+     "total": 2
+    },
+    {
+     "tema": "La proposición",
+     "total": 1
+    },
+    {
+     "tema": "La inferencia",
+     "total": 1
+    },
+    {
+     "tema": "Simbolización",
+     "total": 1
+    },
+    {
+     "tema": "Teorías de la inteligencia",
+     "total": 1
+    },
+    {
+     "tema": "Desarrollo moral. Teoría de Kohlberg.",
+     "total": 1
+    },
+    {
+     "tema": "Salud mental. Enfoques.",
+     "total": 1
+    },
+    {
+     "tema": "Desarrollo psicosocial. Erik Erikson",
+     "total": 1
+    },
+    {
+     "tema": "Métodos filosóficos",
+     "total": 1
+    },
+    {
+     "tema": "Filosofía del siglo xx",
+     "total": 1
+    },
+    {
+     "tema": "Historia de la Psicología",
+     "total": 1
+    },
+    {
+     "tema": "Filosofía helenística-romana",
+     "total": 1
+    },
+    {
+     "tema": "Métodos en psicología",
+     "total": 1
+    },
+    {
+     "tema": "Desarrollo moral - Jean Piaget",
+     "total": 1
+    },
+    {
+     "tema": "Motivación. Pirámide de Maslow.",
+     "total": 1
+    },
+    {
+     "tema": "Filosofía contemporánea",
+     "total": 1
+    },
+    {
+     "tema": "Escolástica",
+     "total": 1
+    },
+    {
+     "tema": "Proposiciones lógicas",
+     "total": 1
+    },
+    {
+     "tema": "Falacias",
+     "total": 1
+    },
+    {
+     "tema": "Semiótica",
+     "total": 1
+    },
+    {
+     "tema": "Aprendizaje cognitivo",
+     "total": 1
+    },
+    {
+     "tema": "Existencialismo",
+     "total": 1
+    },
+    {
+     "tema": "Periodo antropológico - Sócrates",
+     "total": 1
+    },
+    {
+     "tema": "Proposiciones",
+     "total": 1
+    },
+    {
+     "tema": "Desarrollo humano - Adolescencia",
+     "total": 1
+    },
+    {
+     "tema": "Trastornos de la Personalidad",
+     "total": 1
+    },
+    {
+     "tema": "Problemas de la libertad",
+     "total": 1
+    },
+    {
+     "tema": "Teorías de la verdad",
+     "total": 1
+    },
+    {
+     "tema": "Pensamiento y Lenguaje",
+     "total": 1
+    },
+    {
+     "tema": "Trastornos de la personalidad",
+     "total": 1
+    },
+    {
+     "tema": "Afectividad, motivación y voluntad",
+     "total": 1
+    },
+    {
+     "tema": "Desarrollo humano II",
+     "total": 1
+    },
+    {
+     "tema": "Desarrollo Humano III",
+     "total": 1
+    },
+    {
+     "tema": "Filosofia peruana",
+     "total": 1
+    },
+    {
+     "tema": "Axiología",
+     "total": 1
+    },
+    {
+     "tema": "Modalidades de pensamiento",
+     "total": 1
+    },
+    {
+     "tema": "Persona moral",
+     "total": 1
+    },
+    {
+     "tema": "Positivismo",
+     "total": 1
+    },
+    {
+     "tema": "Bases biológicas del psiquismo humano",
+     "total": 1
+    },
+    {
+     "tema": "Problemas de la ciencia",
+     "total": 1
+    },
+    {
+     "tema": "Problema de los valores",
+     "total": 1
+    },
+    {
+     "tema": "Actitudes",
+     "total": 1
+    },
+    {
+     "tema": "Historia de la psicología",
+     "total": 1
+    },
+    {
+     "tema": "Desarrollo cognitivo",
+     "total": 1
+    },
+    {
+     "tema": "Teorías del aprendizaje",
+     "total": 1
+    },
+    {
+     "tema": "Psicoanálisis - Desarrollo psicosexual",
+     "total": 1
+    },
+    {
+     "tema": "Desarrollo humano: Adolescencia",
+     "total": 1
+    },
+    {
+     "tema": "Orientación vocacional",
+     "total": 1
+    },
+    {
+     "tema": "Convivencia democrática",
+     "total": 1
+    },
+    {
+     "tema": "Memoria-Alteraciones",
+     "total": 1
+    },
+    {
+     "tema": "Problemas de la ética",
+     "total": 1
+    },
+    {
+     "tema": "Poder Ejecutivo",
+     "total": 1
+    },
+    {
+     "tema": "Desarrollo de la inteligencia",
+     "total": 1
+    },
+    {
+     "tema": "Derechos humanos",
+     "total": 1
+    },
+    {
+     "tema": "Actitudes y prejuicios.",
+     "total": 1
+    }
+   ],
+   "examenes": 27,
+   "muestras": [
+    {
+     "texto": "La lógica de la ciencia estudia",
+     "opciones": [
+      "los conceptos de verdad en la ciencia.",
+      "la moralidad de la ciencia.",
+      "la estructura del conocimiento.",
+      "los valores científicos.",
+      "la coherencia de los conceptos."
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Según Mario Bunge, la rama de la epistemología, denominada lógica de la ciencia estudia la estructura lógica de las teorías científicas. La lógica, en tanto ciencia formal, estudia la validez de las inferencias deductivas a través del análisis de las estructuras formales o reglas lógicas. Aunque la clave presenta cierta ambigüedad, consideramos que la lógica de la ciencia tiene como objeto de estudio la estructura del conocimiento.",
+     "curso": "Desarrollo Personal",
+     "tema": "Epistemología",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-I - area B"
+    },
+    {
+     "texto": "La siguiente conceptualización: El conocimiento se halla fundado en la experiencia. Corresponde a:",
+     "opciones": [
+      "Socialismo",
+      "Divisionismo",
+      "Pragmatismo",
+      "Empirismo",
+      "Neologismo"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "ÓN La definición propuesta en el ejercicio corresponde al empirismo. De acuerdo con la Academia Española de la Lengua, el empirismo es el conocimiento que se origina desde la experiencia; y como sistema filosófico se fundamenta, principalmente, en los datos de la experiencia misma.",
+     "curso": "Desarrollo Personal",
+     "tema": "Conceptualización",
+     "subtema": null,
+     "examen": "UNT 2023 2023-I - area D"
+    },
+    {
+     "texto": "Los filósofos medievales llamaban universales a",
+     "opciones": [
+      "los conceptos.",
+      "las ideas.",
+      "los razonamientos.",
+      "los números.",
+      "las figuras."
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Uno de los principales problemas de la Edad Media es el problema de los universales. El mejor planteamiento de este problema aparece en los comentarios de Boecio a la obra Isagoge de Porfirio. Boecio utiliza la expresión “géneros y especies” para referirse a los “universales”. Si consideramos que los universales son esencias existentes en la mente de Dios (como ideas platónicas), defendemos el realismo exagerado; si consideramos que los universales son como esencias dentro de las cosas (como formas aristotélicas), defendemos el realismo moderado; si sostenemos que los universales son conceptos (como Boecio), defendemos el conceptualismo. Y si decimos que solo son voces para agrupar individuos, defendemos el nominalismo. Actualmente, los universales serían lo que denominamos como los conceptos.",
+     "curso": "Desarrollo Personal",
+     "tema": "Filosofía medieval",
+     "subtema": null,
+     "examen": "UNT 2024 2024-I - area D"
+    },
+    {
+     "texto": "Ser modelo, ser militar son claros ejemplos de mucha disciplina, perseverancia, voluntad, es un cambio de vida, es dejar de lado el alcohol, la comida chatarra, las malas noches, es estar siempre tomando vitaminas, haciendo gimnasia y cuidándose en su aspecto físico. Los modelos y militares tienen definido:",
+     "opciones": [
+      "todo sacrificio siempre es necesario",
+      "deben tener una vida saludable",
+      "proyecto de vida",
+      "desean lograr o conseguir algo en la vida",
+      "vocación"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Un proyecto de vida se relaciona estrechamente con la misión y visión personal, ya que estos elementos son fundamentales para definir los objetivos y metas a largo plazo de una persona. La misión de un proyecto de vida representa la razón de ser, el propósito o la causa que impulsa a actuar, mientras que la visión es la imagen ideal del futuro que se desea alcanzar.",
+     "curso": "Desarrollo Personal",
+     "tema": "Proyecto de vida",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-II - area B"
+    },
+    {
+     "texto": "Con respecto al texto anterior, señale el componente de amor que tiene Eder a sus amigos.",
+     "opciones": [
+      "cariñoso",
+      "compromiso",
+      "sociable",
+      "íntimo",
+      "vacío"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Según Sternberg, las relaciones de amistad, en las que predomina la confidencialidad, están determinadas por la dimensión denominada intimidad. La intimidad emocional se considera una cualidad de la verdadera amistad en la que te sientes conectado y cercano a la otra persona, pero sin pasión física ni compromiso a largo plazo.",
+     "curso": "Desarrollo Personal",
+     "tema": "Procesos afectivos",
+     "subtema": null,
+     "examen": "UNT 2024 2024-II - area D"
+    },
+    {
+     "texto": "El comportamiento rebelde del adolescente es un fenómeno de origen:",
+     "opciones": [
+      "biológico universal",
+      "psicobiológico",
+      "familiar individual",
+      "sociocultural",
+      "psicogenético"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "A pesar de la reputación de la adolescencia como una etapa de confusión y rebeldía, las investigaciones muestran que la mayoría de personas pasan por esta etapa sin mucha confusión. La conducta rebelde que encontramos en algunos adolescentes, es más un tema de orden sociocultural. Se han desarrollado estudios comparativos entre adolescentes de distintas sociedades y se afirma que es más común en las sociedades occidentales. También se afirma que en las sociedades industriales la conducta del adolescente es más complicada que en las preindustriales.",
+     "curso": "Desarrollo Personal",
+     "tema": "Desarrollo humano",
+     "subtema": null,
+     "examen": "UNT 2022 2022-II - area D"
+    }
+   ]
+  },
+  {
+   "curso": "Ciudadanía y Cívica",
+   "slug": "ciudadania-y-civica",
+   "total": 104,
+   "temas": [
+    {
+     "tema": "Matrimonio",
+     "total": 8
+    },
+    {
+     "tema": "Estado",
+     "total": 6
+    },
+    {
+     "tema": "Derechos humanos",
+     "total": 6
+    },
+    {
+     "tema": "Poder Legislativo",
+     "total": 6
+    },
+    {
+     "tema": "Sexualidad",
+     "total": 5
+    },
+    {
+     "tema": "Familia",
+     "total": 4
+    },
+    {
+     "tema": "Garantías constitucionales",
+     "total": 3
+    },
+    {
+     "tema": "Defensa nacional",
+     "total": 3
+    },
+    {
+     "tema": "Convivencia democrática",
+     "total": 2
+    },
+    {
+     "tema": "Derechos constitucionales",
+     "total": 2
+    },
+    {
+     "tema": "Doctrinas económicas",
+     "total": 2
+    },
+    {
+     "tema": "Derechos",
+     "total": 2
+    },
+    {
+     "tema": "Fenómenos naturales y desastres",
+     "total": 2
+    },
+    {
+     "tema": "Epistemología",
+     "total": 2
+    },
+    {
+     "tema": "Empresa",
+     "total": 2
+    },
+    {
+     "tema": "Defensa Civil",
+     "total": 2
+    },
+    {
+     "tema": "Participación ciudadana",
+     "total": 2
+    },
+    {
+     "tema": "Matrimonio y familia",
+     "total": 2
+    },
+    {
+     "tema": "Convivencia democrática y cultura de paz",
+     "total": 1
+    },
+    {
+     "tema": "Fases de defensa civil",
+     "total": 1
+    },
+    {
+     "tema": "Bloques económicos",
+     "total": 1
+    },
+    {
+     "tema": "Defensa civil",
+     "total": 1
+    },
+    {
+     "tema": "Tipos de familia",
+     "total": 1
+    },
+    {
+     "tema": "Sistema de defensa nacional",
+     "total": 1
+    },
+    {
+     "tema": "Las asociaciones cooperativas",
+     "total": 1
+    },
+    {
+     "tema": "Guerra Fría",
+     "total": 1
+    },
+    {
+     "tema": "Convenio Andrés Bello",
+     "total": 1
+    },
+    {
+     "tema": "Niveles de gobierno",
+     "total": 1
+    },
+    {
+     "tema": "Organismos internacionales",
+     "total": 1
+    },
+    {
+     "tema": "Convivencia Democrática",
+     "total": 1
+    },
+    {
+     "tema": "Geografía política",
+     "total": 1
+    },
+    {
+     "tema": "Organismos de los Estados Americanos (OEA)",
+     "total": 1
+    },
+    {
+     "tema": "Estado peruano",
+     "total": 1
+    },
+    {
+     "tema": "Doctrinas económicas (Cooperativismo)",
+     "total": 1
+    },
+    {
+     "tema": "Congreso de la República",
+     "total": 1
+    },
+    {
+     "tema": "Acuerdo Nacional",
+     "total": 1
+    },
+    {
+     "tema": "Ley general de cooperativas",
+     "total": 1
+    },
+    {
+     "tema": "Seguridad y defensa nacional",
+     "total": 1
+    },
+    {
+     "tema": "Declaración Universal de los Derechos",
+     "total": 1
+    },
+    {
+     "tema": "Ciudadanía",
+     "total": 1
+    },
+    {
+     "tema": "Organización de las Naciones Unidas",
+     "total": 1
+    },
+    {
+     "tema": "La familia",
+     "total": 1
+    },
+    {
+     "tema": "Ley general de las cooperativas",
+     "total": 1
+    },
+    {
+     "tema": "Desarrollo humano - Factores de riesgo",
+     "total": 1
+    },
+    {
+     "tema": "Fenómenos naturales y Desastres",
+     "total": 1
+    },
+    {
+     "tema": "Afectividad",
+     "total": 1
+    },
+    {
+     "tema": "Poder Ejecutivo",
+     "total": 1
+    },
+    {
+     "tema": "Discriminación laboral",
+     "total": 1
+    },
+    {
+     "tema": "Defensa Nacional",
+     "total": 1
+    },
+    {
+     "tema": "Sistema de Defensa Nacional",
+     "total": 1
+    },
+    {
+     "tema": "Normas jurídicas",
+     "total": 1
+    },
+    {
+     "tema": "Servicio Militar Voluntario",
+     "total": 1
+    },
+    {
+     "tema": "Organismos constitucionales autónomos",
+     "total": 1
+    },
+    {
+     "tema": "Deberes de la ciudadanía",
+     "total": 1
+    },
+    {
+     "tema": "Cultura de paz",
+     "total": 1
+    },
+    {
+     "tema": "Derechos Humanos y Constitucionales",
+     "total": 1
+    },
+    {
+     "tema": "Atribuciones del presidente del Consejo",
+     "total": 1
+    },
+    {
+     "tema": "Atribuciones del Consejo de Ministros",
+     "total": 1
+    },
+    {
+     "tema": "Geodinámica externa",
+     "total": 1
+    },
+    {
+     "tema": "OEA",
+     "total": 1
+    },
+    {
+     "tema": "Comunidad Andina de Naciones",
+     "total": 1
+    }
+   ],
+   "examenes": 22,
+   "muestras": [
+    {
+     "texto": "Serían alternativas viables de parte del Estado para entender la ola de criminalidad e inseguridad en Trujillo: 1. Atender a la población con acceso a puestos laborales. 2. Mejorar nuestro sistema de justicia para su correcta administración. 3. Mejorar los sueldos de jueces y fiscales para una correcta administración de justicia. 4. Privatizar la educación para que mejore la calidad educativa. SON CIERTAS:",
+     "opciones": [
+      "solo 1 y 2",
+      "solo 1, 2 y 3",
+      "solo 2 y 3",
+      "solo 3 y 4",
+      "1, 2, 3 y 4"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "Las acciones que el Estado debe realizar son atender a la demanda social de puestos de trabajo, donde generen un ingreso de manera formal y segura; y garantizar una mejora en el sistema de justicia, esto es porque una correcta administración podría reducir las reiterativas violencias callejeras. Estas acciones forman parte de la política del Estado por sus diferentes instituciones.",
+     "curso": "Ciudadanía y Cívica",
+     "tema": "Convivencia democrática",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-II - area B"
+    },
+    {
+     "texto": "Por la patria potestad, los padres tienen el deber y el derecho de cuidar de la persona y bienes de sus hijos menores; sin embargo, la pueden perder por",
+     "opciones": [
+      "abandonar a los hijos seis meses continuos.",
+      "cesar la incapacidad de los hijos.",
+      "dedicar a la mendicidad a los hijos.",
+      "negarse a prestar alimentos a los hijos.",
+      "tratar con dureza excesiva a los hijos."
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Artículo 461.- Causales de extinción de patria potestad La patria potestad se acaba 1. por la muerte de los padres o del hijo. 2. cesar la incapacidad del hijo conforme al artículo 46. 3. cuando el hijo cumple dieciocho años.",
+     "curso": "Ciudadanía y Cívica",
+     "tema": "La familia",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-I - area C"
+    },
+    {
+     "texto": "Carlos y Josefa han optado por un matrimonio:",
+     "opciones": [
+      "masivo",
+      "in extremis",
+      "consular",
+      "momentáneo",
+      "pos jubilación"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Según Enrique Varsi, en su obra Tratado de derecho de familia (2012), afirma que, si bien uno de los fines del matrimonio es la procreación y la educación de los hijos, muchas parejas se casan más que para tener descendencia, para ayudarse entre sí, siendo este el caso del matrimonio momentáneo.",
+     "curso": "Ciudadanía y Cívica",
+     "tema": "Matrimonio y familia",
+     "subtema": null,
+     "examen": "UNT 2025 BIO 2025-II - area C"
+    },
+    {
+     "texto": "Se considera como asociaciones precooperativas en el Perú: 1. los gremios 2. el ayni 3. los sindicatos 4. la minka 5. las mutuales Son ciertas:",
+     "opciones": [
+      "1, 2 y 3",
+      "1, 3 y 4",
+      "1, 3 y 5",
+      "1, 4 y 5",
+      "2, 4 y 5"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Antes de analizar las asociaciones cooperativas, definamos en primer lugar cada una de ellas: La cooperativa es una organización que agrupa a varias personas con la finalidad de realizar una actividad empresarial. La asociación es la unión de dos o más personas con el fin de conseguir un fin o realizar una actividad no necesariamente lucrativa. Entonces deducimos que una asociación cooperativa es la organización que agrupa a varias personas para brindar una actividad productiva sin la necesidad de tener fines lucrativos. Sin embargo, la pregunta nos indica asociaciones precooperativas, en ese caso serían las siguientes: El ayni consiste en ayudar al otro sin esperar nada como retribución, se realiza con la finalidad de sentirse bien y, de esa manera, vivir en armonía. La minka establece relaciones de reciprocidad, compromiso y complementariedad. El mutualismo es una entidad sin fines de lucro formada bajo los principios de la solidaridad y mutua ayuda entre las personas, teniendo entre sus orígenes el siglo xvii en Europa.",
+     "curso": "Ciudadanía y Cívica",
+     "tema": "Las asociaciones cooperativas",
+     "subtema": null,
+     "examen": "UNT 2022 BIO 2022-II - area B"
+    },
+    {
+     "texto": "Si la Universidad Nacional de Trujillo solicitaría la donación de libros para la biblioteca, se tendría que recurrir:",
+     "opciones": [
+      "a la Corporación Andina de Fomento",
+      "al Convenio Hipólito Unanue",
+      "al Convenio Andrés Bello",
+      "al Convenio Simón Rodríguez",
+      "al Mercosur"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "La Comunidad Andina de Naciones, integrada por Bolivia, Colombia, Ecuador y Perú, es un organismo internacional líder en integración en el continente. Se le reconoce por establecer convenios en diversas áreas. Algunos de estos son los siguientes: • Convenio Hipólito Unanue: apoya las acciones que realizan los países miembros, individual o colectivamente, para el mejoramiento de la salud de sus pueblos. • Convenio Andrés Bello: uno de sus propósitos es contribuir al desarrollo integral de sus países miembros mediante la promoción, el apoyo y la realización de esfuerzos mancomunados en los campos de la educación, ciencia, tecnología y cultura. • Convenio Sociolaboral Simón Rodríguez: su objetivo es proponer y debatir iniciativas en los temas vinculados al ámbito sociolaboral: fomento del empleo, formación y capacita­ ción laboral, salud y seguridad en el trabajo, seguridad social, migraciones laborales, entre otras.",
+     "curso": "Ciudadanía y Cívica",
+     "tema": "Comunidad Andina de Naciones",
+     "subtema": null,
+     "examen": "UNT 2025 BIO 2025-II - area C"
+    },
+    {
+     "texto": "En una clase de Ciudadanía y Cívica se dialoga sobre la crisis de confianza que sufre el sistema de justicia en el Perú, ya que, la mayoría de ciudadanos lo concibe como un sistema corrupto donde los jueces y fiscales son sindicados como los principales responsables de la liberación de criminales capturados por la Policía Nacional. Ante ello, uno de los estudiantes le pregunta a la docente ¿Cuál es la entidad encargada de seleccionar y nombrar a los jueces y fiscales de nuestro país? La respuesta correcta de la docente fue:",
+     "opciones": [
+      "Ministerio Público",
+      "Tribunal Constitucional",
+      "Junta Nacional de Justicia",
+      "Poder Judicial",
+      "Contraloría General de la República"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "ÓN Los derechos humanos son inalienables, lo que significa que no pueden ser transferidos, renunciados o vendidos. Son inherentes a la dignidad humana y no pueden ser objeto de negociación o comercialidad.",
+     "curso": "Ciudadanía y Cívica",
+     "tema": "Derechos humanos",
+     "subtema": null,
+     "examen": "UNT 2025 2025-I - area D"
+    }
+   ]
+  },
+  {
+   "curso": "Inglés",
+   "slug": "ingles",
+   "total": 97,
+   "temas": [
+    {
+     "tema": "Reading comprehension",
+     "total": 40
+    },
+    {
+     "tema": "Simple present of be",
+     "total": 4
+    },
+    {
+     "tema": "Past Simple",
+     "total": 3
+    },
+    {
+     "tema": "There is – There are",
+     "total": 3
+    },
+    {
+     "tema": "Reading Comprehension",
+     "total": 3
+    },
+    {
+     "tema": "Present Perfect",
+     "total": 2
+    },
+    {
+     "tema": "Verb be",
+     "total": 2
+    },
+    {
+     "tema": "Preposition of time",
+     "total": 2
+    },
+    {
+     "tema": "Past simple",
+     "total": 2
+    },
+    {
+     "tema": "Articles",
+     "total": 2
+    },
+    {
+     "tema": "Possessive adjective",
+     "total": 2
+    },
+    {
+     "tema": "Prepositions of place",
+     "total": 2
+    },
+    {
+     "tema": "Plural nouns",
+     "total": 2
+    },
+    {
+     "tema": "Simple Past",
+     "total": 1
+    },
+    {
+     "tema": "Prepositions of time",
+     "total": 1
+    },
+    {
+     "tema": "Vocabulary",
+     "total": 1
+    },
+    {
+     "tema": "Prepositions of time and place",
+     "total": 1
+    },
+    {
+     "tema": "Simple Present",
+     "total": 1
+    },
+    {
+     "tema": "Future Be going to – Modal verb: might",
+     "total": 1
+    },
+    {
+     "tema": "Present Simple",
+     "total": 1
+    },
+    {
+     "tema": "Past Habits: used to",
+     "total": 1
+    },
+    {
+     "tema": "Present tenses",
+     "total": 1
+    },
+    {
+     "tema": "Past simple and Past continuous",
+     "total": 1
+    },
+    {
+     "tema": "Future Be Going to",
+     "total": 1
+    },
+    {
+     "tema": "Prepositions",
+     "total": 1
+    },
+    {
+     "tema": "Be past",
+     "total": 1
+    },
+    {
+     "tema": "Modal verbs",
+     "total": 1
+    },
+    {
+     "tema": "Present perfect",
+     "total": 1
+    },
+    {
+     "tema": "Past continuous",
+     "total": 1
+    },
+    {
+     "tema": "Used to",
+     "total": 1
+    },
+    {
+     "tema": "Quantifiers",
+     "total": 1
+    },
+    {
+     "tema": "Past continuous and Past simple",
+     "total": 1
+    },
+    {
+     "tema": "Past Simple of Be",
+     "total": 1
+    },
+    {
+     "tema": "Possessive Adjective",
+     "total": 1
+    },
+    {
+     "tema": "Comparative and Superlative of Adjectives",
+     "total": 1
+    },
+    {
+     "tema": "Present Continuous",
+     "total": 1
+    },
+    {
+     "tema": "Modal Verb",
+     "total": 1
+    },
+    {
+     "tema": "Present simple of verb be",
+     "total": 1
+    },
+    {
+     "tema": "Demonstrative pronouns and adjectives",
+     "total": 1
+    },
+    {
+     "tema": "Order of adjectives",
+     "total": 1
+    },
+    {
+     "tema": "Simple present",
+     "total": 1
+    }
+   ],
+   "examenes": 25,
+   "muestras": [
+    {
+     "texto": "This is my best friend, Edson Valverde. He is from Colombia. He is Colombian. He is a responsible, smart, and cheerful boy. He is tall and handsome. He is twelve years old. He is in high school. How old is Edson?",
+     "opciones": [
+      "He is twelve years old.",
+      "He is years old.",
+      "Jimmy is tall and handsome",
+      "Jimmy is twelve.",
+      "She am twelve years old."
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "How old is Edson? (¿Cuántos años tiene Edson?) He is twelve years old (El tiene doce años de edad). En el texto se menciona: He is twelve years old (Él tiene doce años de edad).",
+     "curso": "Inglés",
+     "tema": "Reading comprehension",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-II - area C"
+    },
+    {
+     "texto": "Complete the conversation. a: You new neighbor's good-looking! b: His name's Francisco. a: he from? b: El Salvador.",
+     "opciones": [
+      "What's - When's",
+      "How's - Where's",
+      "What's - Where's",
+      "Where's - Who's",
+      "What's - Who's"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Complete the conversation (Completa la conversación) a. Your new neighbor’s good looking! What’s his name? (¡Tu nuevo vecino es guapo! ¿Cuál es su nombre?) b. His name’s Francisco (Su nombre es Francisco). a. Where’s he from? (¿De dónde es él?). b. El Salvador La primera pregunta averigua sobre información personal: What (Qué o Cuál) y la segunda pregunta averigua sobre ubicación: Where (dónde); en ambos casos, las preguntas están orientadas a usar el verbo be conjugado adecuadamente de acuerdo con el sujeto: He is.",
+     "curso": "Inglés",
+     "tema": "Simple present of be",
+     "subtema": null,
+     "examen": "UNT 2022 BIO 2022-I (area C)"
+    },
+    {
+     "texto": "Math the description and the relationship. Caleb and I are managers. Our company is Infotech. Our boss is Mr. Jackson.",
+     "opciones": [
+      "They're classmates.",
+      "We're colleagues.",
+      "They're neighbors.",
+      "We're Friends.",
+      "They're managers."
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Match the description and the relationship (Coincidir con la descripción y la relación). Caleb and I are managers. Our company is Infotech. Our boss is Mr. Jackson. (Caleb y yo somos gerentes. Nuestra empresa es Infotech. Nuestro jefe es el Sr. Jackson). De acuerdo a la descripción, claramente ambas personas son colegas porque tienen a un jefe y trabajan para una empresa; además, el texto está escrito en tercera persona del plural: Caleb and I = We (Nosotros). Por lo tanto, la oración correcta para describir el enunciado es: We’re colleagues (Nosotros somos colegas).",
+     "curso": "Inglés",
+     "tema": "Vocabulary",
+     "subtema": null,
+     "examen": "UNT 2022 BIO 2022-I (area B)"
+    },
+    {
+     "texto": "Complete with the appropriate words. - Oh my god! Karen I ............... (see) you ............... we left school.",
+     "opciones": [
+      "have saw - since",
+      "have seen - ever",
+      "haven't seen - since",
+      "has seen - already",
+      "hasn't saw - since"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "ÓN Complete with the appropriate words (Completa con las palabras adecuadas). De acuerdo al contexto, el siguiente enunciado debe ser completado usando el presente perfecto, ya que evoca una acción pasada con un resultado en el presente; además, debemos usar el adverbio since (desde), ya que la acci",
+     "curso": "Inglés",
+     "tema": "Present perfect",
+     "subtema": null,
+     "examen": "UNT 2023 BIO 2023-I - area C"
+    },
+    {
+     "texto": "Read the text and choose the correct verb to be forms: Jorge Campos is my neighbor. He ............... from Mexico. He ............... Peruvian. His friends ............... from Peru, United States and Mexico. He works for building company. He ............... very happy here.",
+     "opciones": [
+      "are - is - are - is",
+      "isn't - is - are - are",
+      "is - isn't - are - is",
+      "is - is - are - isn't",
+      "isn't - are - is - are"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Read the text and choose the correct verb to be forms: (Lee el texto y elige la forma correcta del verbo to be): Jorge Campos is my neighbor. He is from Mexico. He isn’t Peruvian. His friends are from Peru, United States and Mexico. He works for a building company. He is very happy here (Jorge Campos es mi vecino. Él es de México. No es peruano. Sus amigos son de Perú, Estados Unidos y México. Trabaja para una empresa constructora. Él está muy feliz aquí). El verbo be se conjuga de la siguiente forma en el presente simple: I am, you are, he is, she is, it is, we are, they are.",
+     "curso": "Inglés",
+     "tema": "Present simple of verb be",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-II - area C"
+    },
+    {
+     "texto": "Complete the sentences with the correct modal verbs: I. She ............... speak many languages. She is wonderful. II. Be careful! The floor is wet. You ............... fall down. III. When you are driving a car, you ............... wear a belt. IV. ............... you help me, please? V. Michael is a child yet. He ............... work. It's illegal.",
+     "opciones": [
+      "could - must - have to - Can - doesn't have to",
+      "be able to - might - has to - May - mustn't",
+      "was able to - could - must - Could - don't have to",
+      "can - may - have to - Could - mustn't",
+      "cans - might - should - Can - has to"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Complete the sentences with the correct modal verbs (Completa las oraciones con los verbos modales correctos). I. She can speak many languages. She is wonderful (Puede hablar muchos idiomas. Ella es maravillosa). En esta oración se menciona la habilidad de hablar idiomas; can es el modal verb de las habilidades en el presente. II. Be careful! The floor is wet. You may fall down (¡Ten cuidado! El piso está mojado. Podrías caer). Al estar el piso mojado, existe la posibilidad de caer; may es el modal verb de la posibilidad futura. III. When you are driving a car, you have to wear a belt (Cuando conduces un coche, debes usar el cinturón). Usar el cinturón de seguridad mientras se conduce es una norma establecida por las autoridades; have to es el modal verb de la obligación por factores externos (normas, leyes, reglas). IV. Could you help me, please? (¿Usted me podría ayudar, por favor?). Cuando se pide algo a alguien de manera bastante cortés, usamos el modal verb could. V. Michael is a child yet. He mustn’t work. It’s illegal (Michael es un niño todavía. No debe trabajar. Es ilegal). Los niños no deben trabajar, está prohibido, el modal verb de la prohibición es mustn’t.",
+     "curso": "Inglés",
+     "tema": "Modal Verb",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-I - area C"
+    }
+   ]
+  }
+ ],
+ "anios": [
+  {
+   "anio": "2025",
+   "total": 541,
+   "examenes": [
+    {
+     "examen": "UNT 2025 2025-I - area D",
+     "total": 92
+    },
+    {
+     "examen": "UNT 2025 2025-II - area D",
+     "total": 75
+    },
+    {
+     "examen": "UNT 2025 BIO 2025-I - area A",
+     "total": 90
+    },
+    {
+     "examen": "UNT 2025 BIO 2025-I - area B",
+     "total": 48
+    },
+    {
+     "examen": "UNT 2025 BIO 2025-I - area C",
+     "total": 50
+    },
+    {
+     "examen": "UNT 2025 BIO 2025-II - area A",
+     "total": 85
+    },
+    {
+     "examen": "UNT 2025 BIO 2025-II - area B",
+     "total": 57
+    },
+    {
+     "examen": "UNT 2025 BIO 2025-II - area C",
+     "total": 44
+    }
+   ],
+   "cursos": [
+    {
+     "curso": "Biología / Química / Física",
+     "total": 124
+    },
+    {
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "total": 106
+    },
+    {
+     "curso": "Matemática",
+     "total": 96
+    },
+    {
+     "curso": "Desarrollo Personal",
+     "total": 83
+    },
+    {
+     "curso": "Historia / Geografía / Economía",
+     "total": 61
+    },
+    {
+     "curso": "Ciudadanía y Cívica",
+     "total": 39
+    },
+    {
+     "curso": "Inglés",
+     "total": 32
+    }
+   ],
+   "muestras": [
+    {
+     "texto": "Los estudiantes del colegio San Juan leen la siguiente lectura que corresponde al canto trigésimo cuarto, canto final de \"El infierno\", de la obra la Divina comedia de Dante Alighieri. \"que un gigante a su brazo desdoblado, icual sería de pies a la cabeza su gigantesco cuerpo levantado! Si su fealdad iguala su belleza cuando contra el Creador alzó los ojos, irazón hay de llorar en la tristeza! ¡Oh! ¡qué gran maravilla en sus despojos, cuando le vi tres caras en la testa! Una delante de colores rojos\" A partir de la lectura podemos inferir: 1. El personaje Lucifer pertenece al bajo infierno. 2. El personaje se ubica en los pecados de la malicia. 3. Versos de tipo serventesio. 4. La cara roja representa la impotencia: Casio. 5. La expresión subrayada se contrapone a la Santísima Trinidad. son ciertas:",
+     "opciones": [
+      "1, 4 y 5",
+      "1, 2 y 4",
+      "1, 2 y 5",
+      "2, 3 y 4",
+      "2, 3 y 5"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "En los versos se alude a Lucifer, quien está preso en el noveno círculo, donde son castigados los traidores. Es decir, pertenece al bajo infierno, pues allí se encuentran los pecados más graves. Se concibe que la traición es un pecado de malicia; en otras palabras, deliberado o intencional. Además, el número tres en la expresión subrayada refiere a la Santísima Trinidad: Padre, Hijo y Espíritu Santo.",
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "tema": "Medievalismo",
+     "subtema": null,
+     "examen": "UNT 2025 2025-II - area D"
+    },
+    {
+     "texto": "La actividad que directamente concierne a realizar es(son):",
+     "opciones": [
+      "Programas educativos en la comunidad de Moche.",
+      "Proyectos de construcción en la región.",
+      "Programa de manejo de residuos sólidos en la zona de las riberas del río Moche.",
+      "Proyectos de prevención en beneficio de la población.",
+      "Actividades recreativas en las riberas del río Moche."
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "La ampliación y descolmatación de una parte de la vertiente del río Moche (o cualquier otro) son actividades técnicas que forman parte de la gestión y mantenimiento de cauces fluviales. Estas se realizan para mejorar el flujo del agua, prevenir inundaciones y proteger las zonas aledañas. Según esto, podemos señalar que ampliar y descolmatar el cauce del rio Moche son proyectos de prevención en beneficio de la población.",
+     "curso": "Historia / Geografía / Economía",
+     "tema": "Vertiente del Pacífico",
+     "subtema": null,
+     "examen": "UNT 2025 BIO 2025-II - area A"
+    },
+    {
+     "texto": "Ana Paula en su tesis sobre \"El desempeño docente y su relación con el rendimiento académico de los estudiantes\" sigue todo un plan específico para no caer en errores. Esto es una característica de la ciencia, denominada:",
+     "opciones": [
+      "fáctica",
+      "especializada",
+      "empírica",
+      "metódica",
+      "predictiva"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "El saber científico se construye a partir de una secuencia lógica y ordenada de pasos. Estos incluyen plantear un problema, formular hipótesis, y realizar una contrastación empírica. En ese sentido, cuando Ana Paula elige un problema de investigación y sigue una secuencia de pasos para obtener saberes, se hace referencia al carácter metódico de la ciencia.",
+     "curso": "Desarrollo Personal",
+     "tema": "Epistemología",
+     "subtema": null,
+     "examen": "UNT 2025 2025-II - area D"
+    },
+    {
+     "texto": "La cantidad de números de la forma $\\overline{y29x}$ es:",
+     "opciones": [
+      "43",
+      "44",
+      "45",
+      "46",
+      "47"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "Del enunciado y x 29 2 = o Se concluye que x=2 o → x: 0; 2; 4; 6; 8 Nos piden la cantidad de números de la forma y 2 9 x 1 2 3 4... 9 0 2 4 6 8 9 × 5 = 45 numerales",
+     "curso": "Matemática",
+     "tema": "Teoría de divisibilidad",
+     "subtema": null,
+     "examen": "UNT 2025 2025-II - area D"
+    },
+    {
+     "texto": "Las leyes de Newton también son aplicadas a la dinámica de rotación de los cuerpos. En tal sentido, si una persona de 50 kg desliza sobre una superficie esférica, como se muestra en la figura, y cuando pasa por \"P\" presenta una rapidez de 4 m/s, con $ R = 4 \\, \\text{m} $, un ángulo de 37° y $ \\mu_k = 0,25 $. Entonces el módulo de su aceleración (en $\\text{m/s}^{2}$) en ese instante es: (Considerar $ g = 10 \\, \\text{m/s}^2 $)",
+     "opciones": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     "correcta": 4,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNT/UNT-2025-BIO-2025-II-area-A/P95.webp",
+     "justificacion": "37º 400 N 300 N 37º ac Fg=500 N fN fk aT 4 m/s ac = = 4 4 4 2 m/s2 En línea radial Fc=mac fN − = × 400 50 4 4 2 fN=600 N En la línea tangencial FT=maT 300 – fk=50aT 300 – 0,25(600)=50aT aT=3 m/s2 ∴ a=5 m/s2",
+     "curso": "Biología / Química / Física",
+     "tema": "Dinámica circunferencial",
+     "subtema": null,
+     "examen": "UNT 2025 BIO 2025-II - area A"
+    },
+    {
+     "texto": "En relación al Premier, las funciones son: 1. Ser el portavoz autorizado del Presidente de la República. 2. Coordinar funciones con los demás ministros. 3. Refrendar decretos legislativos y decretos de urgencia. 4. Deliberar sobre asuntos de interés privado. 5. Aprobar los proyectos de ley que el Presidente envía al Congreso. Son ciertas:",
+     "opciones": [
+      "solo 1, 2 y 5",
+      "solo 1 y 2",
+      "solo 1, 2 y 3",
+      "solo 3, 4 y 5",
+      "1, 2, 3, 4 y 5"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "de Ministros La Constitución política del Perú indica lo siguiente respecto al presidente del Consejo de Ministros: Al presidente del Consejo de Ministros, quien puede ser ministro sin cartera, le corresponde: • Ser, después del presidente de la República, el portavoz autorizado del Gobierno. • Coordinar las funciones de los demás minis­ tros. • Refrendar los decretos legislativos, los decretos de urgencia y los demás decretos y resoluciones que señalan la Constitución y la ley.",
+     "curso": "Ciudadanía y Cívica",
+     "tema": "Atribuciones del presidente del Consejo",
+     "subtema": null,
+     "examen": "UNT 2025 BIO 2025-I - area C"
+    },
+    {
+     "texto": "I am a scientist. I am thirty-five years old. I am very excited now. I am from Peru. I am Peruvian. Peru is a wonderful country. Its weather is warm during all the year. According to the reading, answer the question. How is Peru?",
+     "opciones": [
+      "Peru is very excited",
+      "Peru is a wonderful country",
+      "It's very",
+      "There is a lot of smoke",
+      "There is a lot of violence"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Notamos que en el texto se indica explícitamente la respuesta. How is Peru? (¿Cómo es el Perú?) Peru is a wonderful country (El Perú es un país maravilloso).",
+     "curso": "Inglés",
+     "tema": "Reading comprehension",
+     "subtema": null,
+     "examen": "UNT 2025 BIO 2025-II - area C"
+    }
+   ]
+  },
+  {
+   "anio": "2024",
+   "total": 652,
+   "examenes": [
+    {
+     "examen": "UNT 2024 2024-I - area D",
+     "total": 98
+    },
+    {
+     "examen": "UNT 2024 2024-II - area D",
+     "total": 89
+    },
+    {
+     "examen": "UNT 2024 BIO 2024-I - area A",
+     "total": 77
+    },
+    {
+     "examen": "UNT 2024 BIO 2024-I - area B",
+     "total": 97
+    },
+    {
+     "examen": "UNT 2024 BIO 2024-I - area C",
+     "total": 70
+    },
+    {
+     "examen": "UNT 2024 BIO 2024-II - area A",
+     "total": 67
+    },
+    {
+     "examen": "UNT 2024 BIO 2024-II - area B",
+     "total": 91
+    },
+    {
+     "examen": "UNT 2024 BIO 2024-II - area C",
+     "total": 63
+    }
+   ],
+   "cursos": [
+    {
+     "curso": "Biología / Química / Física",
+     "total": 156
+    },
+    {
+     "curso": "Matemática",
+     "total": 131
+    },
+    {
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "total": 118
+    },
+    {
+     "curso": "Historia / Geografía / Economía",
+     "total": 97
+    },
+    {
+     "curso": "Desarrollo Personal",
+     "total": 80
+    },
+    {
+     "curso": "Ciudadanía y Cívica",
+     "total": 36
+    },
+    {
+     "curso": "Inglés",
+     "total": 34
+    }
+   ],
+   "muestras": [
+    {
+     "texto": "Defina las siguientes operaciones: $\\displaystyle \\begin{aligned} &\\text{} = x + 11 \\\\ &\\text{} = x + 5 \\end{aligned}$ Entonces el valor de $\\displaystyle E = \\text{} + \\text{}$ Es:",
+     "opciones": [
+      "19",
+      "20",
+      "43",
+      "52",
+      "67"
+     ],
+     "correcta": 0,
+     "imagen": "https://raw.githubusercontent.com/Canazachyub/simulauna-imagenes/main/UNT/UNT-2024-BIO-2024-I-area-B/P10.webp",
+     "justificacion": "Nos piden el valor de E. De acuerdo a la regla de definición, tenemos x – 15 =x+5 +20 x+5 =x+11 x+5 =x+11 +20 x+5 =x – 9 – 14 Calculamos el valor de ES. E= 4 + 3 E= – 10 + 23 E= – 24+43 Por lo tanto, el valor de E es 19.",
+     "curso": "Matemática",
+     "tema": "Conteo de figuras",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-I - area B"
+    },
+    {
+     "texto": "Son obras novelísticas de José María Arguedas: 1. Todas las sangres 2. \"La agonía de Rasu Ñiti\" 3. El Sexto 4. Katatay 5. Diamantes y pedernales Son ciertas:",
+     "opciones": [
+      "1, 3 y 5",
+      "2, 3 y 4",
+      "solo 1 y 3",
+      "3, 4 y 5",
+      "solo 2 y 3"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "José María Arguedas es uno de los máximos representantes del indigenismo peruano. Su obra se caracteriza por representar la cosmovisión andina y la creación de un castellano quechuizado. Y uno de los temas constantes de su obra es el desarraigo cultural. Desarrolló diversos géneros literarios, entre los cuales pasamos a especificar los enunciados propuestos. 1. Todas las sangres (novela) 2. «La agonía de Rasu Ñiti» (cuento) 3. El Sexto (novela) 4. «Katatay» (poema) 5. Diamantes y pedernales (novela)",
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "tema": "Indigenismo peruano",
+     "subtema": null,
+     "examen": "UNT 2024 2024-I - area D"
+    },
+    {
+     "texto": "Acerca de la reproducción bacteriana se obtiene: 1. La descendencia de las bacterias con reproducción asexual, son clones. 2. En la conjugación participan gametos. 3. En la transducción se requiere un agente transmisor. 4. La bacteria F es la donadora. 5. En la conjugación el ADN se transmite de la bacteria donadora a la receptora a través del pili. SON CIERTAS:",
+     "opciones": [
+      "1, 2 y 3",
+      "1, 3 y 5",
+      "2, 3 y 4",
+      "2, 4 y 5",
+      "3, 4 y 5"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "1. Correcto Las bacterias se reproducen mediante bipartición, en la cual no se genera variabilidad genética. Por ello, las células descendientes pueden considerarse clones de la progenitora. 2. Incorrecto La conjugación es una forma de transferencia horizontal de genes en la que participan plásmidos. 3. Correcto La transducción es otra forma de transferencia horizontal en la que los virus bacteriófagos cumplen el papel de agente transmisores del material genético. 4. Incorrecto En la conjugación, la bacteria F - carece de plásmido, por lo que es la receptora. 5. Correcto Los pili son proyecciones largas emitidas por la bacteria donadora, mediante las cuales contacta con la receptora.",
+     "curso": "Biología / Química / Física",
+     "tema": "Célula procariota",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-II - area B"
+    },
+    {
+     "texto": "Para el profesor Anthony, la intuición y los conceptos constituyen, pues, los elementos de todo nuestro conocimiento, de modo que ni los conceptos pueden suministrar conocimiento prescindiendo de una intuición que les corresponda de alguna forma, ni tampoco puede hacerlo la intuición sin conceptos. Los pensamientos sin contenido son vacíos; las intuiciones sin conceptos son ciegas. De lo mencionado por el profesor se puede deducir que:",
+     "opciones": [
+      "Adopta el Fenomenalismo como postura sobre el origen del conocimiento.",
+      "Adopta una postura Empirista sobre el origen del conocimiento.",
+      "Adopta una postura Racionalista sobre el origen del conocimiento.",
+      "Adopta el Apriorismo como postura sobre el origen del conocimiento.",
+      "Adopta una postura Relativista sobre el origen del conocimiento."
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "La afirmación de que “los conceptos son vacíos sin las intuiciones y las intuiciones son ciegas sin los conceptos” pertenece al filósofo Immanuel Kant. Con esta tesis, Kant buscó resolver el problema del origen del conocimiento, de modo que realizó una síntesis entre el racionalismo (origen racional) y el empirismo (origen sensorial). Según la tesis de Kant, los sentidos aportan la materia del conocimiento (intuiciones), mientras que la razón aportaría la forma del conocimiento (formas a priori de la sensibilidad y categorías a priori del entendimiento) que son las condiciones que permiten al sujeto organizar nuestras sensaciones y posibilitar el conocimiento. Dicha tesis se denomina apriorismo, porque pone énfasis en la existencia de condiciones a priori en la mente humana.",
+     "curso": "Desarrollo Personal",
+     "tema": "Problemas del conocimiento",
+     "subtema": null,
+     "examen": "UNT 2024 BIO 2024-II - area A"
+    },
+    {
+     "texto": "Uno de los efectos nocivos de la inflación en nuestro país es:",
+     "opciones": [
+      "pobreza",
+      "crecimiento económico",
+      "estanflación",
+      "recesión",
+      "migración"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "La inflación consiste en el incremento generalizado del nivel de precios en la economía. Esta situación tiene efectos graves para el país y, específicamente, para la población, quienes sienten que el dinero que ganan cada vez vale menos porque pierde el poder de compra producto del incremento de los precios. Como consecuencia de esto, se acrecienta la pobreza en el país.",
+     "curso": "Historia / Geografía / Economía",
+     "tema": "Inflación",
+     "subtema": null,
+     "examen": "UNT 2024 2024-II - area D"
+    },
+    {
+     "texto": "Se infiere que el servicio militar: 1. es prestado por varones y mujeres 2. se brinda de manera obligatoria 3. no obliga a que los jóvenes se inscriban 4. sancionan a los no inscritos 5. se brinda a partir de los 18 años Son ciertas:",
+     "opciones": [
+      "1, 2 y 3",
+      "2, 3 y 4",
+      "3, 4 y 5",
+      "1, 4 y 5",
+      "2, 4 y 5"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "La Ley del Servicio Militar N° 29248 establece que el servicio militar es una actividad de carácter personal. Mediante ella, todo peruano puede ejercer su derecho y deber constitucional de participar en la Defensa Nacional. Es prestado por varones y mujeres sin discriminación alguna a partir de los dieciocho (18) años de edad. El peruano, al cumplir los diecisiete (17) años de edad, se inscribe obligatoriamente en el Registro Inscripción Militar. Si no se cumple con la inscripción en el plazo establecido, será considerado omiso y se considerará una infracción. El servicio militar es retribuido mediante una serie de beneficios y derechos que buscan compensar las necesidades de los participantes, y brindar posibilidades de desarrollo personal para su futuro.",
+     "curso": "Ciudadanía y Cívica",
+     "tema": "Derechos",
+     "subtema": null,
+     "examen": "UNT 2024 2024-II - area D"
+    },
+    {
+     "texto": "What was Michael's iconic dance move?",
+     "opciones": [
+      "\"Thriller\"",
+      "\"Moonwalk\"",
+      "\"King of Pop\"",
+      "\"Macarena\"",
+      "\"Peace\""
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "What was Michael’s iconic dance move? (¿Cuál fue el movimiento de baile icónico de Michael?) Moonwalk (Paseo lunar). En el texto se menciona: Of course, he had a powerful voice and his dance moves are still iconic nowadays. Like “the moonwalk”. (Por supuesto, tenía una voz poderosa y sus movimientos de baile siguen siendo icónicos hoy en día. Como “el paseo lunar”).",
+     "curso": "Inglés",
+     "tema": "Reading comprehension",
+     "subtema": null,
+     "examen": "UNT 2024 2024-II - area D"
+    }
+   ]
+  },
+  {
+   "anio": "2023",
+   "total": 307,
+   "examenes": [
+    {
+     "examen": "UNT 2023 2023-I - area D",
+     "total": 94
+    },
+    {
+     "examen": "UNT 2023 BIO 2023-I - area A",
+     "total": 93
+    },
+    {
+     "examen": "UNT 2023 BIO 2023-I - area B",
+     "total": 97
+    },
+    {
+     "examen": "UNT 2023 BIO 2023-I - area C",
+     "total": 23
+    }
+   ],
+   "cursos": [
+    {
+     "curso": "Matemática",
+     "total": 85
+    },
+    {
+     "curso": "Biología / Química / Física",
+     "total": 69
+    },
+    {
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "total": 61
+    },
+    {
+     "curso": "Historia / Geografía / Economía",
+     "total": 42
+    },
+    {
+     "curso": "Desarrollo Personal",
+     "total": 27
+    },
+    {
+     "curso": "Inglés",
+     "total": 12
+    },
+    {
+     "curso": "Ciudadanía y Cívica",
+     "total": 11
+    }
+   ],
+   "muestras": [
+    {
+     "texto": "Expresa la producción de las empresas nacionales que operan en nuestro país y en el extranjero:",
+     "opciones": [
+      "PBI",
+      "PNB",
+      "PNN",
+      "PGB",
+      "Renta Nacional"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "ÓN El producto bruto interno (PBI) es la sumatoria de toda la producción en el país, tanto de agentes nacionales como extranjeros, a precios de mercado. Este agregado no analiza la producción de agentes nacionales fuera del país. Sin embargo, el producto nacional bruto (PNB) sí analiza toda la produ",
+     "curso": "Historia / Geografía / Economía",
+     "tema": "Agregados económicos",
+     "subtema": null,
+     "examen": "UNT 2023 2023-I - area D"
+    },
+    {
+     "texto": "En la oración: Los padres compraron uniformes a sus hijos en la feria. Los modificadores del núcleo del predicado son: 1. objeto directo 2. modificador directo 3. objeto indirecto 4. predicativo 5. circunstancial Son ciertas:",
+     "opciones": [
+      "1, 2 y 3",
+      "1, 3 y 4",
+      "1, 3 y 5",
+      "2, 3 y 4",
+      "3, 4 y 5"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "El predicado es todo aquello que dice algo acerca del sujeto. Analizando la oración, tenemos la siguiente estructura del predicado: Los padres compraron uniformes a sus hijos en la feria. NP OD OI CL Formulamos preguntas para reconocer los siguientes modificadores del núcleo del predicado: - Objeto directo. ¿Qué compraron los padres?: uniformes. - Objeto indirecto. ¿A quiénes compraron los padres uniformes?: a sus hijos. - Circunstancial de lugar (CL). ¿Dónde compraron?: en la feria.",
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "tema": "Sintagma verbal: predicado",
+     "subtema": null,
+     "examen": "UNT 2023 BIO 2023-I - area B"
+    },
+    {
+     "texto": "Respecto al atlas, podemos afirmar que: 1. Posee el promontorio 2. No tiene cuerpo 3. Es la primera vértebra cervical 4. Se articula con la apófisis odontoides del axis 5. Forma parte del esqueleto apendicular Son ciertas:",
+     "opciones": [
+      "1, 2 y 3",
+      "1, 3 y 4",
+      "2, 3 y 4",
+      "2, 4 y 5",
+      "3, 4 y 5"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "ÓN Respecto al hueso atlas podemos indicar lo siguiente: 1. Incorrecto El promontorio es el borde más prominente y lo podemos encontrar en el hueso sacro. 2. Correcto El hueso atlas no tiene apófisis espinosa ni cuerpo, consiste en dos masas laterales conectadas por los arcos anterior y posterior. 3",
+     "curso": "Biología / Química / Física",
+     "tema": "Sistema locomotor",
+     "subtema": null,
+     "examen": "UNT 2023 2023-I - area D"
+    },
+    {
+     "texto": "El volumen de un prisma recto cuya altura mide 24 cm, y su base es un triángulo equilátero de área $\\frac{75\\sqrt{3}}{4}$, es:",
+     "opciones": [
+      "$250\\sqrt{3}$",
+      "$450\\sqrt{3}$",
+      "$480\\sqrt{3}$",
+      "$600\\sqrt{3}$",
+      "$720\\sqrt{3}$"
+     ],
+     "correcta": 1,
+     "imagen": null,
+     "justificacion": "Sabemos 24 75 3 4 Vprisma=a base · (altura) Vprisma =    ⋅( ) 75 3 4 24 ∴ Vprisma = 450 3",
+     "curso": "Matemática",
+     "tema": "Prisma regular",
+     "subtema": null,
+     "examen": "UNT 2023 BIO 2023-I - area A"
+    },
+    {
+     "texto": "Organismo de la OEA que sirve de cuerpo consultivo de la organización de asuntos jurídicos y promueve la codificación del derecho internacional:",
+     "opciones": [
+      "Organización Internacional del Trabajo",
+      "Consejo Interamericano para el Desarrollo Integral",
+      "Comisión Interamericana de Derechos Humanos.",
+      "Comité Jurídico Interamericano",
+      "La Secretaría General"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "La Organización de los Estados Americanos (OEA) es la organización hemisférica que integra a todos los países del continente americano, y cuyos ámbitos de trabajo abarcan una diversidad amplia de temas relevantes para la región. Dentro de su organización tenemos al Comité Jurídico Interamericano, el cual es el cuerpo consultivo de la Organización en asuntos jurídicos encargado de promover el desarrollo progresivo y la codificación del derecho internacional y de estudiar la posibilidad de uniformar las legislaciones de los países del Continente.",
+     "curso": "Ciudadanía y Cívica",
+     "tema": "Organismos de los Estados Americanos (OEA)",
+     "subtema": null,
+     "examen": "UNT 2023 BIO 2023-I - area A"
+    },
+    {
+     "texto": "Son planteamientos filosóficos que corresponden a Walter Peñaloza 1. La realidad es un hecho. 2. En un humanismo cristiano concibe la relación del hombre con Dios. 3. Contrastó el pensamiento griego con el de los modernos. 4. La filosofía correcta es el materialismo dialéctico. 5. La filosofía es una ciencia universal. Son ciertas",
+     "opciones": [
+      "1, 2 y 3",
+      "2, 3 y 5",
+      "1, 3 y 5",
+      "solo 2 y 4",
+      "1, 2, 3, 4 y 5"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "ÓN Walter Peñaloza Ramella, destacado filósofo y pedagogo peruano del siglo XX. Sus obras filosóficas son las siguientes: Evolución del conocimiento helénico: ilozoismo - eleatismo (1946), Estudio acerca del conocimiento (1955), El discurso de Parménides (1973), El conocimiento inferencial y la dedu",
+     "curso": "Desarrollo Personal",
+     "tema": "Filosofía en el Perú",
+     "subtema": null,
+     "examen": "UNT 2023 2023-I - area D"
+    },
+    {
+     "texto": "Complete the conversation. Leo: ............... you going to watch the soccer match tomorrow? Joseph: No, I am not. I ............... be out of town.",
+     "opciones": [
+      "Do - am going to",
+      "Will - will",
+      "Are - don't",
+      "Are - am going to",
+      "Will - don't"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Complete the conversation (Completa el dialogo) Notamos que la primera oración es una pregunta que usa la estructura gramatical going to, es necesario usar al verbo be conjugado correctamente, y al ser una pregunta, se debe invertir la posición del verbo be con el sujeto. Siendo el sujeto you, la conjugación correcta del verbo be es are: Leo: Are you going to watch the soccer match tomorrow? (¿Vas a ver el partido de fútbol mañana?) La segunda oración, siendo la respuesta, lo lógico es continuar en el mismo tiempo gramatical (futuro con be going to). El sujeto de la oración es I (yo), luego tenemos al verbo en forma base: be. Lo conveniente es usar la forma futura de be going to, el sujeto es I, el verbo be conjugado para este sujeto I es am: Joseph: No, I am not. I am going to be out of town (No, no voy a ver. Voy a estar fuera de la ciudad).",
+     "curso": "Inglés",
+     "tema": "Future Be Going to",
+     "subtema": null,
+     "examen": "UNT 2023 BIO 2023-I - area A"
+    }
+   ]
+  },
+  {
+   "anio": "2022",
+   "total": 553,
+   "examenes": [
+    {
+     "examen": "UNT 2022 2022-I (area D)",
+     "total": 92
+    },
+    {
+     "examen": "UNT 2022 2022-II - area D",
+     "total": 97
+    },
+    {
+     "examen": "UNT 2022 BIO 2022-I (area B)",
+     "total": 97
+    },
+    {
+     "examen": "UNT 2022 BIO 2022-I (area C)",
+     "total": 35
+    },
+    {
+     "examen": "UNT 2022 BIO 2022-II - area A",
+     "total": 92
+    },
+    {
+     "examen": "UNT 2022 BIO 2022-II - area B",
+     "total": 97
+    },
+    {
+     "examen": "UNT 2022 BIO 2022-II - area C",
+     "total": 43
+    }
+   ],
+   "cursos": [
+    {
+     "curso": "Matemática",
+     "total": 142
+    },
+    {
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "total": 120
+    },
+    {
+     "curso": "Biología / Química / Física",
+     "total": 113
+    },
+    {
+     "curso": "Historia / Geografía / Economía",
+     "total": 85
+    },
+    {
+     "curso": "Desarrollo Personal",
+     "total": 56
+    },
+    {
+     "curso": "Inglés",
+     "total": 19
+    },
+    {
+     "curso": "Ciudadanía y Cívica",
+     "total": 18
+    }
+   ],
+   "muestras": [
+    {
+     "texto": "Una casa se vende recargándose el $ m \\% $ del precio de costo, pero un ingeniero al comprarla le rebajaron el $ n \\% $. Si el vendedor no ganó ni perdió, entonces el valor de \"n\" equivale a:",
+     "opciones": [
+      "$\\frac{100}{100+m}$",
+      "$\\frac{100m}{1-m}$",
+      "$\\frac{100+m}{100-m}$",
+      "$\\frac{100}{100+\\frac{1}{m}}$",
+      "$\\frac{1}{0,01+\\frac{1}{m}}$"
+     ],
+     "correcta": 4,
+     "imagen": null,
+     "justificacion": "Nos piden el valor de n. De acuerdo a los datos precio de venta 100k+mk costo de la casa 100k mk m% del costo Para que no haya ni ganancias ni pérdidas, se tuvo que vender al precio de costo. Descuento debe ser: mk Precio fijado para la venta: (100+m)k Descuento = = + × n mk m k % ( ) % 100 100 n m m % % = + 100 100 n m m m m m m % % , % = + = + 100 100 100 100 100 1 1 0 01 Por lo tanto, el valor de n es 1 1 0 01 m + , .",
+     "curso": "Matemática",
+     "tema": "Tanto por cuanto",
+     "subtema": null,
+     "examen": "UNT 2022 2022-II - area D"
+    },
+    {
+     "texto": "El sistema de .............. de imágenes en está .............. basado en .............. descubrimientos, entre los que se encuentran el disco perforado explorador, .............. en 1884 por el pionero de la televisión, el alemán Paul Gottlib Nipkow. Las palabras que completan el texto son",
+     "opciones": [
+      "transmisión - movimiento - varios - inventado",
+      "composición - cambio - particulares - creado",
+      "integración - estaticidad - dos - imaginado",
+      "conexión - alteración - determinados - diseñado",
+      "recepción - rotación - insignificantes - mejorado"
+     ],
+     "correcta": 0,
+     "imagen": null,
+     "justificacion": "El tema del texto es hablar sobre la televisión. La primera palabra que se necesita es trasmisión, pues se relaciona con los rastros verbales sistema e imágenes. Luego, requiere de la palabra movimiento, para señalar su vínculo con la televisión. Posteriormente, se requiere del término varios, que se relaciona con el rastro verbal descubrimientos. Y culmina con la palabra inventado, que se relaciona con el rastro verbal disco perforado explorador y su creador Paul Gottlib Nipkow.",
+     "curso": "Literatura / Análisis del Discurso / Comunicología",
+     "tema": "Textos incompletos",
+     "subtema": null,
+     "examen": "UNT 2022 2022-I (area D)"
+    },
+    {
+     "texto": "El pago que reciben los miembros del directorio de las empresas por sesionar, se llama:",
+     "opciones": [
+      "sueldo",
+      "bonificación",
+      "dieta",
+      "prima",
+      "aporte"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "El trabajo es la actividad económica realizada por el ser humano, donde genera bienes y servicios, para posteriormente recibir una retribución denominada salario. El salario tiene diferentes formas de distribuirse, a continuación se detalla: - Jornal: si es realizado por día (generalmente lo realiza un obrero o jornalero). - Sueldo: si es realizado por un trabajador dependiente (empleado). - Honorario: si es realizado por un trabajador independiente. - Emolumento: si es realizado por un alto funcionario público. - Dieta: si es realizado por personas que trabajan por reuniones o sesiones.",
+     "curso": "Historia / Geografía / Economía",
+     "tema": "Formas de salario",
+     "subtema": null,
+     "examen": "UNT 2022 BIO 2022-II - area B"
+    },
+    {
+     "texto": "Si la distribución electrónica de un átomo neutro \"X\" termina en $3d^5$, entonces se puede afirmar que 1. se ubica en el periodo 4. 2. pertenece al grupo VII A. 3. es un metal representativo. 4. se ubica en el grupo VII B. 5. si gana 1 electrón, ahora \"X\" se ubicará en el grupo VIII B. Son ciertas:",
+     "opciones": [
+      "1 y 2",
+      "1 y 3",
+      "1 y 4",
+      "2 y 5",
+      "3, 4 y 5"
+     ],
+     "correcta": 2,
+     "imagen": null,
+     "justificacion": "X0: 1s2 2s2 2p6 3s2 3p6 4s2 3d5 periodo=4 grupo=VIIB metal de transición 1. Sí se puede afirmar. periodo=4 2. No se puede afirmar. grupo=VIIB 3. No se puede afirmar. Es un metal de transición. 4. Sí se puede afirmar. grupo=VIIB 5. No se puede afirmar. Los iones de un elemento tienen la misma ubicación que el elemento.",
+     "curso": "Biología / Química / Física",
+     "tema": "Tabla periódica",
+     "subtema": null,
+     "examen": "UNT 2022 BIO 2022-I (area B)"
+    },
+    {
+     "texto": "Los filósofos fundadores del existencialismo fueron: 1. Gabriel Marcel 2. Ludwig Wittgenstein 3. Jean Paul Sartre 4. Martín Heidegger 5. Karl Jaspers Son ciertas:",
+     "opciones": [
+      "1 y 2",
+      "2 y 3",
+      "2 y 5",
+      "3 y 4",
+      "4 y 5"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "El existencialismo es una corriente filosófica que se ubica en las primeras décadas del siglo XX, tiene como preocupación la condición humana y afirma que el hombre no posee una naturaleza. El hombre parte por existir y de ahí va desarrollando su esencia. En sentido, entre los filósofos más representativos de esta corriente encontramos a Heidegger y J. P. Sartré.",
+     "curso": "Desarrollo Personal",
+     "tema": "Existencialismo",
+     "subtema": null,
+     "examen": "UNT 2022 BIO 2022-II - area B"
+    },
+    {
+     "texto": "Read about James Cameron. Choose the correct alternative that complete the text. James Cameron loved films when he was a child, he married the film director Kathy Bigelow in 1989, but they got divorced in 1991. His film Aliens won two Oscars.",
+     "opciones": [
+      "where - wrote - got - won",
+      "was - loved - started - took",
+      "be - love - make - get",
+      "was - married - got - won",
+      "was - married - made - got"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "Read about James Cameron. Choose the correct alternative that complete the text (Lee sobre James Cameron. Elige la alternativa correcta que completa el texto). Para completar de forma correcta el siguiente párrafo, debemos primero identificar el tiempo gramatical en el que fue escrito. El párrafo inicia con la siguiente oración: «James Cameron loved films…» (A James Cameron le encantaban las películas…). Podemos notar que el párrafo está escrito en pasado simple: «when he* was a child, he married the film director Kathry Bigelow in 1989, but they got divorced in 1991. His film Aliens won two Oscars» (cuando era niño se casó con la directora de cine Kathryn Bigelow en 1989, pero se divorciaron en 1991. Su película Aliens ganó dos premios Oscar). *el pronombre «he» no aparece en el texto del examen.",
+     "curso": "Inglés",
+     "tema": "Past Simple",
+     "subtema": null,
+     "examen": "UNT 2022 BIO 2022-II - area C"
+    },
+    {
+     "texto": "Un niño es encargado a una familia, pero los padres del niño no retornan para recogerlo y así pasan los años hasta la adultez del niño abandonado. Este es un caso de familia:",
+     "opciones": [
+      "agregada",
+      "extensa",
+      "incompleta",
+      "nuclear",
+      "reconstructiva"
+     ],
+     "correcta": 3,
+     "imagen": null,
+     "justificacion": "La familia se constituye cuando un hogar tiene al menos un miembro con relación de parentesco. A través de la historia las familias han sufrido ciertos cambios acorde a la demanda de la sociedad. Pero según los estudios, podemos dar ciertos tipos: • Familia nuclear: También llamada “conyugal”, está compuesta por padre, madre e hijos. Los lazos familiares están dados por sangre, afinidad y adopción. • Familia extendida: Está basada en los vínculos consanguíneos de una gran cantidad de personas incluyendo a los padres, niños, abuelos, tíos, tías, sobrinos, primos y demás. • Familia incompleta: Se da cuando uno de los padres ha fallecido. Al haber recibido al niño hasta su adultez, la familia constituye un tipo de familia nuclear.",
+     "curso": "Ciudadanía y Cívica",
+     "tema": "Tipos de familia",
+     "subtema": null,
+     "examen": "UNT 2022 BIO 2022-II - area A"
+    }
+   ]
+  }
+ ]
+}

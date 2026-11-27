@@ -22,8 +22,48 @@ const UNIS = {
     largo: 'Universidad Nacional de San Agustín de Arequipa (UNSA)',
     ciudad: 'Arequipa',
     simulacro: '/unsa/',
-    banqueoTema: null,
-    banqueo: null,
+    banqueoTema: '/unsa/banqueo-tema/',
+    banqueo: '/unsa/banqueo/',
+  },
+  sanmarcos: {
+    corto: 'San Marcos',
+    largo: 'Universidad Nacional Mayor de San Marcos (UNMSM)',
+    ciudad: 'Lima',
+    simulacro: '/sanmarcos/',
+    banqueoTema: '/sanmarcos/banqueo-tema/',
+    banqueo: '/sanmarcos/banqueo/',
+  },
+  uni: {
+    corto: 'UNI',
+    largo: 'Universidad Nacional de Ingeniería (UNI)',
+    ciudad: 'Lima',
+    simulacro: '/uni/',
+    banqueoTema: '/uni/banqueo-tema/',
+    banqueo: '/uni/banqueo/',
+  },
+  unt: {
+    corto: 'UNT',
+    largo: 'Universidad Nacional de Trujillo (UNT)',
+    ciudad: 'Trujillo',
+    simulacro: '/unt/',
+    banqueoTema: '/unt/banqueo-tema/',
+    banqueo: '/unt/banqueo/',
+  },
+  unc: {
+    corto: 'UNC',
+    largo: 'Universidad Nacional de Cajamarca (UNC)',
+    ciudad: 'Cajamarca',
+    simulacro: '/unc/',
+    banqueoTema: '/unc/banqueo-tema/',
+    banqueo: '/unc/banqueo/',
+  },
+  uncp: {
+    corto: 'UNCP',
+    largo: 'Universidad Nacional del Centro del Perú (UNCP)',
+    ciudad: 'Huancayo',
+    simulacro: '/uncp/',
+    banqueoTema: '/uncp/banqueo-tema/',
+    banqueo: '/uncp/banqueo/',
   },
 };
 
@@ -112,7 +152,8 @@ export function generarContenido({ raiz, dist, sitio }) {
   const can = (ruta) => `${url}${ruta}`;
   const hoy = new Date().toISOString().slice(0, 10);
 
-  function pagina({ ruta, title, description, migas, h1, cuerpo, ld = [], prioridad = '0.6' }) {
+  function pagina({ ruta, title, description, migas, h1, cuerpo, ld = [], prioridad = '0.6', uni = 'una' }) {
+    const u = UNIS[uni];
     const migasLd = {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
@@ -151,7 +192,7 @@ ${[migasLd, {
 </head>
 <body>
 <header class="top"><div class="in"><a class="marca" href="/">Sinapsis Preu</a>
-<a href="/una/">Simulacro UNA</a><a href="/una/preguntas/">Preguntas UNA</a><a href="/una/examenes/">Exámenes UNA</a><a href="/unsa/">UNSA</a></div></header>
+<a href="${u.simulacro}">Simulacro ${esc(u.corto)}</a><a href="/${uni}/preguntas/">Preguntas ${esc(u.corto)}</a><a href="/${uni}/examenes/">Exámenes ${esc(u.corto)}</a><a href="/#guia">Otras universidades</a></div></header>
 <main>
 <nav class="migas" aria-label="Migas de pan">${migas.map(([n, r], i) => (i < migas.length - 1 ? `<a href="${r}">${esc(n)}</a> › ` : esc(n))).join('')}</nav>
 <h1>${esc(h1)}</h1>
@@ -185,7 +226,7 @@ Las preguntas provienen de exámenes de admisión públicos de cada universidad;
 <a href="${u.simulacro}">Rendir simulacro gratis</a>${u.banqueoTema ? `<a class="sec" href="${u.banqueoTema}">Banqueo por tema</a>` : ''}</div>`;
 
     // ---- Hub de preguntas por curso
-    pagina({
+    pagina({ uni: codigo,
       ruta: `${base}/preguntas/`,
       prioridad: '0.8',
       title: `Preguntas del examen de admisión ${u.corto} por curso, con respuestas | ${nombre}`,
@@ -210,7 +251,7 @@ ${ctaGeneral(null)}
     for (const c of d.cursos) {
       const qs = preguntasHtml(c.muestras, c.slug);
       const top = c.temas.slice(0, 5).map((t) => t.tema).join(', ');
-      pagina({
+      pagina({ uni: codigo,
         ruta: `${base}/preguntas/${c.slug}/`,
         prioridad: '0.7',
         title: `Preguntas de ${c.curso} del examen de admisión ${u.corto} (con respuestas) | ${nombre}`,
@@ -231,7 +272,7 @@ ${ctaGeneral(c)}
     }
 
     // ---- Hub de exámenes por año
-    pagina({
+    pagina({ uni: codigo,
       ruta: `${base}/examenes/`,
       prioridad: '0.8',
       title: `Exámenes de admisión ${u.corto} de años anteriores (${rango}) | ${nombre}`,
@@ -248,7 +289,7 @@ ${ctaGeneral(null)}`,
     // ---- Página por año
     for (const a of d.anios) {
       const qs = preguntasHtml(a.muestras, `a${a.anio}`);
-      pagina({
+      pagina({ uni: codigo,
         ruta: `${base}/examenes/${a.anio}/`,
         prioridad: Number(a.anio) >= 2019 ? '0.7' : '0.5',
         title: `Examen de admisión ${u.corto} ${a.anio}: preguntas y respuestas | ${nombre}`,

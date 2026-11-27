@@ -120,6 +120,21 @@ for (const p of seo.paginas) {
 // Páginas de contenido (preguntas por curso y exámenes por año), ver seo-contenido.mjs.
 const contenido = generarContenido({ raiz, dist, sitio: seo.sitio });
 
+// Redirecciones de URL que ya conocía Google (UNSA pasó a sus cursos oficiales, 2026-11-27).
+const REDIRECCIONES = {
+  '/unsa/preguntas/biologia-y-anatomia/': '/unsa/preguntas/biologia/',
+  '/unsa/preguntas/comunicacion/': '/unsa/preguntas/lenguaje/',
+  '/unsa/preguntas/economia/': '/unsa/preguntas/',
+  '/unsa/preguntas/psicologia-y-filosofia/': '/unsa/preguntas/psicologia/',
+};
+for (const [de, a] of Object.entries(REDIRECCIONES)) {
+  const destino = join(dist, de.slice(1), 'index.html');
+  mkdirSync(dirname(destino), { recursive: true });
+  writeFileSync(destino, `<!doctype html><html lang="es-PE"><head><meta charset="utf-8"><title>Redirigiendo…</title>
+<link rel="canonical" href="${url}${a}"><meta name="robots" content="noindex, follow">
+<meta http-equiv="refresh" content="0; url=${a}"></head><body><a href="${a}">Ir a la página</a></body></html>`);
+}
+
 const todas = [
   ...seo.paginas.map((p) => ({ loc: canonica(p.ruta), prioridad: p.prioridad })),
   ...contenido.map((p) => ({ loc: url + p.ruta, prioridad: p.prioridad })),
@@ -138,26 +153,33 @@ const resumenUni = (codigo) => {
     return null;
   }
 };
+const LLMS_UNIS = [
+  ['una', 'UNA Puno (Universidad Nacional del Altiplano)', 'Activa. Puntaje con la ponderación oficial por área (Ingenierías, Biomédicas, Sociales); también CEPREUNA por semanas.'],
+  ['unsa', 'UNSA (Universidad Nacional de San Agustín de Arequipa)', 'Beta. 80 preguntas, suma ponderada sobre 100.'],
+  ['sanmarcos', 'San Marcos (Universidad Nacional Mayor de San Marcos, UNMSM)', 'Beta. Áreas A-E, +20 por correcta y −1,125 por incorrecta, escala 2000.'],
+  ['uni', 'UNI (Universidad Nacional de Ingeniería)', 'Beta. Tres pruebas: Aptitud Académica y Humanidades, Matemática, Física y Química.'],
+  ['unt', 'UNT (Universidad Nacional de Trujillo)', 'Beta. 100 preguntas por área, +4,079 / −1,021.'],
+  ['unc', 'UNC (Universidad Nacional de Cajamarca)', 'Beta. 90 preguntas por módulo, escala 600.'],
+  ['uncp', 'UNCP (Universidad Nacional del Centro del Perú)', 'Beta. 80 preguntas por área, ponderado sobre 1500.'],
+];
 const una = resumenUni('una');
-const unsa = resumenUni('unsa');
+const lineasUnis = LLMS_UNIS.map(([c, n, nota]) => {
+  const r = resumenUni(c);
+  return r ? `- ${n}: ${r.total} preguntas de ${r.examenes} exámenes de admisión (${r.anioMin}–${r.anioMax}), ${r.cursos.length} cursos, con clave y solución. ${nota}` : '';
+}).filter(Boolean).join('\n');
+const enlacesUnis = LLMS_UNIS.map(([c, n]) => `- [Simulacro de admisión ${n.split(' (')[0]}](${url}/${c}/) · [preguntas por curso](${url}/${c}/preguntas/) · [exámenes por año](${url}/${c}/examenes/)`).join('\n');
 writeFileSync(join(dist, 'llms.txt'), `# ${nombre}
 
-> Plataforma peruana de simulacros de examen de admisión universitaria con preguntas reales de exámenes pasados. Hecha en Puno, Perú. El primer simulacro de cada universidad es gratis; el acceso completo se activa por WhatsApp (${whatsapp}).
+> Plataforma peruana de simulacros de examen de admisión universitaria con preguntas reales de exámenes pasados. Hecha en Puno, Perú. Cada simulacro se califica con la tabla oficial de su universidad. El primer simulacro de cada universidad es gratis; el acceso completo se activa por WhatsApp (${whatsapp}).
 
-${una ? `- UNA Puno (Universidad Nacional del Altiplano): ${una.total} preguntas de ${una.examenes} exámenes de admisión (${una.anioMin}–${una.anioMax}), ${una.cursos.length} cursos, con clave y solución. Puntaje calculado con la ponderación oficial por área (Ingenierías, Biomédicas, Sociales).` : ''}
-${unsa ? `- UNSA (Universidad Nacional de San Agustín de Arequipa), en beta: ${unsa.total} preguntas de ${unsa.examenes} exámenes (${unsa.anioMin}–${unsa.anioMax}).` : ''}
-- Modalidades: simulacro cronometrado de 60 preguntas, banqueo por curso, banqueo por tema y subtema, banqueo CEPREUNA por semanas.
+${lineasUnis}
+- Modalidades: simulacro cronometrado con la calificación oficial, banqueo por curso y por tema de tu universidad, y banqueo mix con preguntas del mismo tema de otras universidades por nivel de dificultad (básico, intermedio San Marcos, avanzado UNI, progresivo).
+- Revisión pregunta por pregunta con clave y solución, historial de puntajes y resultado en PDF.
 - No está afiliado a ninguna universidad.
 
 ## Páginas principales
 
-- [Simulacro de admisión UNA Puno](${url}/una/): simulacro gratis con puntaje por área
-- [Preguntas del examen de admisión UNA Puno por curso](${url}/una/preguntas/): temas más preguntados y ejemplos resueltos
-- [Exámenes de admisión UNA Puno por año](${url}/una/examenes/): exámenes ${una ? `${una.anioMin}–${una.anioMax}` : ''} con preguntas de ejemplo
-- [Banqueo por tema UNA Puno](${url}/una/banqueo-tema/)
-- [Simulacro y banqueo CEPREUNA](${url}/una/cepre/)
-- [Simulacro de admisión UNSA](${url}/unsa/)
-- [Preguntas del examen de admisión UNSA](${url}/unsa/preguntas/)
+${enlacesUnis}
 - [Preguntas frecuentes](${url}/preguntas-frecuentes/)
 `);
 
